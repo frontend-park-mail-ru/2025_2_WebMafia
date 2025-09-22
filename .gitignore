@@ -31,3 +31,16 @@ out/
 *.ntvs*
 *.njsproj
 *.sln
+
+# Test results
+coverage/
+.nyc_output/
+
+# Temporary files
+tmp/
+temp/
+
+# Other common ignored files
+*.zip
+*.tar.gz
+*.rar
