@@ -21,7 +21,7 @@ body {
 .container {
     background: #FAFAFA;
     border-radius: 16px;
-    padding: 40px;
+    padding: 20px 30px 20px 30px;
     width: 450px;
     text-align: center;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
@@ -29,11 +29,12 @@ body {
 
 .logo {
     width: 180px;
-    height: 140px;
+    height: 90px;
+    margin-bottom: 15px;
 }
 
 h2 {
-    margin: 0 0 30px;
+    margin: 0 0 25px;
     font-size: 32px;
     font-weight: 600;
     color: #000;
@@ -41,7 +42,6 @@ h2 {
 
 .form-group {
     text-align: left;
-    margin-top: 20px;
 }
 
 .form-group label {
@@ -53,18 +53,19 @@ h2 {
 
 .form-group input {
     width: 428px;
-    height: 44px;
+    height: 35px;
     padding: 10px;
     border-radius: 8px;
     border: 1px solid #d0bbbb;
     font-size: 20px;
+    margin: 0 0 20px;
 }
 
 .form-extra {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 30px 0 30px;
+    margin: 0 0 20px;
     font-size: 18px;
 }
 
@@ -73,8 +74,8 @@ h2 {
 }
 
 .form-extra input {
-    height: 16px;
-    width: 16px;
+    height: 15px;
+    width: 15px;
     accent-color: #B744B9;
 }
 
@@ -88,7 +89,7 @@ h2 {
     font-size: 24px;
     font-weight: 600;
     cursor: pointer;
-    height: 66px;
+    height: 57px;
     /*Эксперименты*/
     transition: background-position 0.5s ease;
     background-size: 150% 100%;
@@ -98,12 +99,16 @@ h2 {
     background-position: right center;
 }
 
-.register {
-    margin-top: 30px;
+.belowQuestion {
+    margin-top: 15px;
     font-size: 16px;
 }
 
-.register a {
+.belowQuestion a {
     font-weight: 600;
     color: #000;
+}
+
+.belowQuestion a:hover {
+    color: #4a4a4a;
 }
