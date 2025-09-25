@@ -1,15 +1,15 @@
 document.querySelectorAll(".slider").forEach(slider=>{
-    const slidebar = slider.querySelector(".cards");
-    const left_btn = slider.querySelector(".slide-btn.left");
-    const right_btn = slider.querySelector(".slide-btn.right");
+    let slidebar = slider.querySelector(".cards");
+    let leftBtn = slider.querySelector(".slide-btn.left");
+    let rightBtn = slider.querySelector(".slide-btn.right");
 
-    scrollAmount = 250;
+    let scrollAmount = 350;
 
-    right_btn.addEventListener("click", () => {
+    rightBtn.addEventListener("click", () => {
         slidebar.scrollLeft += scrollAmount;
     });
 
-    left_btn.addEventListener("click", () => {
+    leftBtn.addEventListener("click", () => {
         slidebar.scrollLeft -= scrollAmount;
     });
 });
