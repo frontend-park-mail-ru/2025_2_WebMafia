@@ -1,9 +1,9 @@
 document.querySelectorAll(".slider").forEach(slider=>{
-    let slidebar = slider.querySelector(".cards");
-    let leftBtn = slider.querySelector(".slide-btn.left");
-    let rightBtn = slider.querySelector(".slide-btn.right");
+    const slidebar = slider.querySelector(".cards");
+    const leftBtn = slider.querySelector(".slide-btn.left");
+    const rightBtn = slider.querySelector(".slide-btn.right");
 
-    let scrollAmount = 350;
+    const scrollAmount = 350;
 
     rightBtn.addEventListener("click", () => {
         slidebar.scrollLeft += scrollAmount;
