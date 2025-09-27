@@ -1,0 +1,46 @@
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Dependencies
+node_modules/
+
+# Build artifacts
+dist/
+build/
+out/
+.next/ # For Next.js projects
+.nuxt/ # For Nuxt.js projects
+
+# Local environment variables
+.env
+.env.local
+.env.*.local
+
+# Editor directories and files
+.vscode/
+.idea/
+.venv/
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# Test results
+coverage/
+.nyc_output/
+
+# Temporary files
+tmp/
+temp/
+
+# Other common ignored files
+*.zip
+*.tar.gz
+*.rar
