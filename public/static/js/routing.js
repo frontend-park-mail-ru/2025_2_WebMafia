@@ -58,13 +58,14 @@
 import { MainPage } from './pages/mainpage/mainpage.js';
 import { notFoundPage } from './pages/notfoundpage/notFoundPage.js';
 import { LoginPage } from './pages/login/login.js';
+import { RegistrationPage } from './pages/register/register.js';
 
 export class Router {
     constructor() {
         this.routes = {
             '/': new MainPage,
             '/login': new LoginPage,
-            // '/register': RegistrationPage
+            '/register': new RegistrationPage
         };
 
         this.currentPage = null;

@@ -28,10 +28,10 @@
 }
 
 .logo-auth {
-    width: 180px;
+    width: 120px;
     height: 90px;
     margin-bottom: 15px;
-    margin-left: 110px;
+    /* margin-left: 110px; */
 }
 
 .form-title {
