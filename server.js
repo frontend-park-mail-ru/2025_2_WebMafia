@@ -1,20 +1,16 @@
-const http = require('http');
-const routing = require('./routing')
-const port = 3000;
+const express = require('express');
 
-const server = new http.createServer((req, res) => {
-    var jsonString = '';
-    
-    req.on('data', (data)=> {
-        jsonString += data;
-    });
+const port = 8090;
 
-    req.on('end', () => {
-        routing.define(req, res, jsonString); 
-    });
+const app = express();
+
+app.use(express.static(`${__dirname}/public`));
+
+app.use(/(.*)/, (req, res) => {
+    res.sendFile(`${__dirname}/public/index.html`);
 });
 
 
-server.listen(port, () => {
-    console.log(`Сервер запущен на http://localhost:${port}`);
+app.listen(process.env.PORT || 8090, () => {
+    console.log(`Express server is listening on :${port}`);
 });

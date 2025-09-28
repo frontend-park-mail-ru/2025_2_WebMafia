@@ -1,0 +1,6 @@
+(function() {
+  var template = Handlebars.template, templates = Handlebars.templates = Handlebars.templates || {};
+templates['login.hbs'] = template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
+    return "<div class=\"layout-auth\">\r\n    <div class=\"container\">\r\n    <img class=\"logo-auth\" alt=\"Логотип\" src=\"static/img/wave.png\">\r\n    <h2 class=\"form-title\">Входи и почувствуй<br>музыку заново</h2>\r\n\r\n    <form>\r\n        <div class=\"form-group\">\r\n        <label for=\"email\">Адрес почты или имя пользователя</label>\r\n        <input type=\"email\" id=\"email\">\r\n        </div>\r\n\r\n        <div class=\"form-group\">\r\n        <label for=\"password\">Пароль</label>\r\n        <input type=\"password\" id=\"password\">\r\n        </div>\r\n        <button type=\"submit\" class=\"login-button\">Войти</button>\r\n    </form>\r\n    <div class=\"below-question\">\r\n        <p>Нет аккаунта?</p>\r\n        <a href=\"#\">Зарегистрироваться</a>\r\n    </div>\r\n    </div>\r\n</div>";
+},"useData":true});
+})();
