@@ -40,7 +40,7 @@ export class LoginPage {
                 
                 localStorage.setItem('isAuthenticated', 'true');
                 
-                new Router().navigate('/');
+                router.navigate('/');
 
             } catch (error) {
                 console.error('Login failed:', error.message);

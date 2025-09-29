@@ -7,6 +7,5 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function initializePage(){
     console.log('router');
-    // const router = new Router();
     router.init();
 }
