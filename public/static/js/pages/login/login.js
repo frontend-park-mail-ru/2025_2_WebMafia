@@ -5,6 +5,10 @@ import { Router } from '../../routing.js';
 
 export class LoginPage {
     async render() {
+        const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+        if (isAuthenticated) {
+            new Router().navigate('/');
+        }
         const contentTemplate = Handlebars.templates['login.hbs'];
         document.getElementById('app').innerHTML = contentTemplate();
         this.initValidation();
