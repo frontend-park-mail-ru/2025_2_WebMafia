@@ -1,11 +1,11 @@
 import { apiServise } from '../../data.js';
-import { Router } from '../../routing.js';
+import { router } from '../../routing.js';
 
 export class MainPage {
     async render() {
         const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
         if (!isAuthenticated) {
-            new Router().navigate('/login');
+            router.navigate('/login');
             return;
         }
 

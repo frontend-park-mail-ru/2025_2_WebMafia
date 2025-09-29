@@ -1,12 +1,12 @@
 import { FormValidator } from '../login/validation.js';
 import { apiServise } from '../../data.js';
-import { Router } from '../../routing.js';
+import { router } from '../../routing.js';
 
 export class RegistrationPage {
     async render() {
         const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
         if (isAuthenticated) {
-            new Router().navigate('/');
+            router.navigate('/');
         }
         const contentTemplate = Handlebars.templates['register.hbs'];
         document.getElementById('app').innerHTML = contentTemplate();

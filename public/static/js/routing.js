@@ -43,3 +43,5 @@ export class Router {
         this.handleLocation();
     }
 }
+
+export const router = new Router();
