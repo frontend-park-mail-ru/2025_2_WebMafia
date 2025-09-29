@@ -10,5 +10,3 @@ function initializePage(){
     const router = new Router();
     router.init();
 }
-
-

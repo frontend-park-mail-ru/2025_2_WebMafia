@@ -1,27 +1,25 @@
+
 import { FormValidator } from './validation.js';
 import { apiServise } from '../../data.js';
+import { Router } from '../../routing.js';
 
 export class LoginPage {
     async render() {
         const contentTemplate = Handlebars.templates['login.hbs'];
         document.getElementById('app').innerHTML = contentTemplate();
-        const data = await apiServise.getUserAuth();
-        this.initValidation(data);
+        this.initValidation();
     }
 
-    initValidation(authData) {
+    initValidation() {
         const validators = {
-            email: (value) => {
+            login: (value) => {
                 if (!value.trim()) return 'Поле обязательно для заполнения';
-                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) && !/^[a-zA-Z0-9_]{3,20}$/.test(value)) {
-                    return 'Введите корректный email или имя пользователя';
-                }
+                if (value.length < 5) return 'Имя пользователя слишком короткое';
                 return null;
             },
-            
             password: (value) => {
                 if (!value) return 'Поле обязательно для заполнения';
-                if (value.length < 6) return 'Пароль должен содержать минимум 6 символов';
+                if (value.length < 8) return 'Пароль должен содержать минимум 8 символов';
                 return null;
             }
         };
@@ -29,28 +27,30 @@ export class LoginPage {
         const validator = new FormValidator('loginForm', validators);
         
         validator.onSubmit = async (formData) => {
-            const email = formData.get('email');
+            const login = formData.get('login');
             const password = formData.get('password');
             
-            // Проверяем совпадение с тестовыми данными
-            const isEmailValid = email === authData.login;
-            const isPasswordValid = password === authData.password;
-            
-            if (isEmailValid && isPasswordValid) {
-                // Успешная авторизация
-                // this.showMessage('Авторизация успешна! Перенаправление...', true);
+            try {
+                const response = await apiServise.loginUser(login, password);
                 
-                // Сохраняем статус авторизации
+                console.log('Login successful:', response);
+                
                 localStorage.setItem('isAuthenticated', 'true');
-                localStorage.setItem('user', JSON.stringify(authData));
                 
-                // Редирект на главную страницу
-                setTimeout(() => {
-                    window.location.href = '/';
-                }, 500);
-            } else {
-                // Неверные данные
-                this.showMessage('Неверный логин или пароль', false);
+                new Router().navigate('/');
+
+            } catch (error) {
+                console.error('Login failed:', error.message);
+                
+                let errorMessage = 'Произошла неизвестная ошибка. Попробуйте снова.';
+                
+                if (error.message === 'unauthorized') {
+                    errorMessage = 'Неверное имя пользователя или пароль.';
+                } else if (error.message === 'bad request') {
+                    errorMessage = 'Некорректный запрос. Проверьте введенные данные.';
+                }
+                
+                this.showMessage(errorMessage, false);
             }
         };
         

@@ -5,9 +5,9 @@
 
     <form id="loginForm">
         <div class="form-group">
-            <label for="email">Адрес почты или имя пользователя</label>
-            <input type="text" id="email" name="email">
-            <div class="error-message" id="emailError"></div>
+            <label for="login">Имя пользователя</label>
+            <input type="text" id="login" name="login">
+            <div class="error-message" id="loginError"></div>
         </div>
 
         <div class="form-group">
@@ -16,13 +16,13 @@
             <div class="error-message" id="passwordError"></div>
         </div>
         
-        {{!-- <div class="error-message general-error" id="generalError"></div> --}}
+        <div class="error-message general-error" id="generalError"></div>
         
         <button type="submit" class="login-button">Войти</button>
     </form>
     <div class="below-question">
         <p>Нет аккаунта?</p>
-        <a href="#register">Зарегистрироваться</a>
+        <a href="/register">Зарегистрироваться</a>
     </div>
     </div>
 </div>
