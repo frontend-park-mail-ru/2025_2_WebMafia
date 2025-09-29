@@ -708,7 +708,7 @@ export class apiServises{
 
     async getUserAuth(){
         const data = await this.request('/login');
-        return data.login || [];
+        return data || [];
         // return {
         //     "login": "testuser",
         //     "password": "password123"
@@ -717,7 +717,7 @@ export class apiServises{
 
     async getUserRegistr(){
         const data = await this.request('/register');
-        return data.register || [];
+        return data || [];
         // return{
         //     "login": "testuser",
         //     "email": "test@example.com",
