@@ -44,3 +44,4 @@ temp/
 *.zip
 *.tar.gz
 *.rar
+*.tmpl.js

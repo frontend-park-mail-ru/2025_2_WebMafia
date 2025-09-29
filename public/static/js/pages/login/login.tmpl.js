@@ -1,6 +1,0 @@
-(function() {
-  var template = Handlebars.template, templates = Handlebars.templates = Handlebars.templates || {};
-templates['login.hbs'] = template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<div class=\"layout-auth\">\n    <div class=\"container\">\n    <img class=\"logo-auth\" alt=\"Логотип\" src=\"static/img/wave.png\">\n    <h2 class=\"form-title\">Входи и почувствуй<br>музыку заново</h2>\n\n    <form id=\"loginForm\">\n        <div class=\"form-group\">\n            <label for=\"login\">Имя пользователя</label>\n            <input type=\"text\" id=\"login\" name=\"login\">\n            <div class=\"error-message\" id=\"loginError\"></div>\n        </div>\n\n        <div class=\"form-group\">\n            <label for=\"password\">Пароль</label>\n            <input type=\"password\" id=\"password\" name=\"password\">\n            <div class=\"error-message\" id=\"passwordError\"></div>\n        </div>\n        \n        <div class=\"error-message general-error\" id=\"generalError\"></div>\n        \n        <button type=\"submit\" class=\"login-button\">Войти</button>\n    </form>\n    <div class=\"below-question\">\n        <p>Нет аккаунта?</p>\n        <a href=\"/register\">Зарегистрироваться</a>\n    </div>\n    </div>\n</div>";
-},"useData":true});
-})();

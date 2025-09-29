@@ -76,7 +76,6 @@ export class FormValidator {
     }
 
     onSubmit(formData) {
-        // Переопределите этот метод в классе-потомке
         console.log('Form submitted with:', Object.fromEntries(formData));
     }
 }
