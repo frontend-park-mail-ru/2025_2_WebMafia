@@ -1,0 +1,28 @@
+<div class="layout-auth">
+    <div class="container">
+    <img class="logo-auth" alt="Логотип" src="static/img/wave.png">
+    <h2 class="form-title">Входи и почувствуй<br>музыку заново</h2>
+
+    <form id="loginForm">
+        <div class="form-group">
+            <label for="login">Имя пользователя</label>
+            <input type="text" id="login" name="login">
+            <div class="error-message" id="loginError"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Пароль</label>
+            <input type="password" id="password" name="password">
+            <div class="error-message" id="passwordError"></div>
+        </div>
+        
+        <div class="error-message general-error" id="generalError"></div>
+        
+        <button type="submit" class="login-button">Войти</button>
+    </form>
+    <div class="below-question">
+        <p>Нет аккаунта?</p>
+        <a href="/register">Зарегистрироваться</a>
+    </div>
+    </div>
+</div>
