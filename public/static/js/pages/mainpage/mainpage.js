@@ -39,7 +39,7 @@ export class MainPage {
         } catch (error) {
             console.error('Failed to load main page data:', error.message);
             localStorage.removeItem('isAuthenticated');
-            new Router().navigate('/login');
+            router.navigate('/login');
             return;
         }
         
@@ -61,7 +61,7 @@ export class MainPage {
                     console.error('Logout request failed:', error.message);
                 } finally {
                     localStorage.removeItem('isAuthenticated');
-                    new Router().navigate('/login');
+                    router.navigate('/login');
                 }
             });
         }
