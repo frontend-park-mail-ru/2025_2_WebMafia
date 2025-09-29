@@ -18,6 +18,31 @@
     100% { background-position: 0% 50%; }
 }
 
+.error-message {
+    color: #e74c3c;
+    font-size: 14px;
+    display: none;
+    margin-bottom: 10px;
+    margin-top: -10px;
+}
+
+.error-message.show {
+    display: block;
+}
+
+.form-group.error input {
+    border-color: #e74c3c;
+    box-shadow: 0 0 5px rgba(231, 76, 60, 0.3);
+}
+
+.general-error {
+    text-align: center;
+    /* margin-bottom: 15px; */
+    padding: 10px;
+    background-color: rgba(231, 76, 60, 0.1);
+    border-radius: 5px;
+}
+
 .container {
     background: #FAFAFA;
     border-radius: 16px;

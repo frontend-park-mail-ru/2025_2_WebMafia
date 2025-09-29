@@ -108,10 +108,11 @@ export class Router {
     }
 
     navigate(url) {
-        let path = url.split('/').slice(3).join('/');
-        path = path ? '/' + path : '/';
+        const path = new URL(url, window.location.origin).pathname;
         console.log('window url', path);
-        window.history.pushState(null, null, path);
+        if (window.location.pathname !== path) {
+            window.history.pushState(null, null, path);
+        }
         this.handlePath(path);
     }
 
