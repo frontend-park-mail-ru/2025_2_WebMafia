@@ -52,7 +52,7 @@ export class RegistrationPage {
                 console.log('Auto-login successful');
 
                 localStorage.setItem('isAuthenticated', 'true');
-                new Router().navigate('/lofgin');
+                new Router().navigate('/login');
 
             } catch (error) {
                 console.error('Registration or auto-login failed:', error.message);
