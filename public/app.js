@@ -1,4 +1,4 @@
-import { Router } from './static/js/routing.js';
+import { router } from './static/js/routing.js';
 
 document.addEventListener('DOMContentLoaded', function() {
     console.log('router');
@@ -7,6 +7,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function initializePage(){
     console.log('router');
-    const router = new Router();
+    // const router = new Router();
     router.init();
 }

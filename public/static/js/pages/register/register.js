@@ -1,9 +1,13 @@
 import { FormValidator } from '../login/validation.js';
 import { apiServise } from '../../data.js';
-import { Router } from '../../routing.js';
+import { router } from '../../routing.js';
 
 export class RegistrationPage {
     async render() {
+        const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+        if (isAuthenticated) {
+            router.navigate('/');
+        }
         const contentTemplate = Handlebars.templates['register.hbs'];
         document.getElementById('app').innerHTML = contentTemplate();
         this.initValidation();
@@ -52,7 +56,7 @@ export class RegistrationPage {
                 console.log('Auto-login successful');
 
                 localStorage.setItem('isAuthenticated', 'true');
-                new Router().navigate('/login');
+                new Router().navigate('/');
 
             } catch (error) {
                 console.error('Registration or auto-login failed:', error.message);
