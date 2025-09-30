@@ -17,80 +17,110 @@
 </header>
 
 
-<div class="layout">
-    <aside class="sidebar">
-        <nav class="menu">
-            <span class="menuicon"><img src="static/img/search.png"><a href="#">Поиск</a></span>
-            <span class="menuicon"><img src="static/img/home.png" alt=""><a href="/">Главная</a></span>
-            <span class="menuicon"><img src="static/img/library.png" alt=""><a href="/">Библиотека</a></span>
-        </nav>
-    </aside>
-    
-    <div class="divide-line"></div>
-    
-    <div class="page">
-        <!-- Артисты -->
-        <div class="title">
-            <div class="title-name">Артисты</div>
-            <div class="show-all"><a href="">Показать всё</a></div>
-        </div>
-        <div class="slider">
-            <p> <i class="slide-btn left"></i></p>
-            <div class="cards" id="slidebar">
-                {{#each artists}}
-                    <div class="card" >
-                        <a href="#">
-                            <img src="{{image}}" alt="{{name}}">
-                            <p class="card-name">{{name}}</p>
-                        </a>
-                    </div>
-                {{/each}}
-            </div>
-            <p> <i class="slide-btn right"></i></p>
-        </div>
-
-        <!-- Альбомы -->
-        <div class="title">
-            <div class="title-name">Альбомы</div>
-            <div class="show-all"><a href="">Показать всё</a></div>
-        </div>
-        <div class="slider">
-            <i class="slide-btn left"></i>
-            <div class="cards" id="slidebar">
-                {{#each albums}}
-                    <div class="card">
-                        <a href="#">
-                            <img src="{{image}}" alt="{{name}}">
-                            <p class="card-name">{{name}}</p>
-                            <p class="card-sub">{{artist}}</p>
-                        </a>
-                    </div>
-                {{/each}}
-            </div>
-            <i class="slide-btn right"></i>
-        </div>
-
-        <!-- Треки -->
-        <div class="title">
-            <div class="title-name">Треки</div>
-            <div class="show-all"><a href="">Показать всё</a></div>
-        </div>
-        <div class="slider">
-            <p> <i class="slide-btn left"></i></p>
-            <div class="cards" id="slidebar">
-                {{#each tracks}}
-                    <div class="card">
-                        <a href="#"><img src="{{image}}" alt="{{name}}">
-                        <p class="card-name">{{name}}</p>
-                        {{#each artists}}
-                            <p class="card-sub">{{name}}</p></a>
-                        {{/each}}
-                    </div>
-                {{/each}}
-            </div>
-            <p> <i class="slide-btn right"></i></p>
-        </div>
+    <div class="layout">
+        <aside class="sidebar">
+            <nav class="menu">
+                <span class="menuicon"><img src="static/img/search.png"><a href="#">Поиск</a></span>
+                <span class="menuicon"><img src="static/img/home.png" alt=""><a href="/">Главная</a></span>
+                <span class="menuicon"><img src="static/img/library.png" alt=""><a href="/">Библиотека</a></span>
+            </nav>
+        </aside>
         
+        {{!-- <div class="divide-line"></div> --}}
+        
+        <div class="page">
+            <!-- Артисты -->
+            <div class="title">
+                <div class="title-name">Артисты</div>
+                <div class="show-all"><a href="">Показать всё</a></div>
+            </div>
+            <div class="slider">
+                <p> <i class="slide-btn left"></i></p>
+                <div class="cards" id="slidebar">
+                    {{#each artists}}
+                        <div class="card" >
+                            <a href="#">
+                                <img src="{{image}}" alt="{{name}}">
+                                <p class="card-name">{{name}}</p>
+                            </a>
+                        </div>
+                    {{/each}}
+                </div>
+                <p> <i class="slide-btn right"></i></p>
+            </div>
+
+            <!-- Альбомы -->
+            <div class="title">
+                <div class="title-name">Альбомы</div>
+                <div class="show-all"><a href="">Показать всё</a></div>
+            </div>
+            <div class="slider">
+                <i class="slide-btn left"></i>
+                <div class="cards" id="slidebar">
+                    {{#each albums}}
+                        <div class="card">
+                            <a href="#">
+                                <img src="{{image}}" alt="{{name}}">
+                                <p class="card-name">{{name}}</p>
+                                <p class="card-sub">{{artist}}</p>
+                            </a>
+                        </div>
+                    {{/each}}
+                </div>
+                <i class="slide-btn right"></i>
+            </div>
+
+            <!-- Треки -->
+            <div class="title">
+                <div class="title-name">Треки</div>
+                <div class="show-all"><a href="">Показать всё</a></div>
+            </div>
+            <div class="slider">
+                <p> <i class="slide-btn left"></i></p>
+                <div class="cards" id="slidebar">
+                    {{#each tracks}}
+                        <div class="card">
+                            <a href="#"><img src="{{image}}" alt="{{name}}">
+                            <p class="card-name">{{name}}</p>
+                            {{#each artists}}
+                                <p class="card-sub">{{name}}</p></a>
+                            {{/each}}
+                        </div>
+                    {{/each}}
+                </div>
+                <p> <i class="slide-btn right"></i></p>
+            </div>
+            
+        </div>
     </div>
-</div>
+
+    <div class="player">
+        <div class="player-left">
+            <img src="static/img/image5.jpg" alt="Cover" class="track-cover">
+            <div class="track-info">
+            <div class="track-title">Название трека</div>
+            <div class="track-artist">Исполнитель</div>
+            </div>
+        </div>
+
+        <!-- Центр -->
+        <div class="player-center">
+            <div class="progress-remote">
+                <span class="track-time current">0:42</span>
+                <input type="range" min="0" max="100" value="20" class="remote-slider">
+                <span class="track-time total">2:42</span>
+            </div>
+            <div class="controls">
+                <button class="control-btn prev">⏮</button>
+                <button class="control-btn play">▶</button>
+                <button class="control-btn next">⏭</button>
+            </div>
+        </div>
+
+        <!-- Правая часть -->
+        <div class="player-right">
+            <input type="range" min="0" max="100" value="50" class="volume-slider">
+        </div>
+    </div>
+
 </div>
