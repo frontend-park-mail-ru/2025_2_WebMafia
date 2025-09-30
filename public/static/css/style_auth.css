@@ -9,7 +9,10 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      /* попытка ограничить размеры экрана */
+      min-height: 100vh;
+      padding: 10px;
+      box-sizing: border-box;
 }
 
 @keyframes gradientMove {
@@ -122,7 +125,7 @@
     background-size: 150% 100%;
 }
 
-.btn:hover {
+.login-button:hover {
     background-position: right center;
 }
 
