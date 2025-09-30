@@ -2,6 +2,7 @@ body{
     font-family: 'Montserrat', sans-serif;
     margin: 0;
     padding: 0;
+    overflow-y: hidden;
 }
 
 .section{
@@ -9,18 +10,17 @@ body{
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    height: 100%;
+    height: 100vh;
 }
 
 
 /* HEAD */
 .head{
-    position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    height: 80px;
-    background: #3e197c;
+    height: 85px;
+    background: #3d197c00;
     z-index: 100;
     display: flex;
     align-items: center;
@@ -90,17 +90,18 @@ body{
 
 /* Sidebar */
 .sidebar {
-    position: fixed;
-    top: 80px;         
     left: 0;
     bottom: 0;
     width: 252px;
-    background: linear-gradient(-45deg, #9C58E0, #4E85E1, #64CFD9);
+    background-color: #9c58e0;
+    /* background: linear-gradient(-45deg, #9C58E0, #4E85E1, #64CFD9); */
     animation: gradient 10s ease infinite;
     background-size: 400% 400%;
     z-index: 90;
     padding-left: 24px;
-    border-top-right-radius: 30px;
+    border-radius:30px ;
+    /* border-top-right-radius: 30px; */
+    /* border-top-left-radius: 30px; */
 
     overflow: hidden;
 }
@@ -169,38 +170,36 @@ body{
 
 
 
-.divide-line{
-    border: 8px solid #3e197c;
-    margin-left: 276px;
-}
-
 
 
 /* Content */
 .page{
-    margin-top: 80px;  
-
+    margin-left: 20px;
+    margin-right: 20px;
+    box-sizing: content-box;
+    scrollbar-gutter: stable;
+    clip-path: inset(0 round 30px);
+    
     flex: 1;
-    background: linear-gradient(-45deg, #9C58E0, #4E85E1, #64CFD9);
+    background-color: #9c58e0;
     animation: gradient 10s ease infinite;
     background-size: 400% 400%;
-    border-top-left-radius: 30px;
+    border-radius: 30px;
+    /* border-top-left-radius: 30px; */
+    /* border-top-right-radius: 30px; */
 
     padding: 23px 0 0 23px;
     color: black;
 
-    height: calc(100vh - 103px);
+    /* height: calc(100vh - 103px); */
     overflow-y: auto;
+    overflow-x: hidden;
     transition: overflow-y 0.3s ease;
 }
 
-.page:hover {
-    overflow-y: auto; 
-}
-
-
 /* custom scrollbar */
 .page::-webkit-scrollbar {
+    /* display: none; */
     width: 12px;
     background-color: inherit;
     transition: background 0.3s ease;
@@ -208,7 +207,7 @@ body{
 
 .page::-webkit-scrollbar-track {
     background: rgba(255, 255, 255, 0.2);
-    /* border-radius: 4px; */
+    
 }
 
 .page::-webkit-scrollbar-thumb {
@@ -237,7 +236,7 @@ body{
 
 
 .title{
-    margin-bottom: 21px;
+    /* margin-bottom: 21px; */
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -245,7 +244,7 @@ body{
 
 .title-name{
     font-weight: 600;
-    font-size: 36px;
+    font-size: 28px;
 
     color: rgb(255, 255, 255);
 }
@@ -255,8 +254,9 @@ body{
     font-size: 24px;
     font-weight: 100;
     text-decoration: none;
+    color: #ffffff;
 
-    color: rgb(255, 255, 255, 0.8);
+    /* color: rgb(255, 255, 255, 0.8); */
 }
 
 
@@ -268,18 +268,28 @@ body{
     justify-content: center;
 }
 
+.slide-btn {
+    opacity: 0;
+    pointer-events: none; /* чтобы не мешали, пока невидимы */
+    transition: opacity 0.5s ease;
+}
+
+.slider:hover .slide-btn {
+    opacity: 1;
+    pointer-events: auto; /* снова кликабельные */
+}
 
 .slide-btn {
     top: 45%;
     position: absolute;
     cursor: pointer;
     border-radius: 50%;
-    width: 50px;
-    height: 50px;
+    width: 32px;
+    height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: rgba(255, 255, 255, 0.9);
+    background-color: rgba(255, 255, 255, 0.7);
     border: 2px solid #ddd;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
@@ -296,8 +306,8 @@ body{
 
 .slide-btn::before {
     content: '';
-    width: 15px;
-    height: 15px;
+    width: 10px;
+    height: 10px;
     border: solid #333;
     border-width: 0 3px 3px 0;
     display: inline-block;
@@ -325,41 +335,49 @@ body{
 /* Cards */
 .cards{
     display: flex;
-    gap: 46px;
-    overflow-x:hidden;
+    gap: 16px;
+    overflow-x: auto;       
+    overflow-y: hidden;
     scroll-behavior: smooth;
     width: 100%;
-    margin-bottom: 35px;
     margin-left: -23px; 
     padding-left: 23px; 
+    padding-bottom: 43px;
+    padding-top: 23px;
 }
 
+.cards::-webkit-scrollbar {
+    display: none;
+}
+
+
 .card{
-    flex: 0 0 250px;
-    height: 312px;
+    flex: 0 0 180px;
+    height: 230px;
     text-align: center;
     justify-content: center;
 
-    color: black;
+    color: rgb(255, 255, 255);
     background-color: rgba(255, 255, 255, 0.4);
     transition-duration: 0.3s;
 
     border-radius: 10%;
 
     overflow: hidden;
+    transition: transform 0.3s ease;
 }
 
 
 .card:hover{
     background-color: rgba(255, 255, 255, 0.6);
-
+    transform: scale(1.1);
 }
 
 
 .card img{
-    margin: 25px 25px ;
-    width: 200px;
-    height: 200px;
+    margin: 15px ;
+    width: 150px;
+    height: 150px;
     border-radius: 50%;
     object-fit: cover;
 
@@ -373,7 +391,7 @@ body{
 
 
 .card-name{
-    font-size: 20px;
+    font-size: 16px;
     font-weight: 600;
     margin-bottom: 4px;
 
@@ -398,4 +416,108 @@ body{
     overflow: hidden; 
     text-overflow: ellipsis; 
 }
+
+
+/* Player */
+.player{
+    border-radius: 30px;
+    height: 80px;
+    margin-top: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: 	#3d197c;
+    color: #fff;
+    box-shadow: 0 -4px 20px rgba(255, 255, 255, 0.6);
+    z-index: 200;
+}
+
+
+/* Левая часть */
+.player-left {
+    margin-left: 20px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.track-cover {
+  width: 60px;
+  height: 60px;
+  border-radius: 20px;
+  object-fit: cover;
+}
+
+.track-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.track-title {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.track-artist {
+  font-size: 14px;
+  opacity: 0.7;
+}
+
+/* Центр */
+.player-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.progress-remote{
+    gap: 15px;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.remote-slider{
+    width: 600px;
+    flex: 1;
+    cursor: pointer;
+    height: 4px;
+}
+
+.controls{
+ display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.control-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 22px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.control-btn:hover {
+  transform: scale(1.2);
+  color: #9C58E0;
+}
+
+/* Правая часть */
+.player-right {
+    margin-right: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.volume-slider {
+  width: 120px;
+  cursor: pointer;
+}
+
 
