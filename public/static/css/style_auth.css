@@ -71,6 +71,7 @@
 
 .form-group {
     text-align: left;
+    margin: 0 0 20px;
 }
 
 .form-group label {
@@ -88,7 +89,6 @@
     border-radius: 8px;
     border: 1px solid #d0bbbb;
     font-size: 20px;
-    margin: 0 0 20px;
 }
 
 .form-extra {
@@ -141,4 +141,45 @@
 
 .below-question a:hover {
     color: #4a4a4a;
+}
+
+.password-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-wrapper input {
+    padding-right: 40px;
+}
+
+.eye {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.eye svg {
+    fill: #595959;
+    transition: fill 0.3s;
+}
+
+.eye:hover svg {
+    fill: #000;
+}
+
+input[type="password"] {
+  font-size: 30px;
+}
+
+input[type="password"]::placeholder {
+  font-size: 20px;
 }
