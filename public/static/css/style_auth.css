@@ -23,10 +23,26 @@
 
 .error-message {
     color: #e74c3c;
+    background: rgba(231, 76, 60, 0.2);
+    position: absolute;
+    bottom: 100%;
+    white-space: nowrap;
+    z-index: 10;
+    left: 0;
+    border-radius: 5px;
     font-size: 14px;
     display: none;
-    margin-bottom: 10px;
-    margin-top: -10px;
+}
+
+.error-message::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 15px;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #e74c3c transparent transparent transparent;
 }
 
 .error-message.show {
@@ -72,6 +88,7 @@
 .form-group {
     text-align: left;
     margin: 0 0 20px;
+    position: relative;
 }
 
 .form-group label {
@@ -123,6 +140,11 @@
     /*Эксперименты*/
     transition: background-position 0.5s ease;
     background-size: 150% 100%;
+}
+
+.login-button:disabled {
+    background: linear-gradient(90deg, #B1A5BD, #929CAE);
+    cursor: not-allowed;
 }
 
 .login-button:hover {

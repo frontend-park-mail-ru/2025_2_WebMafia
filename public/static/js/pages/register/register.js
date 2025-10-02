@@ -29,6 +29,12 @@ export class RegistrationPage {
             },
             password: (value) => {
                 if (!value) return 'Поле обязательно для заполнения';
+
+                const passwordInput = document.getElementById('passwordConfirm');
+                if (value !== passwordInput.value) {
+                    return 'Пароли не совпадают';
+                }
+
                 if (value.length < 8) return 'Пароль должен содержать минимум 8 символов';
                 return null;
             },

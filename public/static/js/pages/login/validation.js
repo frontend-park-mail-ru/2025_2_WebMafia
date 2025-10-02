@@ -2,6 +2,8 @@ export class FormValidator {
     constructor(formId, validators) {
         this.form = document.getElementById(formId);
         this.validators = validators;
+        this.submitButton = this.form?.querySelector(".login-button");
+        this.touchedFields = {};
     }
 
     showError(fieldId, message) {
@@ -25,52 +27,69 @@ export class FormValidator {
         }
     }
 
-    validateForm(formData) {
+    // Проверка одного поля,
+    // Чтоб выводить конкретно у него ошибку появившуюся при вводе
+    validateField(input) {
+        const value = input.value
+        const error = this.validators[input.name](value);
+
+        if (error) {
+            this.showError(input.name, error);
+            return false;
+        } else {
+            this.hideError(input.name);
+            return true;
+        }
+    }
+
+    // Проверка всей формы для кнопки
+    // Теперь не положено передавать всю форму для валидации да и возвращать ничего не надо - только кнопку включать
+    validateForm() {
         let isValid = true;
-        
-        Object.keys(this.validators).forEach(field => {
-            const value = formData.get(field);
-            const error = this.validators[field](value);
-            
+
+        for (const field of Object.keys(this.validators)) {
+            const input = this.form.querySelector(`[name="${field}"]`);
+            const error = this.validators[field](input.value);
             if (error) {
-                this.showError(field, error);
                 isValid = false;
-            } else {
-                this.hideError(field);
+                break;
             }
-        });
-        
-        return isValid;
+        }
+
+        if (this.submitButton) {
+            this.submitButton.disabled = !isValid;
+        }
     }
 
     init() {
         if (!this.form) return;
 
+        // обработчик отправки
         this.form.addEventListener('submit', (e) => {
             e.preventDefault();
+            // Теперь проверка валидации при нажатии на кнопку не нужна т.к.
+            // Можно нажать на кнопку только пройдя валидацию
             const formData = new FormData(this.form);
-            
-            if (this.validateForm(formData)) {
-                // Действия при успешной валидации
-                this.onSubmit(formData);
-            }
+            this.onSubmit(formData);
         });
 
-        // Реальная-time валидация
+        // обработка каждого поля
+        // При вводе или переключении проверяем и выводим сообщения валидации только у трогаемых поля
+        // Также всегда используем validateForm() чтоб активировать или дезактивировать кнопку submit
         this.form.querySelectorAll('input').forEach(input => {
-            input.addEventListener('blur', () => {
-                const value = input.value;
-                const error = this.validators[input.name](value);
-                
-                if (error) {
-                    this.showError(input.name, error);
-                } else {
-                    this.hideError(input.name);
-                }
-            });
-            
+            this.touchedFields[input.name] = false;
+
             input.addEventListener('input', () => {
-                this.hideError(input.name);
+                this.touchedFields[input.name] = true;
+                this.validateField(input);
+                this.validateForm();
+            });
+
+            input.addEventListener('blur', () => {
+                if (this.touchedFields[input.name]) {
+                    this.validateField(input);
+                }
+                this.validateForm();
             });
         });
     }

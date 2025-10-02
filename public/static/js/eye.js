@@ -2,15 +2,18 @@ export function InitPasswordShowing() {
     document.querySelectorAll(".eye").forEach(btn => {
         const input = btn.previousElementSibling;
 
+        const eyeOpen = btn.querySelector(".eye-open")
+        const eyeClosed = eyeOpen.nextElementSibling
+
         btn.addEventListener("click", () => {
             if (input.type === "password") {
                 input.type = "text";
-                btn.querySelector(".eye-open").style.display = "none";
-                btn.querySelector(".eye-closed").style.display = "block";
+                eyeOpen.style.display = "none";
+                eyeClosed.style.display = "block";
             } else {
                 input.type = "password";
-                btn.querySelector(".eye-closed").style.display = "none";
-                btn.querySelector(".eye-open").style.display = "block";
+                eyeClosed.style.display = "none";
+                eyeOpen.style.display = "block";
             }
         });
     });
