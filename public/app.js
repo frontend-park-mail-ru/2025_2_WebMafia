@@ -1,9 +1,9 @@
 import { router } from './static/js/routing.js';
 
-document.addEventListener('DOMContentLoaded', function() {
-    initializePage();
+document.addEventListener('DOMContentLoaded', function () {
+  initializePage();
 });
 
-function initializePage(){
-    router.init();
+function initializePage() {
+  router.init();
 }
