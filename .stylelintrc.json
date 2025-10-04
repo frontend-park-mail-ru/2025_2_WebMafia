@@ -1,0 +1,15 @@
+{
+  "extends": ["stylelint-config-standard"],
+  "rules": {
+    "font-family-name-quotes": null,
+   "color-function-alias-notation": null,
+   "color-function-notation": null,
+   "alpha-value-notation": null,
+    "color-hex-length": null,
+    "property-no-vendor-prefix": null,
+    "declaration-block-no-redundant-longhand-properties": null,
+    "declaration-block-no-shorthand-property-overrides": null,
+    "no-descending-specificity": null
+  }
+}
+
