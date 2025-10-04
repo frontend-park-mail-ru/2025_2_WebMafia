@@ -129,22 +129,21 @@ export class MainPage {
 
     profileBtn.addEventListener('click', (e) => {
       e.stopPropagation();
-      dropDownMenu.classList.toggle("show");
+      dropDownMenu.classList.toggle('show');
     });
 
     profileBtn.addEventListener('click', (e) => {
       if (!profileBtn.contains(e.target) && !dropDownMenu.contains(e.target)) {
-        dropDownMenu.classList.remove("show");
+        dropDownMenu.classList.remove('show');
       }
     });
   }
 
-  activePath(){
-    document.querySelectorAll(".menuicon.main a").forEach(link =>{
-      if (link.getAttribute("href") === window.location.pathname){
-        link.classList.add("active");
+  activePath() {
+    document.querySelectorAll('.menuicon.main a').forEach((link) => {
+      if (link.getAttribute('href') === window.location.pathname) {
+        link.classList.add('active');
       }
     });
-
   }
 }

@@ -2,7 +2,7 @@
 
 .layout-auth {
   margin: 0;
-  font-family: 'Montserrat', sans-serif;
+  font-family: Montserrat, sans-serif;
   background: linear-gradient(
     135deg,
     #9ad5ca,
@@ -23,9 +23,11 @@
   0% {
     background-position: 0% 50%;
   }
+
   50% {
     background-position: 100% 50%;
   }
+
   100% {
     background-position: 0% 50%;
   }
@@ -45,30 +47,32 @@
 
 .form-group.error input {
   border-color: #e74c3c;
-  box-shadow: 0 0 5px rgba(231, 76, 60, 0.3);
+  box-shadow: 0 0 5px rgb(231 76 60 / 30%);
 }
 
 .general-error {
   text-align: center;
+
   /* margin-bottom: 15px; */
   padding: 10px;
-  background-color: rgba(231, 76, 60, 0.1);
+  background-color: rgb(231 76 60 / 10%);
   border-radius: 5px;
 }
 
 .container {
   background: #fafafa;
   border-radius: 16px;
-  padding: 20px 30px 20px 30px;
+  padding: 20px 30px;
   width: 450px;
   text-align: center;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 10%);
 }
 
 .logo-auth {
   width: 120px;
   height: 90px;
   margin-bottom: 15px;
+
   /* margin-left: 110px; */
 }
 
@@ -91,7 +95,7 @@
 }
 
 .form-group input {
-  font-family: 'Montserrat', sans-serif;
+  font-family: Montserrat, sans-serif;
   width: 428px;
   height: 35px;
   padding: 10px;
@@ -130,7 +134,8 @@
   font-weight: 600;
   cursor: pointer;
   height: 57px;
-  /*Эксперименты*/
+
+  /* Эксперименты */
   transition: background-position 0.5s ease;
   background-size: 150% 100%;
 }
