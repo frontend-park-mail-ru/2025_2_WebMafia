@@ -8,7 +8,9 @@
     "start": "./compilehbs.sh && node server.js",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "format": "prettier --write \"**/*.{js,hbs,css,json,md}\""
+    "format": "prettier --write \"**/*.{js,hbs,css,json,md}\"",
+    "lint:css": "stylelint \"**/*.css\"",
+    "lint:css:fix": "stylelint \"**/*.css\" --fix"
   },
   "author": "",
   "license": "ISC",
@@ -19,7 +21,9 @@
     "eslint-plugin-prettier": "^5.5.4",
     "globals": "^16.4.0",
     "handlebars": "^4.7.8",
-    "prettier": "^3.6.2"
+    "prettier": "^3.6.2",
+    "stylelint": "^16.25.0",
+    "stylelint-config-standard": "^39.0.0"
   },
   "dependencies": {
     "express": "^5.1.0"
