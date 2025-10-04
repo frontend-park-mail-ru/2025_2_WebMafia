@@ -19,7 +19,7 @@ export class LoginPage {
         const validators = {
             login: (value) => {
                 if (!value.trim()) return 'Поле обязательно для заполнения';
-                if (value.length < 5) return 'Имя пользователя слишком короткое';
+                if (value.length < 5) return 'Имя пользователя должно содержать минимум 5 символов';
                 return null;
             },
             password: (value) => {

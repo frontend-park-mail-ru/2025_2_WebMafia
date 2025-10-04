@@ -7,39 +7,95 @@ export class FormValidator {
     }
 
     showError(fieldId, message) {
+        this.hideInfo(fieldId);
         const errorElement = document.getElementById(fieldId + 'Error');
-        const inputElement = document.getElementById(fieldId);
-        
-        if (errorElement && inputElement) {
+        const formGroup = document.getElementById(fieldId).closest('.form-group');
+
+        if (errorElement && formGroup) {
             errorElement.textContent = message;
             errorElement.classList.add('show');
-            inputElement.parentElement.classList.add('error');
+            formGroup.classList.add('error');
+        }
+    }
+    showInfo(fieldId, message) {
+        this.hideError(fieldId);
+        const informationElement = document.getElementById(fieldId + 'Information');
+
+        if (informationElement) {
+            informationElement.textContent = message;
+            informationElement.classList.add('show');
         }
     }
 
     hideError(fieldId) {
         const errorElement = document.getElementById(fieldId + 'Error');
         const inputElement = document.getElementById(fieldId);
-        
+
         if (errorElement && inputElement) {
             errorElement.classList.remove('show');
             inputElement.parentElement.classList.remove('error');
         }
     }
+    hideInfo(fieldId) {
+        const informationElement = document.getElementById(fieldId + 'Information');
+
+        if (informationElement) {
+            informationElement.classList.remove('show');
+        }
+    }
 
     // Проверка одного поля,
     // Чтоб выводить конкретно у него ошибку появившуюся при вводе
-    validateField(input) {
+    validateFieldForBlur(input, eventType) {
         const value = input.value
         const error = this.validators[input.name](value);
 
         if (error) {
-            this.showError(input.name, error);
-            return false;
+            this.showError(input.name, error, eventType);
         } else {
-            this.hideError(input.name);
-            return true;
+            this.hideError(input.name, eventType);
         }
+
+        // для учтения несовпадений паролей при изменении изначального пароля
+        if (input.name === 'password') {
+            const confirmInput = this.form.querySelector('[name="passwordConfirm"]');
+            if (confirmInput) {
+                const confirmError = this.validators.passwordConfirm(confirmInput.value);
+                if (confirmError) {
+                    this.showError('passwordConfirm', confirmError, eventType);
+                } else {
+                    this.hideError('passwordConfirm', eventType);
+                }
+            }
+        }
+
+        return !error
+    }
+
+    validateFieldForInput(input, eventType) {
+        const value = input.value;
+        const error = this.validators[input.name](value);
+
+        if (error) {
+            this.showInfo(input.name, error, eventType);
+        } else {
+            this.hideInfo(input.name, eventType);
+        }
+
+        // для учтения несовпадений паролей при изменении изначального пароля
+        if (input.name === 'password') {
+            const confirmInput = this.form.querySelector('[name="passwordConfirm"]');
+            if (confirmInput) {
+                const confirmError = this.validators.passwordConfirm(confirmInput.value);
+                if (confirmError) {
+                    this.showInfo('passwordConfirm', confirmError, eventType);
+                } else {
+                    this.hideInfo('passwordConfirm', eventType);
+                }
+            }
+        }
+
+        return !error
     }
 
     // Проверка всей формы для кнопки
@@ -79,15 +135,17 @@ export class FormValidator {
         this.form.querySelectorAll('input').forEach(input => {
             this.touchedFields[input.name] = false;
 
-            input.addEventListener('input', () => {
-                this.touchedFields[input.name] = true;
-                this.validateField(input);
-                this.validateForm();
-            });
+            ['input', 'click'].forEach(event =>
+                input.addEventListener(event, () => {
+                    this.touchedFields[input.name] = true;
+                    this.validateFieldForInput(input);
+                    this.validateForm();
+                })
+            );
 
             input.addEventListener('blur', () => {
                 if (this.touchedFields[input.name]) {
-                    this.validateField(input);
+                    this.validateFieldForBlur(input);
                 }
                 this.validateForm();
             });
