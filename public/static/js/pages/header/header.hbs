@@ -1,0 +1,23 @@
+ <header class='head' id='header'>
+    <div class='head-left'>
+      <div class='logo'>
+        <span><img src='static/img/wave.png' class='wave-icon' /></span>
+        <h1 class='icon-name'>Wave</h1>
+      </div>
+    </div>
+    <div class='head-right'>
+      {{#if isAuthenticated}}
+        <div class='profile-dropdown'>
+          <button class='profile-btn'>Профиль</button>
+          <div class='dropdown-menu'>
+            <a href='/profile'>Профиль</a>
+            <a href='/settings'>Настройки</a>
+            <a id='logoutBtn' class='nav-link login' href='#'>Выйти</a>
+          </div>
+        </div>
+      {{else}}
+        <a class='nav-link login' href='/login'>Войти</a>
+        <a class='nav-link register' href='/register'>Зарегистрироваться</a>
+      {{/if}}
+    </div>
+  </header>
