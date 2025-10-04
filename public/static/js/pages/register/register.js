@@ -1,6 +1,7 @@
 import { FormValidator } from '../login/validation.js';
 import { apiServise } from '../../data.js';
 import { router } from '../../routing.js';
+import { InitPasswordShowing } from "../../eye.js";
 
 export class RegistrationPage {
     async render() {
@@ -10,6 +11,7 @@ export class RegistrationPage {
         }
         const contentTemplate = Handlebars.templates['register.hbs'];
         document.getElementById('app').innerHTML = contentTemplate();
+        InitPasswordShowing("#password", ".eye");
         this.initValidation();
     }
 
@@ -27,6 +29,12 @@ export class RegistrationPage {
             },
             password: (value) => {
                 if (!value) return 'Поле обязательно для заполнения';
+
+                const passwordInput = document.getElementById('passwordConfirm');
+                if (value !== passwordInput.value) {
+                    return 'Пароли не совпадают';
+                }
+
                 if (value.length < 8) return 'Пароль должен содержать минимум 8 символов';
                 return null;
             },

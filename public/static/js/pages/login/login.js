@@ -1,6 +1,7 @@
 import { FormValidator } from './validation.js';
 import { apiServise } from '../../data.js';
 import { router } from '../../routing.js';
+import { InitPasswordShowing } from "../../eye.js";
 
 export class LoginPage {
     async render() {
@@ -10,6 +11,7 @@ export class LoginPage {
         }
         const contentTemplate = Handlebars.templates['login.hbs'];
         document.getElementById('app').innerHTML = contentTemplate();
+        InitPasswordShowing();
         this.initValidation();
     }
 
