@@ -1,5 +1,7 @@
 import { apiServise } from '../../data.js';
 import { router } from '../../routing.js';
+import { header } from '../header/header.js';
+import { sidebar } from '../sidebar/sidebar.js';
 
 export class MainPage {
   async render() {
@@ -9,6 +11,7 @@ export class MainPage {
       return;
     }
 
+    
     let pageData = {
       isAuthenticated: true,
       artists: [],
@@ -42,31 +45,18 @@ export class MainPage {
       return;
     }
 
+    Handlebars.registerPartial('header', Handlebars.templates['header.hbs']);
+    Handlebars.registerPartial('sidebar', Handlebars.templates['sidebar.hbs']);
+
     const contentTemplate = Handlebars.templates['MainPage.hbs'];
     document.getElementById('app').innerHTML = contentTemplate(pageData);
 
-    this.addEventListeners();
+    header.render(true);
+    sidebar.render(true);
+    
     this.sliderFunction();
     this.nowPlayingCardSlider();
-    this.profileDropdown();
     this.activePath();
-  }
-
-  addEventListeners() {
-    const logoutButton = document.getElementById('logoutBtn');
-    if (logoutButton) {
-      logoutButton.addEventListener('click', async (e) => {
-        e.preventDefault();
-        try {
-          await apiServise.logoutUser();
-        } catch (error) {
-          console.error('Logout request failed:', error.message);
-        } finally {
-          localStorage.removeItem('isAuthenticated');
-          router.navigate('/login');
-        }
-      });
-    }
   }
 
   sliderFunction() {
@@ -120,30 +110,6 @@ export class MainPage {
     nextBtn.addEventListener('click', () => {
       currentIndex = (currentIndex + 1) % cards.length;
       renderCards();
-    });
-  }
-
-  profileDropdown() {
-    const profileBtn = document.querySelector('.profile-btn');
-    const dropDownMenu = document.querySelector('.dropdown-menu');
-
-    profileBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      dropDownMenu.classList.toggle('show');
-    });
-
-    profileBtn.addEventListener('click', (e) => {
-      if (!profileBtn.contains(e.target) && !dropDownMenu.contains(e.target)) {
-        dropDownMenu.classList.remove('show');
-      }
-    });
-  }
-
-  activePath() {
-    document.querySelectorAll('.menuicon.main a').forEach((link) => {
-      if (link.getAttribute('href') === window.location.pathname) {
-        link.classList.add('active');
-      }
     });
   }
 }
