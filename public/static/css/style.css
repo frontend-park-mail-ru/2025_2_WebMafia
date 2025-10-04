@@ -9,7 +9,7 @@ body {
 
 .section {
   font-family: 'Montserrat', sans-serif;
-  background-color: #3e197c;
+  background-color: #3d197cdb;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
@@ -21,7 +21,7 @@ body {
   top: 0;
   left: 0;
   right: 0;
-  height: 85px;
+  height: 68px;
   background: #3d197c00;
   z-index: 100;
   display: flex;
@@ -36,6 +36,27 @@ body {
   text-decoration: none;
 }
 
+.logo {
+  padding-left: 24px;
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  color: #bb86fc;
+}
+
+.wave-icon {
+  margin-right: 10px;
+  width: 73px;
+  height: 53px;
+}
+
+.icon-name {
+  font-size: 44px;
+  font-weight: 600;
+  background-image: linear-gradient(-90deg, #9c58e0, #adb9e3);
+  -webkit-background-clip: text;
+}
+
 .head-right {
   margin-right: 23px;
 }
@@ -46,7 +67,7 @@ body {
 }
 
 .nav-link.login {
-  font-size: 26px;
+  font-size: 16px;
   font-weight: 600;
 }
 
@@ -78,6 +99,63 @@ body {
   background-size: 400% 400%;
 }
 
+.profile-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.profile-btn {
+  background: #3e197c;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 30px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.dropdown-menu {
+  /* display: none;  */
+  position: absolute;
+  right: 0;
+  top: 100%;
+  background: white;
+  border-radius: 30px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  min-width: 160px;
+  z-index: 10;
+  margin-top: 5px;
+  justify-content: center;
+
+  opacity: 0;
+  transform: translateY(-10px);
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+.dropdown-menu.show {
+  /* display: block; */
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.dropdown-menu a {
+  display: block;
+  padding: 10px ;
+  text-decoration: none;
+  color: black;
+  transition: background 0.2s;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.dropdown-menu a:hover {
+  color: #3e197c;
+}
+
 /* Макет под хедером */
 .layout {
   display: flex;
@@ -90,7 +168,7 @@ body {
   left: 0;
   bottom: 0;
   width: 252px;
-  background-color: #9c58e0;
+  background-color: #ffffff;
   /* background: linear-gradient(-45deg, #9C58E0, #4E85E1, #64CFD9); */
   animation: gradient 10s ease infinite;
   background-size: 400% 400%;
@@ -103,30 +181,10 @@ body {
   overflow: hidden;
 }
 
-.logo {
-  padding-left: 24px;
-  display: flex;
-  align-items: center;
-  font-weight: bold;
-  color: #bb86fc;
-}
 
-.wave-icon {
-  margin-right: 10px;
-  width: 83px;
-  height: 63px;
-}
-
-.icon-name {
-  font-size: 50px;
-  font-weight: 600;
-  background-image: linear-gradient(-90deg, #9c58e0, #adb9e3);
-  -webkit-background-clip: text;
-}
 
 .menu {
   margin-top: 25px;
-
   display: flex;
   flex-direction: column;
   gap: 15px;
@@ -137,23 +195,17 @@ body {
 }
 
 .menuicon img {
-  width: 25px;
-  height: 25px;
+  width: 20px;
+  height: 20px;
 }
 
-.fa-regular {
-  color: white;
-}
 
-.menu span {
-  margin-bottom: 20px;
-}
 
 .menu a {
   text-decoration: none;
   font-style: normal;
-  color: white;
-  font-size: 25px;
+  color: rgb(0, 0, 0);
+  font-size: 20px;
   font-weight: bold;
   margin-left: 15px;
 }
@@ -162,29 +214,141 @@ body {
   color: #3e197c;
 }
 
+.menuicon.main a{
+  background-color: inherit;
+}
+
+.menuicon.main a.active{
+  background-color: #3e197c;
+  color: #fff;
+  padding: 10px;
+  border-radius: 30px;
+}
+
 /* Content */
 .page {
-  margin-left: 20px;
-  margin-right: 20px;
+  margin-left: 10px;
   box-sizing: content-box;
   scrollbar-gutter: stable;
   clip-path: inset(0 round 30px);
 
   flex: 1;
-  background-color: #9c58e0;
+  background-color: #ffffff;
   animation: gradient 10s ease infinite;
   background-size: 400% 400%;
   border-radius: 30px;
-  /* border-top-left-radius: 30px; */
-  /* border-top-right-radius: 30px; */
 
   padding: 23px 0 0 23px;
   color: black;
 
-  /* height: calc(100vh - 103px); */
   overflow-y: auto;
   overflow-x: hidden;
   transition: overflow-y 0.3s ease;
+}
+
+/* Now playing card slider */
+.now-playing-container {
+  width: 700;
+  height: 260;
+  align-items: center;
+  text-align: center;
+}
+
+.now-playing-container__title {
+  margin-bottom: 16px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.now-playing-container__cards {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.now-playing-container__previous-card {
+  filter: brightness(85%);
+  margin-right: -100px;
+  z-index: 1;
+  transition: all 0.4s ease;
+}
+
+.now-playing-container__next-card {
+  filter: brightness(85%);
+  margin-left: -100px;
+  z-index: 1;
+  transition: all 0.4s ease;
+}
+
+.now-playing-container__previous-card img,
+.now-playing-container__next-card img {
+  border-radius: 20px;
+  filter: blur(4px);
+  width: 300px;
+  height: 150px;
+  object-position: center;
+  object-fit: cover;
+}
+
+.now-playing-container__current-card {
+  background: #000000;
+  border-radius: 20px;
+  z-index: 2;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s ease;
+}
+
+.now-playing-container__current-card img {
+  opacity: 0.70;
+  width: 300px;
+  height: 150px;
+  object-position: center;
+  object-fit: cover;
+  border-radius: 20px;
+}
+
+.controls-current-card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  width: 300px;
+  height: 150px;
+  padding: 5px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.current-card-btn {
+  background: none;
+  border: none;
+  /* border-radius: 50%; */
+  width: 45px;
+  height: 45px;
+  font-size: 36px;
+  cursor: pointer;
+  color: #fff;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 1); /* доп. мягкая подсветка */
+  /* box-shadow: 0px 4px 10px #000; */
+}
+
+.current-card-name {
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 24px;
+  font-weight: 600;
+  color: white;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 1); /* доп. мягкая подсветка */
+
+  max-width: 90%; /* ограничиваем ширину текста */
+  white-space: nowrap; /* запрещаем перенос строк */
+  overflow: hidden; /* скрываем лишнее */
+  text-overflow: ellipsis; /* заменяем на "…" */
 }
 
 /* custom scrollbar */
@@ -202,12 +366,12 @@ body {
 .page::-webkit-scrollbar-thumb {
   transition: background 0.3s ease;
   background-clip: content-box;
-  background: rgba(255, 255, 255, 0.5);
+  background: rgba(0, 0, 0, 0.4);
   border-radius: 4px;
 }
 
 .page::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(0, 0, 0, 0.8);
 }
 
 @keyframes gradient {
@@ -233,7 +397,7 @@ body {
   font-weight: 600;
   font-size: 28px;
 
-  color: rgb(255, 255, 255);
+  color: rgb(0, 0, 0);
 }
 
 .show-all a {
@@ -241,7 +405,7 @@ body {
   font-size: 24px;
   font-weight: 100;
   text-decoration: none;
-  color: #ffffff;
+  color: #000000;
 
   /* color: rgb(255, 255, 255, 0.8); */
 }
@@ -320,7 +484,7 @@ body {
 /* Cards */
 .cards {
   display: flex;
-  gap: 16px;
+  gap: 10px;
   overflow-x: auto;
   overflow-y: hidden;
   scroll-behavior: smooth;
@@ -341,8 +505,8 @@ body {
   text-align: center;
   justify-content: center;
 
-  color: rgb(255, 255, 255);
-  background-color: rgba(255, 255, 255, 0.4);
+  color: rgb(0, 0, 0);
+  background-color: rgba(255, 255, 255, 0);
   transition-duration: 0.3s;
 
   border-radius: 10%;
@@ -352,7 +516,7 @@ body {
 }
 
 .card:hover {
-  background-color: rgba(255, 255, 255, 0.6);
+  background-color: rgba(0, 0, 0, 0.2);
   transform: scale(1.1);
 }
 
@@ -401,17 +565,13 @@ body {
 /* Player */
 .player {
   border-radius: 30px;
-  height: 80px;
-  margin-top: 5px;
-  margin-left: 5px;
-  margin-right: 5px;
-  margin-bottom: 5px;
+  height: 70px;
+  padding: 2px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: #3d197c;
+  background-color: #3d197c00;
   color: #fff;
-  box-shadow: 0 -4px 20px rgba(255, 255, 255, 0.6);
   z-index: 200;
 }
 
@@ -447,6 +607,7 @@ body {
 
 /* Центр */
 .player-center {
+  margin-top: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -468,6 +629,7 @@ body {
 }
 
 .controls {
+  margin-top: -20px;
   display: flex;
   align-items: center;
   gap: 15px;

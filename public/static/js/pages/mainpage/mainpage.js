@@ -47,6 +47,9 @@ export class MainPage {
 
     this.addEventListeners();
     this.sliderFunction();
+    this.nowPlayingCardSlider();
+    this.profileDropdown();
+    this.activePath();
   }
 
   addEventListeners() {
@@ -80,5 +83,68 @@ export class MainPage {
         slidebar.scrollLeft -= scrollAmount;
       });
     });
+  }
+
+  nowPlayingCardSlider() {
+    const prevBtn = document.querySelector('.current-card-btn.prev');
+    const nextBtn = document.querySelector('.current-card-btn.next');
+    console.log(prevBtn);
+
+    let cards = [
+      { img: '/static/img/image11.jpg', name: 'Tyler, the Creator' },
+      { img: '/static/img/image12.jpg', name: 'Playboi carti' },
+      { img: '/static/img/image13.jpg', name: 'Jpegmafia' },
+    ];
+
+    let currentIndex = 1;
+
+    function renderCards() {
+      const prevIndex = (currentIndex - 1 + cards.length) % cards.length;
+      const nextIndex = (currentIndex + 1) % cards.length;
+
+      document.querySelector('.now-playing-container__previous-card img').src =
+        cards[prevIndex].img;
+      document.querySelector('.now-playing-container__next-card img').src =
+        cards[nextIndex].img;
+      document.querySelector('.now-playing-container__current-card img').src =
+        cards[currentIndex].img;
+      document.querySelector('.current-card-name').textContent =
+        cards[currentIndex].name;
+    }
+
+    prevBtn.addEventListener('click', () => {
+      currentIndex = (currentIndex - 1 + cards.length) % cards.length;
+      renderCards();
+    });
+
+    nextBtn.addEventListener('click', () => {
+      currentIndex = (currentIndex + 1) % cards.length;
+      renderCards();
+    });
+  }
+
+  profileDropdown() {
+    const profileBtn = document.querySelector('.profile-btn');
+    const dropDownMenu = document.querySelector('.dropdown-menu');
+
+    profileBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      dropDownMenu.classList.toggle("show");
+    });
+
+    profileBtn.addEventListener('click', (e) => {
+      if (!profileBtn.contains(e.target) && !dropDownMenu.contains(e.target)) {
+        dropDownMenu.classList.remove("show");
+      }
+    });
+  }
+
+  activePath(){
+    document.querySelectorAll(".menuicon.main a").forEach(link =>{
+      if (link.getAttribute("href") === window.location.pathname){
+        link.classList.add("active");
+      }
+    });
+
   }
 }
