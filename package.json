@@ -1,0 +1,27 @@
+{
+  "name": "webmafia",
+  "version": "1.0.0",
+  "description": "Frontend-часть для музыкального сервиса Wave Music. Веб-приложение разработано на JavaScript с использованием Handlebars шаблонов, предоставляющее современный пользовательский интерфейс для работы с музыкой.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "./compilehbs.sh && node server.js",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write \"**/*.{js,hbs,css,json,md}\""
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@eslint/js": "^9.36.0",
+    "eslint": "^9.36.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
+    "globals": "^16.4.0",
+    "handlebars": "^4.7.8",
+    "prettier": "^3.6.2"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
