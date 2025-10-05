@@ -1,13 +1,13 @@
 export class FormValidator {
-    constructor(formId, validators) {
+    constructor(formId, validators, information) {
         this.form = document.getElementById(formId);
         this.validators = validators;
+        this.information = information
         this.submitButton = this.form?.querySelector(".login-button");
         this.touchedFields = {};
     }
 
     showError(fieldId, message) {
-        this.hideInfo(fieldId);
         const errorElement = document.getElementById(fieldId + 'Error');
         const formGroup = document.getElementById(fieldId).closest('.form-group');
 
@@ -18,22 +18,33 @@ export class FormValidator {
         }
     }
     showInfo(fieldId, message) {
-        this.hideError(fieldId);
         const informationElement = document.getElementById(fieldId + 'Information');
 
-        if (informationElement) {
+        if (!informationElement) return;
+
+        if (Array.isArray(message) && message.length > 1) {
+            const ul = document.createElement('ul');
+            message.forEach(msg => {
+                const li = document.createElement('li');
+                li.textContent = msg;
+                ul.appendChild(li);
+            });
+            informationElement.innerHTML = '';
+            informationElement.appendChild(ul);
+        } else {
             informationElement.textContent = message;
-            informationElement.classList.add('show');
         }
+
+        informationElement.classList.add('show');
     }
 
     hideError(fieldId) {
         const errorElement = document.getElementById(fieldId + 'Error');
-        const inputElement = document.getElementById(fieldId);
+        const formGroup = document.getElementById(fieldId).closest('.form-group');
 
-        if (errorElement && inputElement) {
+        if (errorElement && formGroup) {
             errorElement.classList.remove('show');
-            inputElement.parentElement.classList.remove('error');
+            formGroup.classList.remove('error');
         }
     }
     hideInfo(fieldId) {
@@ -46,14 +57,14 @@ export class FormValidator {
 
     // Проверка одного поля,
     // Чтоб выводить конкретно у него ошибку появившуюся при вводе
-    validateFieldForBlur(input, eventType) {
+    validateFieldForBlur(input) {
         const value = input.value;
         const error = this.validators[input.name](value);
 
         if (error) {
-            this.showError(input.name, error, eventType);
+            this.showError(input.name, error);
         } else {
-            this.hideError(input.name, eventType);
+            this.hideError(input.name);
         }
 
         // для учтения несовпадений паролей при изменении изначального пароля
@@ -61,10 +72,10 @@ export class FormValidator {
             const confirmInput = this.form.querySelector('[name="passwordConfirm"]');
             if (confirmInput) {
                 const confirmError = this.validators.passwordConfirm(confirmInput.value);
-                if (confirmError) {
-                    this.showError('passwordConfirm', confirmError, eventType);
+                if (confirmError && confirmInput.value) {
+                    this.showError('passwordConfirm', confirmError);
                 } else {
-                    this.hideError('passwordConfirm', eventType);
+                    this.hideError('passwordConfirm');
                 }
             }
         }
@@ -72,27 +83,14 @@ export class FormValidator {
         return !error
     }
 
-    validateFieldForInput(input, eventType) {
+    validateFieldForInput(input) {
         const value = input.value;
-        const error = this.validators[input.name](value);
+        const error = this.information[input.name](value);
 
         if (error) {
-            this.showInfo(input.name, error, eventType);
+            this.showInfo(input.name, error);
         } else {
-            this.hideInfo(input.name, eventType);
-        }
-
-        // для учтения несовпадений паролей при изменении изначального пароля
-        if (input.name === 'password') {
-            const confirmInput = this.form.querySelector('[name="passwordConfirm"]');
-            if (confirmInput) {
-                const confirmError = this.validators.passwordConfirm(confirmInput.value);
-                if (confirmError) {
-                    this.showInfo('passwordConfirm', confirmError, eventType);
-                } else {
-                    this.hideInfo('passwordConfirm', eventType);
-                }
-            }
+            this.hideInfo(input.name);
         }
 
         return !error
@@ -140,6 +138,7 @@ export class FormValidator {
 
             ['input', 'click'].forEach(event =>
                 input.addEventListener(event, () => {
+                    this.hideError(input.name)
                     this.touchedFields[input.name] = true;
                     this.validateFieldForInput(input);
                     this.validateForm();
@@ -147,6 +146,7 @@ export class FormValidator {
             );
 
             input.addEventListener('blur', () => {
+                this.hideInfo(input.name)
                 if (this.touchedFields[input.name]) {
                     this.validateFieldForBlur(input);
                 }

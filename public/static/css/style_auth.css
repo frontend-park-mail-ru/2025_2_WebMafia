@@ -40,7 +40,7 @@
     position: absolute;
     z-index: 10;
     left: -10px;
-    top: 53px;
+    top: 50%;
     transform: translate(-100%, -50%);
     border-radius: 8px;
     font-size: 14px;
@@ -185,7 +185,7 @@
     color: #4a4a4a;
 }
 
-.password-wrapper {
+.password-wrapper, .input-wrapper {
     position: relative;
     display: flex;
     align-items: center;

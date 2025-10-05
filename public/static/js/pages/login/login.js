@@ -1,13 +1,10 @@
-import { FormValidator } from './validation.js';
+import { FormValidator } from '../../validation.js';
 import { apiServise } from '../../data.js';
 import { router } from '../../routing.js';
 import { initPasswordShowing } from "../../eye.js";
 
 export class LoginPage {
     async render() {
-        Handlebars.registerPartial('eyeOpen', Handlebars.templates['eyeOpen.hbs']);
-        Handlebars.registerPartial('eyeClosed', Handlebars.templates['eyeClosed.hbs'])
-
         const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
         if (isAuthenticated) {
             router.navigate('/');
@@ -32,7 +29,22 @@ export class LoginPage {
             }
         };
 
-        const validator = new FormValidator('loginForm', validators);
+        const information = {
+            login: (value) => {
+                if (value.length < 5) {
+                    return 'Логин должен содержать минимум 5 символов'
+                }
+                return null;
+            },
+            password: (value) => {
+                if (value.length < 8) {
+                    return 'Пароль должен содержать минимум 8 символов'
+                }
+                return null;
+            }
+        };
+
+        const validator = new FormValidator('loginForm', validators, information);
         
         validator.onSubmit = async (formData) => {
             const login = formData.get('login');

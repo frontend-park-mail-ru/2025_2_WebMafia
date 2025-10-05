@@ -1,13 +1,10 @@
-import { FormValidator } from '../login/validation.js';
+import { FormValidator } from '../../validation.js';
 import { apiServise } from '../../data.js';
 import { router } from '../../routing.js';
 import { initPasswordShowing } from "../../eye.js";
 
 export class RegistrationPage {
     async render() {
-        Handlebars.registerPartial('eyeOpen', Handlebars.templates['eyeOpen.hbs']);
-        Handlebars.registerPartial('eyeClosed', Handlebars.templates['eyeClosed.hbs'])
-
         const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
         if (isAuthenticated) {
             router.navigate('/');
@@ -27,15 +24,16 @@ export class RegistrationPage {
             },
             login: (value) => {
                 if (!value.trim()) return 'Поле обязательно для заполнения';
-                if (value.length < 5) return 'Логин должен содержать минимум 5 символов';
+                if (value.length < 5) return 'Слишком короткое имя пользователя';
                 return null;
             },
             password: (value) => {
                 if (!value) return 'Поле обязательно для заполнения';
-                if (value.length < 8) return 'Пароль должен содержать минимум 8 символов';
+                if (value.length < 8) return 'Слишком короткий пароль';
                 return null;
             },
             passwordConfirm: (value) => {
+                if (!value) return 'Поле обязательно для заполнения';
                 const passwordInput = document.getElementById('password');
                 if (value !== passwordInput.value) {
                     return 'Пароли не совпадают';
@@ -44,7 +42,46 @@ export class RegistrationPage {
             }
         };
 
-        const validator = new FormValidator('registerForm', validators);
+        const information = {
+            email: (value) => {
+                const errors = [];
+                if (!/\S+@\S+\.\S+/.test(value)) {
+                    errors.push('Почта должна быть в формате address@domain.com');
+                }
+                return errors.length ? errors : null;
+            },
+            login: (value) => {
+                const errors = [];
+                if (value.length < 5) {
+                    errors.push('Логин должен содержать минимум 5 символов');
+                }
+                return errors.length ? errors : null;
+            },
+            password: (value) => {
+                const errors = [];
+                const passwordConfirm = document.getElementById('passwordConfirm');
+                if (value.length < 8) {
+                    errors.push('Пароль должен содержать минимум 8 символов');
+                }
+                if (value !== passwordConfirm.value) {
+                    errors.push('Пароли должны совпадать');
+                }
+                return errors.length ? errors : null;
+            },
+            passwordConfirm: (value) => {
+                const errors = [];
+                const password = document.getElementById('password');
+                if (value.length < 8) {
+                    errors.push('Пароль должен содержать минимум 8 символов');
+                }
+                if (value !== password.value) {
+                    errors.push('Пароли должны совпадать');
+                }
+                return errors.length ? errors : null;
+            }
+        };
+
+        const validator = new FormValidator('registerForm', validators, information);
 
         validator.onSubmit = async (formData) => {
             const email = formData.get('email');
