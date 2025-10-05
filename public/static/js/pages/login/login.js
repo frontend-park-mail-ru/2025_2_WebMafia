@@ -5,6 +5,9 @@ import { initPasswordShowing } from "../../eye.js";
 
 export class LoginPage {
     async render() {
+        Handlebars.registerPartial('eyeOpen', Handlebars.templates['eyeOpen.hbs']);
+        Handlebars.registerPartial('eyeClosed', Handlebars.templates['eyeClosed.hbs'])
+
         const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
         if (isAuthenticated) {
             router.navigate('/');
