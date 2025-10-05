@@ -47,7 +47,7 @@ export class FormValidator {
     // Проверка одного поля,
     // Чтоб выводить конкретно у него ошибку появившуюся при вводе
     validateFieldForBlur(input, eventType) {
-        const value = input.value
+        const value = input.value;
         const error = this.validators[input.name](value);
 
         if (error) {
@@ -115,6 +115,8 @@ export class FormValidator {
         if (this.submitButton) {
             this.submitButton.disabled = !isValid;
         }
+
+        return isValid;
     }
 
     init() {
@@ -123,10 +125,11 @@ export class FormValidator {
         // обработчик отправки
         this.form.addEventListener('submit', (e) => {
             e.preventDefault();
-            // Теперь проверка валидации при нажатии на кнопку не нужна т.к.
-            // Можно нажать на кнопку только пройдя валидацию
-            const formData = new FormData(this.form);
-            this.onSubmit(formData);
+
+            if (this.validateForm()) {
+                const formData = new FormData(this.form);
+                this.onSubmit(formData);
+            }
         });
 
         // обработка каждого поля

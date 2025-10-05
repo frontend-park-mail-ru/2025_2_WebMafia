@@ -1,4 +1,4 @@
-export function InitPasswordShowing() {
+export function initPasswordShowing() {
     document.querySelectorAll(".eye").forEach(btn => {
         const input = btn.previousElementSibling;
 

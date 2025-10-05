@@ -217,11 +217,3 @@
 .eye:hover svg {
     fill: #000;
 }
-
-input[type="password"] {
-  font-size: 30px;
-}
-
-input[type="password"]::placeholder {
-  font-size: 20px;
-}
