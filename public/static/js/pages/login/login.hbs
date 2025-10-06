@@ -1,38 +1,38 @@
 <div class="layout-auth">
-    <div class="container">
-    <img class="logo-auth" alt="Логотип" src="static/img/wave.png">
-    <h2 class="form-title">Входи и почувствуй<br>музыку заново</h2>
+  <div class="container">
+    <img class="logo-auth" alt="Логотип" src="static/img/wave.png" />
+    <h2 class="form-title">Входи и почувствуй<br />музыку заново</h2>
 
     <form id="loginForm">
-        <div class="form-group">
-            <label for="login">Имя пользователя</label>
-            <div class="input-wrapper">
-                <input type="text" id="login" name="login" placeholder="Имя пользователя">
-                <div class="error-message" id="loginError"></div>
-                <div class="validation-message" id="loginInformation"></div>
-            </div>
+      <div class="form-group">
+        <label for="login">Имя пользователя</label>
+        <div class="input-wrapper">
+          <input type="text" id="login" name="login" placeholder="Имя пользователя" />
+          <div class="error-message" id="loginError"></div>
+          <div class="validation-message" id="loginInformation"></div>
         </div>
+      </div>
 
-        <div class="form-group">
-            <label for="password">Пароль</label>
-            <div class="password-wrapper">
-                <input type="password" id="password" name="password" placeholder="Пароль">
-                <button type="button" class="eye" aria-label="Показать пароль">
-                    {{> eyeOpen }}
-                    {{> eyeClosed }}
-                </button>
-                <div class="error-message" id="passwordError"></div>
-                <div class="validation-message" id="passwordInformation"></div>
-            </div>
+      <div class="form-group">
+        <label for="password">Пароль</label>
+        <div class="password-wrapper">
+          <input type="password" id="password" name="password" placeholder="Пароль" />
+          <button type="button" class="eye" aria-label="Показать пароль">
+            {{> eyeOpen }}
+            {{> eyeClosed }}
+          </button>
+          <div class="error-message" id="passwordError"></div>
+          <div class="validation-message" id="passwordInformation"></div>
         </div>
-        
-        <div class="error-message general-error" id="generalError"></div>
-        
-        <button type="submit" class="login-button" disabled>Войти</button>
+      </div>
+
+      <div class="error-message general-error" id="generalError"></div>
+
+      <button type="submit" class="login-button" disabled>Войти</button>
     </form>
     <div class="below-question">
-        <p>Нет аккаунта?</p>
-        <a href="/register">Зарегистрироваться</a>
+      <p>Нет аккаунта?</p>
+      <a href="/register">Зарегистрироваться</a>
     </div>
-    </div>
+  </div>
 </div>
