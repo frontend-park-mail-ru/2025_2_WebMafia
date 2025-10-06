@@ -20,9 +20,6 @@ export class Router {
     }
 
     init() {
-        Handlebars.registerPartial('eyeOpen', Handlebars.templates['eyeOpen.hbs']);
-        Handlebars.registerPartial('eyeClosed', Handlebars.templates['eyeClosed.hbs'])
-
         document.body.addEventListener('click', e => {
             const link = e.target.closest('a');
             if (link) {
