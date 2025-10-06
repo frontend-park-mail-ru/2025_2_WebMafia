@@ -9,19 +9,22 @@
   display: flex;
   justify-content: center;
   align-items: center;
+
   /* попытка ограничить размеры экрана */
   min-height: 100vh;
   padding: 10px;
   box-sizing: border-box;
 }
 
-@keyframes gradientMove {
+@keyframes gradient-move {
   0% {
     background-position: 0% 50%;
   }
+
   50% {
     background-position: 100% 50%;
   }
+
   100% {
     background-position: 0% 50%;
   }
@@ -54,7 +57,7 @@
   padding: 10px 12px;
   max-width: 200px;
   white-space: normal;
-  word-wrap: break-word;
+  overflow-wrap: break-word;
   text-align: center;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
@@ -81,6 +84,7 @@
 
 .general-error {
   text-align: center;
+
   /* margin-bottom: 15px; */
   padding: 10px;
   background-color: rgba(231, 76, 60, 0.1);
@@ -90,7 +94,7 @@
 .container {
   background: #fafafa;
   border-radius: 16px;
-  padding: 20px 30px 20px 30px;
+  padding: 20px 30px;
   width: 450px;
   text-align: center;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
@@ -100,6 +104,7 @@
   width: 120px;
   height: 90px;
   margin-bottom: 15px;
+
   /* margin-left: 110px; */
 }
 
@@ -163,7 +168,8 @@
   cursor: pointer;
   height: 57px;
   margin-top: 5px;
-  /*Эксперименты*/
+
+  /* Эксперименты */
   transition: background-position 0.5s ease;
   background-size: 150% 100%;
 }
