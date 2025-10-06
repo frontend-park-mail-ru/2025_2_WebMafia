@@ -1,254 +1,260 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
 
 .layout-auth {
-      margin: 0;
-      font-family: 'Montserrat', sans-serif;
-      background: linear-gradient(135deg, #9AD5CA, #ACDDE7, #ADB9E3, #A379C9, #B744B8);
-      background-size: 400% 400%;
-      animation: gradientMove 12s ease infinite;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      /* попытка ограничить размеры экрана */
-      min-height: 100vh;
-      padding: 10px;
-      box-sizing: border-box;
+  margin: 0;
+  font-family: 'Montserrat', sans-serif;
+  background: linear-gradient(135deg, #9ad5ca, #acdde7, #adb9e3, #a379c9, #b744b8);
+  background-size: 400% 400%;
+  animation: gradientMove 12s ease infinite;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* попытка ограничить размеры экрана */
+  min-height: 100vh;
+  padding: 10px;
+  box-sizing: border-box;
 }
 
 @keyframes gradientMove {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 .error-message {
-    color: #e74c3c;
-    font-size: 14px;
-    display: none;
-    pointer-events: none;
-    bottom: -20px;
-    left: 0;
-    position: absolute;
+  color: #e74c3c;
+  font-size: 14px;
+  display: none;
+  pointer-events: none;
+  bottom: -20px;
+  left: 0;
+  position: absolute;
 }
 
 .error-message.show {
-    display: block;
+  display: block;
 }
 
 .validation-message {
-    background: #D4D9D9;
-    position: absolute;
-    z-index: 10;
-    left: -10px;
-    top: 50%;
-    transform: translate(-100%, -50%);
-    border-radius: 8px;
-    font-size: 14px;
-    display: none;
-    padding: 10px 12px;
-    max-width: 200px;
-    white-space: normal;
-    word-wrap: break-word;
-    text-align: center;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  background: #d4d9d9;
+  position: absolute;
+  z-index: 10;
+  left: -10px;
+  top: 50%;
+  transform: translate(-100%, -50%);
+  border-radius: 8px;
+  font-size: 14px;
+  display: none;
+  padding: 10px 12px;
+  max-width: 200px;
+  white-space: normal;
+  word-wrap: break-word;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
 .validation-message::after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    right: -14px;
-    transform: translateY(-50%);
-    border-width: 8px;
-    border-style: solid;
-    border-color: transparent transparent transparent #D4D9D9;
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: -14px;
+  transform: translateY(-50%);
+  border-width: 8px;
+  border-style: solid;
+  border-color: transparent transparent transparent #d4d9d9;
 }
 
 .validation-message.show {
-    display: block;
+  display: block;
 }
 
 .form-group.error input {
-    border-color: #e74c3c;
-    box-shadow: 0 0 5px rgba(231, 76, 60, 0.3);
+  border-color: #e74c3c;
+  box-shadow: 0 0 5px rgba(231, 76, 60, 0.3);
 }
 
 .general-error {
-    text-align: center;
-    /* margin-bottom: 15px; */
-    padding: 10px;
-    background-color: rgba(231, 76, 60, 0.1);
-    border-radius: 5px;
+  text-align: center;
+  /* margin-bottom: 15px; */
+  padding: 10px;
+  background-color: rgba(231, 76, 60, 0.1);
+  border-radius: 5px;
 }
 
 .container {
-    background: #FAFAFA;
-    border-radius: 16px;
-    padding: 20px 30px 20px 30px;
-    width: 450px;
-    text-align: center;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  background: #fafafa;
+  border-radius: 16px;
+  padding: 20px 30px 20px 30px;
+  width: 450px;
+  text-align: center;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
 }
 
 .logo-auth {
-    width: 120px;
-    height: 90px;
-    margin-bottom: 15px;
-    /* margin-left: 110px; */
+  width: 120px;
+  height: 90px;
+  margin-bottom: 15px;
+  /* margin-left: 110px; */
 }
 
 .form-title {
-    margin: 0 0 25px;
-    font-size: 32px;
-    font-weight: 600;
-    color: #000;
+  margin: 0 0 25px;
+  font-size: 32px;
+  font-weight: 600;
+  color: #000;
 }
 
 .form-group {
-    text-align: left;
-    margin: 0 0 20px;
-    position: relative;
+  text-align: left;
+  margin: 0 0 20px;
+  position: relative;
 }
 
 .form-group label {
-    font-size: 18px;
-    font-weight: 600;
-    display: block;
-    margin-bottom: 5px;
+  font-size: 18px;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 5px;
 }
 
 .form-group input {
-    font-family: "Montserrat", sans-serif;
-    width: 428px;
-    height: 35px;
-    padding: 10px;
-    border-radius: 8px;
-    border: 1px solid #d0bbbb;
-    font-size: 20px;
+  font-family: 'Montserrat', sans-serif;
+  width: 428px;
+  height: 35px;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #d0bbbb;
+  font-size: 20px;
 }
 
 .form-extra {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 0 0 20px;
-    font-size: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 0 20px;
+  font-size: 18px;
 }
 
 .form-extra a {
-    color: #000;
+  color: #000;
 }
 
 .form-extra input {
-    height: 16px;
-    width: 16px;
-    accent-color: #B744B9;
+  height: 16px;
+  width: 16px;
+  accent-color: #b744b9;
 }
 
 .login-button {
-    width: 450px;
-    padding: 12px;
-    background: linear-gradient(90deg, #9c58e0, #4e85e1, #9c58e0);
-    border: 1px solid #d0bbbb;
-    border-radius: 8px;
-    color: #FAFAFA;
-    font-size: 24px;
-    font-weight: 600;
-    cursor: pointer;
-    height: 57px;
-    margin-top: 5px;
-    /*Эксперименты*/
-    transition: background-position 0.5s ease;
-    background-size: 150% 100%;
+  width: 450px;
+  padding: 12px;
+  background: linear-gradient(90deg, #9c58e0, #4e85e1, #9c58e0);
+  border: 1px solid #d0bbbb;
+  border-radius: 8px;
+  color: #fafafa;
+  font-size: 24px;
+  font-weight: 600;
+  cursor: pointer;
+  height: 57px;
+  margin-top: 5px;
+  /*Эксперименты*/
+  transition: background-position 0.5s ease;
+  background-size: 150% 100%;
 }
 
 .login-button:disabled {
-    background: linear-gradient(90deg, #B1A5BD, #929CAE);
-    cursor: not-allowed;
+  background: linear-gradient(90deg, #b1a5bd, #929cae);
+  cursor: not-allowed;
 }
 
 .login-button:hover {
-    background-position: right center;
+  background-position: right center;
 }
 
 .below-question {
-    margin-top: 15px;
-    font-size: 16px;
+  margin-top: 15px;
+  font-size: 16px;
 }
 
 .below-question a {
-    font-weight: 600;
-    color: #000;
+  font-weight: 600;
+  color: #000;
 }
 
 .below-question a:hover {
-    color: #4a4a4a;
+  color: #4a4a4a;
 }
 
-.password-wrapper, .input-wrapper {
-    position: relative;
-    display: flex;
-    align-items: center;
+.password-wrapper,
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
 }
 
 .password-wrapper input {
-    padding-right: 40px;
+  padding-right: 40px;
 }
 
 .eye {
-    position: absolute;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .eye svg {
-    fill: #595959;
-    transition: fill 0.3s;
+  fill: #595959;
+  transition: fill 0.3s;
 }
 
 .eye:hover svg {
-    fill: #000;
+  fill: #000;
 }
 
 .validation-message ul {
-    margin: 0;
-    padding-left: 16px;
-    list-style: none;
+  margin: 0;
+  padding-left: 16px;
+  list-style: none;
 }
 
 .validation-message li {
-    margin-bottom: 6px;
-    line-height: 1.4;
-    position: relative;
+  margin-bottom: 6px;
+  line-height: 1.4;
+  position: relative;
 }
 
 .validation-message li:last-child {
-    margin-bottom: 0;
+  margin-bottom: 0;
 }
 
 .validation-message li::before {
-    content: "•";
-    font-size: 40px;
-    position: absolute;
-    left: -12px;
-    top: 40%;
-    transform: translateY(-50%);
+  content: '•';
+  font-size: 40px;
+  position: absolute;
+  left: -12px;
+  top: 40%;
+  transform: translateY(-50%);
 }
 
-
-input[type="password"] {
-    font-size: 30px;
+input[type='password'] {
+  font-size: 30px;
 }
 
-input[type="password"]::placeholder {
-    font-size: 20px;
-    transform: translateY(-4px);
+input[type='password']::placeholder {
+  font-size: 20px;
+  transform: translateY(-4px);
 }
