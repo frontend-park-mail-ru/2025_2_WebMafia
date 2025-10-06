@@ -5,3 +5,7 @@ handlebars public/static/js/pages/notfoundpage/404.hbs -f public/static/js/pages
 handlebars public/static/js/pages/login/login.hbs -f public/static/js/pages/login/login.tmpl.js
 
 handlebars public/static/js/pages/register/register.hbs -f public/static/js/pages/register/register.tmpl.js
+
+handlebars public/static/js/partials/eyeOpen.hbs -f public/static/js/partials/eyeOpen.tmpl.js
+
+handlebars public/static/js/partials/eyeClosed.hbs -f public/static/js/partials/eyeClosed.tmpl.js

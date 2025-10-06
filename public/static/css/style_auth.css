@@ -9,7 +9,10 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      /* попытка ограничить размеры экрана */
+      min-height: 100vh;
+      padding: 10px;
+      box-sizing: border-box;
 }
 
 @keyframes gradientMove {
@@ -22,11 +25,46 @@
     color: #e74c3c;
     font-size: 14px;
     display: none;
-    margin-bottom: 10px;
-    margin-top: -10px;
+    pointer-events: none;
+    bottom: -20px;
+    left: 0;
+    position: absolute;
 }
 
 .error-message.show {
+    display: block;
+}
+
+.validation-message {
+    background: #D4D9D9;
+    position: absolute;
+    z-index: 10;
+    left: -10px;
+    top: 50%;
+    transform: translate(-100%, -50%);
+    border-radius: 8px;
+    font-size: 14px;
+    display: none;
+    padding: 10px 12px;
+    max-width: 200px;
+    white-space: normal;
+    word-wrap: break-word;
+    text-align: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+.validation-message::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: -14px;
+    transform: translateY(-50%);
+    border-width: 8px;
+    border-style: solid;
+    border-color: transparent transparent transparent #D4D9D9;
+}
+
+.validation-message.show {
     display: block;
 }
 
@@ -68,6 +106,8 @@
 
 .form-group {
     text-align: left;
+    margin: 0 0 20px;
+    position: relative;
 }
 
 .form-group label {
@@ -85,7 +125,6 @@
     border-radius: 8px;
     border: 1px solid #d0bbbb;
     font-size: 20px;
-    margin: 0 0 20px;
 }
 
 .form-extra {
@@ -117,12 +156,18 @@
     font-weight: 600;
     cursor: pointer;
     height: 57px;
+    margin-top: 5px;
     /*Эксперименты*/
     transition: background-position 0.5s ease;
     background-size: 150% 100%;
 }
 
-.btn:hover {
+.login-button:disabled {
+    background: linear-gradient(90deg, #B1A5BD, #929CAE);
+    cursor: not-allowed;
+}
+
+.login-button:hover {
     background-position: right center;
 }
 
@@ -138,4 +183,72 @@
 
 .below-question a:hover {
     color: #4a4a4a;
+}
+
+.password-wrapper, .input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-wrapper input {
+    padding-right: 40px;
+}
+
+.eye {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.eye svg {
+    fill: #595959;
+    transition: fill 0.3s;
+}
+
+.eye:hover svg {
+    fill: #000;
+}
+
+.validation-message ul {
+    margin: 0;
+    padding-left: 16px;
+    list-style: none;
+}
+
+.validation-message li {
+    margin-bottom: 6px;
+    line-height: 1.4;
+    position: relative;
+}
+
+.validation-message li:last-child {
+    margin-bottom: 0;
+}
+
+.validation-message li::before {
+    content: "•";
+    font-size: 40px;
+    position: absolute;
+    left: -12px;
+    top: 40%;
+    transform: translateY(-50%);
+}
+
+
+input[type="password"] {
+    font-size: 30px;
+}
+
+input[type="password"]::placeholder {
+    font-size: 20px;
+    transform: translateY(-4px);
 }
