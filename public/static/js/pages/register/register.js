@@ -26,8 +26,7 @@ export class RegistrationPage {
       login: (value) => {
         if (!value.trim()) return 'Поле обязательно для заполнения';
 
-        if (value.length < 5)
-          return 'Логин должен содержать минимум 5 символов';
+        if (value.length < 5) return 'Логин должен содержать минимум 5 символов';
 
         if (value.length < 5) return 'Слишком короткое имя пользователя';
 
@@ -48,7 +47,6 @@ export class RegistrationPage {
         return null;
       },
     };
-
 
     const information = {
       email: (value) => {

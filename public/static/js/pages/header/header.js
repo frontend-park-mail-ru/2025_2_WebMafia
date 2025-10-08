@@ -7,11 +7,10 @@ export class Header {
 
     const contentTemplate = Handlebars.templates['header.hbs'];
     const headerHTML = contentTemplate({ isAuthenticated });
-    
-    const section = document.getElementById('section');
-    if (section && !document.getElementById('header')){
-        section.insertAdjacentHTML('afterbegin', headerHTML)
 
+    const section = document.getElementById('section');
+    if (section && !document.getElementById('header')) {
+      section.insertAdjacentHTML('afterbegin', headerHTML);
     }
     this.addEventListeners();
     this.profileDropdown();
@@ -37,7 +36,7 @@ export class Header {
   profileDropdown() {
     const profileBtn = document.querySelector('.profile-btn');
     const dropDownMenu = document.querySelector('.dropdown-menu');
-    console.log("drop settings")
+    console.log('drop settings');
 
     profileBtn.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -52,4 +51,4 @@ export class Header {
   }
 }
 
-export const header = new Header;
+export const header = new Header();

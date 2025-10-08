@@ -7,17 +7,16 @@ export class Sidebar {
 
     const contentTemplate = Handlebars.templates['sidebar.hbs'];
     const headerHTML = contentTemplate({ isAuthenticated });
-    
-    const layout = document.getElementById('layout');
-    if (section && !document.getElementById('sidebar')){
-        section.insertAdjacentHTML('afterbegin', headerHTML)
 
+    const layout = document.getElementById('layout');
+    if (layout && !document.getElementById('sidebar')) {
+      layout.insertAdjacentHTML('afterbegin', headerHTML);
     }
 
     this.activePath();
   }
 
-   activePath() {
+  activePath() {
     document.querySelectorAll('.menuicon.main a').forEach((link) => {
       if (link.getAttribute('href') === window.location.pathname) {
         link.classList.add('active');
@@ -26,4 +25,4 @@ export class Sidebar {
   }
 }
 
-export const sidebar = new Sidebar;
+export const sidebar = new Sidebar();

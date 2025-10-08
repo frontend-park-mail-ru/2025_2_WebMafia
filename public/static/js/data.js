@@ -25,26 +25,11 @@ export class apiServises {
     const response = await fetch(url, config);
 
     if (!response.ok) {
-<<<<<<< HEAD
-      const errorData = await response
-        .json()
-        .catch(() => ({ error: 'Failed to parse error response' }));
-      throw new Error(
-        errorData.error || `Request failed with status ${response.status}`
-      );
-    }
-
-    if (
-      response.status === 204 ||
-      response.headers.get('Content-Length') === '0'
-    ) {
-=======
       const errorData = await response.json().catch(() => ({ error: 'Failed to parse error response' }));
       throw new Error(errorData.error || `Request failed with status ${response.status}`);
     }
 
     if (response.status === 204 || response.headers.get('Content-Length') === '0') {
->>>>>>> dev
       return null;
     }
 

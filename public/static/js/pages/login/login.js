@@ -31,7 +31,6 @@ export class LoginPage {
       },
     };
 
-
     const information = {
       login: (value) => {
         if (value.length < 5) {

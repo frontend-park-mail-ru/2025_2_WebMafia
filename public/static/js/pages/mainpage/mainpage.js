@@ -11,7 +11,6 @@ export class MainPage {
       return;
     }
 
-
     let pageData = {
       isAuthenticated: true,
       artists: [],
@@ -27,7 +26,6 @@ export class MainPage {
 
     header.render(true);
     sidebar.render(true);
-
 
     try {
       const data = await apiServise.getMainPageData();
@@ -55,7 +53,6 @@ export class MainPage {
       return;
     }
 
-
     Handlebars.registerPartial('header', Handlebars.templates['header.hbs']);
     Handlebars.registerPartial('sidebar', Handlebars.templates['sidebar.hbs']);
 
@@ -64,7 +61,7 @@ export class MainPage {
 
     header.render(true);
     sidebar.render(true);
-    
+
     this.sliderFunction();
     this.nowPlayingCardSlider();
     this.activePath();
@@ -103,14 +100,10 @@ export class MainPage {
       const prevIndex = (currentIndex - 1 + cards.length) % cards.length;
       const nextIndex = (currentIndex + 1) % cards.length;
 
-      document.querySelector('.now-playing-container__previous-card img').src =
-        cards[prevIndex].img;
-      document.querySelector('.now-playing-container__next-card img').src =
-        cards[nextIndex].img;
-      document.querySelector('.now-playing-container__current-card img').src =
-        cards[currentIndex].img;
-      document.querySelector('.current-card-name').textContent =
-        cards[currentIndex].name;
+      document.querySelector('.now-playing-container__previous-card img').src = cards[prevIndex].img;
+      document.querySelector('.now-playing-container__next-card img').src = cards[nextIndex].img;
+      document.querySelector('.now-playing-container__current-card img').src = cards[currentIndex].img;
+      document.querySelector('.current-card-name').textContent = cards[currentIndex].name;
     }
 
     prevBtn.addEventListener('click', () => {
@@ -123,5 +116,4 @@ export class MainPage {
       renderCards();
     });
   }
-
 }
