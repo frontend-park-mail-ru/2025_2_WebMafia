@@ -17,9 +17,12 @@ export class MainPage {
       albums: [],
       tracks: [],
     };
+    console.log('header');
 
     Handlebars.registerPartial('header', Handlebars.templates['header.hbs']);
+    console.log('header');
     Handlebars.registerPartial('sidebar', Handlebars.templates['sidebar.hbs']);
+    console.log('heasidebarr');
 
     const contentTemplateWithoutData = Handlebars.templates['MainPage.hbs'];
     document.getElementById('app').innerHTML = contentTemplateWithoutData(pageData);
@@ -53,8 +56,8 @@ export class MainPage {
       return;
     }
 
-    Handlebars.registerPartial('header', Handlebars.templates['header.hbs']);
-    Handlebars.registerPartial('sidebar', Handlebars.templates['sidebar.hbs']);
+    // Handlebars.registerPartial('header', Handlebars.templates['header.hbs']);
+    // Handlebars.registerPartial('sidebar', Handlebars.templates['sidebar.hbs']);
 
     const contentTemplate = Handlebars.templates['MainPage.hbs'];
     document.getElementById('app').innerHTML = contentTemplate(pageData);

@@ -12,7 +12,7 @@ export class RegistrationPage {
     const contentTemplate = Handlebars.templates['register.hbs'];
     document.getElementById('app').innerHTML = contentTemplate();
 
-    this.initPasswordShowing();
+    initPasswordShowing();
     this.initValidation();
   }
 
