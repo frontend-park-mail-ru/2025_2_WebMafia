@@ -11,13 +11,22 @@ export class MainPage {
       return;
     }
 
-    
+
     let pageData = {
       isAuthenticated: true,
       artists: [],
       albums: [],
       tracks: [],
     };
+
+    Handlebars.registerPartial('header', Handlebars.templates['header.hbs']);
+    Handlebars.registerPartial('sidebar', Handlebars.templates['sidebar.hbs']);
+
+    const contentTemplateWithoutData = Handlebars.templates['MainPage.hbs'];
+    document.getElementById('app').innerHTML = contentTemplateWithoutData(pageData);
+
+    header.render(true);
+    sidebar.render(true);
 
     try {
       const data = await apiServise.getMainPageData();
