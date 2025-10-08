@@ -1,6 +1,7 @@
-import { FormValidator } from './validation.js';
+import { FormValidator } from '../../validation.js';
 import { apiServise } from '../../data.js';
 import { router } from '../../routing.js';
+import { initPasswordShowing } from '../../eye.js';
 
 export class LoginPage {
   async render() {
@@ -10,6 +11,8 @@ export class LoginPage {
     }
     const contentTemplate = Handlebars.templates['login.hbs'];
     document.getElementById('app').innerHTML = contentTemplate();
+
+    this.initPasswordShowing();
     this.initValidation();
   }
 
@@ -17,18 +20,34 @@ export class LoginPage {
     const validators = {
       login: (value) => {
         if (!value.trim()) return 'Поле обязательно для заполнения';
-        if (value.length < 5) return 'Имя пользователя слишком короткое';
+        if (value.length < 5) return 'Имя пользователя должно содержать минимум 5 символов';
         return null;
       },
       password: (value) => {
         if (!value) return 'Поле обязательно для заполнения';
-        if (value.length < 8)
-          return 'Пароль должен содержать минимум 8 символов';
+
+        if (value.length < 8) return 'Пароль должен содержать минимум 8 символов';
         return null;
       },
     };
 
-    const validator = new FormValidator('loginForm', validators);
+
+    const information = {
+      login: (value) => {
+        if (value.length < 5) {
+          return 'Логин должен содержать минимум 5 символов';
+        }
+        return null;
+      },
+      password: (value) => {
+        if (value.length < 8) {
+          return 'Пароль должен содержать минимум 8 символов';
+        }
+        return null;
+      },
+    };
+
+    const validator = new FormValidator('loginForm', validators, information);
 
     validator.onSubmit = async (formData) => {
       const login = formData.get('login');
@@ -66,9 +85,7 @@ export class LoginPage {
     if (messageElement) {
       messageElement.textContent = message;
       messageElement.style.color = isSuccess ? '#27ae60' : '#e74c3c';
-      messageElement.style.backgroundColor = isSuccess
-        ? 'rgba(39, 174, 96, 0.1)'
-        : 'rgba(231, 76, 60, 0.1)';
+      messageElement.style.backgroundColor = isSuccess ? 'rgba(39, 174, 96, 0.1)' : 'rgba(231, 76, 60, 0.1)';
       messageElement.classList.add('show');
     }
   }

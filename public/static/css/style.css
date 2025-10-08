@@ -1,9 +1,13 @@
+<<<<<<< HEAD
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
 
+=======
+>>>>>>> dev
 body {
   font-family: 'Montserrat', sans-serif;
   margin: 0;
   padding: 0;
+<<<<<<< HEAD
   overflow-y: hidden;
 }
 
@@ -14,15 +18,34 @@ body {
   flex-direction: column;
   min-height: 100vh;
   height: 100vh;
+=======
+}
+
+.section {
+  background-color: #3e197c;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  height: 100%;
+>>>>>>> dev
 }
 
 /* HEAD */
 .head {
+<<<<<<< HEAD
   top: 0;
   left: 0;
   right: 0;
   height: 68px;
   background: #3d197c00;
+=======
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
+  background: #3e197c;
+>>>>>>> dev
   z-index: 100;
   display: flex;
   align-items: center;
@@ -34,6 +57,70 @@ body {
   margin-left: 16px;
   color: white;
   text-decoration: none;
+<<<<<<< HEAD
+=======
+}
+
+.head-right {
+  margin-right: 23px;
+}
+
+.nav-link.main {
+  font-size: 36px;
+  font-weight: 700;
+}
+
+.nav-link.login {
+  font-size: 26px;
+  font-weight: 600;
+}
+
+.nav-link.register {
+  /* background: #9C58E0; */
+  background: linear-gradient(-45deg, #4e85e1, #64cfd9);
+  animation: gradient 10s ease infinite;
+  background-size: 400% 400%;
+  border-radius: 20rem;
+  padding: 5px 10px;
+  color: #3e197c;
+  margin-left: 40px;
+  font-size: 26px;
+  font-weight: 600;
+}
+
+.nav-link.login:hover {
+  color: #4e85e1;
+}
+
+.nav-link.register:hover {
+  color: #9c58e0;
+  background: linear-gradient(-45deg, #acdde7, #ffffff);
+  animation: gradient 10s ease infinite;
+  background-size: 400% 400%;
+}
+
+/* Макет под хедером */
+.layout {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+/* Sidebar */
+.sidebar {
+  position: fixed;
+  top: 80px;
+  left: 0;
+  bottom: 0;
+  width: 252px;
+  background: linear-gradient(-45deg, #9c58e0, #4e85e1, #64cfd9);
+  animation: gradient 10s ease infinite;
+  background-size: 400% 400%;
+  z-index: 90;
+  padding-left: 24px;
+  border-top-right-radius: 30px;
+  overflow: hidden;
+>>>>>>> dev
 }
 
 .logo {
@@ -46,6 +133,7 @@ body {
 
 .wave-icon {
   margin-right: 10px;
+<<<<<<< HEAD
   width: 73px;
   height: 53px;
 }
@@ -179,9 +267,18 @@ body {
   /* border-top-left-radius: 30px; */
 
   overflow: hidden;
+=======
+  width: 83px;
+  height: 63px;
 }
 
-
+.icon-name {
+  font-size: 50px;
+  font-weight: 600;
+  background-image: linear-gradient(-90deg, #9c58e0, #adb9e3);
+  -webkit-background-clip: text;
+>>>>>>> dev
+}
 
 .menu {
   margin-top: 25px;
@@ -195,17 +292,36 @@ body {
 }
 
 .menuicon img {
+<<<<<<< HEAD
   width: 20px;
   height: 20px;
 }
 
 
+=======
+  width: 25px;
+  height: 25px;
+}
+
+.fa-regular {
+  color: white;
+}
+
+.menu span {
+  margin-bottom: 20px;
+}
+>>>>>>> dev
 
 .menu a {
   text-decoration: none;
   font-style: normal;
+<<<<<<< HEAD
   color: rgb(0, 0, 0);
   font-size: 20px;
+=======
+  color: white;
+  font-size: 25px;
+>>>>>>> dev
   font-weight: bold;
   margin-left: 15px;
 }
@@ -214,6 +330,7 @@ body {
   color: #3e197c;
 }
 
+<<<<<<< HEAD
 .menuicon.main a{
   background-color: inherit;
 }
@@ -354,6 +471,34 @@ body {
 /* custom scrollbar */
 .page::-webkit-scrollbar {
   /* display: none; */
+=======
+.divide-line {
+  border: 8px solid #3e197c;
+  margin-left: 276px;
+}
+
+/* Content */
+.page {
+  margin-top: 80px;
+  flex: 1;
+  background: linear-gradient(-45deg, #9c58e0, #4e85e1, #64cfd9);
+  animation: gradient 10s ease infinite;
+  background-size: 400% 400%;
+  border-top-left-radius: 30px;
+  padding: 23px 0 0 23px;
+  color: black;
+  height: calc(100vh - 103px);
+  overflow-y: auto;
+  transition: overflow-y 0.3s ease;
+}
+
+.page:hover {
+  overflow-y: auto;
+}
+
+/* custom scrollbar */
+.page::-webkit-scrollbar {
+>>>>>>> dev
   width: 12px;
   background-color: inherit;
   transition: background 0.3s ease;
@@ -361,33 +506,58 @@ body {
 
 .page::-webkit-scrollbar-track {
   background: rgba(255, 255, 255, 0.2);
+<<<<<<< HEAD
+=======
+
+  /* border-radius: 4px; */
+>>>>>>> dev
 }
 
 .page::-webkit-scrollbar-thumb {
   transition: background 0.3s ease;
   background-clip: content-box;
+<<<<<<< HEAD
   background: rgba(0, 0, 0, 0.4);
+=======
+  background: rgba(255, 255, 255, 0.5);
+>>>>>>> dev
   border-radius: 4px;
 }
 
 .page::-webkit-scrollbar-thumb:hover {
+<<<<<<< HEAD
   background: rgba(0, 0, 0, 0.8);
+=======
+  background: rgba(255, 255, 255, 0.9);
+>>>>>>> dev
 }
 
 @keyframes gradient {
   0% {
     background-position: 0% 50%;
   }
+<<<<<<< HEAD
   50% {
     background-position: 100% 50%;
   }
+=======
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+>>>>>>> dev
   100% {
     background-position: 0% 50%;
   }
 }
 
 .title {
+<<<<<<< HEAD
   /* margin-bottom: 21px; */
+=======
+  margin-bottom: 21px;
+>>>>>>> dev
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -395,9 +565,14 @@ body {
 
 .title-name {
   font-weight: 600;
+<<<<<<< HEAD
   font-size: 28px;
 
   color: rgb(0, 0, 0);
+=======
+  font-size: 36px;
+  color: rgb(255, 255, 255);
+>>>>>>> dev
 }
 
 .show-all a {
@@ -405,9 +580,13 @@ body {
   font-size: 24px;
   font-weight: 100;
   text-decoration: none;
+<<<<<<< HEAD
   color: #000000;
 
   /* color: rgb(255, 255, 255, 0.8); */
+=======
+  color: rgb(255, 255, 255, 0.8);
+>>>>>>> dev
 }
 
 /* Slider */
@@ -418,6 +597,7 @@ body {
   justify-content: center;
 }
 
+<<<<<<< HEAD
 .slide-btn {
   opacity: 0;
   pointer-events: none; /* чтобы не мешали, пока невидимы */
@@ -429,17 +609,28 @@ body {
   pointer-events: auto; /* снова кликабельные */
 }
 
+=======
+>>>>>>> dev
 .slide-btn {
   top: 45%;
   position: absolute;
   cursor: pointer;
   border-radius: 50%;
+<<<<<<< HEAD
   width: 32px;
   height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: rgba(255, 255, 255, 0.7);
+=======
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.9);
+>>>>>>> dev
   border: 2px solid #ddd;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
@@ -456,8 +647,13 @@ body {
 
 .slide-btn::before {
   content: '';
+<<<<<<< HEAD
   width: 10px;
   height: 10px;
+=======
+  width: 15px;
+  height: 15px;
+>>>>>>> dev
   border: solid #333;
   border-width: 0 3px 3px 0;
   display: inline-block;
@@ -484,6 +680,7 @@ body {
 /* Cards */
 .cards {
   display: flex;
+<<<<<<< HEAD
   gap: 10px;
   overflow-x: auto;
   overflow-y: hidden;
@@ -543,10 +740,70 @@ body {
   margin-left: 15px;
   margin-right: 15px;
 
+=======
+  gap: 46px;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  width: 100%;
+  margin-bottom: 35px;
+  margin-left: -23px;
+  padding-left: 23px;
+}
+
+.card {
+  flex: 0 0 250px;
+  height: 312px;
+  text-align: center;
+  justify-content: center;
+  color: black;
+  background-color: rgba(255, 255, 255, 0.4);
+  transition-duration: 0.3s;
+  border-radius: 10%;
+  overflow: hidden;
+}
+
+.card:hover {
+  background-color: rgba(255, 255, 255, 0.6);
+}
+
+.card img {
+  margin: 25px;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.card a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.card-name {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  margin-left: 15px;
+  margin-right: 15px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.card-sub {
+  font-size: 14px;
+  font-weight: 300;
+  opacity: 0.8;
+  margin-bottom: 10px;
+  margin-left: 15px;
+  margin-right: 15px;
+>>>>>>> dev
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+<<<<<<< HEAD
 
 .card-sub {
   font-size: 14px;
@@ -660,3 +917,5 @@ body {
   width: 120px;
   cursor: pointer;
 }
+=======
+>>>>>>> dev

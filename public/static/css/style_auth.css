@@ -2,6 +2,7 @@
 
 .layout-auth {
   margin: 0;
+<<<<<<< HEAD
   font-family: Montserrat, sans-serif;
   background: linear-gradient(
     135deg,
@@ -20,6 +21,23 @@
 }
 
 @keyframes gradientMove {
+=======
+  font-family: 'Montserrat', sans-serif;
+  background: linear-gradient(135deg, #9ad5ca, #acdde7, #adb9e3, #a379c9, #b744b8);
+  background-size: 400% 400%;
+  animation: gradient-move 12s ease infinite;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  /* попытка ограничить размеры экрана */
+  min-height: 100vh;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+@keyframes gradient-move {
+>>>>>>> dev
   0% {
     background-position: 0% 50%;
   }
@@ -37,17 +55,64 @@
   color: #e74c3c;
   font-size: 14px;
   display: none;
+<<<<<<< HEAD
   margin-bottom: 10px;
   margin-top: -10px;
+=======
+  pointer-events: none;
+  bottom: -20px;
+  left: 0;
+  position: absolute;
+>>>>>>> dev
 }
 
 .error-message.show {
   display: block;
+<<<<<<< HEAD
+=======
+}
+
+.validation-message {
+  background: #d4d9d9;
+  position: absolute;
+  z-index: 10;
+  left: -10px;
+  top: 50%;
+  transform: translate(-100%, -50%);
+  border-radius: 8px;
+  font-size: 14px;
+  display: none;
+  padding: 10px 12px;
+  max-width: 200px;
+  white-space: normal;
+  overflow-wrap: break-word;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.validation-message::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: -14px;
+  transform: translateY(-50%);
+  border-width: 8px;
+  border-style: solid;
+  border-color: transparent transparent transparent #d4d9d9;
+}
+
+.validation-message.show {
+  display: block;
+>>>>>>> dev
 }
 
 .form-group.error input {
   border-color: #e74c3c;
+<<<<<<< HEAD
   box-shadow: 0 0 5px rgb(231 76 60 / 30%);
+=======
+  box-shadow: 0 0 5px rgba(231, 76, 60, 0.3);
+>>>>>>> dev
 }
 
 .general-error {
@@ -55,7 +120,11 @@
 
   /* margin-bottom: 15px; */
   padding: 10px;
+<<<<<<< HEAD
   background-color: rgb(231 76 60 / 10%);
+=======
+  background-color: rgba(231, 76, 60, 0.1);
+>>>>>>> dev
   border-radius: 5px;
 }
 
@@ -65,7 +134,11 @@
   padding: 20px 30px;
   width: 450px;
   text-align: center;
+<<<<<<< HEAD
   box-shadow: 0 8px 24px rgb(0 0 0 / 10%);
+=======
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+>>>>>>> dev
 }
 
 .logo-auth {
@@ -85,6 +158,11 @@
 
 .form-group {
   text-align: left;
+<<<<<<< HEAD
+=======
+  margin: 0 0 20px;
+  position: relative;
+>>>>>>> dev
 }
 
 .form-group label {
@@ -95,14 +173,21 @@
 }
 
 .form-group input {
+<<<<<<< HEAD
   font-family: Montserrat, sans-serif;
+=======
+  font-family: 'Montserrat', sans-serif;
+>>>>>>> dev
   width: 428px;
   height: 35px;
   padding: 10px;
   border-radius: 8px;
   border: 1px solid #d0bbbb;
   font-size: 20px;
+<<<<<<< HEAD
   margin: 0 0 20px;
+=======
+>>>>>>> dev
 }
 
 .form-extra {
@@ -134,13 +219,26 @@
   font-weight: 600;
   cursor: pointer;
   height: 57px;
+<<<<<<< HEAD
+=======
+  margin-top: 5px;
+>>>>>>> dev
 
   /* Эксперименты */
   transition: background-position 0.5s ease;
   background-size: 150% 100%;
 }
 
+<<<<<<< HEAD
 .btn:hover {
+=======
+.login-button:disabled {
+  background: linear-gradient(90deg, #b1a5bd, #929cae);
+  cursor: not-allowed;
+}
+
+.login-button:hover {
+>>>>>>> dev
   background-position: right center;
 }
 
@@ -157,3 +255,74 @@
 .below-question a:hover {
   color: #4a4a4a;
 }
+<<<<<<< HEAD
+=======
+
+.password-wrapper,
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-wrapper input {
+  padding-right: 40px;
+}
+
+.eye {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.eye svg {
+  fill: #595959;
+  transition: fill 0.3s;
+}
+
+.eye:hover svg {
+  fill: #000;
+}
+
+.validation-message ul {
+  margin: 0;
+  padding-left: 16px;
+  list-style: none;
+}
+
+.validation-message li {
+  margin-bottom: 6px;
+  line-height: 1.4;
+  position: relative;
+}
+
+.validation-message li:last-child {
+  margin-bottom: 0;
+}
+
+.validation-message li::before {
+  content: '•';
+  font-size: 40px;
+  position: absolute;
+  left: -12px;
+  top: 40%;
+  transform: translateY(-50%);
+}
+
+input[type='password'] {
+  font-size: 30px;
+}
+
+input[type='password']::placeholder {
+  font-size: 20px;
+  transform: translateY(-4px);
+}
+>>>>>>> dev

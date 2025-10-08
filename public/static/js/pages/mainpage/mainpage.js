@@ -28,6 +28,7 @@ export class MainPage {
     header.render(true);
     sidebar.render(true);
 
+
     try {
       const data = await apiServise.getMainPageData();
       pageData.artists = (data.artists || []).map((artist) => ({
@@ -53,6 +54,7 @@ export class MainPage {
       router.navigate('/login');
       return;
     }
+
 
     Handlebars.registerPartial('header', Handlebars.templates['header.hbs']);
     Handlebars.registerPartial('sidebar', Handlebars.templates['sidebar.hbs']);
@@ -121,4 +123,5 @@ export class MainPage {
       renderCards();
     });
   }
+
 }
