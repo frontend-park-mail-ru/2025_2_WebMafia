@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap');
 
 .layout-auth {
   margin: 0;
@@ -84,11 +84,16 @@
 
 .general-error {
   text-align: center;
-
-  /* margin-bottom: 15px; */
+  color: #e74c3c;
+  font-size: 14px;
+  display: none;
   padding: 10px;
   background-color: rgba(231, 76, 60, 0.1);
   border-radius: 5px;
+}
+
+.general-error.show {
+  display: block;
 }
 
 .container {
@@ -202,10 +207,6 @@
   position: relative;
   display: flex;
   align-items: center;
-}
-
-.password-wrapper input {
-  padding-right: 40px;
 }
 
 .eye {
