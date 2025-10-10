@@ -11,7 +11,6 @@ export class LoginPage {
     }
     const contentTemplate = Handlebars.templates['login.hbs'];
     document.getElementById('app').innerHTML = contentTemplate();
-
     initPasswordShowing();
     this.initValidation();
   }
@@ -25,7 +24,6 @@ export class LoginPage {
       },
       password: (value) => {
         if (!value) return 'Поле обязательно для заполнения';
-
         if (value.length < 8) return 'Пароль должен содержать минимум 8 символов';
         return null;
       },

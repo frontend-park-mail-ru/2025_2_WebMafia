@@ -4,26 +4,26 @@
   <div class="layout">
     {{> sidebar}}
     <div class="page">
+
       <div class="now-playing-container">
-        <div class="now-playing-container__title">Сейчас играет</div>
-        <div class="now-playing-container__cards">
-          <div class="now-playing-container__previous-card">
+          <button class="current-card-btn prev"></button>
+
+          <div class="now-playing-container-card-previous">
             <img src="/static/img/image11.jpg" alt="" />
           </div>
-          <div class="now-playing-container__current-card">
+          <div class="now-playing-container-card-current">
             <img src="/static/img/image12.jpg" alt="" />
-            <div class="controls-current-card">
-              <button class="current-card-btn prev">⏮</button>
-              <button class="current-card-btn play">▶</button>
-              <button class="current-card-btn next">⏭</button>
-            </div>
+            <button class="current-card-btn play"></button>
             <p class="current-card-name">Queen</p>
+           
           </div>
-          <div class="now-playing-container__next-card">
+          <div class="now-playing-container-card-next">
             <img src="/static/img/image13.jpg" alt="" />
           </div>
-        </div>
+          <button class="current-card-btn next"></button>
+
       </div>
+      
       <!-- Артисты -->
       <div class="title">
         <div class="title-name">Артисты</div>
@@ -38,6 +38,7 @@
               <img src="{{ image }}" alt="{{ name }}" />
               <p class="card-name">{{ name }}</p>
             </a>
+            <button class="play-button" onclick="playArtist('{{ artist_id }}')"></button>
           </div>
           {{/each}}
         </div>
@@ -59,6 +60,7 @@
               <p class="card-name">{{ name }}</p>
               <p class="card-sub">{{ artist }}</p>
             </a>
+            <button class="play-button" onclick="playArtist('{{ artist_id }}')"></button>
           </div>
           {{/each}}
         </div>
@@ -72,17 +74,22 @@
       </div>
       <div class="slider">
         <p><i class="slide-btn left"></i></p>
-        <div class="cards" id="slidebar">
+        <div class="cards tracks" id="slidebar">
           {{#each tracks}}
-          <div class="card">
-            <a href="/album/{{ album.album_id }}"
-              ><img src="{{ image }}" alt="{{ name }}" />
-              <p class="card-name">{{ name }}</p>
-              {{#each artists}}
-              <p class="card-sub">{{ name }}</p>
-              {{/each}}
-            </a>
-          </div>
+            <div class="card-tracks">
+              <a class="card-track-content" href="/album/{{ album.album_id }}"
+                >
+                <img src="{{ image }}" alt="{{ name }}" />
+                <div class="track-content">
+                  <p class="card-name-track">{{ name }}</p>
+                  {{#each artists}}
+                  <p class="card-sub-track">{{ name }}</p>
+                  {{/each}}
+                </div>
+              </a>
+              
+              <button class="play-button-track" onclick="playArtist('{{ artist_id }}')"></button>
+            </div>
           {{/each}}
         </div>
         <p><i class="slide-btn right"></i></p>

@@ -56,9 +56,6 @@ export class MainPage {
       return;
     }
 
-    // Handlebars.registerPartial('header', Handlebars.templates['header.hbs']);
-    // Handlebars.registerPartial('sidebar', Handlebars.templates['sidebar.hbs']);
-
     const contentTemplate = Handlebars.templates['MainPage.hbs'];
     document.getElementById('app').innerHTML = contentTemplate(pageData);
 
@@ -67,7 +64,6 @@ export class MainPage {
 
     this.sliderFunction();
     this.nowPlayingCardSlider();
-    this.activePath();
   }
 
   sliderFunction() {
@@ -103,9 +99,9 @@ export class MainPage {
       const prevIndex = (currentIndex - 1 + cards.length) % cards.length;
       const nextIndex = (currentIndex + 1) % cards.length;
 
-      document.querySelector('.now-playing-container__previous-card img').src = cards[prevIndex].img;
-      document.querySelector('.now-playing-container__next-card img').src = cards[nextIndex].img;
-      document.querySelector('.now-playing-container__current-card img').src = cards[currentIndex].img;
+      document.querySelector('.now-playing-container-card-previous img').src = cards[prevIndex].img;
+      document.querySelector('.now-playing-container-card-next img').src = cards[nextIndex].img;
+      document.querySelector('.now-playing-container-card-current img').src = cards[currentIndex].img;
       document.querySelector('.current-card-name').textContent = cards[currentIndex].name;
     }
 
