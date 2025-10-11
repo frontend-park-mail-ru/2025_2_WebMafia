@@ -1,0 +1,51 @@
+.artist-container {
+  display: flex;
+  height: 340px;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 5px 80px 8px rgba(26, 25, 30, 0.4);
+  background-size: cover;
+  background-position: center;
+  color: #fafafa;
+}
+
+.page-wrapper::-webkit-scrollbar {
+  width: 12px;
+  background-color: inherit;
+  transition: background 0.3s ease;
+}
+
+.page-wrapper::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.page-wrapper::-webkit-scrollbar-thumb {
+  transition: background 0.3s ease;
+  background-clip: content-box;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 4px;
+}
+
+.page-wrapper::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.page-wrapper {
+  margin-right: 20px;
+  clip-path: inset(0 round 30px);
+  scrollbar-gutter: stable;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow-x: hidden;
+  background-color: white;
+}
+
+.artist-page {
+  box-sizing: content-box;
+  padding: 23px 0 0 23px;
+  color: black;
+  flex: 1;
+  transition: overflow-y 0.3s ease;
+}

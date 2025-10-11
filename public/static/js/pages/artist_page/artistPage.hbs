@@ -1,0 +1,113 @@
+<div class="section" id="section">
+  <header class="head" id="header">
+      <div class="head-left">
+        <div class="logo">
+          <span><img src="static/img/логотип.png" class="wave-icon" /></span>
+          <h1 class="icon-name">Wave</h1>
+        </div>
+      </div>
+      <div class="head-right">
+        {{#if isAuthenticated}}
+        <div class="profile-dropdown">
+          <button class="profile-btn">
+            <div class="profile-avatar-header">
+                {{#if avatar}}
+                <img src="{{ avatar }}" alt="Ваш аватар" />
+                {{else}}
+                <div class="default-avatar-header">AK</div>
+                {{/if}}
+            </div>
+          </button>
+          <div class="dropdown-menu">
+            <a href="/profile">Профиль</a>
+            <a href="/settings">Настройки</a>
+            <a id="logoutBtn" href="#">Выйти</a>
+          </div>
+        </div>
+        {{else}}
+        <a class="nav-link login" href="/login">Войти</a>
+        <a class="nav-link register" href="/register">Зарегистрироваться</a>
+        {{/if}}
+      </div>
+    </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar">
+      <nav class="menu">
+        <div class="menu-item main"><svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m4 12 8-8 8 8M6 10.5V19a1 1 0 0 0 1 1h3v-3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3h3a1 1 0 0 0 1-1v-8.5"/>
+          </svg>
+          <a href="/">Главная</a></div>
+        <div class="menu-item library"><svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M20 14h-2.722L11 20.278a5.511 5.511 0 0 1-.9.722H20a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1ZM9 3H4a1 1 0 0 0-1 1v13.5a3.5 3.5 0 1 0 7 0V4a1 1 0 0 0-1-1ZM6.5 18.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2ZM19.132 7.9 15.6 4.368a1 1 0 0 0-1.414 0L12 6.55v9.9l7.132-7.132a1 1 0 0 0 0-1.418Z"/>
+          </svg>
+            <a href="/library">Библиотека</a></div>
+      </nav>
+      <div class="purple-background-circle sidebar-purple-position"></div>
+    </aside>
+    <div class="page-wrapper">
+      <div class="artist-container" style="background-image: url('static/img/test_artist_image.jpg')">
+        <h1>Имя артиста</h1>
+      </div>
+      <div class="artist-page">
+        <div class="title">
+          <div class="title-name">Популярные треки</div>
+        </div>
+        <div class="popular-tracks">
+          {{#each top_tracks}}
+            <div class="popular-tracks-card">
+              <a href="/album/{{ album.album_id }}"
+                ><img src="{{ image }}" alt="{{ name }}" />
+                <p class="card-name">{{ name }}</p>
+                {{#each artists}}
+                <p class="card-sub">{{ name }}</p>
+                {{/each}}
+              </a>
+            </div>
+            {{/each}}
+        </div>
+
+        <div class="title">
+          <div class="title-name">Альбомы</div>
+        </div>
+        <div class="slider">
+            <i class="slide-btn left"></i>
+            <div class="cards" id="slidebar">
+              {{#each albums}}
+              <div class="card">
+                <a href="/album/{{ album_id }}">
+                  <img src="{{ image }}" alt="{{ name }}" />
+                  <p class="card-name">{{ name }}</p>
+                  <p class="card-sub">{{ artist }}</p>
+                </a>
+                <button class="play-button"></button>
+              </div>
+              {{/each}}
+            </div>
+            <i class="slide-btn right"></i>
+        </div>
+
+        <div class="title">
+          <div class="title-name">Синглы</div>
+        </div>
+        <div class="slider">
+          <p><i class="slide-btn left"></i></p>
+          <div class="cards" id="slidebar">
+            {{#each singls}}
+            <div class="card">
+              <a href="/album/{{ album.album_id }}"
+                ><img src="{{ image }}" alt="{{ name }}" />
+                <p class="card-name">{{ name }}</p>
+                {{#each artists}}
+                <p class="card-sub">{{ name }}</p>
+                {{/each}}
+              </a>
+            </div>
+            {{/each}}
+          </div>
+          <p><i class="slide-btn right"></i></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
