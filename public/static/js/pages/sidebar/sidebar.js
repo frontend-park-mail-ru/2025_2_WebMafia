@@ -1,9 +1,7 @@
 export class Sidebar {
   async render() {
-    const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
-
     const contentTemplate = Handlebars.templates['sidebar.hbs'];
-    const headerHTML = contentTemplate({ isAuthenticated });
+    const headerHTML = contentTemplate();
 
     const layout = document.getElementById('layout');
     if (layout && !document.getElementById('sidebar')) {

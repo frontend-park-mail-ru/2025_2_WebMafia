@@ -3,10 +3,8 @@ import { router } from '../../routing.js';
 
 export class Header {
   async render() {
-    const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
-
     const contentTemplate = Handlebars.templates['header.hbs'];
-    const headerHTML = contentTemplate({ isAuthenticated });
+    const headerHTML = contentTemplate();
 
     const section = document.getElementById('section');
     if (section && !document.getElementById('header')) {
@@ -36,7 +34,6 @@ export class Header {
   profileDropdown() {
     const profileBtn = document.querySelector('.profile-btn');
     const dropDownMenu = document.querySelector('.dropdown-menu');
-    console.log('drop settings');
 
     profileBtn.addEventListener('click', (e) => {
       e.stopPropagation();

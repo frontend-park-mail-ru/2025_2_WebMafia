@@ -12,6 +12,4 @@ app.use(/(.*)/, (req, res) => {
 
 app.listen(process.env.PORT || 8090, () => {
   console.log(`Express server is listening on http://localhost:${port}`);
-
-  console.log(`Express server is listening on :${port}`);
 });

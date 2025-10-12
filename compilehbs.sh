@@ -16,3 +16,8 @@ handlebars public/static/js/partials/eyeOpen.hbs -f public/static/js/partials/ey
 
 handlebars public/static/js/partials/eyeClosed.hbs -f public/static/js/partials/eyeClosed.tmpl.js
 
+handlebars public/static/js/partials/homeIcon.hbs -f public/static/js/partials/homeIcon.tmpl.js
+
+handlebars public/static/js/partials/libraryIcon.hbs -f public/static/js/partials/libraryIcon.tmpl.js
+
+

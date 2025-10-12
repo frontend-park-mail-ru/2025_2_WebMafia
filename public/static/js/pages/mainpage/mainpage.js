@@ -17,18 +17,12 @@ export class MainPage {
       albums: [],
       tracks: [],
     };
-    console.log('header');
 
     Handlebars.registerPartial('header', Handlebars.templates['header.hbs']);
-    console.log('header');
     Handlebars.registerPartial('sidebar', Handlebars.templates['sidebar.hbs']);
-    console.log('heasidebarr');
 
     const contentTemplateWithoutData = Handlebars.templates['MainPage.hbs'];
     document.getElementById('app').innerHTML = contentTemplateWithoutData(pageData);
-
-    header.render(true);
-    sidebar.render(true);
 
     try {
       const data = await apiServise.getMainPageData();
@@ -59,8 +53,8 @@ export class MainPage {
     const contentTemplate = Handlebars.templates['MainPage.hbs'];
     document.getElementById('app').innerHTML = contentTemplate(pageData);
 
-    header.render(true);
-    sidebar.render(true);
+    header.render();
+    sidebar.render();
 
     this.sliderFunction();
     this.nowPlayingCardSlider();
@@ -85,7 +79,6 @@ export class MainPage {
   nowPlayingCardSlider() {
     const prevBtn = document.querySelector('.current-card-btn.prev');
     const nextBtn = document.querySelector('.current-card-btn.next');
-    console.log(prevBtn);
 
     let cards = [
       { img: '/static/img/image11.jpg', name: 'Tyler, the Creator' },
