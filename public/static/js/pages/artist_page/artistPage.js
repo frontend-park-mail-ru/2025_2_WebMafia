@@ -1,5 +1,6 @@
 import { apiServise } from '../../data.js';
 import { router } from '../../routing.js';
+import { initScrollbar } from '../../scrollbar.js'
 
 export class ArtistPage {
   async render() {
@@ -46,22 +47,30 @@ export class ArtistPage {
     const contentTemplate = Handlebars.templates['artistPage.hbs'];
     document.getElementById('app').innerHTML = contentTemplate(pageData);
 
+    initScrollbar();
     this.addEventListeners();
   }
 
   addEventListeners() {
-    const logoutButton = document.getElementById('logoutBtn');
-    if (logoutButton) {
-      logoutButton.addEventListener('click', async (e) => {
+    const showInfoBtn = document.getElementById('showArtistDescription');
+    const container = document.querySelector('.artist-container');
+
+    if (showInfoBtn && container) {
+      showInfoBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        try {
-          await apiServise.logoutUser();
-        } catch (error) {
-          console.error('Logout request failed:', error.message);
-        } finally {
-          localStorage.removeItem('isAuthenticated');
-          router.navigate('/login');
+
+        const wrapper = container.querySelector('.artist-description');
+
+        if (container.classList.contains('expanded')) {
+          wrapper.style.maxHeight = '35px';
+          container.style.minHeight = '430px';
+        } else {
+          const newHeight = 430 + wrapper.scrollHeight - 35;
+          wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
+          container.style.minHeight = newHeight + 'px';
         }
+
+        container.classList.toggle('expanded');
       });
     }
   }

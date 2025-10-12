@@ -11,3 +11,5 @@ handlebars public/static/js/pages/artist_page/artistPage.hbs -f public/static/js
 handlebars public/static/js/partials/eyeOpen.hbs -f public/static/js/partials/eyeOpen.tmpl.js
 
 handlebars public/static/js/partials/eyeClosed.hbs -f public/static/js/partials/eyeClosed.tmpl.js
+
+handlebars public/static/js/partials/angleDown.hbs -f public/static/js/partials/angleDown.tmpl.js

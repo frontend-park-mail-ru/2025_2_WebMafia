@@ -1,44 +1,57 @@
 .artist-container {
   display: flex;
-  height: 340px;
-  padding: 30px;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  min-height: 430px;
+  padding: 30px 30px 25px 30px;
   border-radius: 20px;
   box-shadow: 0 5px 80px 8px rgba(26, 25, 30, 0.4);
-  background-size: cover;
-  background-position: center;
   color: #fafafa;
+  background: linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0)),
+            url('/static/img/test_artist_image.jpg') top center/cover no-repeat;
+  transition: min-height 0.6s ease;
 }
 
-.page-wrapper::-webkit-scrollbar {
+#scrollContent {
+  height: 100%;
+  overflow-y: scroll;
+  box-sizing: content-box;
+}
+
+#scrollContent::-webkit-scrollbar {
+  width: 0;
+}
+
+#customScrollbar {
+  position: absolute;
+  top: 0;
+  right: 15px;
   width: 12px;
-  background-color: inherit;
-  transition: background 0.3s ease;
-}
-
-.page-wrapper::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.2);
-}
-
-.page-wrapper::-webkit-scrollbar-thumb {
-  transition: background 0.3s ease;
-  background-clip: content-box;
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(0,0,0,0.4);
   border-radius: 4px;
+  opacity: 0;
+  transition: background 0.3s ease, opacity 0.3s ease, width 0.2s ease;
+  pointer-events: none;
+  z-index: 9999;
 }
 
-.page-wrapper::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 0, 0, 0.8);
+.page-wrapper:hover #customScrollbar {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#customScrollbar:hover {
+  background: rgba(0, 0, 0, 0.6);
 }
 
 .page-wrapper {
-  margin-right: 20px;
+  margin: 0 15px 0 10px;
   clip-path: inset(0 round 30px);
-  scrollbar-gutter: stable;
-  overflow-y: auto;
   display: flex;
   flex-direction: column;
   flex: 1;
-  overflow-x: hidden;
+  overflow: hidden;
   background-color: white;
 }
 
@@ -48,4 +61,70 @@
   color: black;
   flex: 1;
   transition: overflow-y 0.3s ease;
+}
+
+.artist-name {
+  font-weight: 800;
+  font-size: 100px;
+}
+
+.listeners-num {
+  font-weight: 600;
+  font-size: 20px;
+}
+
+.artist-interaction {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.primary-outline-button {
+  all: unset;
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 15px 10px 15px;
+  border-radius: 14px;
+  border: 3px solid #9C58E0;
+  color: #9C58E0;
+  background: none;
+  cursor: pointer;
+}
+
+.artist-subscription {
+  font-size: 20px;
+  font-weight: 600;
+  height: 15px;
+}
+
+.artist-description {
+  max-height: 35px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 14px;
+  font-weight: 400;
+  margin-top: 10px;
+  width: 60%;
+  white-space: pre-line;
+  transition: max-height 0.6s ease;
+}
+
+#showArtistDescription {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 5px;
+}
+
+#showArtistDescription svg {
+  fill: #FAFAFA;
+  transition: transform 0.3s ease;
+}
+
+.artist-container.expanded #showArtistDescription svg {
+  transform: rotate(180deg);
 }

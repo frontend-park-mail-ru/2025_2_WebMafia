@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
 function registerPartials() {
   Handlebars.registerPartial('eyeOpen', Handlebars.templates['eyeOpen.hbs']);
   Handlebars.registerPartial('eyeClosed', Handlebars.templates['eyeClosed.hbs']);
+  Handlebars.registerPartial('angleDown', Handlebars.templates['angleDown.hbs']);
 }
 
 function initializePage() {

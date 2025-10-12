@@ -46,68 +46,84 @@
       <div class="purple-background-circle sidebar-purple-position"></div>
     </aside>
     <div class="page-wrapper">
-      <div class="artist-container" style="background-image: url('static/img/test_artist_image.jpg')">
-        <h1>Имя артиста</h1>
-      </div>
-      <div class="artist-page">
-        <div class="title">
-          <div class="title-name">Популярные треки</div>
-        </div>
-        <div class="popular-tracks">
-          {{#each top_tracks}}
-            <div class="popular-tracks-card">
-              <a href="/album/{{ album.album_id }}"
-                ><img src="{{ image }}" alt="{{ name }}" />
-                <p class="card-name">{{ name }}</p>
-                {{#each artists}}
-                <p class="card-sub">{{ name }}</p>
-                {{/each}}
-              </a>
+      <div id="scrollContent">
+          <div class="artist-container">
+            <div class="artist-name">Rammstein</div>
+            <div class="artist-interaction">
+              <div class="listeners-num">13 267 225 слушателей в месяц</div>
+              <button class="primary-outline-button artist-subscription">Подписаться</button>
             </div>
-            {{/each}}
-        </div>
-
-        <div class="title">
-          <div class="title-name">Альбомы</div>
-        </div>
-        <div class="slider">
-            <i class="slide-btn left"></i>
-            <div class="cards" id="slidebar">
-              {{#each albums}}
-              <div class="card">
-                <a href="/album/{{ album_id }}">
-                  <img src="{{ image }}" alt="{{ name }}" />
-                  <p class="card-name">{{ name }}</p>
-                  <p class="card-sub">{{ artist }}</p>
-                </a>
-                <button class="play-button"></button>
-              </div>
-              {{/each}}
-            </div>
-            <i class="slide-btn right"></i>
-        </div>
-
-        <div class="title">
-          <div class="title-name">Синглы</div>
-        </div>
-        <div class="slider">
-          <p><i class="slide-btn left"></i></p>
-          <div class="cards" id="slidebar">
-            {{#each singls}}
-            <div class="card">
-              <a href="/album/{{ album.album_id }}"
-                ><img src="{{ image }}" alt="{{ name }}" />
-                <p class="card-name">{{ name }}</p>
-                {{#each artists}}
-                <p class="card-sub">{{ name }}</p>
-                {{/each}}
-              </a>
-            </div>
-            {{/each}}
+            <p class="artist-description">Rammstein — немецкая метал-группа, образованная в январе 1994 года в Берлине.
+              Музыкальный стиль группы относится к жанру индастриал-метала.
+              Основные черты творчества группы: специфический ритм, в котором выдержана большая часть композиций, и эпатирующие тексты песен.
+              Особую известность группе принесли сценические выступления, часто сопровождаемые использованием пиротехники,
+              получившие признание в музыкальной среде. Состав группы ни разу не менялся. По состоянию на 2018 год она продала около 20 млн копий альбомов.
+            </p>
+            <button type="button" id="showArtistDescription" aria-label="Показать информацию об исполнителе">
+              {{> angleDown }}
+            </button>
           </div>
-          <p><i class="slide-btn right"></i></p>
-        </div>
+          <div class="artist-page">
+            <div class="title">
+              <div class="title-name">Популярные треки</div>
+            </div>
+            <div class="popular-tracks">
+              {{#each top_tracks}}
+                <div class="popular-tracks-card">
+                  <a href="/album/{{ album.album_id }}"
+                    ><img src="{{ image }}" alt="{{ name }}" />
+                    <p class="card-name">{{ name }}</p>
+                    {{#each artists}}
+                    <p class="card-sub">{{ name }}</p>
+                    {{/each}}
+                  </a>
+                </div>
+                {{/each}}
+            </div>
+
+            <div class="title">
+              <div class="title-name">Альбомы</div>
+            </div>
+            <div class="slider">
+                <i class="slide-btn left"></i>
+                <div class="cards" id="slidebar">
+                  {{#each albums}}
+                  <div class="card">
+                    <a href="/album/{{ album_id }}">
+                      <img src="{{ image }}" alt="{{ name }}" />
+                      <p class="card-name">{{ name }}</p>
+                      <p class="card-sub">{{ artist }}</p>
+                    </a>
+                    <button class="play-button"></button>
+                  </div>
+                  {{/each}}
+                </div>
+                <i class="slide-btn right"></i>
+            </div>
+
+            <div class="title">
+              <div class="title-name">Синглы</div>
+            </div>
+            <div class="slider">
+              <p><i class="slide-btn left"></i></p>
+              <div class="cards" id="slidebar">
+                {{#each singls}}
+                <div class="card">
+                  <a href="/album/{{ album.album_id }}"
+                    ><img src="{{ image }}" alt="{{ name }}" />
+                    <p class="card-name">{{ name }}</p>
+                    {{#each artists}}
+                    <p class="card-sub">{{ name }}</p>
+                    {{/each}}
+                  </a>
+                </div>
+                {{/each}}
+              </div>
+              <p><i class="slide-btn right"></i></p>
+            </div>
+          </div>
       </div>
+      <div id="customScrollbar"></div>
     </div>
   </div>
 </div>
