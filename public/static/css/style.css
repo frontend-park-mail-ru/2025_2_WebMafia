@@ -16,16 +16,12 @@ body {
   height: 100vh;
 }
 
-
-
 /* Макет под хедером */
 .layout {
   display: flex;
   flex: 1;
   min-height: 0;
 }
-
-
 
 /* Content */
 .page {
@@ -42,7 +38,6 @@ body {
   overflow-x: hidden;
 }
 
-
 /* Now playing card slider */
 .now-playing-container {
   display: flex;
@@ -54,7 +49,7 @@ body {
 }
 
 /* стрелки */
-.current-card-btn.prev::before{
+.current-card-btn.prev::before {
   content: '';
   width: 24px;
   height: 24px;
@@ -64,7 +59,7 @@ body {
   display: inline-block;
 }
 
-.current-card-btn.next::before{
+.current-card-btn.next::before {
   content: '';
   width: 24px;
   height: 24px;
@@ -79,8 +74,10 @@ body {
   background: none;
   border: none;
   cursor: pointer;
-  transition: transform 0.2s ease, color 0.2s ease;
-} 
+  transition:
+    transform 0.2s ease,
+    color 0.2s ease;
+}
 
 .current-card-btn.prev:hover,
 .current-card-btn.next:hover {
@@ -108,7 +105,6 @@ body {
   transform: scale(0.9);
 }
 
-
 .now-playing-container-card-previous img,
 .now-playing-container-card-next img {
   width: 100%;
@@ -117,11 +113,11 @@ body {
   border-radius: 20px;
 }
 
-.now-playing-container-card-previous{
+.now-playing-container-card-previous {
   margin-right: -80px;
 }
 
-.now-playing-container-card-next{
+.now-playing-container-card-next {
   margin-left: -80px;
 }
 
@@ -152,7 +148,7 @@ body {
   height: 56px;
   border-radius: 50%;
   border: none;
-  background-color: #9C58E0;
+  background-color: #9c58e0;
   color: white;
   font-size: 22px;
   cursor: pointer;
@@ -177,10 +173,9 @@ body {
   background-color: #a866eb;
 }
 
-
 /* название трека */
 .current-card-name {
-   position: absolute;
+  position: absolute;
   bottom: 15px;
   left: 50%;
   transform: translateX(-50%);
@@ -193,9 +188,6 @@ body {
   overflow: hidden; /* скрываем лишнее */
   text-overflow: ellipsis; /* заменяем на "…" */
 }
-
-
-
 
 /* custom scrollbar */
 .page::-webkit-scrollbar {
@@ -374,7 +366,7 @@ body {
   margin-left: 2px;
 }
 
-.play-button:hover{
+.play-button:hover {
   transform: scale(1.03);
   background-color: #a866eb;
 }
@@ -520,7 +512,7 @@ body {
   margin-left: 2px;
 }
 
-.play-button-track:hover{
+.play-button-track:hover {
   transform: scale(1.03);
   background-color: #a866eb;
 }
@@ -528,4 +520,3 @@ body {
 .card-tracks:hover .play-button-track {
   opacity: 1;
 }
-

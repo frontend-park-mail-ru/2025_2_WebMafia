@@ -18,9 +18,6 @@ export class MainPage {
       tracks: [],
     };
 
-    Handlebars.registerPartial('header', Handlebars.templates['header.hbs']);
-    Handlebars.registerPartial('sidebar', Handlebars.templates['sidebar.hbs']);
-
     const contentTemplateWithoutData = Handlebars.templates['MainPage.hbs'];
     document.getElementById('app').innerHTML = contentTemplateWithoutData(pageData);
 

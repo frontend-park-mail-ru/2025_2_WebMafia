@@ -26,8 +26,8 @@
   color: rgb(0, 0, 0);
 }
 
-.menu-item.active{
-  background-color: #9C58E0;
+.menu-item.active {
+  background-color: #9c58e0;
   color: #fff;
   padding: 10px;
   border-radius: 14px;
@@ -39,11 +39,11 @@
   color: rgb(0, 0, 0);
 }
 
-.menu-item a.active{
+.menu-item a.active {
   color: #fff;
 }
 
-.menu-item a.active:hover{
+.menu-item a.active:hover {
   color: #fff;
 }
 
