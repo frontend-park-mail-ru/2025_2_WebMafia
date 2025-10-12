@@ -8,6 +8,7 @@
   padding-left: 24px;
   border-radius: 30px;
   overflow: hidden;
+  margin-left: 10px;
 }
 
 .menu {
@@ -59,18 +60,15 @@
   color: #fff;
 }
 
-/* кружочек на сайдбаре */
-.purple-background-circle {
-  position: absolute;
-  width: 315px;
-  height: 315px;
-  border-radius: 50%;
-  background: rgba(149, 0, 255, 0.4);
-  filter: blur(80px);
-  z-index: 0;
+.library-items{
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin: 10px 0 10px 30px;
 }
 
-.sidebar-purple-position {
-  top: 55%;
-  right: 210px;
+.library-item{
+  font-size: 16px;
+  font-weight: 200 ;
 }
+
