@@ -1,5 +1,7 @@
 import { apiServise } from '../../data.js';
 import { router } from '../../routing.js';
+import { header } from '../header/header.js';
+import { sidebar } from '../sidebar/sidebar.js';
 
 export class MainPage {
   async render() {
@@ -15,6 +17,9 @@ export class MainPage {
       albums: [],
       tracks: [],
     };
+
+    const contentTemplateWithoutData = Handlebars.templates['MainPage.hbs'];
+    document.getElementById('app').innerHTML = contentTemplateWithoutData(pageData);
 
     try {
       const data = await apiServise.getMainPageData();
@@ -45,25 +50,11 @@ export class MainPage {
     const contentTemplate = Handlebars.templates['MainPage.hbs'];
     document.getElementById('app').innerHTML = contentTemplate(pageData);
 
-    this.addEventListeners();
-    this.sliderFunction();
-  }
+    header.render();
+    sidebar.render();
 
-  addEventListeners() {
-    const logoutButton = document.getElementById('logoutBtn');
-    if (logoutButton) {
-      logoutButton.addEventListener('click', async (e) => {
-        e.preventDefault();
-        try {
-          await apiServise.logoutUser();
-        } catch (error) {
-          console.error('Logout request failed:', error.message);
-        } finally {
-          localStorage.removeItem('isAuthenticated');
-          router.navigate('/login');
-        }
-      });
-    }
+    this.sliderFunction();
+    this.nowPlayingCardSlider();
   }
 
   sliderFunction() {
@@ -79,6 +70,39 @@ export class MainPage {
       leftBtn.addEventListener('click', () => {
         slidebar.scrollLeft -= scrollAmount;
       });
+    });
+  }
+
+  nowPlayingCardSlider() {
+    const prevBtn = document.querySelector('.current-card-btn.prev');
+    const nextBtn = document.querySelector('.current-card-btn.next');
+
+    let cards = [
+      { img: '/static/img/image11.jpg', name: 'Tyler, the Creator' },
+      { img: '/static/img/image12.jpg', name: 'Playboi carti' },
+      { img: '/static/img/image13.jpg', name: 'Jpegmafia' },
+    ];
+
+    let currentIndex = 1;
+
+    function renderCards() {
+      const prevIndex = (currentIndex - 1 + cards.length) % cards.length;
+      const nextIndex = (currentIndex + 1) % cards.length;
+
+      document.querySelector('.now-playing-container-card-previous img').src = cards[prevIndex].img;
+      document.querySelector('.now-playing-container-card-next img').src = cards[nextIndex].img;
+      document.querySelector('.now-playing-container-card-current img').src = cards[currentIndex].img;
+      document.querySelector('.current-card-name').textContent = cards[currentIndex].name;
+    }
+
+    prevBtn.addEventListener('click', () => {
+      currentIndex = (currentIndex - 1 + cards.length) % cards.length;
+      renderCards();
+    });
+
+    nextBtn.addEventListener('click', () => {
+      currentIndex = (currentIndex + 1) % cards.length;
+      renderCards();
     });
   }
 }
