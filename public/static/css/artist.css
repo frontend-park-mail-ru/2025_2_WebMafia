@@ -3,13 +3,11 @@
   flex-direction: column;
   justify-content: flex-end;
   align-items: flex-start;
-  min-height: 430px;
+  min-height: 450px;
   padding: 30px 30px 25px 30px;
   border-radius: 20px;
   box-shadow: 0 5px 80px 8px rgba(26, 25, 30, 0.4);
   color: #fafafa;
-  background: linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0)),
-            url('/static/img/test_artist_image.jpg') top center/cover no-repeat;
   transition: min-height 0.6s ease;
 }
 
@@ -25,24 +23,27 @@
 
 #customScrollbar {
   position: absolute;
-  top: 0;
-  right: 15px;
-  width: 12px;
-  background: rgba(0,0,0,0.4);
-  border-radius: 4px;
+  width: 10px;
   opacity: 0;
-  transition: background 0.3s ease, opacity 0.3s ease, width 0.2s ease;
-  pointer-events: none;
-  z-index: 9999;
+  transition: opacity 0.3s ease;
+  border-radius: 4px;
+  overflow: hidden;
 }
 
-.page-wrapper:hover #customScrollbar {
-  opacity: 1;
-  pointer-events: auto;
+#customScrollbarThumb {
+  position: absolute;
+  width: 100%;
+  background: #707070;
+  border-radius: 4px;
+  transition: background 0.3s ease;
 }
 
-#customScrollbar:hover {
-  background: rgba(0, 0, 0, 0.6);
+#customScrollbar:hover #customScrollbarThumb {
+  background: #4e4e4e;
+}
+
+#customScrollbarThumb.dragging {
+  background: #2e2e2e !important;
 }
 
 .page-wrapper {
@@ -56,11 +57,14 @@
 }
 
 .artist-page {
+  display: flex;
+  flex-direction: column;
   box-sizing: content-box;
-  padding: 23px 0 0 23px;
   color: black;
   flex: 1;
   transition: overflow-y 0.3s ease;
+  gap: 25px;
+  padding: 25px 12px 0 12px;
 }
 
 .artist-name {
@@ -98,15 +102,21 @@
 }
 
 .artist-description {
-  max-height: 35px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+  max-height: 35px;
   font-size: 14px;
   font-weight: 400;
-  margin-top: 10px;
-  width: 60%;
-  white-space: pre-line;
+  margin-top: 12px;
+  width: 50%;
   transition: max-height 0.6s ease;
+}
+
+.artist-container.expanded .artist-description {
+  white-space: pre-line;
 }
 
 #showArtistDescription {
@@ -127,4 +137,96 @@
 
 .artist-container.expanded #showArtistDescription svg {
   transform: rotate(180deg);
+}
+
+.tracks-table {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.track-row {
+  display: flex;
+  padding: 10px 40px 10px 25px;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 30px;
+  transition: background-color 0.3s ease;
+}
+
+.track-row:hover {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.right-row-content {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 40% 20% 20% 15% 5%;
+  align-items: center;
+  gap: 8px;
+}
+
+.track-cover {
+  width: 40px;
+  height: 40px;
+  border-radius: 5px;
+  object-fit: cover;
+  margin-right: 20px;
+}
+
+.track-name {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.track-number {
+  color: #636363FF;
+  font-size: 18px;
+  font-weight: 600;
+  margin-right: 20px;
+}
+
+.track-performer, .track-plays-num, .track-album-name, .track-duration {
+  color: #636363FF;
+  font-size: 18px;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.track-performer .track-plays-num .track-album-name {
+  transition: color 0.3s ease;
+}
+
+.track-row:hover .track-performer, .track-row:hover .track-plays-num, .track-row:hover .track-album-name {
+  color: black;
+}
+
+.track-performer:hover {
+  text-decoration: underline;
+}
+
+.secondary-button {
+  all: unset;
+  border-radius: 14px;
+  background: #e6e8ef;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 10px 15px 10px 15px;
+  transition: 0.3s ease;
+}
+
+.secondary-button:hover {
+  background: #c7cad3;
+}
+
+.show-tracks-button {
+  height: 15px;
+  margin: 10px 0 0 15px;
 }
