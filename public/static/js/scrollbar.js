@@ -62,9 +62,9 @@ export const initScrollbar = () => {
   scrollbarThumb.addEventListener('mousedown', (e) => {
     e.preventDefault();
     isDragging = true;
-    startY = e.clientY;  // координата мыши
-    startScrollTop = scrollContent.scrollTop;  // позиция прокручиваемого контента
-    document.body.style.userSelect = 'none';  // чтоб не выбирался прокручиваемый контент
+    startY = e.clientY; // координата мыши
+    startScrollTop = scrollContent.scrollTop; // позиция прокручиваемого контента
+    document.body.style.userSelect = 'none'; // чтоб не выбирался прокручиваемый контент
     scrollbarThumb.classList.add('dragging'); // для изменения цвета полосы прокрутки
   });
 

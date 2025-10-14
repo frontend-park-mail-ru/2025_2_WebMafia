@@ -1,22 +1,17 @@
-import { apiServise } from '../../data.js';
 import { router } from '../../routing.js';
-import { initScrollbar } from '../../scrollbar.js'
+import { initScrollbar } from '../../scrollbar.js';
 
 export class ArtistPage {
   playsParser(plays) {
-
     if (plays > 1_000_000_000) {
       const value = plays / 1_000_000_000;
-      plays = (value < 10 ? value.toFixed(1) : value.toFixed(0))
-        .replace('.', ',') + " млрд";
+      plays = (value < 10 ? value.toFixed(1) : value.toFixed(0)).replace('.', ',') + ' млрд';
     } else if (plays > 1_000_000) {
       const value = plays / 1_000_000;
-      plays = (value < 10 ? value.toFixed(1) : value.toFixed(0))
-        .replace('.', ',') + " млн";
+      plays = (value < 10 ? value.toFixed(1) : value.toFixed(0)).replace('.', ',') + ' млн';
     } else if (plays > 1_000) {
       const value = plays / 1_000;
-      plays = (value < 10 ? value.toFixed(1) : value.toFixed(0))
-        .replace('.', ',') + " тыс";
+      plays = (value < 10 ? value.toFixed(1) : value.toFixed(0)).replace('.', ',') + ' тыс';
     }
 
     return plays;
@@ -34,52 +29,52 @@ export class ArtistPage {
       albums: [],
       popular_tracks: [
         {
-          cover: "static/img/test_cover.jpg",
-          name: "Sonne",
-          performers: ["Rammstein"],
+          cover: 'static/img/test_cover.jpg',
+          name: 'Sonne',
+          performers: ['Rammstein'],
           plays: 727345807,
-          album: "Mutter",
-          duration: "4:32",
+          album: 'Mutter',
+          duration: '4:32',
         },
         {
-          cover: "static/img/test_cover2.jpg",
-          name: "Du hast",
-          performers: ["Rammstein"],
+          cover: 'static/img/test_cover2.jpg',
+          name: 'Du hast',
+          performers: ['Rammstein'],
           plays: 753636278,
-          album: "Sehnsucht",
-          duration: "3:55",
+          album: 'Sehnsucht',
+          duration: '3:55',
         },
         {
-          cover: "static/img/test_cover1.jpg",
-          name: "Deutschland",
-          performers: ["Rammstein"],
+          cover: 'static/img/test_cover1.jpg',
+          name: 'Deutschland',
+          performers: ['Rammstein'],
           plays: 601994443,
-          album: "Rammstein",
-          duration: "5:22",
+          album: 'Rammstein',
+          duration: '5:22',
         },
         {
-          cover: "static/img/test_cover2.jpg",
-          name: "Engel",
-          performers: ["Rammstein"],
+          cover: 'static/img/test_cover2.jpg',
+          name: 'Engel',
+          performers: ['Rammstein'],
           plays: 384388389,
-          album: "Sehnsucht",
-          duration: "4:24",
+          album: 'Sehnsucht',
+          duration: '4:24',
         },
         {
-          cover: "static/img/test_cover.jpg",
-          name: "Ich will",
-          performers: ["Rammstein"],
+          cover: 'static/img/test_cover.jpg',
+          name: 'Ich will',
+          performers: ['Rammstein'],
           plays: 301004704,
-          album: "Mutter",
-          duration: "3:37",
+          album: 'Mutter',
+          duration: '3:37',
         },
       ],
       singls: [],
       similar_artists: [],
-      id: "",
-      name: "Rammstein",
-      artist_avatar: "/static/img/test_artist_image.jpg",
-      listeners : 13267225,
+      id: '',
+      name: 'Rammstein',
+      artist_avatar: '/static/img/test_artist_image.jpg',
+      listeners: 13267225,
       description: `Rammstein — немецкая метал-группа, образованная в январе 1994 года в Берлине.
               Музыкальный стиль группы относится к жанру индастриал-метала.
               Основные черты творчества группы: специфический ритм, в котором выдержана большая часть композиций, и эпатирующие тексты песен.
@@ -113,9 +108,9 @@ export class ArtistPage {
       return;
     }*/
 
-    pageData.popular_tracks = pageData.popular_tracks.map(track => ({
+    pageData.popular_tracks = pageData.popular_tracks.map((track) => ({
       ...track,
-      plays: this.playsParser(track.plays)
+      plays: this.playsParser(track.plays),
     }));
     pageData.listeners = this.playsParser(pageData.listeners);
     Handlebars.registerHelper('numeration', function (value) {

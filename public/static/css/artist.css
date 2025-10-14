@@ -89,8 +89,8 @@
   align-items: center;
   padding: 10px 15px 10px 15px;
   border-radius: 14px;
-  border: 3px solid #9C58E0;
-  color: #9C58E0;
+  border: 3px solid #9c58e0;
+  color: #9c58e0;
   background: none;
   cursor: pointer;
 }
@@ -131,7 +131,7 @@
 }
 
 #showArtistDescription svg {
-  fill: #FAFAFA;
+  fill: #fafafa;
   transition: transform 0.3s ease;
 }
 
@@ -181,14 +181,17 @@
 }
 
 .track-number {
-  color: #636363FF;
+  color: #636363ff;
   font-size: 18px;
   font-weight: 600;
   margin-right: 20px;
 }
 
-.track-performer, .track-plays-num, .track-album-name, .track-duration {
-  color: #636363FF;
+.track-performer,
+.track-plays-num,
+.track-album-name,
+.track-duration {
+  color: #636363ff;
   font-size: 18px;
   font-weight: 600;
   text-decoration: none;
@@ -201,7 +204,9 @@
   transition: color 0.3s ease;
 }
 
-.track-row:hover .track-performer, .track-row:hover .track-plays-num, .track-row:hover .track-album-name {
+.track-row:hover .track-performer,
+.track-row:hover .track-plays-num,
+.track-row:hover .track-album-name {
   color: black;
 }
 
