@@ -11,6 +11,7 @@ function registerPartials() {
   Handlebars.registerPartial('libraryIcon', Handlebars.templates['libraryIcon.hbs']);
   Handlebars.registerPartial('header', Handlebars.templates['header.hbs']);
   Handlebars.registerPartial('sidebar', Handlebars.templates['sidebar.hbs']);
+  Handlebars.registerPartial('player', Handlebars.templates['player.hbs']);
 }
 
 function initializePage() {
