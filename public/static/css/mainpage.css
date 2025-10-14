@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap');
 
 body {
   font-family: 'Montserrat', sans-serif;
@@ -42,7 +42,7 @@ body {
 
 /* Content */
 .page {
-  margin: 0 10px;
+  margin: 0 20px;
   box-sizing: content-box;
   scrollbar-gutter: stable;
   clip-path: inset(0 round 30px);

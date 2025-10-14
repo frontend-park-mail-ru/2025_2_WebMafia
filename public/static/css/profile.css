@@ -20,36 +20,13 @@
   transition: overflow-y 0.3s ease;
 }
 
-.profile-wrapper::-webkit-scrollbar {
-  width: 12px;
-  background-color: inherit;
-  transition: background 0.3s ease;
-}
-
-.profile-wrapper::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.2);
-}
-
-.profile-wrapper::-webkit-scrollbar-thumb {
-  transition: background 0.3s ease;
-  background-clip: content-box;
-  background: rgba(0, 0, 0, 0.4);
-  border-radius: 4px;
-}
-
-.profile-wrapper::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 0, 0, 0.8);
-}
-
 .profile-wrapper {
-  margin-right: 20px;
+  margin: 0 20px;
   clip-path: inset(0 round 30px);
-  scrollbar-gutter: stable;
-  overflow-y: auto;
   display: flex;
   flex-direction: column;
   flex: 1;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
 .profile-avatar {
@@ -66,12 +43,15 @@
   height: 100%;
   color: #fafafa;
   font-weight: 700;
-  font-size: 64px;
   border-radius: 50%;
   align-items: center;
   justify-content: center;
   display: flex;
   background: linear-gradient(135deg, #7fd8e6 14.9%, #e556fd 100%);
+}
+
+.default-avatar-profile {
+  font-size: 64px;
 }
 
 .profile-username {
@@ -139,16 +119,6 @@
 .profile-blue-position {
   top: -10px;
   left: -10px;
-}
-
-.purple-background-circle {
-  position: absolute;
-  width: 315px;
-  height: 315px;
-  border-radius: 50%;
-  background: rgba(149, 0, 255, 0.4);
-  filter: blur(80px);
-  z-index: 0;
 }
 
 .profile-purple-position {

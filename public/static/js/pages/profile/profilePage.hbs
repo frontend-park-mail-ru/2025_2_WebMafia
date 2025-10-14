@@ -1,36 +1,8 @@
 <div class="section" id="section">
-  <header class="head" id="header">
-    <div class="head-left">
-      <div class="logo">
-        <span><img src="static/img/wave.png" class="wave-icon" /></span>
-        <h1 class="icon-name">Wave</h1>
-      </div>
-    </div>
-    <div class="head-right">
-      {{#if isAuthenticated}}
-      <div class="profile-dropdown">
-        <button class="profile-btn">Профиль</button>
-        <div class="dropdown-menu">
-          <a href="/profile">Профиль</a>
-          <a href="/settings">Настройки</a>
-          <a id="logoutBtn" class="nav-link login" href="#">Выйти</a>
-        </div>
-      </div>
-      {{else}}
-      <a class="nav-link login" href="/login">Войти</a>
-      <a class="nav-link register" href="/register">Зарегистрироваться</a>
-      {{/if}}
-    </div>
-  </header>
 
+  {{> header}}
   <div class="layout">
-    <aside class="sidebar" id="sidebar">
-      <nav class="menu">
-        <span class="menuicon"><img src="static/img/search.png" /><a href="/search">Поиск</a></span>
-        <span class="menuicon main"><img src="static/img/home.png" alt="" /><a href="/">Главная</a></span>
-        <span class="menuicon"><img src="static/img/library.png" alt="" /><a href="/library">Библиотека</a></span>
-      </nav>
-    </aside>
+    {{> sidebar}}
     <div class="profile-wrapper">
       <div class="profile-container">
         <div class="blue-background-circle profile-blue-position"></div>
@@ -39,7 +11,7 @@
           {{#if avatar}}
           <img src="{{ avatar }}" alt="Ваш аватар" />
           {{else}}
-          <div class="default-avatar">AK</div>
+          <div class="default-avatar default-avatar-profile">AK</div>
           {{/if}}
         </div>
         <div class="profile-info">

@@ -90,21 +90,12 @@
 .profile-avatar-header {
   width: 48px;
   height: 48px;
-  border: 5px solid #fff;
+  border: 3px solid #fff;
   border-radius: 50%;
 }
 
 .default-avatar-header {
-  width: 100%;
-  height: 100%;
-  color: #fafafa;
-  font-weight: 700;
   font-size: 20px;
-  border-radius: 50%;
-  align-items: center;
-  justify-content: center;
-  display: flex;
-  background: linear-gradient(135deg, #7fd8e6 14.9%, #e556fd 100%);
 }
 
 .dropdown-menu {
