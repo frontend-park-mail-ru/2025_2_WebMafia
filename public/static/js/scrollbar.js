@@ -40,10 +40,10 @@ export const initScrollbar = () => {
   };
 
   // show/hide on hover
-  scrollContent.addEventListener('mouseenter', () => {
+  scrollContent.addEventListener('pointerenter', () => {
     scrollbarTrack.style.opacity = '1';
   });
-  scrollContent.addEventListener('mouseleave', () => {
+  scrollContent.addEventListener('pointerleave', () => {
     if (!isDragging) {
       scrollbarTrack.style.opacity = '0';
     }
@@ -59,7 +59,7 @@ export const initScrollbar = () => {
   let startY = 0;
   let startScrollTop = 0;
 
-  scrollbarThumb.addEventListener('mousedown', (e) => {
+  scrollbarThumb.addEventListener('pointerdown', (e) => {
     e.preventDefault();
     isDragging = true;
     startY = e.clientY; // координата мыши
@@ -69,7 +69,7 @@ export const initScrollbar = () => {
   });
 
   // скроллю с теми же пропорциями, что и в updateThumb()
-  document.addEventListener('mousemove', (e) => {
+  document.addEventListener('pointermove', (e) => {
     if (!isDragging) return;
     const rect = scrollContent.getBoundingClientRect();
     const scrollableHeight = scrollContent.scrollHeight - scrollContent.clientHeight;
@@ -80,7 +80,7 @@ export const initScrollbar = () => {
     scrollContent.scrollTop = startScrollTop + scrollDelta;
   });
 
-  document.addEventListener('mouseup', () => {
+  document.addEventListener('pointerup', () => {
     if (isDragging) {
       isDragging = false;
       document.body.style.userSelect = '';
