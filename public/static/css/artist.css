@@ -195,6 +195,12 @@
   font-size: 18px;
   font-weight: 600;
   text-decoration: none;
+}
+
+.track-performers,
+.track-plays-num,
+.track-album-name,
+.track-duration {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -225,6 +231,7 @@
   gap: 12px;
   padding: 10px 15px 10px 15px;
   transition: 0.3s ease;
+  cursor: pointer;
 }
 
 .secondary-button:hover {

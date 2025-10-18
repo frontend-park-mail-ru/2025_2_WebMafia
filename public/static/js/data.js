@@ -42,6 +42,10 @@ export class apiServises {
     return this.request('/home');
   }
 
+  async getProfilePageData() {
+    return this.request('/profile');
+  }
+
   async loginUser(login, password) {
     return this.request('/login', {
       method: 'POST',

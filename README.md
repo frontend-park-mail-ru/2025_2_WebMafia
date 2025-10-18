@@ -3,7 +3,7 @@
 Frontend-часть для музыкального сервиса Wave Music. Веб-приложение разработано на JavaScript с использованием Handlebars шаблонов, предоставляющее современный пользовательский интерфейс для работы с музыкой.
 
 ![Статус](https://img.shields.io/badge/статус-в_разработке-orange)
-![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-yellow)
+![JavaScript](https://img.shields.io/badge/JavaScript-yellow)
 ![Handlebars](https://img.shields.io/badge/Handlebars-шаблонизация-orange)
 
 ## Команда проекта
@@ -57,6 +57,11 @@ Frontend-часть для музыкального сервиса Wave Music. �
 
 ## Начало работы
 
+### Предварительные требования
+
+- Node.js
+- Браузер
+
 ### Запуск форматирования
 
 ```bash
@@ -86,4 +91,4 @@ open http://localhost:8090
 
 ### Ссылка на сайт
 
-http://217.16.17.173:8090/login
+http://217.16.17.173:8090/

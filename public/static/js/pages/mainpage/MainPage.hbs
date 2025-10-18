@@ -1,47 +1,42 @@
-<div class="section">
-  <header class="head" id="header">
-    <div class="head-left">
-      <div class="logo">
-        <span><img src="static/img/wave.png" class="wave-icon" /></span>
-        <h1 class="icon-name">Wave</h1>
-      </div>
-    </div>
-    <div class="head-right">
-      {{#if isAuthenticated}}
-      <a id="logoutBtn" class="nav-link login" href="#">Выйти</a>
-      {{else}}
-      <a class="nav-link login" href="/login">Войти</a>
-      <a class="nav-link register" href="/register">Зарегистрироваться</a>
-      {{/if}}
-    </div>
-  </header>
+<div class="section" id="section">
+  {{> header}}
 
   <div class="layout">
-    <aside class="sidebar">
-      <nav class="menu">
-        <span class="menuicon"><img src="static/img/search.png" /><a href="#">Поиск</a></span>
-        <span class="menuicon"><img src="static/img/home.png" alt="" /><a href="/">Главная</a></span>
-        <span class="menuicon"><img src="static/img/library.png" alt="" /><a href="/">Библиотека</a></span>
-      </nav>
-    </aside>
-
-    <div class="divide-line"></div>
-
+    <div class="purple-background-circle sidebar-purple-position"></div>
+    {{> sidebar}}
     <div class="page">
+      <div class="now-playing-container">
+        <button class="current-card-btn prev"></button>
+
+        <div class="now-playing-container-card-previous">
+          <img src="/static/img/image11.jpg" alt="" />
+        </div>
+        <div class="now-playing-container-card-current">
+          <img src="/static/img/image12.jpg" alt="" />
+          <button class="current-card-btn play"></button>
+          <p class="current-card-name">Queen</p>
+        </div>
+        <div class="now-playing-container-card-next">
+          <img src="/static/img/image13.jpg" alt="" />
+        </div>
+        <button class="current-card-btn next"></button>
+      </div>
+
       <!-- Артисты -->
       <div class="title">
         <div class="title-name">Артисты</div>
-        <div class="show-all"><a href="">Показать всё</a></div>
+        <div class="show-all"><a href="/show_all/artists">Показать всё</a></div>
       </div>
       <div class="slider">
         <p><i class="slide-btn left"></i></p>
         <div class="cards" id="slidebar">
           {{#each artists}}
           <div class="card">
-            <a href="#">
+            <a href="/artist/{{ artist_id }}">
               <img src="{{ image }}" alt="{{ name }}" />
               <p class="card-name">{{ name }}</p>
             </a>
+            <button class="play-button" data-artist-id="{{ artist_id }}"></button>
           </div>
           {{/each}}
         </div>
@@ -51,18 +46,19 @@
       <!-- Альбомы -->
       <div class="title">
         <div class="title-name">Альбомы</div>
-        <div class="show-all"><a href="">Показать всё</a></div>
+        <div class="show-all"><a href="/show_all/albums">Показать всё</a></div>
       </div>
       <div class="slider">
         <i class="slide-btn left"></i>
         <div class="cards" id="slidebar">
           {{#each albums}}
           <div class="card">
-            <a href="#">
+            <a href="/album/{{ album_id }}">
               <img src="{{ image }}" alt="{{ name }}" />
               <p class="card-name">{{ name }}</p>
               <p class="card-sub">{{ artist }}</p>
             </a>
+            <button class="play-button" data-artist-id="{{ album_id }}"></button>
           </div>
           {{/each}}
         </div>
@@ -72,20 +68,24 @@
       <!-- Треки -->
       <div class="title">
         <div class="title-name">Треки</div>
-        <div class="show-all"><a href="">Показать всё</a></div>
+        <div class="show-all"><a href="/show_all/tracks">Показать всё</a></div>
       </div>
       <div class="slider">
         <p><i class="slide-btn left"></i></p>
-        <div class="cards" id="slidebar">
+        <div class="cards tracks" id="slidebar">
           {{#each tracks}}
-          <div class="card">
-            <a href="#"
-              ><img src="{{ image }}" alt="{{ name }}" />
-              <p class="card-name">{{ name }}</p>
-              {{#each artists}}
-              <p class="card-sub">{{ name }}</p></a
-            >
-            {{/each}}
+          <div class="card-tracks">
+            <a class="card-track-content" href="/album/{{ album.album_id }}">
+              <img src="{{ image }}" alt="{{ name }}" />
+              <div class="track-content">
+                <p class="card-name-track">{{ name }}</p>
+                {{#each artists}}
+                <p class="card-sub-track">{{ name }}</p>
+                {{/each}}
+              </div>
+            </a>
+
+            <button class="play-button-track" data-artist-id="{{ track_id }}"></button>
           </div>
           {{/each}}
         </div>

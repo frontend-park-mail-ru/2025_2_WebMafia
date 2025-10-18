@@ -16,153 +16,6 @@ body {
   height: 100vh;
 }
 
-/* HEAD */
-.head {
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 70px;
-  background: #3d197c00;
-  z-index: 100;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0);
-}
-
-.head a {
-  margin-left: 16px;
-  color: white;
-  text-decoration: none;
-}
-
-.logo {
-  padding-left: 24px;
-  display: flex;
-  align-items: center;
-  font-weight: bold;
-  color: #bb86fc;
-}
-
-.wave-icon {
-  margin-right: 10px;
-  object-fit: fill;
-}
-
-.icon-name {
-  font-size: 38px;
-  font-weight: 700;
-  color: #000000;
-}
-
-.head-right {
-  margin-right: 23px;
-}
-
-.nav-link.main {
-  font-size: 36px;
-  font-weight: 700;
-}
-
-.nav-link.login {
-  font-size: 16px;
-  font-weight: 600;
-}
-
-.nav-link.register {
-  /* background: #9C58E0; */
-  background: linear-gradient(-45deg, #4e85e1, #64cfd9);
-  animation: gradient 10s ease infinite;
-  background-size: 400% 400%;
-  border-radius: 20rem;
-  padding: 5px 10px;
-  color: #3e197c;
-  margin-left: 40px;
-  font-size: 26px;
-  font-weight: 600;
-}
-
-.nav-link.login:hover {
-  color: #4e85e1;
-}
-
-.nav-link.register:hover {
-  color: #9c58e0;
-  background: linear-gradient(-45deg, #acdde7, #ffffff);
-  animation: gradient 10s ease infinite;
-  background-size: 400% 400%;
-}
-
-.profile-dropdown {
-  position: relative;
-  display: inline-block;
-  justify-content: center;
-}
-
-.profile-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-}
-
-.profile-avatar-header {
-  width: 48px;
-  height: 48px;
-  border: 5px solid #fff;
-  border-radius: 50%;
-}
-
-.default-avatar-header {
-  width: 100%;
-  height: 100%;
-  color: #fafafa;
-  font-weight: 700;
-  font-size: 20px;
-  border-radius: 50%;
-  align-items: center;
-  justify-content: center;
-  display: flex;
-  background: linear-gradient(135deg, #7fd8e6 14.9%, #e556fd 100%);
-}
-
-.dropdown-menu {
-  position: absolute;
-  right: 0;
-  top: 100%;
-  background: #9c58e0d2;
-  border-radius: 30px;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-  min-width: 160px;
-  z-index: 10;
-  margin-top: 5px;
-  justify-content: center;
-  opacity: 0;
-  transform: translateY(-10px);
-  pointer-events: none;
-  transition: all 0.3s ease;
-}
-
-.dropdown-menu.show {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
-}
-
-.dropdown-menu a {
-  display: block;
-  padding: 10px;
-  text-decoration: none;
-  color: #fff;
-  transition: background 0.2s;
-  font-size: 20px;
-  font-weight: 600;
-}
-
-.dropdown-menu a:hover {
-  color: #dfd7e7;
-  text-decoration: underline;
-}
-
 /* Макет под хедером */
 .layout {
   display: flex;
@@ -170,68 +23,7 @@ body {
   min-height: 0;
 }
 
-/* Sidebar */
-.sidebar {
-  left: 0;
-  bottom: 0;
-  width: 252px;
-  background-color: rgba(4, 25, 109, 0.08);
-  backdrop-filter: blur(34px);
-  padding-left: 24px;
-  border-radius: 30px;
-  overflow: hidden;
-}
-
-.menu {
-  margin-top: 25px;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.menu-item {
-  justify-content: center;
-  align-items: center;
-  width: 220px;
-  font-size: 20px;
-  font-weight: bold;
-  color: rgb(0, 0, 0);
-}
-
-.menu-item.active {
-  background-color: #9c58e0;
-  color: #fff;
-  padding: 10px;
-  border-radius: 14px;
-}
-
-.menu-item a {
-  text-decoration: none;
-  margin-left: 15px;
-  color: rgb(0, 0, 0);
-}
-
-.menu-item a.active {
-  color: #fff;
-}
-
-.menu-item a.active:hover {
-  color: #fff;
-}
-
-.menu-item a:hover {
-  color: #3e197c;
-}
-
-.menu-item:hover {
-  color: #3e197c;
-}
-
-.menu-item.active:hover {
-  color: #fff;
-}
-
-/* кружочек на сайдбаре */
+/* фолетовый кружочек на фоне */
 .purple-background-circle {
   position: absolute;
   width: 315px;
@@ -244,12 +36,13 @@ body {
 
 .sidebar-purple-position {
   top: 55%;
-  right: 210px;
+  left: -160px;
 }
+
 
 /* Content */
 .page {
-  margin-left: 10px;
+  margin: 0 20px;
   box-sizing: content-box;
   scrollbar-gutter: stable;
   clip-path: inset(0 round 30px);
@@ -441,7 +234,6 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-left: 25px;
 }
 
 .title-name {
@@ -635,4 +427,113 @@ body {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.cards.tracks {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(2, auto);
+  max-height: 200px;
+  width: 100%;
+  gap: 10px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  margin-left: -23px;
+  padding-left: 23px;
+  padding-bottom: 43px;
+  padding-top: 23px;
+}
+
+.card-tracks {
+  width: 250px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  background-color: #f3f5fa;
+  border-radius: 30px;
+  transition: transform 0.3s ease;
+}
+
+.card-tracks:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+  transform: scale(1.01);
+}
+
+.card-track-content {
+  display: flex;
+  padding: 10px;
+  align-items: center;
+  flex: 1;
+  gap: 15px;
+}
+
+.card-tracks img {
+  object-fit: cover;
+  flex-shrink: 0;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: none;
+}
+
+.card-tracks:hover img {
+  filter: brightness(70%);
+}
+
+.card-tracks a {
+  text-decoration: none;
+}
+
+.card-name-track {
+  color: #000000;
+  font-size: 16px;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-sub-track {
+  color: #000000;
+  font-size: 12px;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.play-button-track {
+  cursor: pointer;
+  position: absolute;
+  opacity: 0;
+  left: 24px;
+  width: 56px;
+  height: 56px;
+  color: white;
+  background-color: #9c58e0;
+  border-radius: 50%;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+}
+
+.play-button-track::before {
+  content: '';
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 10px 0 10px 16px;
+  border-color: transparent transparent transparent #ffffff;
+  margin-left: 2px;
+}
+
+.play-button-track:hover {
+  transform: scale(1.03);
+  background-color: #a866eb;
+}
+
+.card-tracks:hover .play-button-track {
+  opacity: 1;
 }

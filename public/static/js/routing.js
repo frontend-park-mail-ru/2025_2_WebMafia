@@ -3,6 +3,7 @@ import { notFoundPage } from './pages/notfoundpage/notFoundPage.js';
 import { LoginPage } from './pages/login/login.js';
 import { RegistrationPage } from './pages/register/register.js';
 import { ArtistPage } from './pages/artist_page/artistPage.js'
+import { ProfilePage } from './pages/profile/profilePage.js';
 
 export class Router {
   constructor() {
@@ -11,6 +12,7 @@ export class Router {
       '/login': new LoginPage(),
       '/register': new RegistrationPage(),
       '/artist': new ArtistPage(),
+      '/profile': new ProfilePage(),
     };
     this.handleLocation = this.handleLocation.bind(this);
   }
