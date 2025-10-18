@@ -26,7 +26,33 @@ export class ArtistPage {
 
     let pageData = {
       isAuthenticated: true,
-      albums: [],
+      albums: [
+        {
+          name: "Zeit",
+          cover: "static/img/test_cover3.jpg",
+          year: 2022,
+        },
+        {
+          name: "Rammstein",
+          cover: "static/img/test_cover1.jpg",
+          year: 2019,
+        },
+        {
+          name: "Liebe ist für ale da",
+          cover: "static/img/test_cover4.jpg",
+          year: 2009,
+        },
+        {
+          name: "Rosenrot",
+          cover: "static/img/test_cover5.jpg",
+          year: 2005,
+        },
+        {
+          name: "Reise, reise",
+          cover: "static/img/test_cover6.jpg",
+          year: 2004,
+        },
+      ],
       popular_tracks: [
         {
           cover: 'static/img/test_cover.jpg',
@@ -70,8 +96,13 @@ export class ArtistPage {
         },
       ],
       singls: [],
-      similar_artists: [],
-      id: '',
+      similar_artists: [
+        {
+          name: "Metallica",
+          artist_avatar: "/static/img/test_artist_image.jpg",
+          listeners: 30143696,
+        }
+      ],
       name: 'Rammstein',
       artist_avatar: '/static/img/test_artist_image.jpg',
       listeners: 13267225,
