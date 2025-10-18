@@ -20,4 +20,21 @@ handlebars public/static/js/partials/homeIcon.hbs -f public/static/js/partials/h
 
 handlebars public/static/js/partials/libraryIcon.hbs -f public/static/js/partials/libraryIcon.tmpl.js
 
+handlebars public/static/js/partials/playBtn.hbs -f public/static/js/partials/playBtn.tmpl.js
+
+handlebars public/static/js/partials/nextTrack.hbs -f public/static/js/partials/nextTrack.tmpl.js
+
+handlebars public/static/js/partials/prevTrack.hbs -f public/static/js/partials/prevTrack.tmpl.js
+
+handlebars public/static/js/partials/shuffleBtn.hbs -f public/static/js/partials/shuffleBtn.tmpl.js
+
+handlebars public/static/js/partials/repeatBtn.hbs -f public/static/js/partials/repeatBtn.tmpl.js
+
+handlebars public/static/js/partials/pauseBtn.hbs -f public/static/js/partials/pauseBtn.tmpl.js
+
+handlebars public/static/js/partials/volumeBar.hbs -f public/static/js/partials/volumeBar.tmpl.js
+
+
+
+
 

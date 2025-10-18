@@ -1,13 +1,13 @@
 /* Player */
 .player {
   border-radius: 30px;
+  margin: 5px 10px;
   height: 70px;
-  padding: 2px;
+  padding: 5px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: #3d197c00;
-  color: #fff;
+  background-color: #1A1A1A;
   z-index: 200;
 }
 
@@ -22,13 +22,14 @@
 .track-cover {
   width: 60px;
   height: 60px;
-  border-radius: 20px;
+  border-radius: 10px;
   object-fit: cover;
 }
 
 .track-info {
   display: flex;
   flex-direction: column;
+  color: #fff;
 }
 
 .track-title {
@@ -37,53 +38,68 @@
 }
 
 .track-artist {
-  font-size: 14px;
-  opacity: 0.7;
+  font-size: 12px;
+  color: #fff;
+  font-weight: 100;
 }
 
 /* Центр */
 .player-center {
-  margin-top: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 15px;
+  color: #fff;
+}
+
+.controls {
+  align-items: center;
+  gap: 25px;
+}
+
+.control-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #fff;
+  transition: transform 0.2s;
+  align-items: center;
+}
+
+.control-btn.play.disactive,
+.control-btn.pause.disactive{
+  display: none;
+}
+
+.control-btn.play.active,
+.control-btn.pause.active{
+  opacity: 1;
+}
+
+.control-btn svg{
+  width: 30px;
+  height: 30px;
+}
+
+.control-btn:hover {
+  transform: scale(1.01);
+  color: #a866eb;
 }
 
 .progress-remote {
   gap: 15px;
   display: flex;
   align-items: center;
-  width: 100%;
 }
 
 .remote-slider {
   width: 600px;
   flex: 1;
   cursor: pointer;
-  height: 4px;
-}
-
-.controls {
-  margin-top: -20px;
+  height: 14px;
   display: flex;
-  align-items: center;
-  gap: 15px;
+  background: linear-gradient(90deg ,#7FD8E6, #F048FF);
 }
 
-.control-btn {
-  background: none;
-  border: none;
-  color: white;
-  font-size: 22px;
-  cursor: pointer;
-  transition: transform 0.2s;
-}
-
-.control-btn:hover {
-  transform: scale(1.2);
-  color: #9c58e0;
-}
 
 /* Правая часть */
 .player-right {
@@ -93,6 +109,52 @@
 }
 
 .volume-slider {
+  height: 14px;
   width: 120px;
   cursor: pointer;
+  background: linear-gradient(90deg ,#ffffff, #260029);
+}
+
+.volume-icon {
+  transition: color 0.3s ease;
+  color: #fff;
+}
+
+
+.volume-mute-cross {
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  fill: none;
+  transform-origin: center;
+}
+
+/* Уровни громкости */
+.volume-icon.level-0 .volume-wave-1,
+.volume-icon.level-0 .volume-wave-2,
+.volume-icon.level-0 .volume-wave-3 {
+  opacity: 0 !important;
+}
+
+.volume-icon.level-0 .volume-mute-cross {
+  opacity: 1;
+  transform: scale(1.1) rotate(0deg);
+}
+
+.volume-icon.level-1 .volume-wave-1 {
+  opacity: 1;
+}
+
+.volume-icon.level-2 .volume-wave-1,
+.volume-icon.level-2 .volume-wave-2 {
+  opacity: 1;
+}
+
+.volume-icon.level-3 .volume-wave-1,
+.volume-icon.level-3 .volume-wave-2,
+.volume-icon.level-3 .volume-wave-3 {
+  opacity: 1;
+}
+
+/* Эффект приглушения цвета при mute */
+.volume-icon.level-0 {
+  color: #9ca3af;
 }
