@@ -1,0 +1,224 @@
+.profile-container {
+  height: 325px;
+  background-color: rgba(4, 25, 109, 0.08);
+  backdrop-filter: blur(34px);
+  background-size: 400% 400%;
+  box-sizing: content-box;
+  flex-shrink: 0;
+  display: flex;
+  gap: 50px;
+  position: relative;
+  overflow: hidden;
+}
+
+.profile-page {
+  box-sizing: content-box;
+  background-color: #ffffff;
+  padding: 23px 0 0 23px;
+  color: black;
+  flex: 1;
+  transition: overflow-y 0.3s ease;
+}
+
+.profile-wrapper {
+  margin: 0 20px;
+  clip-path: inset(0 round 30px);
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+}
+
+.profile-avatar {
+  width: 250px;
+  height: 250px;
+  border: 5px solid #fff;
+  border-radius: 50%;
+  box-shadow: 0 15px 4px 0 rgba(0, 0, 0, 0.15);
+  margin: 37px 0 0 60px;
+}
+
+.default-avatar {
+  width: 100%;
+  height: 100%;
+  color: #fafafa;
+  font-weight: 700;
+  border-radius: 50%;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  background: linear-gradient(135deg, #7fd8e6 14.9%, #e556fd 100%);
+}
+
+.default-avatar-profile {
+  font-size: 64px;
+}
+
+.profile-username {
+  font-weight: 800;
+  font-size: 40px;
+  max-width: 100px;
+  white-space: normal;
+  margin-bottom: 20px;
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  margin-top: 113px;
+}
+
+.primary-button {
+  all: unset;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  border-radius: 14px;
+  padding: 10px 15px 10px 15px;
+  background: linear-gradient(157deg, #7e4dff, #a766ff, #da96ff) right bottom;
+  background-size: 150% 150%;
+  transition:
+    background-position 0.5s ease,
+    background 0.5s ease;
+  font-weight: 600;
+  font-size: 20px;
+  color: #fafafa;
+  cursor: pointer;
+}
+
+.edit-button-size {
+  height: 30px;
+}
+
+.primary-button:hover {
+  background-position: left top;
+}
+
+.primary-button svg {
+  fill: #fafafa;
+}
+
+/*Для показа кружочков на заднем фоне*/
+.profile-avatar,
+.profile-info {
+  position: relative;
+  z-index: 1;
+}
+
+.blue-background-circle {
+  position: absolute;
+  width: 190px;
+  height: 190px;
+  border-radius: 50%;
+  background: rgba(113, 255, 253, 0.8);
+  filter: blur(80px);
+  z-index: 0;
+}
+
+.profile-blue-position {
+  top: -10px;
+  left: -10px;
+}
+
+.profile-purple-position {
+  top: -55px;
+  right: -55px;
+}
+
+.edit-profile-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(4, 25, 109, 0.08);
+  backdrop-filter: blur(34px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 1000;
+}
+
+.edit-profile-overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.edit-profile-window {
+  background: #fff;
+  padding: 40px;
+  border-radius: 20px;
+  transform: translateY(-500px);
+  opacity: 0;
+  transition:
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.8s ease;
+}
+
+.edit-profile-overlay.active .edit-profile-window {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.secondary-button {
+  all: unset;
+  border-radius: 14px;
+  background: #e6e8ef;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 10px 15px 10px 15px;
+}
+
+.secondary-button:hover {
+  background: #c7cad3;
+}
+
+.edit-avatar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 20px;
+}
+
+.edit-avatar-placement {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+}
+
+.save-profile-button-size {
+  height: 20px;
+}
+
+.edit-profile-info {
+  display: flex;
+  margin-top: 20px;
+}
+
+.edit-profile-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 40px;
+  font-size: 18px;
+}
+
+.edit-avatar-buttons {
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+  width: 140px;
+  margin-top: 17px;
+  gap: 17px;
+}
+
+.save-avatar-button-size {
+  height: 12px;
+}

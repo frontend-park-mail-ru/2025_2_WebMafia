@@ -11,7 +11,6 @@ export class RegistrationPage {
     }
     const contentTemplate = Handlebars.templates['register.hbs'];
     document.getElementById('app').innerHTML = contentTemplate();
-
     initPasswordShowing();
     this.initValidation();
   }
@@ -25,16 +24,11 @@ export class RegistrationPage {
       },
       login: (value) => {
         if (!value.trim()) return 'Поле обязательно для заполнения';
-
-        if (value.length < 5) return 'Логин должен содержать минимум 5 символов';
-
         if (value.length < 5) return 'Слишком короткое имя пользователя';
-
         return null;
       },
       password: (value) => {
         if (!value) return 'Поле обязательно для заполнения';
-
         if (value.length < 8) return 'Слишком короткий пароль';
         return null;
       },
