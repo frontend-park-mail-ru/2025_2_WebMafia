@@ -19,6 +19,29 @@
   gap: 15px;
 }
 
+.like-btn{
+  width: 30px;
+  height: 30px;
+  stroke: #fff;
+  stroke-width: 2px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform 0.3s;
+}
+
+.like-btn.active{
+  fill: #a866eb;
+  stroke:#a866eb;
+
+}
+
+.like-btn:hover{
+  stroke: #a866eb;
+  fill: #a866eb;
+  cursor: pointer;
+  transform: scale(1.03);
+}
+
 .track-cover {
   width: 60px;
   height: 60px;
@@ -52,8 +75,10 @@
 }
 
 .controls {
+  display: flex;
   align-items: center;
-  gap: 25px;
+  justify-content: center;
+  gap: 15px;
 }
 
 .control-btn {
@@ -65,9 +90,20 @@
   align-items: center;
 }
 
+.control-btn.shuffle svg,
+.control-btn.repeat svg{
+  width: 23px;
+  height: 23px;
+}
+
 .control-btn.play.disactive,
 .control-btn.pause.disactive{
   display: none;
+}
+
+.control-btn.play path,
+.control-btn.pause rect{
+  fill: #1A1A1A;
 }
 
 .control-btn.play.active,
@@ -95,10 +131,41 @@
   width: 600px;
   flex: 1;
   cursor: pointer;
-  height: 14px;
   display: flex;
-  background: linear-gradient(90deg ,#7FD8E6, #F048FF);
+
+  --progress: 20%;
 }
+
+.remote-slider::-webkit-slider-runnable-track{
+  height: 8px;
+  border-radius: 30px;
+  
+  /* background: linear-gradient(90deg ,#7FD8E6, #a866eb); */
+  background: linear-gradient(90deg, 
+    #7FD8E6 0%, 
+    #a866eb var(--progress), 
+    #e0e0e0 var(--progress), 
+    #e0e0e0 100%
+  );
+}
+
+.remote-slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #a866eb;
+  border: 2px solid #7FD8E6;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  margin-top: -4px;
+  transition: all 0.2s ease;
+}
+
+.remote-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+  border-color: #a866eb;
+}
+
 
 
 /* Правая часть */

@@ -42,7 +42,7 @@ body {
 
 /* Content */
 .page {
-  margin: 0 20px;
+  margin: 0 10px;
   box-sizing: content-box;
   scrollbar-gutter: stable;
   clip-path: inset(0 round 30px);

@@ -1,14 +1,16 @@
 export class Player {
   async render() {
     const contentTemplate = Handlebars.templates['player.hbs'];
-    const headerHTML = contentTemplate();
+    const playerHTML = contentTemplate();
 
     const section = document.getElementById('section');
     if (section && !document.getElementById('player')) {
-      section.insertAdjacentHTML('afterbegin', headerHTML);
+      section.insertAdjacentHTML('afterbegin', playerHTML);
     }
     this.volumeRender();
     this.playPauseSwitch();
+    this.sliderColorChange();
+    this.likeTrack();
   }
 
   volumeRender() {
@@ -54,6 +56,38 @@ export class Player {
       pauseBtn.classList.add('disactive');
       playBtn.classList.remove('disactive');
       pauseBtn.classList.remove('active');
+    });
+  }
+
+  sliderColorChange() {
+    function parseTime(time) {
+      const [minutes, seconds] = time.split(':').map(Number);
+      return minutes * 60 + seconds;
+    }
+    const timeRegulator = document.querySelector('.remote-slider');
+    timeRegulator.addEventListener('input', function () {
+      const value = this.value;
+      this.style.setProperty('--progress', value + '%');
+      const currTimeElement = document.querySelector('.track-time.current');
+      const totalTimeElement = document.querySelector('.track-time.total');
+      const totalTimeText = totalTimeElement.textContent;
+      const totalTime = parseTime(totalTimeText);
+      const currentTime = Math.floor((value / 100) * totalTime);
+      const minutes = Math.floor(currentTime / 60);
+      const seconds = currentTime % 60;
+      currTimeElement.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    });
+  }
+
+  likeTrack() {
+    const likeBnt = document.querySelector('.like-btn');
+    console.log(likeBnt);
+    likeBnt.addEventListener('click', () => {
+      if (likeBnt.classList.contains('active')) {
+        likeBnt.classList.remove('active');
+      } else {
+        likeBnt.classList.add('active');
+      }
     });
   }
 }

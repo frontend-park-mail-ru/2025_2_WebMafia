@@ -20,6 +20,7 @@ function registerPartials() {
   Handlebars.registerPartial('nextTrack', Handlebars.templates['nextTrack.hbs']);
   Handlebars.registerPartial('prevTrack', Handlebars.templates['prevTrack.hbs']);
   Handlebars.registerPartial('volumeBar', Handlebars.templates['volumeBar.hbs']);
+  Handlebars.registerPartial('likeBtn', Handlebars.templates['likeBtn.hbs']);
 }
 
 function initializePage() {
