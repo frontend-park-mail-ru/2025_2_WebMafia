@@ -2,6 +2,7 @@ import { MainPage } from './pages/mainpage/mainpage.js';
 import { notFoundPage } from './pages/notfoundpage/notFoundPage.js';
 import { LoginPage } from './pages/login/login.js';
 import { RegistrationPage } from './pages/register/register.js';
+import { ProfilePage } from './pages/profile/profilePage.js';
 
 export class Router {
   constructor() {
@@ -9,6 +10,7 @@ export class Router {
       '/': new MainPage(),
       '/login': new LoginPage(),
       '/register': new RegistrationPage(),
+      '/profile': new ProfilePage(),
     };
     this.handleLocation = this.handleLocation.bind(this);
   }
