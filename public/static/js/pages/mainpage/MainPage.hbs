@@ -4,7 +4,7 @@
   <div class="layout">
     <div class="purple-background-circle sidebar-purple-position"></div>
     {{> sidebar}}
-    <div class="page">
+    <div class="page" id="scrollContent">
       <div class="now-playing-container">
         <button class="current-card-btn prev"></button>
 
@@ -36,7 +36,7 @@
               <img src="{{ image }}" alt="{{ name }}" />
               <p class="card-name">{{ name }}</p>
             </a>
-            <button class="play-button" data-artist-id="{{ artist_id }}"></button>
+            <button class="play-button play-button-placement" data-artist-id="{{ artist_id }}"></button>
           </div>
           {{/each}}
         </div>
@@ -58,7 +58,7 @@
               <p class="card-name">{{ name }}</p>
               <p class="card-sub">{{ artist }}</p>
             </a>
-            <button class="play-button" data-artist-id="{{ album_id }}"></button>
+            <button class="play-button play-button-placement" data-artist-id="{{ album_id }}"></button>
           </div>
           {{/each}}
         </div>
@@ -85,7 +85,7 @@
               </div>
             </a>
 
-            <button class="play-button-track" data-artist-id="{{ track_id }}"></button>
+            <button class="play-button play-button-track" data-artist-id="{{ track_id }}"></button>
           </div>
           {{/each}}
         </div>

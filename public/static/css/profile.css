@@ -222,3 +222,8 @@
 .save-avatar-button-size {
   height: 12px;
 }
+
+.profile-edit-avatar {
+  font-weight: 700;
+  font-size: 64px;
+}

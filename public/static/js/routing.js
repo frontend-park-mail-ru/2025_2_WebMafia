@@ -7,20 +7,35 @@ import { ProfilePage } from './pages/profile/profilePage.js';
 
 export class Router {
   constructor() {
-    this.routes = {
-      '/': new MainPage(),
-      '/login': new LoginPage(),
-      '/register': new RegistrationPage(),
-      '/artist': new ArtistPage(),
-      '/profile': new ProfilePage(),
-    };
+    this.routes = [
+      { pattern: /^\/$/, component: new MainPage() },
+      { pattern: /^\/login$/, component: new LoginPage() },
+      { pattern: /^\/register$/, component: new RegistrationPage() },
+      { pattern: /^\/artist\/(\d+)$/, component: new ArtistPage() },
+      { pattern: /^\/profile$/, component: new ProfilePage() },
+    ];
     this.handleLocation = this.handleLocation.bind(this);
   }
 
   handleLocation() {
     const path = window.location.pathname;
-    const component = this.routes[path] || new notFoundPage();
-    component.render();
+
+    let matched = null;
+    for (const route of this.routes) {
+      const match = path.match(route.pattern);
+
+      if (match) {
+        matched = { component: route.component, params: match.slice(1) };
+        break;
+      }
+    }
+
+    if (matched) {
+      const { component, params } = matched;
+      component.render(params[0]);
+    } else {
+      new notFoundPage().render();
+    }
   }
 
   init() {

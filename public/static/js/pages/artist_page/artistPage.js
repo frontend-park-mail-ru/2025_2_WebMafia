@@ -17,7 +17,7 @@ export class ArtistPage {
     return plays;
   }
 
-  async render() {
+  async render(id) {
     const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
     if (!isAuthenticated) {
       router.navigate('/login');
@@ -57,7 +57,7 @@ export class ArtistPage {
         {
           cover: 'static/img/test_cover.jpg',
           name: 'Sonne',
-          performers: ['Rammstein'],
+          performers: [{name: 'Rammstein', id: 1}],
           plays: 727345807,
           album: 'Mutter',
           duration: '4:32',
@@ -65,7 +65,7 @@ export class ArtistPage {
         {
           cover: 'static/img/test_cover2.jpg',
           name: 'Du hast',
-          performers: ['Rammstein'],
+          performers: [{name: 'Rammstein', id: 1}],
           plays: 753636278,
           album: 'Sehnsucht',
           duration: '3:55',
@@ -73,7 +73,7 @@ export class ArtistPage {
         {
           cover: 'static/img/test_cover1.jpg',
           name: 'Deutschland',
-          performers: ['Rammstein'],
+          performers: [{name: 'Rammstein', id: 1}],
           plays: 601994443,
           album: 'Rammstein',
           duration: '5:22',
@@ -81,7 +81,7 @@ export class ArtistPage {
         {
           cover: 'static/img/test_cover2.jpg',
           name: 'Engel',
-          performers: ['Rammstein'],
+          performers: [{name: 'Rammstein', id: 1}],
           plays: 384388389,
           album: 'Sehnsucht',
           duration: '4:24',
@@ -89,7 +89,7 @@ export class ArtistPage {
         {
           cover: 'static/img/test_cover.jpg',
           name: 'Ich will',
-          performers: ['Rammstein'],
+          performers: [{name: 'Rammstein', id: 1}],
           plays: 301004704,
           album: 'Mutter',
           duration: '3:37',
@@ -142,6 +142,10 @@ export class ArtistPage {
     pageData.popular_tracks = pageData.popular_tracks.map((track) => ({
       ...track,
       plays: this.playsParser(track.plays),
+    }));
+    pageData.similar_artists = pageData.similar_artists.map((artist) => ({
+      ...artist,
+      listeners: this.playsParser(artist.listeners),
     }));
     pageData.listeners = this.playsParser(pageData.listeners);
     Handlebars.registerHelper('numeration', function (value) {

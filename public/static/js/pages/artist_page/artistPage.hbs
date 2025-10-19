@@ -2,8 +2,7 @@
   {{> header}}
   <div class="layout">
     {{> sidebar}}
-    <div class="page-wrapper">
-      <div id="scrollContent">
+    <div class="page-wrapper" id="scrollContent">
         <div
           class="artist-container"
           style="
@@ -36,7 +35,9 @@
                   <div class="track-name">{{ name }}</div>
                   <div class="track-performers">
                     {{#each performers}}
-                    <a href="#" class="track-performer">{{ this }}, </a>
+                    <a href="artist/{{id}}" class="track-performer">
+                      {{name}}{{#unless @last}}, {{/unless}}
+                    </a>
                     {{/each}}
                   </div>
                   <div class="track-plays-num">{{ plays }} прослушиваний</div>
@@ -54,16 +55,20 @@
           </div>
           <div class="slider">
             <div class="cards" id="slidebar">
+              <p><i class="slide-btn left"></i></p>
               {{#each albums}}
               <div class="card">
                 <a href="/album/{{ album_id }}">
                   <img src="{{ cover }}" alt="{{ name }}" />
-                  <p class="card-name">{{ name }}</p>
-                  <p class="card-sub">{{ year }}</p>
+                  <div class="card-bottom-info">
+                    <p class="card-name">{{ name }}</p>
+                    <p class="card-sub">{{ year }}</p>
+                  </div>
                 </a>
                 <button class="play-button"></button>
               </div>
               {{/each}}
+              <p><i class="slide-btn right"></i></p>
             </div>
           </div>
 
@@ -72,16 +77,20 @@
             <div class="title-name">Синглы и EP</div>
           </div>
           <div class="slider">
+            <p><i class="slide-btn left"></i></p>
             <div class="cards" id="slidebar">
               {{#each singls}}
               <div class="card">
                 <a href="/album/{{ singl_id }}"
                   ><img src="{{ cover }}" alt="{{ name }}" />
-                  <p class="card-name">{{ name }}</p>
-                  <p class="card-sub">{{ year }}</p>
+                  <div class="card-bottom-info">
+                    <p class="card-name">{{ name }}</p>
+                    <p class="card-sub">{{ year }}</p>
+                  </div>
                 </a>
               </div>
               {{/each}}
+            <p><i class="slide-btn right"></i></p>
             </div>
           </div>
           {{/if}}
@@ -94,10 +103,12 @@
             <div class="cards" id="slidebar">
               {{#each similar_artists}}
               <div class="card">
-                <a href="#">
+                <a href="artist/{{id}}">
                   <img src="{{ artist_avatar }}" alt="{{ name }}" />
-                  <p class="card-name">{{ name }}</p>
-                  <p class="card-sub">{{ listeners }}</p>
+                  <div class="card-bottom-info">
+                    <p class="card-name">{{ name }}</p>
+                    <p class="card-sub">{{ listeners }} слушателей</p>
+                  </div>
                 </a>
               </div>
               {{/each}}
@@ -105,7 +116,6 @@
             <p><i class="slide-btn right"></i></p>
           </div>
         </div>
-      </div>
     </div>
   </div>
 </div>
