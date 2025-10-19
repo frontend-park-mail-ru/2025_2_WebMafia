@@ -111,6 +111,10 @@
   opacity: 1;
 }
 
+.control-btn.play path{ 
+  transform: translate(1px, 0);
+}
+
 .control-btn svg{
   width: 30px;
   height: 30px;
@@ -139,8 +143,6 @@
 .remote-slider::-webkit-slider-runnable-track{
   height: 8px;
   border-radius: 30px;
-  
-  /* background: linear-gradient(90deg ,#7FD8E6, #a866eb); */
   background: linear-gradient(90deg, 
     #7FD8E6 0%, 
     #a866eb var(--progress), 
@@ -176,10 +178,38 @@
 }
 
 .volume-slider {
-  height: 14px;
   width: 120px;
   cursor: pointer;
-  background: linear-gradient(90deg ,#ffffff, #260029);
+  
+  --progress: 50%;
+}
+
+.volume-slider::-webkit-slider-runnable-track{
+  height: 8px;
+  border-radius: 30px;
+  background: linear-gradient(90deg, 
+    #7FD8E6 0%, 
+    #a866eb var(--progress), 
+    #7FD8E6 var(--progress), 
+    #7FD8E6 100%
+  );
+}
+
+.volume-slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #a866eb;
+  border: 2px solid #7FD8E6;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  margin-top: -4px;
+  transition: all 0.2s ease;
+}
+
+.volume-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+  border-color: #a866eb;
 }
 
 .volume-icon {
@@ -203,7 +233,7 @@
 
 .volume-icon.level-0 .volume-mute-cross {
   opacity: 1;
-  transform: scale(1.1) rotate(0deg);
+  transform: scale(0.9) rotate(0deg) translate(-2px, 0);
 }
 
 .volume-icon.level-1 .volume-wave-1 {

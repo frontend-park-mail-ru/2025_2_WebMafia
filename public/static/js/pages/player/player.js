@@ -11,6 +11,7 @@ export class Player {
     this.playPauseSwitch();
     this.sliderColorChange();
     this.likeTrack();
+    this.soundChange();
   }
 
   volumeRender() {
@@ -81,13 +82,27 @@ export class Player {
 
   likeTrack() {
     const likeBnt = document.querySelector('.like-btn');
-    console.log(likeBnt);
     likeBnt.addEventListener('click', () => {
       if (likeBnt.classList.contains('active')) {
         likeBnt.classList.remove('active');
       } else {
         likeBnt.classList.add('active');
       }
+    });
+  }
+
+  soundChange() {
+    const volumeRegulator = document.querySelector('.volume-slider');
+
+    volumeRegulator.addEventListener('input', function () {
+      const value = this.value;
+      this.style.setProperty('--progress', value + '%');
+    });
+
+    //чтобы сохранялась гросмкость на будущее
+    volumeRegulator.addEventListener('change', function () {
+      const value = this.value;
+      localStorage.setItem('volume', value);
     });
   }
 }
