@@ -167,12 +167,44 @@
   gap: 8px;
 }
 
+.track-cover-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  margin-right: 20px;
+  cursor: pointer;
+}
+
+.play-popular-track {
+  all: unset;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  height: 18px;
+  transition: opacity 0.3s ease;
+}
+
+.play-popular-track svg {
+  fill: #fafafa;
+}
+
+.track-row:hover .play-popular-track {
+  opacity: 1;
+}
+
 .track-cover {
   width: 40px;
   height: 40px;
   border-radius: 5px;
   object-fit: cover;
-  margin-right: 20px;
+  transition: filter 0.3s ease;
+}
+
+.track-row:hover .track-cover {
+  filter: brightness(0.4);
 }
 
 .track-name {
@@ -184,7 +216,8 @@
   color: #636363ff;
   font-size: 18px;
   font-weight: 600;
-  margin-right: 20px;
+  margin-right: 15px;
+  width: 15px;
 }
 
 .track-performer,

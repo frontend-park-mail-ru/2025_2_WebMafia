@@ -2,6 +2,7 @@ import { apiServise } from '../../data.js';
 import { router } from '../../routing.js';
 import { header } from '../header/header.js';
 import { sidebar } from '../sidebar/sidebar.js';
+import { initScrollbar } from "../../scrollbar.js";
 
 export class MainPage {
   async render() {
@@ -55,6 +56,7 @@ export class MainPage {
 
     this.sliderFunction();
     this.nowPlayingCardSlider();
+    initScrollbar();
   }
 
   sliderFunction() {

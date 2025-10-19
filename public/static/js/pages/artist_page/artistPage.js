@@ -104,7 +104,7 @@ export class ArtistPage {
         }
       ],
       name: 'Rammstein',
-      artist_avatar: '/static/img/test_artist_header.jpg',
+      artist_header: '/static/img/test_artist_header.jpg',
       listeners: 13267225,
       description: `Rammstein — немецкая метал-группа, образованная в январе 1994 года в Берлине.
               Музыкальный стиль группы относится к жанру индастриал-метала.

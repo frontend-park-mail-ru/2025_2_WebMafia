@@ -27,3 +27,5 @@ handlebars public/static/js/partials/pencil.hbs -f public/static/js/partials/pen
 handlebars public/static/js/partials/homeIcon.hbs -f public/static/js/partials/homeIcon.tmpl.js
 
 handlebars public/static/js/partials/libraryIcon.hbs -f public/static/js/partials/libraryIcon.tmpl.js
+
+handlebars public/static/js/partials/play.hbs -f public/static/js/partials/play.tmpl.js

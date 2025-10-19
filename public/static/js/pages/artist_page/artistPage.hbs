@@ -8,7 +8,7 @@
           style="
             background:
               linear-gradient(to top, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0)),
-              url({{ artist_avatar }}) top center/cover no-repeat;
+              url({{ artist_header }}) top center/cover no-repeat;
           "
         >
           <div class="artist-name">{{ name }}</div>
@@ -30,7 +30,10 @@
               {{#each popular_tracks}}
               <div class="track-row">
                 <div class="track-number">{{numeration @index}}</div>
-                <img class="track-cover" src="{{ cover }}" alt="{{ name }}" />
+                <div class="track-cover-wrapper">
+                  <img class="track-cover" src="{{ cover }}" alt="{{ name }}" />
+                  <button class="play-popular-track">{{> play }}</button>
+                </div>
                 <div class="right-row-content">
                   <div class="track-name">{{ name }}</div>
                   <div class="track-performers">
@@ -65,7 +68,7 @@
                     <p class="card-sub">{{ year }}</p>
                   </div>
                 </a>
-                <button class="play-button"></button>
+                <button class="play-button play-button-placement"></button>
               </div>
               {{/each}}
               <p><i class="slide-btn right"></i></p>
@@ -88,6 +91,7 @@
                     <p class="card-sub">{{ year }}</p>
                   </div>
                 </a>
+                <button class="play-button play-button-placement"></button>
               </div>
               {{/each}}
             <p><i class="slide-btn right"></i></p>
