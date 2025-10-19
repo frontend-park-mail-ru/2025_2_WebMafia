@@ -63,7 +63,6 @@
   color: black;
   flex: 1;
   transition: overflow-y 0.3s ease;
-  gap: 25px;
   padding: 25px 12px 0 12px;
 }
 
@@ -137,6 +136,10 @@
 
 .artist-container.expanded #showArtistDescription svg {
   transform: rotate(180deg);
+}
+
+.popular-tracks {
+  margin-bottom: 30px;
 }
 
 .tracks-table {

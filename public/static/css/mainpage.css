@@ -47,7 +47,7 @@ body {
   flex: 1;
   background-color: #ffffff;
   border-radius: 30px;
-  padding: 23px 0 0 23px;
+  padding: 23px 0 0 12px;
   color: black;
   overflow-y: auto;
   overflow-x: hidden;
@@ -209,6 +209,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-left: 23px;
 }
 
 .title-name {
@@ -297,15 +298,13 @@ body {
 /* Cards */
 .cards {
   display: flex;
-  gap: 10px;
-  overflow-x: auto;
-  overflow-y: hidden;
+  overflow: hidden;
   scroll-behavior: smooth;
   width: 100%;
   margin-left: -23px;
-  padding-left: 23px;
-  padding-bottom: 43px;
-  padding-top: 23px;
+  padding-left: 43px;
+  padding-bottom: 30px;
+  padding-top: 15px;
 }
 
 .cards::-webkit-scrollbar {
@@ -323,6 +322,7 @@ body {
   overflow: hidden;
   transition: transform 0.3s ease;
   padding: 10px;
+  margin-right: 10px;
 }
 
 .card:hover {
@@ -413,17 +413,16 @@ body {
 .cards.tracks {
   display: grid;
   grid-auto-flow: column;
+  gap: 10px;
   grid-template-rows: repeat(2, auto);
   max-height: 200px;
   width: 100%;
-  gap: 10px;
-  overflow-x: auto;
-  overflow-y: hidden;
+  overflow: hidden;
   scroll-behavior: smooth;
   margin-left: -23px;
-  padding-left: 23px;
-  padding-bottom: 43px;
-  padding-top: 23px;
+  padding-left: 43px;
+  padding-bottom: 30px;
+  padding-top: 15px;
 }
 
 .card-tracks {
