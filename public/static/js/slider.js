@@ -1,5 +1,5 @@
 export class Slider {
-  async sliderFunction() {
+  sliderFunction() {
     document.querySelectorAll('.slider').forEach((slider) => {
       const slidebar = slider.querySelector('.cards');
       const leftBtn = slider.querySelector('.slide-btn.left');
