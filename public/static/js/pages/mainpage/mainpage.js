@@ -2,6 +2,7 @@ import { apiServise } from '../../data.js';
 import { router } from '../../routing.js';
 import { header } from '../header/header.js';
 import { sidebar } from '../sidebar/sidebar.js';
+import { player } from '../player/player.js';
 
 export class MainPage {
   async render() {
@@ -52,6 +53,7 @@ export class MainPage {
 
     header.render();
     sidebar.render();
+    player.render();
 
     this.sliderFunction();
     this.nowPlayingCardSlider();
