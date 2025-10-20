@@ -6,6 +6,8 @@ handlebars public/static/js/pages/login/login.hbs -f public/static/js/pages/logi
 
 handlebars public/static/js/pages/register/register.hbs -f public/static/js/pages/register/register.tmpl.js
 
+handlebars public/static/js/pages/artist_page/artistPage.hbs -f public/static/js/pages/artist_page/artistPage.tmpl.js
+
 handlebars public/static/js/pages/profile/profilePage.hbs -f public/static/js/pages/profile/profilePage.tmpl.js
 
 handlebars public/static/js/pages/header/header.hbs -f public/static/js/pages/header/header.tmpl.js
@@ -18,11 +20,15 @@ handlebars public/static/js/partials/eyeOpen.hbs -f public/static/js/partials/ey
 
 handlebars public/static/js/partials/eyeClosed.hbs -f public/static/js/partials/eyeClosed.tmpl.js
 
+handlebars public/static/js/partials/angleDown.hbs -f public/static/js/partials/angleDown.tmpl.js
+
 handlebars public/static/js/partials/pencil.hbs -f public/static/js/partials/pencil.tmpl.js
 
 handlebars public/static/js/partials/homeIcon.hbs -f public/static/js/partials/homeIcon.tmpl.js
 
 handlebars public/static/js/partials/libraryIcon.hbs -f public/static/js/partials/libraryIcon.tmpl.js
+
+handlebars public/static/js/partials/play.hbs -f public/static/js/partials/play.tmpl.js
 
 handlebars public/static/js/partials/playBtn.hbs -f public/static/js/partials/playBtn.tmpl.js
 

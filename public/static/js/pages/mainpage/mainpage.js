@@ -2,6 +2,7 @@ import { apiServise } from '../../data.js';
 import { router } from '../../routing.js';
 import { header } from '../header/header.js';
 import { sidebar } from '../sidebar/sidebar.js';
+import { initScrollbar } from "../../scrollbar.js";
 import { slider } from '../../slider.js';
 import { player } from '../player/player.js';
 
@@ -58,6 +59,7 @@ export class MainPage {
 
     slider.sliderFunction();
     this.nowPlayingCardSlider();
+    initScrollbar();
   }
 
   nowPlayingCardSlider() {
