@@ -1,13 +1,13 @@
 /* Player */
 .player {
   border-radius: 30px;
+  margin: 5px 10px;
   height: 70px;
-  padding: 2px;
+  padding: 5px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: #3d197c00;
-  color: #fff;
+  background-color: #1A1A1A;
   z-index: 200;
 }
 
@@ -19,16 +19,40 @@
   gap: 15px;
 }
 
+.like-btn{
+  width: 30px;
+  height: 30px;
+  stroke: #fff;
+  stroke-width: 2px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform 0.3s;
+}
+
+.like-btn.active{
+  fill: #a866eb;
+  stroke:#a866eb;
+
+}
+
+.like-btn:hover{
+  stroke: #a866eb;
+  fill: #a866eb;
+  cursor: pointer;
+  transform: scale(1.03);
+}
+
 .track-cover {
   width: 60px;
   height: 60px;
-  border-radius: 20px;
+  border-radius: 10px;
   object-fit: cover;
 }
 
 .track-info {
   display: flex;
   flex-direction: column;
+  color: #fff;
 }
 
 .track-title {
@@ -37,53 +61,114 @@
 }
 
 .track-artist {
-  font-size: 14px;
-  opacity: 0.7;
+  font-size: 12px;
+  color: #fff;
+  font-weight: 100;
 }
 
 /* Центр */
 .player-center {
-  margin-top: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 15px;
-}
-
-.progress-remote {
-  gap: 15px;
-  display: flex;
-  align-items: center;
-  width: 100%;
-}
-
-.remote-slider {
-  width: 600px;
-  flex: 1;
-  cursor: pointer;
-  height: 4px;
+  color: #fff;
 }
 
 .controls {
-  margin-top: -20px;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 15px;
 }
 
 .control-btn {
   background: none;
   border: none;
-  color: white;
-  font-size: 22px;
   cursor: pointer;
+  color: #fff;
   transition: transform 0.2s;
+  align-items: center;
+}
+
+.control-btn.shuffle svg,
+.control-btn.repeat svg{
+  width: 23px;
+  height: 23px;
+}
+
+.control-btn.play.disactive,
+.control-btn.pause.disactive{
+  display: none;
+}
+
+.control-btn.play path,
+.control-btn.pause rect{
+  fill: #1A1A1A;
+}
+
+.control-btn.play.active,
+.control-btn.pause.active{
+  opacity: 1;
+}
+
+.control-btn.play path{ 
+  transform: translate(1px, 0);
+}
+
+.control-btn svg{
+  width: 30px;
+  height: 30px;
 }
 
 .control-btn:hover {
-  transform: scale(1.2);
-  color: #9c58e0;
+  transform: scale(1.01);
+  color: #a866eb;
 }
+
+.progress-remote {
+  gap: 15px;
+  display: flex;
+  align-items: center;
+}
+
+.remote-slider {
+  width: 600px;
+  flex: 1;
+  cursor: pointer;
+  display: flex;
+
+  --progress: 20%;
+}
+
+.remote-slider::-webkit-slider-runnable-track{
+  height: 8px;
+  border-radius: 30px;
+  background: linear-gradient(90deg, 
+    #7FD8E6 0%, 
+    #a866eb var(--progress), 
+    #e0e0e0 var(--progress), 
+    #e0e0e0 100%
+  );
+}
+
+.remote-slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #a866eb;
+  border: 2px solid #7FD8E6;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  margin-top: -4px;
+  transition: all 0.2s ease;
+}
+
+.remote-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+  border-color: #a866eb;
+}
+
+
 
 /* Правая часть */
 .player-right {
@@ -95,4 +180,78 @@
 .volume-slider {
   width: 120px;
   cursor: pointer;
+  
+  --progress: 50%;
+}
+
+.volume-slider::-webkit-slider-runnable-track{
+  height: 8px;
+  border-radius: 30px;
+  background: linear-gradient(90deg, 
+    #7FD8E6 0%, 
+    #a866eb var(--progress), 
+    #7FD8E6 var(--progress), 
+    #7FD8E6 100%
+  );
+}
+
+.volume-slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #a866eb;
+  border: 2px solid #7FD8E6;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  margin-top: -4px;
+  transition: all 0.2s ease;
+}
+
+.volume-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+  border-color: #a866eb;
+}
+
+.volume-icon {
+  transition: color 0.3s ease;
+  color: #fff;
+}
+
+
+.volume-mute-cross {
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  fill: none;
+  transform-origin: center;
+}
+
+/* Уровни громкости */
+.volume-icon.level-0 .volume-wave-1,
+.volume-icon.level-0 .volume-wave-2,
+.volume-icon.level-0 .volume-wave-3 {
+  opacity: 0 !important;
+}
+
+.volume-icon.level-0 .volume-mute-cross {
+  opacity: 1;
+  transform: scale(0.9) rotate(0deg) translate(-2px, 0);
+}
+
+.volume-icon.level-1 .volume-wave-1 {
+  opacity: 1;
+}
+
+.volume-icon.level-2 .volume-wave-1,
+.volume-icon.level-2 .volume-wave-2 {
+  opacity: 1;
+}
+
+.volume-icon.level-3 .volume-wave-1,
+.volume-icon.level-3 .volume-wave-2,
+.volume-icon.level-3 .volume-wave-3 {
+  opacity: 1;
+}
+
+/* Эффект приглушения цвета при mute */
+.volume-icon.level-0 {
+  color: #9ca3af;
 }

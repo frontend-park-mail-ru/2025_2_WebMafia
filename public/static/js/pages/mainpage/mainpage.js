@@ -3,6 +3,7 @@ import { router } from '../../routing.js';
 import { header } from '../header/header.js';
 import { sidebar } from '../sidebar/sidebar.js';
 import { slider } from '../../slider.js';
+import { player } from '../player/player.js';
 
 export class MainPage {
   async render() {
@@ -53,6 +54,7 @@ export class MainPage {
 
     header.render();
     sidebar.render();
+    player.render();
 
     slider.sliderFunction();
     this.nowPlayingCardSlider();

@@ -6,6 +6,8 @@ handlebars public/static/js/pages/login/login.hbs -f public/static/js/pages/logi
 
 handlebars public/static/js/pages/register/register.hbs -f public/static/js/pages/register/register.tmpl.js
 
+handlebars public/static/js/pages/profile/profilePage.hbs -f public/static/js/pages/profile/profilePage.tmpl.js
+
 handlebars public/static/js/pages/header/header.hbs -f public/static/js/pages/header/header.tmpl.js
 
 handlebars public/static/js/pages/sidebar/sidebar.hbs -f public/static/js/pages/sidebar/sidebar.tmpl.js
@@ -16,8 +18,24 @@ handlebars public/static/js/partials/eyeOpen.hbs -f public/static/js/partials/ey
 
 handlebars public/static/js/partials/eyeClosed.hbs -f public/static/js/partials/eyeClosed.tmpl.js
 
+handlebars public/static/js/partials/pencil.hbs -f public/static/js/partials/pencil.tmpl.js
+
 handlebars public/static/js/partials/homeIcon.hbs -f public/static/js/partials/homeIcon.tmpl.js
 
 handlebars public/static/js/partials/libraryIcon.hbs -f public/static/js/partials/libraryIcon.tmpl.js
 
+handlebars public/static/js/partials/playBtn.hbs -f public/static/js/partials/playBtn.tmpl.js
 
+handlebars public/static/js/partials/nextTrack.hbs -f public/static/js/partials/nextTrack.tmpl.js
+
+handlebars public/static/js/partials/prevTrack.hbs -f public/static/js/partials/prevTrack.tmpl.js
+
+handlebars public/static/js/partials/shuffleBtn.hbs -f public/static/js/partials/shuffleBtn.tmpl.js
+
+handlebars public/static/js/partials/repeatBtn.hbs -f public/static/js/partials/repeatBtn.tmpl.js
+
+handlebars public/static/js/partials/pauseBtn.hbs -f public/static/js/partials/pauseBtn.tmpl.js
+
+handlebars public/static/js/partials/volumeBar.hbs -f public/static/js/partials/volumeBar.tmpl.js
+
+handlebars public/static/js/partials/likeBtn.hbs -f public/static/js/partials/likeBtn.tmpl.js
