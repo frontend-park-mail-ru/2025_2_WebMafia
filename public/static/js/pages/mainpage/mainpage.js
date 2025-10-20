@@ -3,6 +3,8 @@ import { router } from '../../routing.js';
 import { header } from '../header/header.js';
 import { sidebar } from '../sidebar/sidebar.js';
 import { initScrollbar } from "../../scrollbar.js";
+import { slider } from '../../slider.js';
+import { player } from '../player/player.js';
 
 export class MainPage {
   async render() {
@@ -53,26 +55,11 @@ export class MainPage {
 
     header.render();
     sidebar.render();
+    player.render();
 
-    this.sliderFunction();
+    slider.sliderFunction();
     this.nowPlayingCardSlider();
     initScrollbar();
-  }
-
-  sliderFunction() {
-    document.querySelectorAll('.slider').forEach((slider) => {
-      const slidebar = slider.querySelector('.cards');
-      const leftBtn = slider.querySelector('.slide-btn.left');
-      const rightBtn = slider.querySelector('.slide-btn.right');
-      if (!slidebar || !leftBtn || !rightBtn) return;
-      const scrollAmount = 352;
-      rightBtn.addEventListener('click', () => {
-        slidebar.scrollLeft += scrollAmount;
-      });
-      leftBtn.addEventListener('click', () => {
-        slidebar.scrollLeft -= scrollAmount;
-      });
-    });
   }
 
   nowPlayingCardSlider() {

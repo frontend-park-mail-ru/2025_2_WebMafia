@@ -40,7 +40,7 @@ body {
 
 /* Content */
 .page {
-  margin: 0 20px;
+  margin: 0 10px;
   box-sizing: content-box;
   scrollbar-gutter: stable;
   clip-path: inset(0 round 30px);
@@ -224,8 +224,6 @@ body {
   font-weight: 100;
   text-decoration: none;
   color: #000000;
-
-  /* color: rgb(255, 255, 255, 0.8); */
 }
 
 /* Slider */
@@ -236,7 +234,7 @@ body {
   justify-content: center;
 }
 
-.slider:hover .slide-btn {
+.slider.can-scroll:hover .slide-btn {
   opacity: 1;
   pointer-events: auto; /* снова кликабельные */
 }
