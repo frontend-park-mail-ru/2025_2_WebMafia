@@ -258,7 +258,8 @@ body {
   justify-content: center;
 }
 
-.slider:hover .slide-btn {
+
+.slider.can-scroll:hover .slide-btn {
   opacity: 1;
   pointer-events: auto; /* снова кликабельные */
 }
