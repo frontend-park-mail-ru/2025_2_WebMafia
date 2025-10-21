@@ -74,6 +74,10 @@
   color: #fff;
 }
 
+.track-time.current{
+  width: 34px;
+}
+
 .controls {
   display: flex;
   align-items: center;
@@ -140,8 +144,12 @@
   --progress: 20%;
 }
 
+.remote-slider::-webkit-slider-container{
+  border-radius: 30px;
+}
+
 .remote-slider::-webkit-slider-runnable-track{
-  height: 8px;
+  height: 6px;
   border-radius: 30px;
   background: linear-gradient(90deg, 
     #7FD8E6 0%, 
@@ -151,7 +159,19 @@
   );
 }
 
+.remote-container:hover .remote-slider::-webkit-slider-runnable-track{
+  height: 6px;
+  border-radius: 30px;
+  background: linear-gradient(90deg, 
+    #a866eb 0%, 
+    #a866eb var(--progress), 
+    #e0e0e0 var(--progress), 
+    #e0e0e0 100%
+  );
+}
+
 .remote-slider::-webkit-slider-thumb {
+  opacity: 0;
   appearance: none;
   width: 16px;
   height: 16px;
@@ -159,13 +179,18 @@
   background: #a866eb;
   border: 2px solid #7FD8E6;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  margin-top: -4px;
+  margin-top: -5px;
   transition: all 0.2s ease;
+
 }
 
-.remote-slider::-webkit-slider-thumb:hover {
+.remote-slider::-webkit-slider-thumb:hover{
   transform: scale(1.1);
   border-color: #a866eb;
+}
+
+.remote-container:hover .remote-slider::-webkit-slider-thumb{
+  opacity: 1;
 }
 
 
@@ -185,7 +210,7 @@
 }
 
 .volume-slider::-webkit-slider-runnable-track{
-  height: 8px;
+  height: 6px;
   border-radius: 30px;
   background: linear-gradient(90deg, 
     #7FD8E6 0%, 
@@ -195,7 +220,19 @@
   );
 }
 
+.player-right:hover .volume-slider::-webkit-slider-runnable-track{
+  height: 6px;
+  border-radius: 30px;
+  background: linear-gradient(90deg, 
+    #a866eb 0%, 
+    #a866eb var(--progress), 
+    #e0e0e0 var(--progress), 
+    #e0e0e0 100%
+  );
+}
+
 .volume-slider::-webkit-slider-thumb {
+  opacity: 0;
   appearance: none;
   width: 16px;
   height: 16px;
@@ -203,13 +240,18 @@
   background: #a866eb;
   border: 2px solid #7FD8E6;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  margin-top: -4px;
+  margin-top: -5px;
   transition: all 0.2s ease;
+
 }
 
-.volume-slider::-webkit-slider-thumb:hover {
+.volume-slider::-webkit-slider-thumb:hover{
   transform: scale(1.1);
   border-color: #a866eb;
+}
+
+.player-right:hover .volume-slider::-webkit-slider-thumb {
+  opacity: 1;
 }
 
 .volume-icon {
