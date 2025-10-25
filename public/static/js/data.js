@@ -65,6 +65,20 @@ export class apiServises {
       method: 'POST',
     });
   }
+
+  async loadtrack() {
+    return {
+      track: {
+        title: 'Японский сэмпл',
+        id: '1',
+        imageUrl: 'image1.jpg',
+        fileName: 'японский сэмпл 128 бпм.mp3',
+        artist: 'Неизвестный исполнитель',
+        duration: 185,
+        durationFormatted: '3:05',
+      },
+    };
+  }
 }
 
 export const apiServise = new apiServises();

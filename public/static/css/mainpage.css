@@ -144,6 +144,7 @@ body {
   height: 160px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
   transform: scale(1.1);
+  transition: transform 0.5s ease, box-shadow 0.5s ease;
 }
 
 .now-playing-container-card-current img {
@@ -188,6 +189,8 @@ body {
 .now-playing-container-card-current .current-card-btn.play:hover {
   background-color: #a866eb;
 }
+
+/* анимация переключения карточек */
 
 /* название трека */
 .current-card-name {

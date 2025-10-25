@@ -60,6 +60,7 @@ export class MainPage {
     slider.sliderFunction();
     this.nowPlayingCardSlider();
     initScrollbar();
+    this.playTrack();
   }
 
   nowPlayingCardSlider() {
@@ -92,6 +93,16 @@ export class MainPage {
     nextBtn.addEventListener('click', () => {
       currentIndex = (currentIndex + 1) % cards.length;
       renderCards();
+    });
+  }
+
+  playTrack() {
+    const playBtn = document.querySelectorAll('.play-button');
+    playBtn.forEach((button) => {
+      button.addEventListener('click', () => {
+        player.audio.play();
+        player._toggleplayPauseSwitch(true);
+      });
     });
   }
 }

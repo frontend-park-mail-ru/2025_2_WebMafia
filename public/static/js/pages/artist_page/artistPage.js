@@ -1,5 +1,7 @@
 import { router } from '../../routing.js';
 import { initScrollbar } from '../../scrollbar.js';
+import { header } from '../header/header.js';
+import { player } from '../player/player.js';
 
 export class ArtistPage {
   playsParser(plays) {
@@ -153,6 +155,9 @@ export class ArtistPage {
     });
     const contentTemplate = Handlebars.templates['artistPage.hbs'];
     document.getElementById('app').innerHTML = contentTemplate(pageData);
+
+    player.render();
+    header.render();
 
     initScrollbar();
     this.addEventListeners();

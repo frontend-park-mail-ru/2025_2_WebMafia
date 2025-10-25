@@ -1,3 +1,4 @@
+import { player } from './static/js/pages/player/player.js';
 import { router } from './static/js/routing.js';
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -25,7 +26,37 @@ function registerPartials() {
   Handlebars.registerPartial('likeBtn', Handlebars.templates['likeBtn.hbs']);
 }
 
+function persistence() {
+  window.addEventListener('storage', () => {
+    const currentPlayingtrack = localStorage.getItem('isPlaying');
+    if (currentPlayingtrack === 'true') {
+      player._toggleplayPauseSwitch(true);
+      player.audio.play();
+    } else {
+      player._toggleplayPauseSwitch(false);
+      player.audio.pause();
+    }
+  });
+}
+
+function spaceToggle() {
+  window.addEventListener('keydown', (event) => {
+    if (event.code === 'Space') {
+      event.preventDefault();
+      if (player && player.audio) {
+        const spaceElement = document.activeElement;
+        if (spaceElement.tagName === 'INPUT' || spaceElement.tagName === 'TEXTAREA' || spaceElement.isContentEditable) {
+          return;
+        }
+        player.togglePlayPause();
+      }
+    }
+  });
+}
+
 function initializePage() {
   registerPartials();
+  persistence();
+  spaceToggle();
   router.init();
 }
