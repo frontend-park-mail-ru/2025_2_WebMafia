@@ -35,7 +35,7 @@ export class MainPage {
         id: album.id,
         name: album.title,
         image: `static/img/${album.avatar_url || 'default-album.png'}`,
-        artist: album.artist ? album.artist.name : 'Unknown Artist',
+        artist: album.artists ? album.artists[0].name : 'Unknown Artist',
       }));
       pageData.tracks = (data.tracks || []).map((track) => ({
         id: track.id,

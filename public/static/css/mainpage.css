@@ -21,23 +21,6 @@ body {
   min-height: 0;
 }
 
-/* фолетовый кружочек на фоне */
-.purple-background-circle {
-  position: absolute;
-  width: 315px;
-  height: 315px;
-  border-radius: 50%;
-  background: rgba(149, 0, 255, 0.4);
-  filter: blur(80px);
-  z-index: 0;
-}
-
-.sidebar-purple-position {
-  top: 55%;
-  left: -160px;
-}
-
-
 /* Content */
 .page {
   margin: 0 10px;
