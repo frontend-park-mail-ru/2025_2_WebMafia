@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap');
-
 body {
   font-family: 'Montserrat', sans-serif;
   margin: 0;
@@ -49,7 +47,7 @@ body {
   flex: 1;
   background-color: #ffffff;
   border-radius: 30px;
-  padding: 23px 0 0 23px;
+  padding: 23px 0 0 12px;
   color: black;
   overflow-y: auto;
   overflow-x: hidden;
@@ -206,34 +204,12 @@ body {
   text-overflow: ellipsis; /* заменяем на "…" */
 }
 
-/* custom scrollbar */
-.page::-webkit-scrollbar {
-  /* display: none; */
-  width: 12px;
-  background-color: inherit;
-  transition: background 0.3s ease;
-}
-
-.page::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.2);
-}
-
-.page::-webkit-scrollbar-thumb {
-  transition: background 0.3s ease;
-  background-clip: content-box;
-  background: rgba(0, 0, 0, 0.4);
-  border-radius: 4px;
-}
-
-.page::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 0, 0, 0.8);
-}
-
 .title {
   /* margin-bottom: 21px; */
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-left: 23px;
 }
 
 .title-name {
@@ -257,7 +233,6 @@ body {
   align-items: center;
   justify-content: center;
 }
-
 
 .slider.can-scroll:hover .slide-btn {
   opacity: 1;
@@ -321,15 +296,13 @@ body {
 /* Cards */
 .cards {
   display: flex;
-  gap: 10px;
-  overflow-x: auto;
-  overflow-y: hidden;
+  overflow: hidden;
   scroll-behavior: smooth;
   width: 100%;
   margin-left: -23px;
-  padding-left: 23px;
-  padding-bottom: 43px;
-  padding-top: 23px;
+  padding-left: 43px;
+  padding-bottom: 30px;
+  padding-top: 15px;
 }
 
 .cards::-webkit-scrollbar {
@@ -340,13 +313,14 @@ body {
   flex: 0 0 180px;
   height: 230px;
   text-align: center;
-  justify-content: center;
   color: rgb(0, 0, 0);
   background-color: #f3f5fa;
   transition-duration: 0.3s;
   border-radius: 30px;
   overflow: hidden;
   transition: transform 0.3s ease;
+  padding: 10px;
+  margin-right: 10px;
 }
 
 .card:hover {
@@ -358,8 +332,6 @@ body {
   cursor: pointer;
   position: absolute;
   opacity: 0;
-  top: 50%;
-  left: 60%;
   width: 56px;
   height: 56px;
   color: white;
@@ -370,6 +342,11 @@ body {
   align-items: center;
   justify-content: center;
   transition: transform 0.3s ease;
+}
+
+.play-button-placement {
+  top: 50%;
+  left: 60%;
 }
 
 .play-button::before {
@@ -392,7 +369,7 @@ body {
 }
 
 .card img {
-  margin: 15px;
+  margin-top: 15px;
   width: 150px;
   height: 150px;
   border-radius: 50%;
@@ -405,12 +382,17 @@ body {
   color: inherit;
 }
 
+.card-bottom-info {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin-top: -8px;
+}
+
 .card-name {
   font-size: 16px;
   font-weight: 600;
-  margin-bottom: 4px;
-  margin-left: 15px;
-  margin-right: 15px;
+  margin-top: 20px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -418,11 +400,9 @@ body {
 
 .card-sub {
   font-size: 14px;
-  font-weight: 300;
+  font-weight: 400;
   opacity: 0.8;
-  margin-bottom: 10px;
-  margin-left: 15px;
-  margin-right: 15px;
+  margin-top: 3px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -431,17 +411,16 @@ body {
 .cards.tracks {
   display: grid;
   grid-auto-flow: column;
+  gap: 10px;
   grid-template-rows: repeat(2, auto);
   max-height: 200px;
   width: 100%;
-  gap: 10px;
-  overflow-x: auto;
-  overflow-y: hidden;
+  overflow: hidden;
   scroll-behavior: smooth;
   margin-left: -23px;
-  padding-left: 23px;
-  padding-bottom: 43px;
-  padding-top: 23px;
+  padding-left: 43px;
+  padding-bottom: 30px;
+  padding-top: 15px;
 }
 
 .card-tracks {
@@ -502,20 +481,7 @@ body {
 }
 
 .play-button-track {
-  cursor: pointer;
-  position: absolute;
-  opacity: 0;
   left: 24px;
-  width: 56px;
-  height: 56px;
-  color: white;
-  background-color: #9c58e0;
-  border-radius: 50%;
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.3s ease;
 }
 
 .play-button-track::before {

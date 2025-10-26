@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap');
 @import url('./header.css');
 @import url('./player.css');
 @import url('./sidebar.css');
@@ -5,3 +6,4 @@
 @import url('./style_auth.css');
 @import url('./index.css');
 @import url('./profile.css');
+@import url('./artist.css');
