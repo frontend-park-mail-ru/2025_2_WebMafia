@@ -26,18 +26,18 @@ export class MainPage {
     try {
       const data = await apiServise.getMainPageData();
       pageData.artists = (data.artists || []).map((artist) => ({
-        id: artist.artist_id,
+        id: artist.id,
         name: artist.name,
         image: `static/img/${artist.avatar_url || 'default-artist.png'}`,
       }));
       pageData.albums = (data.albums || []).map((album) => ({
-        id: album.album_id,
+        id: album.id,
         name: album.title,
         image: `static/img/${album.avatar_url || 'default-album.png'}`,
         artist: album.artist ? album.artist.name : 'Unknown Artist',
       }));
       pageData.tracks = (data.tracks || []).map((track) => ({
-        id: track.track_id,
+        id: track.id,
         name: track.title,
         image: `static/img/${track.album.avatar_url || 'default-album.png'}`,
         artists: track.artists,
