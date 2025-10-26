@@ -236,6 +236,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
 }
 
 .slider.can-scroll:hover .slide-btn {

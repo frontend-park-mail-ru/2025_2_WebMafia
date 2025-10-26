@@ -46,7 +46,6 @@ export class Player {
     this.soundChange();
     this.setInitialVolume();
     this.setInitialPLayTime();
-    this.togglePlayPause();
 
     // Добавляем обработчик события 'loadedmetadata', чтобы установить общее время и обновить слайдер
     this.audio.addEventListener('loadedmetadata', () => {
@@ -58,14 +57,15 @@ export class Player {
       this.updateCurrentTimeAndSlider();
     });
 
-    const storedTrackStatus = localStorage.getItem('isPlaying') === 'true';
-    if (storedTrackStatus) {
+    const storedTrackStatus = localStorage.getItem('isPlaying');
+    if (storedTrackStatus === 'true') {
       this.audio.play().catch((e) => {
         this._toggleplayPauseSwitch(false);
         localStorage.setItem('isPlaying', 'false');
       });
       this._toggleplayPauseSwitch(true);
     } else {
+      this.audio.pause();
       this._toggleplayPauseSwitch(false);
     }
   }
@@ -131,13 +131,13 @@ export class Player {
     const playBtn = document.querySelector('.control-btn.play');
     const pauseBtn = document.querySelector('.control-btn.pause');
     if (isPlaying) {
-      this.audio.play();
+      // this.audio.play();
       playBtn.classList.add('disactive');
       pauseBtn.classList.add('active');
       playBtn.classList.remove('active');
       pauseBtn.classList.remove('disactive');
     } else {
-      this.audio.pause();
+      // this.audio.pause();
       playBtn.classList.add('active');
       pauseBtn.classList.add('disactive');
       playBtn.classList.remove('disactive');
@@ -166,7 +166,7 @@ export class Player {
   togglePlayPause() {
     if (this.audio.paused) {
       // Если стоит на паузе, запускаем
-      this.audio.play().catch((e) => console.error('Ошибка play():', e));
+      this.audio.play();
       localStorage.setItem('isPlaying', 'true');
       this._toggleplayPauseSwitch(true);
     } else {

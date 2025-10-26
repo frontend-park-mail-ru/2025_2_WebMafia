@@ -11,7 +11,7 @@ export class Router {
       { pattern: /^\/$/, component: new MainPage() },
       { pattern: /^\/login$/, component: new LoginPage() },
       { pattern: /^\/register$/, component: new RegistrationPage() },
-      { pattern: /^\/artist\/(\d+)$/, component: new ArtistPage() },
+      { pattern: /^\/artist\/([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})$/, component: new ArtistPage() },
       { pattern: /^\/profile$/, component: new ProfilePage() },
     ];
     this.handleLocation = this.handleLocation.bind(this);

@@ -27,7 +27,7 @@ export class MainPage {
     try {
       const data = await apiServise.getMainPageData();
       pageData.artists = (data.artists || []).map((artist) => ({
-        id: artist.artist_id,
+        id: artist.id,
         name: artist.name,
         image: `static/img/${artist.avatar_url || 'default-artist.png'}`,
       }));
