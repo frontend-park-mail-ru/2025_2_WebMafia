@@ -25,6 +25,7 @@
   font-weight: 600;
   color: rgb(0, 0, 0);
   padding: 10px 15px 10px 15px;
+  cursor: pointer;
 }
 
 .menu-item.active {
@@ -34,7 +35,6 @@
   transition:
     background-position 0.5s ease,
     background 0.5s ease;
-  cursor: pointer;
 }
 
 .menu-item.active:hover {
@@ -73,7 +73,7 @@
 }
 
 .menu-item a.active:hover {
-  color: #fff;
+  color: #fafafa;
 }
 
 .menu-item a:hover {
@@ -82,10 +82,6 @@
 
 .menu-item:hover {
   color: #3e197c;
-}
-
-.menu-item.active:hover {
-  color: #fff;
 }
 
 .library-items{

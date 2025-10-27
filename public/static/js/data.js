@@ -41,12 +41,10 @@ export class apiServises {
   async getMainPageData() {
     try {
       const [albums, tracks, artists] = await Promise.all([
-        this.request('/albums').catch(() => []),
-        this.request('/tracks').catch(() => []),
-        this.request('/artists').catch(() => [])
+        this.request('/albums?limit=20').catch(() => []),
+        this.request('/tracks?limit=30').catch(() => []),
+        this.request('/artists?limit=10').catch(() => [])
       ]);
-
-      console.log(artists)
 
       return {
         albums: albums || [],

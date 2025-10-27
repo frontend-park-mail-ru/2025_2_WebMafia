@@ -29,18 +29,26 @@ export class MainPage {
       pageData.artists = (data.artists || []).map((artist) => ({
         id: artist.id,
         name: artist.name,
-        image: `static/img/${artist.avatar_url || 'default-artist.png'}`,
+        listeners: artist.listeners || 0,
+        //Заглушки пока не доделана minio
+        image: artist.avatar_url.startsWith('http')
+          ? artist.avatar_url
+          : `static/img/${artist.avatar_url || 'default_artist_avatar.png'}`,
       }));
       pageData.albums = (data.albums || []).map((album) => ({
         id: album.id,
         name: album.title,
-        image: `static/img/${album.avatar_url || 'default-album.png'}`,
+        image: album.avatar_url.startsWith('http')
+          ? album.avatar_url :
+          `static/img/${album.avatar_url || 'default_artist_avatar.png'}`,
         artist: album.artists ? album.artists[0].name : 'Unknown Artist',
       }));
       pageData.tracks = (data.tracks || []).map((track) => ({
         id: track.id,
         name: track.title,
-        image: `static/img/${track.album.avatar_url || 'default-album.png'}`,
+        image: track.album.avatar_url.startsWith('http')
+          ? track.album.avatar_url
+          : `static/img/${track.album.avatar_url || 'default_artist_avatar.png'}`,
         artists: track.artists,
       }));
     } catch (error) {
