@@ -16,10 +16,12 @@
             <div class="listeners-num">{{ listeners }} слушателей в месяц</div>
             <button class="primary-outline-button artist-subscription">Подписаться</button>
           </div>
+          {{#if description}}
           <p class="artist-description">{{ description }}</p>
           <button type="button" id="showArtistDescription" aria-label="Показать информацию об исполнителе">
             {{> angleDown }}
           </button>
+          {{/if}}
         </div>
         <div class="artist-page">
           <div class="popular-tracks">
@@ -37,14 +39,16 @@
                 <div class="right-row-content">
                   <div class="track-name">{{ name }}</div>
                   <div class="track-performers">
-                    {{#each performers}}
+                    {{#each artists}}
                     <a href="artist/{{id}}" class="track-performer">
                       {{name}}{{#unless @last}}, {{/unless}}
                     </a>
                     {{/each}}
                   </div>
                   <div class="track-plays-num">{{ plays }} прослушиваний</div>
-                  <div class="track-album-name">{{ album }}</div>
+                  <a href="artist/{{ album_id }}" class="track-album-name">
+                    {{ album }}
+                  </a>
                   <div class="track-duration">{{ duration }}</div>
                 </div>
               </div>
@@ -107,8 +111,8 @@
             <div class="cards" id="slidebar">
               {{#each similar_artists}}
               <div class="card">
-                <a href="artist/{{id}}">
-                  <img src="{{ artist_avatar }}" alt="{{ name }}" />
+                <a href="artist/{{ id }}">
+                  <img src="{{ image }}" alt="{{ name }}" />
                   <div class="card-bottom-info">
                     <p class="card-name">{{ name }}</p>
                     <p class="card-sub">{{ listeners }} слушателей</p>

@@ -42,6 +42,27 @@ export class apiServises {
     return this.request('/home');
   }
 
+  async getArtistPageData(id) {
+    try {
+      const [albums, popular_tracks, artist, similar_artists] = await Promise.all([
+        this.request(`/artists/${id}/albums`).catch(() => []),
+        this.request(`/artists/${id}/tracks?limit=5`).catch(() => []),
+        this.request(`/artists/${id}`).catch(() => []),
+        this.request('/artists?limit=10').catch(() => [])
+      ]);
+
+      return {
+        albums: albums || [],
+        popular_tracks: popular_tracks || [],
+        artist: artist || {},
+        similar_artists: similar_artists || []
+      };
+    } catch (error) {
+      console.error('Failed to load artist page data:', error);
+      throw error;
+    }
+  }
+
   async getProfilePageData() {
     return this.request('/profile');
   }

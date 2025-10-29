@@ -2,7 +2,7 @@ import { MainPage } from './pages/mainpage/mainpage.js';
 import { notFoundPage } from './pages/notfoundpage/notFoundPage.js';
 import { LoginPage } from './pages/login/login.js';
 import { RegistrationPage } from './pages/register/register.js';
-import { ArtistPage } from './pages/artist_page/artistPage.js'
+import { ArtistPage } from './pages/artist/artist.js'
 import { ProfilePage } from './pages/profile/profilePage.js';
 
 export class Router {
@@ -11,7 +11,7 @@ export class Router {
       { pattern: /^\/$/, component: new MainPage() },
       { pattern: /^\/login$/, component: new LoginPage() },
       { pattern: /^\/register$/, component: new RegistrationPage() },
-      { pattern: /^\/artist\/(\d+)$/, component: new ArtistPage() },
+      { pattern: /^\/artist\/([^/]+)$/, component: new ArtistPage() },
       { pattern: /^\/profile$/, component: new ProfilePage() },
     ];
     this.handleLocation = this.handleLocation.bind(this);
