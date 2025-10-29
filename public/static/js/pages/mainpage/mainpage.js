@@ -2,7 +2,7 @@ import { apiServise } from '../../data.js';
 import { router } from '../../routing.js';
 import { header } from '../header/header.js';
 import { sidebar } from '../sidebar/sidebar.js';
-import { initScrollbar } from "../../scrollbar.js";
+import { initScrollbar } from '../../scrollbar.js';
 import { slider } from '../../slider.js';
 import { player } from '../player/player.js';
 
@@ -65,33 +65,114 @@ export class MainPage {
   nowPlayingCardSlider() {
     const prevBtn = document.querySelector('.current-card-btn.prev');
     const nextBtn = document.querySelector('.current-card-btn.next');
+    const cardElements = document.querySelectorAll('.now-playing-container-card');
 
-    let cards = [
+    let cardsData = [
       { img: '/static/img/image11.jpg', name: 'Tyler, the Creator' },
-      { img: '/static/img/image12.jpg', name: 'Playboi carti' },
-      { img: '/static/img/image13.jpg', name: 'Jpegmafia' },
+      { img: '/static/img/image12.jpg', name: 'Playboi Carti' },
+      { img: '/static/img/image13.jpg', name: 'Jpegmafiaaaaaa aaaaaaaa aa' },
     ];
 
-    let currentIndex = 1;
+    let currentIndex = 0;
+    let isAnimating = false;
 
-    function renderCards() {
-      const prevIndex = (currentIndex - 1 + cards.length) % cards.length;
-      const nextIndex = (currentIndex + 1) % cards.length;
+    /**
+     * ФУНКЦИЯ: Управляет UI элементами на карточке.
+     * @param {HTMLElement} card - Карточка для обновления.
+     * @param {object | null} data - Данные для отображения (имя) или null для очистки.
+     */
+    function updateCardUI(card, data = null) {
+      // 1. Очистка: всегда удаляем старые элементы, если они есть.
+      const existingButton = card.querySelector('.current-card-btn.play');
+      const existingName = card.querySelector('.current-card-name');
+      if (existingButton) existingButton.remove();
+      if (existingName) existingName.remove();
 
-      document.querySelector('.now-playing-container-card-previous img').src = cards[prevIndex].img;
-      document.querySelector('.now-playing-container-card-next img').src = cards[nextIndex].img;
-      document.querySelector('.now-playing-container-card-current img').src = cards[currentIndex].img;
-      document.querySelector('.current-card-name').textContent = cards[currentIndex].name;
+      if (data) {
+        // Создаем кнопку Play
+        const playButton = document.createElement('button');
+        playButton.className = 'current-card-btn play';
+
+        // Создаем параграф для имени
+        const nameP = document.createElement('p');
+        nameP.className = 'current-card-name';
+        nameP.textContent = data.name;
+
+        // Добавляем созданные элементы в карточку
+        card.appendChild(playButton);
+        card.appendChild(nameP);
+      }
     }
 
-    prevBtn.addEventListener('click', () => {
-      currentIndex = (currentIndex - 1 + cards.length) % cards.length;
-      renderCards();
-    });
+    // Функция для первоначальной расстановки
+    function initializeSlider() {
+      cardElements.forEach((card, i) => {
+        let dataIndex;
+        if (i === 0) dataIndex = (currentIndex - 1 + cardsData.length) % cardsData.length;
+        if (i === 1) dataIndex = currentIndex;
+        if (i === 2) dataIndex = (currentIndex + 1) % cardsData.length;
 
-    nextBtn.addEventListener('click', () => {
-      currentIndex = (currentIndex + 1) % cards.length;
-      renderCards();
-    });
+        card.querySelector('img').src = cardsData[dataIndex].img;
+
+        if (i === 1) {
+          updateCardUI(card, cardsData[currentIndex]);
+        }
+
+        // Назначаем классы
+        card.classList.remove('card-position-prev', 'card-position-current', 'card-position-next');
+        if (i === 0) card.classList.add('card-position-prev');
+        if (i === 1) card.classList.add('card-position-current');
+        if (i === 2) card.classList.add('card-position-next');
+      });
+    }
+
+    // Функция сдвига карточек
+    function shiftCards(direction) {
+      if (isAnimating) return;
+      isAnimating = true;
+
+      const currentCard = document.querySelector('.card-position-current');
+      const prevCard = document.querySelector('.card-position-prev');
+      const nextCard = document.querySelector('.card-position-next');
+
+      updateCardUI(currentCard, null);
+
+      if (direction === 'next') {
+        currentIndex = (currentIndex + 1) % cardsData.length;
+        updateCardUI(nextCard, cardsData[currentIndex]);
+      } else {
+        currentIndex = (currentIndex - 1 + cardsData.length) % cardsData.length;
+        updateCardUI(prevCard, cardsData[currentIndex]);
+      }
+
+      currentCard.classList.remove('card-position-current');
+      prevCard.classList.remove('card-position-prev');
+      nextCard.classList.remove('card-position-next');
+
+      if (direction === 'next') {
+        currentCard.classList.add('card-position-prev');
+        nextCard.classList.add('card-position-current');
+        prevCard.classList.add('card-position-next');
+
+        const newNextDataIndex = (currentIndex + 1) % cardsData.length;
+        prevCard.querySelector('img').src = cardsData[newNextDataIndex].img;
+      } else {
+        currentCard.classList.add('card-position-next');
+        prevCard.classList.add('card-position-current');
+        nextCard.classList.add('card-position-prev');
+
+        const newPrevDataIndex = (currentIndex - 1 + cardsData.length) % cardsData.length;
+        nextCard.querySelector('img').src = cardsData[newPrevDataIndex].img;
+      }
+
+      setTimeout(() => {
+        isAnimating = false;
+      }, 500);
+    }
+
+    nextBtn.addEventListener('click', () => shiftCards('next'));
+    prevBtn.addEventListener('click', () => shiftCards('prev'));
+
+    initializeSlider();
   }
 }

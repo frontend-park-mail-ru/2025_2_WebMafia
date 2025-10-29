@@ -61,15 +61,14 @@
   color: #fff;
 }
 
-.library-items{
+.library-items {
   display: flex;
   flex-direction: column;
   gap: 14px;
   margin: 10px 0 10px 30px;
 }
 
-.library-item{
+.library-item {
   font-size: 16px;
-  font-weight: 200 ;
+  font-weight: 200;
 }
-
