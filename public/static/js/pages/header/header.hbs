@@ -8,13 +8,13 @@
   <div class="head-right">
     {{#if isAuthenticated}}
     <div class="profile-dropdown">
-      <div class="header-username">Александр Константинов</div>
+      <div class="header-username">{{ nickname }}</div>
       <button class="profile-btn">
         <div class="profile-avatar-header">
           {{#if avatar}}
           <img src="{{ avatar }}" alt="Ваш аватар" />
           {{else}}
-          <div class="default-avatar default-avatar-header">AK</div>
+          <div class="default-avatar default-avatar-header">{{ letter }}</div>
           {{/if}}
         </div>
       </button>

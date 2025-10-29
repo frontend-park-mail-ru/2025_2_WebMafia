@@ -165,10 +165,9 @@ body {
 }
 
 .title {
-  /* margin-bottom: 21px; */
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-end;
   margin-left: 23px;
 }
 
@@ -180,10 +179,10 @@ body {
 
 .show-all a {
   margin-right: 20px;
-  font-size: 24px;
-  font-weight: 100;
+  font-size: 20px;
+  font-weight: 600;
   text-decoration: none;
-  color: #000000;
+  color: #393939;
 }
 
 /* Slider */
