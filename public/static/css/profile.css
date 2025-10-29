@@ -106,16 +106,6 @@
   z-index: 1;
 }
 
-.blue-background-circle {
-  position: absolute;
-  width: 190px;
-  height: 190px;
-  border-radius: 50%;
-  background: rgba(113, 255, 253, 0.8);
-  filter: blur(80px);
-  z-index: 0;
-}
-
 .profile-blue-position {
   top: -10px;
   left: -10px;

@@ -2,7 +2,6 @@
   {{> header}}
 
   <div class="layout">
-    <div class="purple-background-circle sidebar-purple-position"></div>
     {{> sidebar}}
     <div class="page" id="scrollContent">
       <div class="now-playing-container">
@@ -13,7 +12,7 @@
         </div>
         <div class="now-playing-container-card-current">
           <img src="/static/img/image12.jpg" alt="" />
-          <button class="current-card-btn play"></button>
+          <button class="play-button now-playing-play-button"></button>
           <p class="current-card-name">Queen</p>
         </div>
         <div class="now-playing-container-card-next">
@@ -35,6 +34,7 @@
             <a href="/artist/{{ id }}">
               <img src="{{ image }}" alt="{{ name }}" />
               <p class="card-name">{{ name }}</p>
+              <p class="card-sub">{{ listeners }} слушателей</p>
             </a>
             <button class="play-button play-button-placement" data-artist-id="{{ artist_id }}"></button>
           </div>
@@ -53,7 +53,7 @@
         <div class="cards" id="slidebar">
           {{#each albums}}
           <div class="card">
-            <a href="/album/{{ album_id }}">
+            <a href="/album/{{ id }}">
               <img src="{{ image }}" alt="{{ name }}" />
               <p class="card-name">{{ name }}</p>
               <p class="card-sub">{{ artist }}</p>

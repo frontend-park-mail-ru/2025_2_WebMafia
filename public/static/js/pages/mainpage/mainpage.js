@@ -19,28 +19,39 @@ export class MainPage {
       artists: [],
       albums: [],
       tracks: [],
+      nickname: 'Александр Константинов',
+      letter: '',
     };
 
     const contentTemplateWithoutData = Handlebars.templates['MainPage.hbs'];
     document.getElementById('app').innerHTML = contentTemplateWithoutData(pageData);
+
+    function getValidImage(url, defaultImage) {
+      if (!url) return `static/img/${defaultImage}`;
+      return url.startsWith('http') ? url : `static/img/${url}`;
+    }
+
+    pageData.letter = pageData.nickname ? pageData.nickname[0] : '';
 
     try {
       const data = await apiServise.getMainPageData();
       pageData.artists = (data.artists || []).map((artist) => ({
         id: artist.id,
         name: artist.name,
-        image: `static/img/${artist.avatar_url || 'default-artist.png'}`,
+        listeners: artist.listeners || 0,
+        //Заглушки пока не доделана minio
+        image: getValidImage(artist.avatar_url, 'default_artist_avatar.png'),
       }));
       pageData.albums = (data.albums || []).map((album) => ({
-        id: album.album_id,
+        id: album.id,
         name: album.title,
-        image: `static/img/${album.avatar_url || 'default-album.png'}`,
-        artist: album.artist ? album.artist.name : 'Unknown Artist',
+        image: getValidImage(album.avatar_url, 'default_album_avatar.png'),
+        artist: album.artists ? album.artists[0].name : 'Unknown Artist',
       }));
       pageData.tracks = (data.tracks || []).map((track) => ({
         id: track.id,
         name: track.title,
-        image: `static/img/${track.album.avatar_url || 'default-album.png'}`,
+        image: getValidImage(track.album.avatar_url, 'default_album_avatar.png'),
         artists: track.artists,
       }));
     } catch (error) {
