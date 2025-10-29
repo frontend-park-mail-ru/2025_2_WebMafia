@@ -39,7 +39,22 @@ export class apiServises {
   }
 
   async getMainPageData() {
-    return this.request('/home');
+    try {
+      const [albums, tracks, artists] = await Promise.all([
+        this.request('/albums?limit=20').catch(() => []),
+        this.request('/tracks?limit=30').catch(() => []),
+        this.request('/artists?limit=10').catch(() => [])
+      ]);
+
+      return {
+        albums: albums || [],
+        tracks: tracks || [],
+        artists: artists || []
+      };
+    } catch (error) {
+      console.error('Failed to load main page data:', error);
+      throw error;
+    }
   }
 
   async getArtistPageData(id) {
