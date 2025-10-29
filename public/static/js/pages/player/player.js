@@ -5,7 +5,69 @@ export class Player {
     // Создаем аудиоэлемент, который будет проигрывать музыку
     this.audio = new Audio();
     this.currentTrack = null;
+    this.canSaveTime = true;
   }
+
+  async getDataTrackById(track_id) {
+    // const trackData = await apiServise.loadTrackById(track_id);
+    // return trackData;
+    const data = [
+      {
+        title: 'Японский сэмпл',
+        id: '66666666-6666-6666-6666-666666666666',
+        imageUrl: 'image1.jpg',
+        fileName: 'японский сэмпл 128 бпм.mp3',
+        artist: 'Артём Голубев',
+        duration: 185,
+        durationFormatted: '3:05',
+      },
+      {
+        title: 'Японский бит',
+        id: '77777777-7777-7777-7777-777777777777',
+        imageUrl: 'image2.jpg',
+        fileName: 'японский сэмпл 128 бпм.mp3',
+        artist: 'НИГА что ты тут делаешь',
+        duration: 185,
+        durationFormatted: '3:05',
+      },
+      {
+        title: 'Япония уээ эээ ээ эээээээ ээээээээээ ээээээээээээээээээээ эээээээээээээээээ',
+        id: '88888888-8888-8888-8888-888888888888',
+        imageUrl: 'image3.jpg',
+        fileName: 'японский сэмпл 128 бпм.mp3',
+        artist: 'Я играю в иииигры ыоврлоыфп лыфовр лфыово рфыловр ',
+        duration: 185,
+        durationFormatted: '3:05',
+      },
+      {
+        title: 'Япония уээ эээ ээ эээээээ ээээээээээ ээээээээээээээээээээ эээээээээээээээээ',
+        id: '',
+        imageUrl: 'image4.jpg',
+        fileName: 'японский сэмпл 128 бпм.mp3',
+        artist: 'Я играю в иииигры ыоврлоыфп лыфовр лфыово рфыловр ',
+        duration: 185,
+        durationFormatted: '3:05',
+      },
+      {
+        title: 'Япония уээ эээ ээ эээээээ ээээээээээ ээээээээээээээээээээ эээээээээээээээээ',
+        id: '',
+        imageUrl: 'image5.jpg',
+        fileName: 'японский сэмпл 128 бпм.mp3',
+        artist: 'Я играю в иииигры ыоврлоыфп лыфовр лфыово рфыловр ',
+        duration: 185,
+        durationFormatted: '3:05',
+      },
+    ];
+    const trackData = data.find((track) => track.id === track_id);
+    return trackData;
+  }
+
+  loadTrack(trackData) {
+    this.currentTrack = trackData;
+    this.loadTrackInfo(this.currentTrack);
+    localStorage.setItem('currentTrackId', this.currentTrack.id);
+  }
+
   async render() {
     const contentTemplate = Handlebars.templates['player.hbs'];
     const playerHTML = contentTemplate();
@@ -14,48 +76,23 @@ export class Player {
     if (section && !document.getElementById('player')) {
       section.insertAdjacentHTML('afterbegin', playerHTML);
     }
-    const data = {
-      track: {
-        title: 'Японский сэмпл',
-        id: '1',
-        imageUrl: 'image1.jpg',
-        fileName: 'японский сэмпл 128 бпм.mp3',
-        artist: 'Артём Голубев',
-        duration: 185,
-        durationFormatted: '3:05',
-      },
-    };
-
-    const storedTrack = localStorage.getItem('currentTrackId');
-    let trackLoad = null;
-    if (storedTrack) {
-      // const data = await apiServise.loadtrack().track;
-      trackLoad = data.track;
-    } else {
-      // const data = await apiServise.loadtrack().track;
-      trackLoad = data.track;
-    }
-    this.currentTrack = trackLoad;
-    const track = this.currentTrack;
-    this.loadTrackInfo(track);
 
     this.volumeRender();
     this.playPauseSwitch();
     this.sliderColorChange();
     this.likeTrack();
     this.soundChange();
-    this.setInitialVolume();
-    this.setInitialPLayTime();
 
-    // Добавляем обработчик события 'loadedmetadata', чтобы установить общее время и обновить слайдер
-    this.audio.addEventListener('loadedmetadata', () => {
-      this.audio.duration;
-    });
-
-    // Добавляем обработчик 'timeupdate' для обновления текущего времени и слайдера
     this.audio.addEventListener('timeupdate', () => {
       this.updateCurrentTimeAndSlider();
     });
+
+    const storedTrackId = localStorage.getItem('currentTrackId');
+    let storedTrackData = await this.getDataTrackById(storedTrackId);
+
+    this.loadTrack(storedTrackData);
+    this.setInitialVolume();
+    this.setInitialPLayTime();
 
     const storedTrackStatus = localStorage.getItem('isPlaying');
     if (storedTrackStatus === 'true') {
@@ -70,12 +107,26 @@ export class Player {
     }
   }
 
+  async loadAndPlayTrackById(trackId) {
+    const trackData = await this.getDataTrackById(trackId);
+
+    if (!trackData) {
+      console.error(`Трек с ID ${trackId} не найден.`);
+      return;
+    }
+
+    this.loadTrack(trackData);
+    this.audio.play();
+    this._toggleplayPauseSwitch(true);
+    localStorage.setItem('isPlaying', 'true');
+  }
+
   loadTrackInfo(track) {
     document.querySelector('.track-title').textContent = track.title;
     document.querySelector('.track-artist').textContent = track.artist;
     document.querySelector('.track-time.total').textContent = track.durationFormatted;
 
-    document.querySelector('.track-cover').src = `static/img/${track.imageUrl}`;
+    document.querySelector('.track-cover-player').src = `static/img/${track.imageUrl}`;
 
     this.audio.src = `static/music/${track.fileName}`;
     this.audio.load();
@@ -90,13 +141,21 @@ export class Player {
 
     document.querySelector('.track-time.current').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
 
-    localStorage.setItem('playTime', currentTime.toFixed(1));
-
     const percent = (currentTime / duration) * 100;
     const timeRegulator = document.querySelector('.remote-slider');
     if (timeRegulator) {
       timeRegulator.value = percent;
       timeRegulator.style.setProperty('--progress', percent + '%');
+    }
+
+    if (this.canSaveTime) {
+      this.canSaveTime = false;
+
+      localStorage.setItem('playTime', currentTime.toFixed(1));
+
+      setTimeout(() => {
+        this.canSaveTime = true;
+      }, 1000);
     }
   }
 

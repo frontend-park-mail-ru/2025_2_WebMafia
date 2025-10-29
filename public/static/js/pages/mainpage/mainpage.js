@@ -38,7 +38,7 @@ export class MainPage {
         artist: album.artist ? album.artist.name : 'Unknown Artist',
       }));
       pageData.tracks = (data.tracks || []).map((track) => ({
-        id: track.track_id,
+        id: track.id,
         name: track.title,
         image: `static/img/${track.album.avatar_url || 'default-album.png'}`,
         artists: track.artists,
@@ -99,9 +99,9 @@ export class MainPage {
   playTrack() {
     const playBtn = document.querySelectorAll('.play-button');
     playBtn.forEach((button) => {
-      button.addEventListener('click', () => {
-        player.audio.play();
-        player._toggleplayPauseSwitch(true);
+      button.addEventListener('click', (event) => {
+        const trackId = event.currentTarget.dataset.trackId;
+        player.loadAndPlayTrackById(trackId);
       });
     });
   }

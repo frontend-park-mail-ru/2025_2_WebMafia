@@ -42,9 +42,9 @@
   transform: scale(1.03);
 }
 
-.track-cover {
-  width: 60px;
-  height: 60px;
+.track-cover-player {
+  width: 55px;
+  height: 55px;
   border-radius: 10px;
   object-fit: cover;
 }
@@ -58,12 +58,20 @@
 .track-title {
   font-size: 16px;
   font-weight: 600;
+  max-width: 142px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .track-artist {
   font-size: 12px;
   color: #fff;
   font-weight: 100;
+  max-width: 142px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Центр */
@@ -92,6 +100,22 @@
   color: #fff;
   transition: transform 0.2s;
   align-items: center;
+}
+
+.control-btn.prev{
+  transform: rotate(180deg);
+  margin-bottom: 6px;
+}
+
+.control-btn.prev svg,
+.control-btn.next svg{
+  width: 23px;
+  height: 23px;
+}
+
+.control-btn.prev g,
+.control-btn.next g{
+  fill: #fff;
 }
 
 .control-btn.shuffle svg,
@@ -124,9 +148,19 @@
   height: 30px;
 }
 
-.control-btn:hover {
+.control-btn:hover{
   transform: scale(1.01);
   color: #a866eb;
+}
+
+.control-btn.prev:hover {
+  transform: scale(1.01) rotate(180deg);
+  color: #a866eb;
+}
+
+.control-btn.prev g:hover,
+.control-btn.next g:hover{
+  fill: #a866eb;
 }
 
 .progress-remote {
