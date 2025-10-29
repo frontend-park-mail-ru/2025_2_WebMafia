@@ -76,11 +76,7 @@ export class MainPage {
     let currentIndex = 0;
     let isAnimating = false;
 
-    /**
-     * ФУНКЦИЯ: Управляет UI элементами на карточке.
-     * @param {HTMLElement} card - Карточка для обновления.
-     * @param {object | null} data - Данные для отображения (имя) или null для очистки.
-     */
+    // Функция для управляет UI элементами на карточке.
     function updateCardUI(card, data = null) {
       // 1. Очистка: всегда удаляем старые элементы, если они есть.
       const existingButton = card.querySelector('.current-card-btn.play');

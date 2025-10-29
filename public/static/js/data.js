@@ -6,41 +6,8 @@ export class apiServises {
     this.csrfToken = null;
   }
 
-  async getScrfToken() {
-    try {
-      const response = await this.request('/csrf-token');
-      const token = response.token || response.csrfToken;
-      this.csrfToken = token;
-      console.log('CSRF token fetched and stored:', this.csrfToken);
-      return this.csrfToken;
-    } catch (error) {
-      console.error('Failed to fetch CSRF token:', error);
-      this.csrfToken = null;
-      throw error;
-    }
-  }
-
-  async ensureCsrfToken() {
-    if (!this.csrfToken) {
-      await this.getScrfToken();
-    }
-  }
-
   async request(endpoint, options = {}) {
-    const isCsrfRequest = endpoint === '/csrf-token';
     const url = `${this.baseURL}${endpoint}`;
-    const method = options.method || 'GET';
-
-    if (!['GET', 'HEAD', 'OPTIONS'].includes(method.toUpperCase()) && !isCsrfRequest) {
-      await this.ensureCsrfToken();
-
-      if (this.csrfToken) {
-        if (!options.headers) {
-          options.headers = {};
-        }
-        options.headers['X-CSRF-Token'] = this.csrfToken;
-      }
-    }
 
     const config = {
       method: options.method || 'GET',

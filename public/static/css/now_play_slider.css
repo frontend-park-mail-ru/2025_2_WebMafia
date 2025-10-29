@@ -51,8 +51,6 @@
 
 .card-position-prev {
   z-index: 5;
-
-  /* ИЗМЕНЕНО: Увеличиваем расстояние, чтобы было шире */
   transform: translateX(-65%) scale(0.9);
   filter: brightness(50%) blur(2px);
   opacity: 1;
@@ -60,8 +58,6 @@
 
 .card-position-next {
   z-index: 5;
-
-  /* ИЗМЕНЕНО: Увеличиваем расстояние, чтобы было шире */
   transform: translateX(65%) scale(0.9);
   filter: brightness(50%) blur(2px);
   opacity: 1;
@@ -131,7 +127,7 @@
   text-align: center;
 }
 
-/* Стили стрелок (с z-index для видимости) */
+/* Стили стрелок */
 .current-card-btn.prev,
 .current-card-btn.next {
   background: none;
