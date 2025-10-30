@@ -88,11 +88,16 @@
             <div class="cards" id="slidebar">
               {{#each singls}}
               <div class="card">
-                <a href="/album/{{ singl_id }}"
+                <a href="/album/{{ id }}"
                   ><img src="{{ cover }}" alt="{{ name }}" />
                   <div class="card-bottom-info">
                     <p class="card-name">{{ name }}</p>
-                    <p class="card-sub">{{ year }}</p>
+                    <p class="card-sub">{{ year }}
+                      {{#if type}}
+                        <span class="dot"></span>
+                        {{ type }}
+                      {{/if}}
+                    </p>
                   </div>
                 </a>
                 <button class="play-button play-button-placement"></button>

@@ -1,68 +1,49 @@
 import { router } from '../../routing.js';
 import { initScrollbar } from '../../scrollbar.js';
 import { apiServise } from "../../data.js";
+import { durationParser, getValidImage, playsParser } from "../../parsers.js";
+import { header } from "../header/header.js";
+import { sidebar } from "../sidebar/sidebar.js";
+import { player } from "../player/player.js";
 
 export class ArtistPage {
-  playsParser(plays) {
-    if (plays > 1_000_000_000) {
-      const value = plays / 1_000_000_000;
-      plays = (value < 10 ? value.toFixed(1) : value.toFixed(0)).replace('.', ',') + ' млрд';
-    } else if (plays > 1_000_000) {
-      const value = plays / 1_000_000;
-      plays = (value < 10 ? value.toFixed(1) : value.toFixed(0)).replace('.', ',') + ' млн';
-    } else if (plays > 1_000) {
-      const value = plays / 1_000;
-      plays = (value < 10 ? value.toFixed(1) : value.toFixed(0)).replace('.', ',') + ' тыс';
-    }
-
-    return plays;
-  }
-
-  durationParser(duration) {
-    const duration_m = Math.floor(duration / 60);
-    const duration_s = duration - duration_m * 60;
-    return duration_s < 10 ? `${duration_m}:0${duration_s}` : `${duration_m}:${duration_s}`;
-  }
-
   async render(id) {
-    const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
-    if (!isAuthenticated) {
-      router.navigate('/login');
-      return;
-    }
-
     let pageData = {
-      isAuthenticated: isAuthenticated,
       albums: [],
       popular_tracks: [],
       singls: [],
       similar_artists: [],
       listeners: 13267225,
+      nickname: 'Александр Константинов',
+      letter: '',
     };
 
-    function getValidImage(url, defaultImage) {
-      if (!url) return `static/img/${defaultImage}`;
-      return url.startsWith('http') ? url : `static/img/${url}`;
-    }
+    pageData.isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+    pageData.letter = pageData.nickname ? pageData.nickname[0] : '';
 
     try {
       const data = await apiServise.getArtistPageData(id);
       pageData.name = data.artist ? data.artist.name : 'Unknown Artist';
+
+      document.querySelector('head title').textContent = pageData.name;
+
       pageData.artist_header = getValidImage(data.artist.avatar_url);
       pageData.description = data.artist.description;
+      pageData.listeners = playsParser(pageData.listeners);
+
       pageData.similar_artists = (data.similar_artists || []).map((artist) => ({
         id: artist.id,
         name: artist.name,
-        listeners: 0,
+        listeners: playsParser(0),
         image: getValidImage(artist.avatar_url, 'default-artist.png'),
       }));
       pageData.popular_tracks = (data.popular_tracks || []).map((track) => ({
         id: track.id,
         name: track.title,
-        plays: 0,
+        plays: playsParser(0),
         album: track.album.title,
         album_id: track.album.id,
-        duration: this.durationParser(track.duration_s),
+        duration: durationParser(track.duration_s),
         cover: getValidImage(track.album.avatar_url, 'default-album.png'),
         artists: track.artists,
       }));
@@ -71,13 +52,14 @@ export class ArtistPage {
           id: album.album_id,
           name: album.title,
           cover: getValidImage(album.avatar_url, 'default-album.png'),
-          release_year: album.release_year,
+          year: album.release_date ? album.release_date.slice(0, 4) : '',
+          type: album.type,
         };
 
-        if (album.type && album.type === 'Альбом') {
-          pageData.albums.push(item);
-        } else {
+        if (album.type && (album.type === 'Сингл' || album.type === 'EP')) {
           pageData.singls.push(item);
+        } else {
+          pageData.albums.push(item);
         }
       });
     } catch (error) {
@@ -87,21 +69,17 @@ export class ArtistPage {
       return;
     }
 
-    pageData.popular_tracks = pageData.popular_tracks.map((track) => ({
-      ...track,
-      plays: this.playsParser(track.plays),
-    }));
-    pageData.similar_artists = pageData.similar_artists.map((artist) => ({
-      ...artist,
-      listeners: this.playsParser(artist.listeners),
-    }));
-    pageData.listeners = this.playsParser(pageData.listeners);
     Handlebars.registerHelper('numeration', function (value) {
       return parseInt(value) + 1;
     });
     const contentTemplate = Handlebars.templates['artistPage.hbs'];
     document.getElementById('app').innerHTML = contentTemplate(pageData);
-    console.log(pageData);
+
+    await Promise.all([
+      header.render(),
+      sidebar.render(),
+      player.render(),
+    ]);
 
     initScrollbar();
     this.addEventListeners();
