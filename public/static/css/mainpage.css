@@ -327,12 +327,31 @@ body {
   margin-left: 2px;
 }
 
+/* Новые стили для состояния паузы */
+.play-button.paused::before {
+  border-style: solid;
+  border-width: 0;
+  background-color: transparent; /* Убираем фон от треугольника */
+  height: 20px; /* Высота полос */
+  width: 16px; /* Общая ширина значка */
+  opacity: 1;
+
+  /* Создаем две полосы с помощью box-shadow */
+  box-shadow: inset 5px 0 0 0 white, inset -5px 0 0 0 white;
+  margin: 0;
+}
+
+
 .play-button-placement:hover {
   transform: scale(1.03);
   background-position: left top;
 }
 
 .card:hover .play-button {
+  opacity: 1;
+}
+
+.play-button.is-active {
   opacity: 1;
 }
 
@@ -452,6 +471,24 @@ body {
 .play-button-track:hover {
   transform: scale(1.03);
   background-position: left top;
+}
+
+/* Новые стили для состояния паузы */
+.play-button-track.paused::before {
+  border-style: solid;
+  border-width: 0;
+  background-color: transparent; /* Убираем фон от треугольника */
+  height: 20px; /* Высота полос */
+  width: 16px; /* Общая ширина значка */
+  opacity: 1;
+
+  /* Создаем две полосы с помощью box-shadow */
+  box-shadow: inset 5px 0 0 0 white, inset -5px 0 0 0 white;
+  margin: 0;
+}
+
+.play-button-track.is-active {
+  opacity: 1;
 }
 
 .card-tracks:hover .play-button-track {
