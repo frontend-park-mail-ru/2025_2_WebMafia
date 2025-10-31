@@ -1,7 +1,7 @@
 import { router } from '../../routing.js';
 //import { apiServise } from '../../data.js';
 import { initPasswordShowing } from '../../eye.js';
-import { initScrollbar } from "../../scrollbar.js";
+import { initScrollbar } from '../../scrollbar.js';
 
 export class ProfilePage {
   async render() {

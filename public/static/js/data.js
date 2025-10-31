@@ -3,6 +3,7 @@ const API_BASE_URL = 'http://localhost:8080/api/v1';
 export class apiServises {
   constructor() {
     this.baseURL = API_BASE_URL;
+    this.csrfToken = null;
   }
 
   async request(endpoint, options = {}) {
@@ -40,16 +41,12 @@ export class apiServises {
 
   async getMainPageData() {
     try {
-      const [albums, tracks, artists] = await Promise.all([
-        this.request('/albums?limit=20').catch(() => []),
-        this.request('/tracks?limit=30').catch(() => []),
-        this.request('/artists?limit=10').catch(() => [])
-      ]);
+      const [albums, tracks, artists] = await Promise.all([this.request('/albums').catch(() => []), this.request('/tracks').catch(() => []), this.request('/artists').catch(() => [])]);
 
       return {
         albums: albums || [],
         tracks: tracks || [],
-        artists: artists || []
+        artists: artists || [],
       };
     } catch (error) {
       console.error('Failed to load main page data:', error);
@@ -100,6 +97,20 @@ export class apiServises {
     return this.request('/logout', {
       method: 'POST',
     });
+  }
+
+  async loadtrack() {
+    return {
+      track: {
+        title: 'Японский сэмпл',
+        id: '1',
+        imageUrl: 'image1.jpg',
+        fileName: 'японский сэмпл 128 бпм.mp3',
+        artist: 'Неизвестный исполнитель',
+        duration: 185,
+        durationFormatted: '3:05',
+      },
+    };
   }
 }
 
