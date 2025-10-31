@@ -36,6 +36,7 @@ body {
   overflow-x: hidden;
 }
 
+<<<<<<< HEAD
 /* Now playing card slider */
 .now-playing-container {
   padding-top: 23px;
@@ -168,6 +169,8 @@ body {
   text-overflow: ellipsis; /* заменяем на "…" */
 }
 
+=======
+>>>>>>> dev
 .title {
   display: flex;
   justify-content: space-between;
