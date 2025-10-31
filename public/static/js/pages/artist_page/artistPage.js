@@ -28,28 +28,28 @@ export class ArtistPage {
       isAuthenticated: true,
       albums: [
         {
-          name: "Zeit",
-          cover: "static/img/test_cover3.jpg",
+          name: 'Zeit',
+          cover: 'static/img/test_cover3.jpg',
           year: 2022,
         },
         {
-          name: "Rammstein",
-          cover: "static/img/test_cover1.jpg",
+          name: 'Rammstein',
+          cover: 'static/img/test_cover1.jpg',
           year: 2019,
         },
         {
-          name: "Liebe ist für ale da",
-          cover: "static/img/test_cover4.jpg",
+          name: 'Liebe ist für ale da',
+          cover: 'static/img/test_cover4.jpg',
           year: 2009,
         },
         {
-          name: "Rosenrot",
-          cover: "static/img/test_cover5.jpg",
+          name: 'Rosenrot',
+          cover: 'static/img/test_cover5.jpg',
           year: 2005,
         },
         {
-          name: "Reise, reise",
-          cover: "static/img/test_cover6.jpg",
+          name: 'Reise, reise',
+          cover: 'static/img/test_cover6.jpg',
           year: 2004,
         },
       ],
@@ -57,7 +57,7 @@ export class ArtistPage {
         {
           cover: 'static/img/test_cover.jpg',
           name: 'Sonne',
-          performers: [{name: 'Rammstein', id: 1}],
+          performers: [{ name: 'Rammstein', id: 1 }],
           plays: 727345807,
           album: 'Mutter',
           duration: '4:32',
@@ -65,7 +65,7 @@ export class ArtistPage {
         {
           cover: 'static/img/test_cover2.jpg',
           name: 'Du hast',
-          performers: [{name: 'Rammstein', id: 1}],
+          performers: [{ name: 'Rammstein', id: 1 }],
           plays: 753636278,
           album: 'Sehnsucht',
           duration: '3:55',
@@ -73,7 +73,7 @@ export class ArtistPage {
         {
           cover: 'static/img/test_cover1.jpg',
           name: 'Deutschland',
-          performers: [{name: 'Rammstein', id: 1}],
+          performers: [{ name: 'Rammstein', id: 1 }],
           plays: 601994443,
           album: 'Rammstein',
           duration: '5:22',
@@ -81,7 +81,7 @@ export class ArtistPage {
         {
           cover: 'static/img/test_cover2.jpg',
           name: 'Engel',
-          performers: [{name: 'Rammstein', id: 1}],
+          performers: [{ name: 'Rammstein', id: 1 }],
           plays: 384388389,
           album: 'Sehnsucht',
           duration: '4:24',
@@ -89,7 +89,7 @@ export class ArtistPage {
         {
           cover: 'static/img/test_cover.jpg',
           name: 'Ich will',
-          performers: [{name: 'Rammstein', id: 1}],
+          performers: [{ name: 'Rammstein', id: 1 }],
           plays: 301004704,
           album: 'Mutter',
           duration: '3:37',
@@ -98,10 +98,10 @@ export class ArtistPage {
       singls: [],
       similar_artists: [
         {
-          name: "Metallica",
-          artist_avatar: "/static/img/test_artist_image.jpg",
+          name: 'Metallica',
+          artist_avatar: '/static/img/test_artist_image.jpg',
           listeners: 30143696,
-        }
+        },
       ],
       name: 'Rammstein',
       artist_header: '/static/img/test_artist_header.jpg',

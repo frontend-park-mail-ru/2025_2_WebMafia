@@ -24,7 +24,7 @@
   font-size: 20px;
   font-weight: 600;
   color: rgb(0, 0, 0);
-  padding: 10px 15px 10px 15px;
+  padding: 10px 15px;
   cursor: pointer;
 }
 
@@ -91,9 +91,9 @@
   margin: 10px 0 10px 32px;
 }
 
-.library-item{
+.library-item {
   font-size: 16px;
-  font-weight: 200 ;
+  font-weight: 200;
 }
 
 /* фолетовый кружочек на фоне */
