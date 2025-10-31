@@ -156,7 +156,7 @@ export class ArtistPage {
     const contentTemplate = Handlebars.templates['artistPage.hbs'];
     document.getElementById('app').innerHTML = contentTemplate(pageData);
 
-    player.render();
+    // player.render();
     header.render();
 
     initScrollbar();

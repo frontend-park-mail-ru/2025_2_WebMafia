@@ -66,7 +66,6 @@ export class MainPage {
 
     header.render();
     sidebar.render();
-    player.render();
 
     slider.sliderFunction();
     this.nowPlayingCardSlider();

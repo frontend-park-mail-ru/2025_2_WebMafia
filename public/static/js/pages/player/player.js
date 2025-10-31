@@ -6,6 +6,18 @@ export class Player {
     this.audio = new Audio();
     this.currentTrack = null;
     this.canSaveTime = true;
+    this.nextTrackId = null;
+    this.prevTrackId = null;
+  }
+
+  async init() {
+    this.render();
+
+    this.volumeRender();
+    this.playPauseSwitch();
+    this.sliderColorChange();
+    this.likeTrack();
+    this.soundChange();
   }
 
   async getDataTrackById(track_id) {
@@ -41,7 +53,7 @@ export class Player {
       },
       {
         title: 'Япония уээ эээ ээ эээээээ ээээээээээ ээээээээээээээээээээ эээээээээээээээээ',
-        id: '',
+        id: 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbc',
         imageUrl: 'image4.jpg',
         fileName: 'японский сэмпл 128 бпм.mp3',
         artist: 'Я играю в иииигры ыоврлоыфп лыфовр лфыово рфыловр ',
@@ -50,7 +62,7 @@ export class Player {
       },
       {
         title: 'Япония уээ эээ ээ эээээээ ээээээээээ ээээээээээээээээээээ эээээээээээээээээ',
-        id: '',
+        id: 'dddddddd-dddd-dddd-dddd-ddddddddddde',
         imageUrl: 'image5.jpg',
         fileName: 'японский сэмпл 128 бпм.mp3',
         artist: 'Я играю в иииигры ыоврлоыфп лыфовр лфыово рфыловр ',
@@ -59,6 +71,11 @@ export class Player {
       },
     ];
     const trackData = data.find((track) => track.id === track_id);
+    const currentIndex = data.findIndex((track) => track.id === track_id);
+    const nextTrackObject = data[currentIndex + 1];
+    this.nextTrackId = nextTrackObject ? nextTrackObject.id : null;
+    const prevTrackObject = data[currentIndex - 1];
+    this.prevTrackId = prevTrackObject ? prevTrackObject.id : null;
     return trackData;
   }
 
@@ -72,9 +89,9 @@ export class Player {
     const contentTemplate = Handlebars.templates['player.hbs'];
     const playerHTML = contentTemplate();
 
-    const section = document.getElementById('section');
-    if (section && !document.getElementById('player')) {
-      section.insertAdjacentHTML('afterbegin', playerHTML);
+    const playerСontainer = document.getElementById('player-container');
+    if (playerСontainer && !document.getElementById('player')) {
+      playerСontainer.insertAdjacentHTML('afterbegin', playerHTML);
     }
 
     this.volumeRender();
@@ -93,17 +110,18 @@ export class Player {
     this.loadTrack(storedTrackData);
     this.setInitialVolume();
     this.setInitialPLayTime();
+    this.trackSwitching();
 
     const storedTrackStatus = localStorage.getItem('isPlaying');
     if (storedTrackStatus === 'true') {
       this.audio.play().catch((e) => {
-        this._toggleplayPauseSwitch(false);
+        this.togglePlayPauseSwitch(false);
         localStorage.setItem('isPlaying', 'false');
       });
-      this._toggleplayPauseSwitch(true);
+      this.togglePlayPauseSwitch(true);
     } else {
       this.audio.pause();
-      this._toggleplayPauseSwitch(false);
+      this.togglePlayPauseSwitch(false);
     }
   }
 
@@ -117,7 +135,7 @@ export class Player {
 
     this.loadTrack(trackData);
     this.audio.play();
-    this._toggleplayPauseSwitch(true);
+    this.togglePlayPauseSwitch(true);
     localStorage.setItem('isPlaying', 'true');
   }
 
@@ -186,7 +204,7 @@ export class Player {
     });
   }
 
-  _toggleplayPauseSwitch(isPlaying) {
+  togglePlayPauseSwitch(isPlaying) {
     const playBtn = document.querySelector('.control-btn.play');
     const pauseBtn = document.querySelector('.control-btn.pause');
     if (isPlaying) {
@@ -213,12 +231,12 @@ export class Player {
       this.audio.play();
       localStorage.setItem('isPlaying', 'true');
       localStorage.setItem('currentTrackId', this.currentTrack.id);
-      this._toggleplayPauseSwitch(true);
+      this.togglePlayPauseSwitch(true);
     });
     pauseBtn.addEventListener('click', () => {
       this.audio.pause();
       localStorage.setItem('isPlaying', 'false');
-      this._toggleplayPauseSwitch(false);
+      this.togglePlayPauseSwitch(false);
     });
   }
 
@@ -227,12 +245,12 @@ export class Player {
       // Если стоит на паузе, запускаем
       this.audio.play();
       localStorage.setItem('isPlaying', 'true');
-      this._toggleplayPauseSwitch(true);
+      this.togglePlayPauseSwitch(true);
     } else {
       // Если играет, ставим на паузу
       this.audio.pause();
       localStorage.setItem('isPlaying', 'false');
-      this._toggleplayPauseSwitch(false);
+      this.togglePlayPauseSwitch(false);
     }
   }
 
@@ -296,6 +314,27 @@ export class Player {
     this.audio.currentTime = storedTime;
     const percent = (storedTime / duration) * 100;
     timeRegulator.style.setProperty('--progress', percent + '%');
+  }
+
+  trackSwitching() {
+    const nextBtn = document.querySelector('.control-btn.next');
+    const prevBtn = document.querySelector('.control-btn.prev');
+
+    nextBtn.addEventListener('click', () => {
+      this.nextTrack();
+    });
+
+    prevBtn.addEventListener('click', () => {
+      this.prevTrack();
+    });
+  }
+
+  nextTrack() {
+    this.loadAndPlayTrackById(this.nextTrackId);
+  }
+
+  prevTrack() {
+    this.loadAndPlayTrackById(this.prevTrackId);
   }
 }
 

@@ -19,6 +19,7 @@ body {
   display: flex;
   flex: 1;
   min-height: 0;
+  margin-bottom: 90px;
 }
 
 /* Content */
@@ -36,141 +37,6 @@ body {
   overflow-x: hidden;
 }
 
-<<<<<<< HEAD
-/* Now playing card slider */
-.now-playing-container {
-  padding-top: 23px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-/* стрелки */
-.current-card-btn.prev::before {
-  content: '';
-  width: 24px;
-  height: 24px;
-  border: #9c58e0 solid;
-  border-width: 0 4px 4px 0;
-  transform: rotate(135deg);
-  display: inline-block;
-}
-
-.current-card-btn.next::before {
-  content: '';
-  width: 24px;
-  height: 24px;
-  border: #9c58e0 solid;
-  border-width: 0 4px 4px 0;
-  transform: rotate(-45deg);
-  display: inline-block;
-}
-
-.current-card-btn.prev,
-.current-card-btn.next {
-  background: none;
-  border: none;
-  cursor: pointer;
-  transition:
-    transform 0.2s ease,
-    color 0.2s ease;
-}
-
-.current-card-btn.prev:hover,
-.current-card-btn.next:hover {
-  transform: scale(1.03);
-  color: #a866eb;
-}
-
-/* карточки */
-.now-playing-container-card-previous,
-.now-playing-container-card-next,
-.now-playing-container-card-current {
-  position: relative;
-  border-radius: 20px;
-  transition: all 0.4s ease;
-  flex-shrink: 0;
-}
-
-/* левая и правая карточка */
-.now-playing-container-card-previous,
-.now-playing-container-card-next {
-  z-index: 1;
-  width: 300px;
-  height: 140px;
-  filter: brightness(50%) blur(2px);
-  transform: scale(0.9);
-}
-
-.now-playing-container-card-previous img,
-.now-playing-container-card-next img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 20px;
-}
-
-.now-playing-container-card-previous {
-  margin-right: -80px;
-}
-
-.now-playing-container-card-next {
-  margin-left: -80px;
-}
-
-/* центральная карточка (активная) */
-.now-playing-container-card-current {
-  z-index: 2;
-  width: 300px;
-  height: 160px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-  transform: scale(1.1);
-  transition: transform 0.5s ease, box-shadow 0.5s ease;
-}
-
-.now-playing-container-card-current img {
-  filter: brightness(70%);
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 20px;
-}
-
-.now-playing-play-button {
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-}
-
-.now-playing-play-button:hover {
-  transform: translate(-50%, -50%) scale(1.03);
-  background-position: left top;
-}
-
-/* анимация переключения карточек */
-
-/* название трека */
-.current-card-name {
-  position: absolute;
-  bottom: 15px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 22px;
-  font-weight: 600;
-  color: white;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 1); /* доп. мягкая подсветка */
-  max-width: 90%; /* ограничиваем ширину текста */
-  white-space: nowrap; /* запрещаем перенос строк */
-  overflow: hidden; /* скрываем лишнее */
-  text-overflow: ellipsis; /* заменяем на "…" */
-}
-
-=======
->>>>>>> dev
 .title {
   display: flex;
   justify-content: space-between;
@@ -264,7 +130,7 @@ body {
 /* Cards */
 .cards {
   display: flex;
-  overflow: hidden;
+  overflow-x: auto;
   scroll-behavior: smooth;
   width: 100%;
   margin-left: -23px;

@@ -53,7 +53,6 @@ export class ProfilePage {
     const contentTemplate = Handlebars.templates['profilePage.hbs'];
     document.getElementById('app').innerHTML = contentTemplate(pageData);
 
-    player.render();
     header.render();
     this.addEventListeners();
     initPasswordShowing();

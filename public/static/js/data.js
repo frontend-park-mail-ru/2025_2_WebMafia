@@ -6,7 +6,7 @@ export class apiServises {
     this.csrfToken = null;
   }
 
-  async getScrfToken() {
+  async getCsrfToken() {
     try {
       const response = await this.request('/csrf-token');
       const token = response.token || response.csrfToken;

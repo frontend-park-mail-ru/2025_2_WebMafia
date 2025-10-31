@@ -9,6 +9,10 @@
   justify-content: space-between;
   background-color: #1a1a1a;
   z-index: 200;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 
 /* Левая часть */
@@ -177,17 +181,12 @@
   --progress: 20%;
 }
 
-<<<<<<< HEAD
 .remote-slider::-webkit-slider-container{
   border-radius: 30px;
 }
 
 .remote-slider::-webkit-slider-runnable-track{
   height: 6px;
-=======
-.remote-slider::-webkit-slider-runnable-track {
-  height: 8px;
->>>>>>> dev
   border-radius: 30px;
   background: linear-gradient(90deg, #7fd8e6 0%, #a866eb var(--progress), #e0e0e0 var(--progress), #e0e0e0 100%);
 }
@@ -222,15 +221,12 @@
   border-color: #a866eb;
 }
 
-<<<<<<< HEAD
 .remote-container:hover .remote-slider::-webkit-slider-thumb{
   opacity: 1;
 }
 
 
 
-=======
->>>>>>> dev
 /* Правая часть */
 .player-right {
   margin-right: 20px;
@@ -245,13 +241,8 @@
   --progress: 50%;
 }
 
-<<<<<<< HEAD
 .volume-slider::-webkit-slider-runnable-track{
   height: 6px;
-=======
-.volume-slider::-webkit-slider-runnable-track {
-  height: 8px;
->>>>>>> dev
   border-radius: 30px;
   background: linear-gradient(90deg, #7fd8e6 0%, #a866eb var(--progress), #7fd8e6 var(--progress), #7fd8e6 100%);
 }
