@@ -5,6 +5,7 @@ import { durationParser, getValidImage, playsParser } from "../../parsers.js";
 import { header } from "../header/header.js";
 import { sidebar } from "../sidebar/sidebar.js";
 import { player } from "../player/player.js";
+import { slider } from "../../slider.js";
 
 export class ArtistPage {
   async render(id) {
@@ -17,6 +18,9 @@ export class ArtistPage {
       nickname: 'Александр Константинов',
       letter: '',
     };
+
+    const contentTemplateWithoutData = Handlebars.templates['MainPage.hbs'];
+    document.getElementById('app').innerHTML = contentTemplateWithoutData(pageData);
 
     pageData.isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
     pageData.letter = pageData.nickname ? pageData.nickname[0] : '';
@@ -69,9 +73,6 @@ export class ArtistPage {
       return;
     }
 
-    Handlebars.registerHelper('numeration', function (value) {
-      return parseInt(value) + 1;
-    });
     const contentTemplate = Handlebars.templates['artistPage.hbs'];
     document.getElementById('app').innerHTML = contentTemplate(pageData);
 
@@ -81,6 +82,7 @@ export class ArtistPage {
       player.render(),
     ]);
 
+    slider.sliderFunction();
     initScrollbar();
     this.addEventListeners();
   }

@@ -8,7 +8,7 @@
           style="
             background:
               linear-gradient(to top, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0)),
-              url({{ artist_header }}) top center/cover no-repeat;
+              url('{{ artist_header }}') top center/cover no-repeat;
           "
         >
           <div class="artist-name">{{ name }}</div>
@@ -57,6 +57,7 @@
             <a class="secondary-button show-tracks-button" href="#">Показать все</a>
           </div>
 
+          {{#if albums}}
           <div class="title">
             <div class="title-name">Альбомы</div>
           </div>
@@ -78,6 +79,7 @@
               <p><i class="slide-btn right"></i></p>
             </div>
           </div>
+          {{/if}}
 
           {{#if singls}}
           <div class="title">
