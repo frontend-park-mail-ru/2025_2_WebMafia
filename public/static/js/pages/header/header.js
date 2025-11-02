@@ -3,8 +3,16 @@ import { router } from '../../routing.js';
 
 export class Header {
   async render() {
+    let pageData = {
+      isAuthenticated: localStorage.getItem('isAuthenticated') === 'true',
+      nickname: 'Александр Константинов',
+      letter: '',
+    };
+
+    pageData.letter = pageData.nickname ? pageData.nickname[0] : '';
+
     const contentTemplate = Handlebars.templates['header.hbs'];
-    const headerHTML = contentTemplate();
+    const headerHTML = contentTemplate(pageData);
 
     const section = document.getElementById('section');
     if (section && !document.getElementById('header')) {

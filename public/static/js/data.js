@@ -58,6 +58,19 @@ export class apiServises {
     return this.request('/profile');
   }
 
+  async getAlbumPageData(id) {
+    try {
+      const [album, tracks] = await Promise.all([
+        this.request(`/albums/${id}`).catch(() => []),
+        this.request(`/albums/${id}/tracks`).catch(() => [])
+      ]);
+      return { album: album || {}, tracks: tracks || [] };
+    } catch (error) {
+      console.error('Failed to load album page data:', error);
+      throw error;
+    }
+  }
+
   async loginUser(login, password) {
     return this.request('/login', {
       method: 'POST',

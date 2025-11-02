@@ -5,7 +5,7 @@ export class Player {
 
     const section = document.getElementById('section');
     if (section && !document.getElementById('player')) {
-      section.insertAdjacentHTML('afterbegin', playerHTML);
+      section.insertAdjacentHTML('beforeend', playerHTML);
     }
     this.volumeRender();
     this.playPauseSwitch();

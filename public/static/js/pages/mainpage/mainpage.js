@@ -8,19 +8,11 @@ import { player } from '../player/player.js';
 
 export class MainPage {
   async render() {
-    const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
-    if (!isAuthenticated) {
-      router.navigate('/login');
-      return;
-    }
-
     let pageData = {
-      isAuthenticated: true,
+      isAuthenticated: localStorage.getItem('isAuthenticated') === 'true',
       artists: [],
       albums: [],
       tracks: [],
-      nickname: 'Александр Константинов',
-      letter: '',
     };
 
     const contentTemplateWithoutData = Handlebars.templates['MainPage.hbs'];
@@ -30,8 +22,6 @@ export class MainPage {
       if (!url) return `static/img/${defaultImage}`;
       return url.startsWith('http') ? url : `static/img/${url}`;
     }
-
-    pageData.letter = pageData.nickname ? pageData.nickname[0] : '';
 
     try {
       const data = await apiServise.getMainPageData();

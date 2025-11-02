@@ -16,6 +16,8 @@ handlebars public/static/js/pages/sidebar/sidebar.hbs -f public/static/js/pages/
 
 handlebars public/static/js/pages/player/player.hbs -f public/static/js/pages/player/player.tmpl.js
 
+handlebars public/static/js/pages/album/album.hbs -f public/static/js/pages/album/album.tmpl.js
+
 handlebars public/static/js/partials/eyeOpen.hbs -f public/static/js/partials/eyeOpen.tmpl.js
 
 handlebars public/static/js/partials/eyeClosed.hbs -f public/static/js/partials/eyeClosed.tmpl.js
