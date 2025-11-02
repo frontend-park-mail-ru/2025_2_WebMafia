@@ -21,5 +21,5 @@ export function durationParser(duration) {
 
 export function getValidImage(url, defaultImage) {
   if (!url) return `static/img/${defaultImage}`;
-  return url.startsWith('http') ? url : `static/img/${url}`;
+  return url.startsWith('http') ? url : `static/img/${defaultImage}`;
 }

@@ -14,12 +14,11 @@ export class ArtistPage {
       popular_tracks: [],
       singls: [],
       similar_artists: [],
-      listeners: 13267225,
       nickname: 'Александр Константинов',
       letter: '',
     };
 
-    const contentTemplateWithoutData = Handlebars.templates['MainPage.hbs'];
+    const contentTemplateWithoutData = Handlebars.templates['artistPage.hbs'];
     document.getElementById('app').innerHTML = contentTemplateWithoutData(pageData);
 
     pageData.isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
@@ -33,18 +32,18 @@ export class ArtistPage {
 
       pageData.artist_header = getValidImage(data.artist.avatar_url);
       pageData.description = data.artist.description;
-      pageData.listeners = playsParser(pageData.listeners);
+      pageData.listeners = data.artist.play_count || 0;
 
       pageData.similar_artists = (data.similar_artists || []).map((artist) => ({
         id: artist.id,
         name: artist.name,
-        listeners: playsParser(0),
+        listeners: playsParser(artist.play_count) || 0,
         image: getValidImage(artist.avatar_url, 'default-artist.png'),
       }));
       pageData.popular_tracks = (data.popular_tracks || []).map((track) => ({
         id: track.id,
         name: track.title,
-        plays: playsParser(0),
+        plays: playsParser(track.play_count) || 0,
         album: track.album.title,
         album_id: track.album.id,
         duration: durationParser(track.duration_s),
@@ -53,7 +52,7 @@ export class ArtistPage {
       }));
       data.albums.forEach(album => {
         const item = {
-          id: album.album_id,
+          id: album.id,
           name: album.title,
           cover: getValidImage(album.avatar_url, 'default-album.png'),
           year: album.release_date ? album.release_date.slice(0, 4) : '',
@@ -67,9 +66,19 @@ export class ArtistPage {
         }
       });
     } catch (error) {
-      console.error('Failed to load artist page data:', error.message);
-      localStorage.removeItem('isAuthenticated');
-      router.navigate('/login');
+      console.error('Failed to load artist page data:', error);
+
+      if (error.response && error.response.status === 404) {
+        router.navigate('/not-found');
+        return;
+      }
+
+      if (error.message && error.message.includes('Network')) {
+        alert('Проблема с подключением. Попробуйте позже.');
+        return;
+      }
+
+      alert('Не удалось загрузить страницу артиста.');
       return;
     }
 

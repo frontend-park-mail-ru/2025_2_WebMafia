@@ -29,7 +29,6 @@ export class MainPage {
         id: artist.id,
         name: artist.name,
         listeners: playsParser(artist.listeners || 0),
-        //Заглушки пока не доделана minio
         image: getValidImage(artist.avatar_url, 'default_artist_avatar.png'),
       }));
       pageData.albums = (data.albums || []).map((album) => ({
@@ -46,9 +45,19 @@ export class MainPage {
         artists: track.artists,
       }));
     } catch (error) {
-      console.error('Failed to load main page data:', error.message);
-      localStorage.removeItem('isAuthenticated');
-      router.navigate('/login');
+      console.error('Failed to load main page data:', error);
+
+      if (error.response && error.response.status === 404) {
+        router.navigate('/not-found');
+        return;
+      }
+
+      if (error.message && error.message.includes('Network')) {
+        alert('Проблема с подключением. Попробуйте позже.');
+        return;
+      }
+
+      alert('Не удалось загрузить главную страницу.');
       return;
     }
 
