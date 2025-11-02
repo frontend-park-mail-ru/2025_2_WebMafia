@@ -106,7 +106,6 @@ export class MainPage {
 
       cardsData = [playerData(prev), playerData(current), playerData(next)];
       updateAllCardsUI();
-      console.log(cardsData);
     }
 
     function updateAllCardsUI() {
@@ -196,7 +195,8 @@ export class MainPage {
     });
 
     if (player.currentTrack) {
-      player.loadTrack(player.currentTrack);
+      player.getPrevAndNextTracks();
+      // player.loadTrack(player.currentTrack);
     }
     initializeSlider();
   }

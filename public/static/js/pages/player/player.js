@@ -61,6 +61,9 @@ export class Player extends EventTarget {
   async init() {
     this.checkAuth();
     this.trackSwitching();
+    this.setInitialVolume();
+    this.setInitialPLayTime();
+    this.trackSwitching();
   }
 
   async destroy() {
@@ -89,7 +92,10 @@ export class Player extends EventTarget {
     this.currentTrack = trackData;
     this.loadTrackInfo(this.currentTrack);
     localStorage.setItem('currentTrackId', this.currentTrack.id);
+    this.getPrevAndNextTracks();
+  }
 
+  async getPrevAndNextTracks() {
     const currentIndex = this.allData.findIndex((track) => track.id === this.currentTrack.id);
     const nextTrackObject = this.allData[currentIndex + 1];
     this.nextTrackId = nextTrackObject ? nextTrackObject.id : null;
@@ -138,6 +144,7 @@ export class Player extends EventTarget {
 
     const storedTrackId = localStorage.getItem('currentTrackId');
     let storedTrackData = await this.getDataTrackById(storedTrackId);
+    this.getPrevAndNextTracks();
 
     this.loadTrack(storedTrackData);
     this.setInitialVolume();
@@ -147,6 +154,18 @@ export class Player extends EventTarget {
     this.audio.addEventListener('ended', () => {
       this.nextTrack();
     });
+
+    const storedTrackStatus = localStorage.getItem('isPlaying');
+    if (storedTrackStatus === 'true') {
+      this.audio.play().catch((e) => {
+        this.togglePlayPauseSwitch(false);
+        localStorage.setItem('isPlaying', 'false');
+      });
+      this.togglePlayPauseSwitch(true);
+    } else {
+      this.audio.pause();
+      this.togglePlayPauseSwitch(false);
+    }
   }
 
   async loadAndPlayTrackById(trackId) {
