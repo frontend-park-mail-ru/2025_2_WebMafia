@@ -154,18 +154,6 @@ export class Player extends EventTarget {
     this.audio.addEventListener('ended', () => {
       this.nextTrack();
     });
-
-    const storedTrackStatus = localStorage.getItem('isPlaying');
-    if (storedTrackStatus === 'true') {
-      this.audio.play().catch((e) => {
-        this.togglePlayPauseSwitch(false);
-        localStorage.setItem('isPlaying', 'false');
-      });
-      this.togglePlayPauseSwitch(true);
-    } else {
-      this.audio.pause();
-      this.togglePlayPauseSwitch(false);
-    }
   }
 
   async loadAndPlayTrackById(trackId) {
