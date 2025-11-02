@@ -60,6 +60,7 @@ export class Player extends EventTarget {
 
   async init() {
     this.checkAuth();
+    this.trackSwitching();
   }
 
   async destroy() {
@@ -78,60 +79,8 @@ export class Player extends EventTarget {
   async getDataTrackById(track_id) {
     // const trackData = await apiServise.loadTrackById(track_id);
     // return trackData;
-    // const data = [
-    //   {
-    //     title: 'Японский сэмпл',
-    //     id: '66666666-6666-6666-6666-666666666666',
-    //     imageUrl: 'image1.jpg',
-    //     fileName: 'японский сэмпл 128 бпм.mp3',
-    //     artist: 'Артём Голубев',
-    //     duration: 185,
-    //     durationFormatted: '3:05',
-    //   },
-    //   {
-    //     title: 'HAZARD DUTY PAY!',
-    //     id: '77777777-7777-7777-7777-777777777777',
-    //     imageUrl: 'image2.jpg',
-    //     fileName: 'JPEGMAFIA - HAZARD DUTY PAY! (Instrumental).mp3',
-    //     artist: 'JPEGMAFIA',
-    //     duration: 157,
-    //     durationFormatted: '2:37',
-    //   },
-    //   {
-    //     title: 'Take on Me',
-    //     id: '88888888-8888-8888-8888-888888888888',
-    //     imageUrl: 'image3.jpg',
-    //     fileName: 'Take on Me.mp3',
-    //     artist: 'a-ha',
-    //     duration: 227,
-    //     durationFormatted: '3:47',
-    //   },
-    //   {
-    //     title: 'Everything I am (Official Instrumental HQ)',
-    //     id: 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbc',
-    //     imageUrl: 'image4.jpg',
-    //     fileName: 'Kanye West - Everything I am (Official Instrumental HQ).mp3',
-    //     artist: 'Kanye West ',
-    //     duration: 227,
-    //     durationFormatted: '3:47',
-    //   },
-    //   {
-    //     title: 'HEAVEN-TO-ME',
-    //     id: 'dddddddd-dddd-dddd-dddd-ddddddddddde',
-    //     imageUrl: 'image5.jpg',
-    //     fileName: 'Tyler-The-Creator-HEAVEN-TO-ME-Instrumental-Prod.-By-John-Legend-Kanye-West (1).mp3',
-    //     artist: 'Tyler, The Creator',
-    //     duration: 230,
-    //     durationFormatted: '3:50',
-    //   },
-    // ];
     if (!track_id) return null;
     const trackData = this.allData.find((track) => track.id === track_id);
-    // const currentIndex = data.findIndex((track) => track.id === track_id);
-    // const nextTrackObject = data[currentIndex + 1];
-    // this.nextTrackId = nextTrackObject ? nextTrackObject.id : null;
-    // const prevTrackObject = data[currentIndex - 1];
-    // this.prevTrackId = prevTrackObject ? prevTrackObject.id : null;
     return trackData;
   }
 

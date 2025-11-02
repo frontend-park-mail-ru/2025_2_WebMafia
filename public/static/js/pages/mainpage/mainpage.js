@@ -72,7 +72,6 @@ export class MainPage {
     this.nowPlayingCardSlider();
     initScrollbar();
     playTrack();
-    // this.playTrack();
   }
 
   nowPlayingCardSlider() {
@@ -90,7 +89,6 @@ export class MainPage {
       playerSliderDataSync(event.detail);
     });
 
-    let currentIndex = 0;
     let isAnimating = false;
 
     function playerSliderDataSync({ prev, current, next }) {
@@ -128,18 +126,6 @@ export class MainPage {
         nextCard.querySelector('img').src = cardsData[2].img;
         updateCardUI(nextCard, null);
       }
-      // cardElements.forEach((card, i) => {
-      //   const data = cardsData[i];
-
-      //   card.querySelector('img').src = data.img;
-
-      //   if (card.classList.contains('card-position-current')) {
-      //     // if (i === 1) {
-      // updateCardUI(card, data);
-      //   } else {
-      //     updateCardUI(card, null);
-      //   }
-      // });
     }
 
     // Функция для управляет UI элементами на карточке.
@@ -180,14 +166,6 @@ export class MainPage {
       const prevCard = document.querySelector('.card-position-prev');
       const nextCard = document.querySelector('.card-position-next');
 
-      // if (direction === 'next') {
-      //   currentIndex = (currentIndex + 1) % cardsData.length;
-      //   updateCardUI(nextCard, cardsData[currentIndex]);
-      // } else {
-      //   currentIndex = (currentIndex - 1 + cardsData.length) % cardsData.length;
-      //   updateCardUI(prevCard, cardsData[currentIndex]);
-      // }
-
       currentCard.classList.remove('card-position-current');
       prevCard.classList.remove('card-position-prev');
       nextCard.classList.remove('card-position-next');
@@ -196,16 +174,10 @@ export class MainPage {
         currentCard.classList.add('card-position-prev');
         nextCard.classList.add('card-position-current');
         prevCard.classList.add('card-position-next');
-
-        // const newNextDataIndex = (currentIndex + 1) % cardsData.length;
-        // prevCard.querySelector('img').src = cardsData[newNextDataIndex].img;
       } else {
         currentCard.classList.add('card-position-next');
         prevCard.classList.add('card-position-current');
         nextCard.classList.add('card-position-prev');
-
-        // const newPrevDataIndex = (currentIndex - 1 + cardsData.length) % cardsData.length;
-        // nextCard.querySelector('img').src = cardsData[newPrevDataIndex].img;
       }
 
       setTimeout(() => {
