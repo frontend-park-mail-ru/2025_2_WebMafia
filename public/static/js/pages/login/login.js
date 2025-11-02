@@ -2,6 +2,7 @@ import { FormValidator } from '../../validation.js';
 import { apiServise } from '../../data.js';
 import { router } from '../../routing.js';
 import { initPasswordShowing } from '../../eye.js';
+import { player } from '../player/player.js';
 
 export class LoginPage {
   async render() {
@@ -57,6 +58,7 @@ export class LoginPage {
 
         localStorage.setItem('isAuthenticated', 'true');
 
+        await player.init();
         router.navigate('/');
       } catch (error) {
         console.error('Login failed:', error.message);

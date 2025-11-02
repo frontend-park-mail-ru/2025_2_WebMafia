@@ -22,7 +22,7 @@ export class apiServises {
 
   async ensureCsrfToken() {
     if (!this.csrfToken) {
-      await this.getScrfToken();
+      await this.getCsrfToken();
     }
   }
 

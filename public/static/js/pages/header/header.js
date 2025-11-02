@@ -1,5 +1,6 @@
 import { apiServise } from '../../data.js';
 import { router } from '../../routing.js';
+import { player } from '../player/player.js';
 
 export class Header {
   async render() {
@@ -25,6 +26,11 @@ export class Header {
           console.error('Logout request failed:', error.message);
         } finally {
           localStorage.removeItem('isAuthenticated');
+          localStorage.removeItem('currentTrackId');
+          localStorage.removeItem('isPlaying');
+          localStorage.removeItem('playTime');
+          localStorage.removeItem('volume');
+          await player.destroy();
           router.navigate('/login');
         }
       });

@@ -5,6 +5,7 @@ import { sidebar } from '../sidebar/sidebar.js';
 import { initScrollbar } from '../../scrollbar.js';
 import { slider } from '../../slider.js';
 import { player } from '../player/player.js';
+import { playTrack } from '../../playTrackBtn.js';
 
 export class MainPage {
   async render() {
@@ -70,7 +71,8 @@ export class MainPage {
     slider.sliderFunction();
     this.nowPlayingCardSlider();
     initScrollbar();
-    this.playTrack();
+    playTrack();
+    // this.playTrack();
   }
 
   nowPlayingCardSlider() {
@@ -79,33 +81,80 @@ export class MainPage {
     const cardElements = document.querySelectorAll('.now-playing-container-card');
 
     let cardsData = [
-      { img: '/static/img/image11.jpg', name: 'Tyler, the Creator' },
-      { img: '/static/img/image12.jpg', name: 'Playboi Carti' },
-      { img: '/static/img/image13.jpg', name: 'Jpegmafiaaaaaa aaaaaaaa aa' },
+      { img: '/static/img/default_album_avatar.png', name: '' },
+      { img: '/static/img/default_album_avatar.png', name: '' },
+      { img: '/static/img/default_album_avatar.png', name: '' },
     ];
+
+    player.addEventListener('trackchange', (event) => {
+      playerSliderDataSync(event.detail);
+    });
 
     let currentIndex = 0;
     let isAnimating = false;
 
+    function playerSliderDataSync({ prev, current, next }) {
+      const playerData = (track) => {
+        if (!track) {
+          return { img: '/static/img/default_album_avatar.png', name: '' };
+        }
+        return {
+          title: track.title,
+          id: track.id,
+          img: `static/img/${track.imageUrl}`,
+          name: track.artist,
+        };
+      };
+
+      cardsData = [playerData(prev), playerData(current), playerData(next)];
+      updateAllCardsUI();
+      console.log(cardsData);
+    }
+
+    function updateAllCardsUI() {
+      const prevCard = document.querySelector('.card-position-prev');
+      const currentCard = document.querySelector('.card-position-current');
+      const nextCard = document.querySelector('.card-position-next');
+
+      if (prevCard) {
+        prevCard.querySelector('img').src = cardsData[0].img;
+        updateCardUI(prevCard, null);
+      }
+      if (currentCard) {
+        currentCard.querySelector('img').src = cardsData[1].img;
+        updateCardUI(currentCard, cardsData[1]);
+      }
+      if (nextCard) {
+        nextCard.querySelector('img').src = cardsData[2].img;
+        updateCardUI(nextCard, null);
+      }
+      // cardElements.forEach((card, i) => {
+      //   const data = cardsData[i];
+
+      //   card.querySelector('img').src = data.img;
+
+      //   if (card.classList.contains('card-position-current')) {
+      //     // if (i === 1) {
+      // updateCardUI(card, data);
+      //   } else {
+      //     updateCardUI(card, null);
+      //   }
+      // });
+    }
+
     // Функция для управляет UI элементами на карточке.
     function updateCardUI(card, data = null) {
-      // 1. Очистка: всегда удаляем старые элементы, если они есть.
       const existingButton = card.querySelector('.current-card-btn.play');
       const existingName = card.querySelector('.current-card-name');
       if (existingButton) existingButton.remove();
       if (existingName) existingName.remove();
 
-      if (data) {
-        // Создаем кнопку Play
+      if (data && data.name) {
         const playButton = document.createElement('button');
         playButton.className = 'current-card-btn play';
-
-        // Создаем параграф для имени
         const nameP = document.createElement('p');
         nameP.className = 'current-card-name';
         nameP.textContent = data.name;
-
-        // Добавляем созданные элементы в карточку
         card.appendChild(playButton);
         card.appendChild(nameP);
       }
@@ -114,23 +163,12 @@ export class MainPage {
     // Функция для первоначальной расстановки
     function initializeSlider() {
       cardElements.forEach((card, i) => {
-        let dataIndex;
-        if (i === 0) dataIndex = (currentIndex - 1 + cardsData.length) % cardsData.length;
-        if (i === 1) dataIndex = currentIndex;
-        if (i === 2) dataIndex = (currentIndex + 1) % cardsData.length;
-
-        card.querySelector('img').src = cardsData[dataIndex].img;
-
-        if (i === 1) {
-          updateCardUI(card, cardsData[currentIndex]);
-        }
-
-        // Назначаем классы
         card.classList.remove('card-position-prev', 'card-position-current', 'card-position-next');
         if (i === 0) card.classList.add('card-position-prev');
         if (i === 1) card.classList.add('card-position-current');
         if (i === 2) card.classList.add('card-position-next');
       });
+      updateAllCardsUI();
     }
 
     // Функция сдвига карточек
@@ -142,15 +180,13 @@ export class MainPage {
       const prevCard = document.querySelector('.card-position-prev');
       const nextCard = document.querySelector('.card-position-next');
 
-      updateCardUI(currentCard, null);
-
-      if (direction === 'next') {
-        currentIndex = (currentIndex + 1) % cardsData.length;
-        updateCardUI(nextCard, cardsData[currentIndex]);
-      } else {
-        currentIndex = (currentIndex - 1 + cardsData.length) % cardsData.length;
-        updateCardUI(prevCard, cardsData[currentIndex]);
-      }
+      // if (direction === 'next') {
+      //   currentIndex = (currentIndex + 1) % cardsData.length;
+      //   updateCardUI(nextCard, cardsData[currentIndex]);
+      // } else {
+      //   currentIndex = (currentIndex - 1 + cardsData.length) % cardsData.length;
+      //   updateCardUI(prevCard, cardsData[currentIndex]);
+      // }
 
       currentCard.classList.remove('card-position-current');
       prevCard.classList.remove('card-position-prev');
@@ -161,70 +197,35 @@ export class MainPage {
         nextCard.classList.add('card-position-current');
         prevCard.classList.add('card-position-next');
 
-        const newNextDataIndex = (currentIndex + 1) % cardsData.length;
-        prevCard.querySelector('img').src = cardsData[newNextDataIndex].img;
+        // const newNextDataIndex = (currentIndex + 1) % cardsData.length;
+        // prevCard.querySelector('img').src = cardsData[newNextDataIndex].img;
       } else {
         currentCard.classList.add('card-position-next');
         prevCard.classList.add('card-position-current');
         nextCard.classList.add('card-position-prev');
 
-        const newPrevDataIndex = (currentIndex - 1 + cardsData.length) % cardsData.length;
-        nextCard.querySelector('img').src = cardsData[newPrevDataIndex].img;
+        // const newPrevDataIndex = (currentIndex - 1 + cardsData.length) % cardsData.length;
+        // nextCard.querySelector('img').src = cardsData[newPrevDataIndex].img;
       }
 
       setTimeout(() => {
         isAnimating = false;
+        updateAllCardsUI();
       }, 500);
     }
 
-    nextBtn.addEventListener('click', () => shiftCards('next'));
-    prevBtn.addEventListener('click', () => shiftCards('prev'));
-
-    initializeSlider();
-  }
-
-  playTrack() {
-    const playBtn = document.querySelectorAll('.play-button-track, .play-button');
-    let currentTrackId = null;
-
-    playBtn.forEach((button) => {
-      button.addEventListener('click', (event) => {
-        const trackId = event.currentTarget.dataset.trackId;
-        if (currentTrackId !== trackId) {
-          currentTrackId = trackId;
-          player.loadAndPlayTrackById(trackId);
-          player.audio.addEventListener('playing', updateButtons, { once: true });
-        } else {
-          player.togglePlayPause();
-        }
-        updateButtons();
-      });
+    nextBtn.addEventListener('click', () => {
+      shiftCards('next');
+      player.nextTrack();
     });
-    player.audio.addEventListener('canplay', () => {
-      updateButtons();
+    prevBtn.addEventListener('click', () => {
+      shiftCards('prev');
+      player.prevTrack();
     });
-    player.audio.addEventListener('play', updateButtons);
-    player.audio.addEventListener('pause', updateButtons);
+
     if (player.currentTrack) {
-      updateButtons();
+      player.loadTrack(player.currentTrack);
     }
-    function updateButtons() {
-      const playerTrackId = player.currentTrack.id;
-      playBtn.forEach((button) => {
-        const buttonTrackId = button.dataset.trackId;
-
-        if (buttonTrackId === playerTrackId) {
-          button.classList.add('is-active');
-          if (player.audio.paused) {
-            button.classList.remove('paused');
-          } else {
-            button.classList.add('paused');
-          }
-        } else {
-          button.classList.remove('is-active');
-          button.classList.remove('paused');
-        }
-      });
-    }
+    initializeSlider();
   }
 }

@@ -21,6 +21,7 @@
   display: flex;
   align-items: center;
   gap: 15px;
+  width: 257px;
 }
 
 .like-btn {
@@ -178,7 +179,7 @@
   cursor: pointer;
   display: flex;
 
-  --progress: 20%;
+  --progress: 0%;
 }
 
 .remote-slider::-webkit-slider-container{
@@ -290,6 +291,7 @@
   transition:
     opacity 0.25s ease,
     transform 0.25s ease;
+  transform: translate(8px, 0);
   fill: none;
   transform-origin: center;
 }
@@ -303,7 +305,7 @@
 
 .volume-icon.level-0 .volume-mute-cross {
   opacity: 1;
-  transform: scale(0.9) rotate(0deg) translate(-2px, 0);
+  transform: scale(0.6) rotate(0deg) translate(10px, 0);
 }
 
 .volume-icon.level-1 .volume-wave-1 {

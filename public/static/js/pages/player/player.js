@@ -1,29 +1,15 @@
 // import { apiServise } from '../../data';
 
-export class Player {
+export class Player extends EventTarget {
   constructor() {
+    super();
     // Создаем аудиоэлемент, который будет проигрывать музыку
     this.audio = new Audio();
     this.currentTrack = null;
     this.canSaveTime = true;
     this.nextTrackId = null;
     this.prevTrackId = null;
-  }
-
-  async init() {
-    this.render();
-
-    this.volumeRender();
-    this.playPauseSwitch();
-    this.sliderColorChange();
-    this.likeTrack();
-    this.soundChange();
-  }
-
-  async getDataTrackById(track_id) {
-    // const trackData = await apiServise.loadTrackById(track_id);
-    // return trackData;
-    const data = [
+    this.allData = [
       {
         title: 'Японский сэмпл',
         id: '66666666-6666-6666-6666-666666666666',
@@ -34,55 +20,152 @@ export class Player {
         durationFormatted: '3:05',
       },
       {
-        title: 'Японский бит',
+        title: 'HAZARD DUTY PAY!',
         id: '77777777-7777-7777-7777-777777777777',
         imageUrl: 'image2.jpg',
-        fileName: 'японский сэмпл 128 бпм.mp3',
-        artist: 'НИГА что ты тут делаешь',
-        duration: 185,
-        durationFormatted: '3:05',
+        fileName: 'JPEGMAFIA - HAZARD DUTY PAY! (Instrumental).mp3',
+        artist: 'JPEGMAFIA',
+        duration: 157,
+        durationFormatted: '2:37',
       },
       {
-        title: 'Япония уээ эээ ээ эээээээ ээээээээээ ээээээээээээээээээээ эээээээээээээээээ',
+        title: 'Take on Me',
         id: '88888888-8888-8888-8888-888888888888',
         imageUrl: 'image3.jpg',
-        fileName: 'японский сэмпл 128 бпм.mp3',
-        artist: 'Я играю в иииигры ыоврлоыфп лыфовр лфыово рфыловр ',
-        duration: 185,
-        durationFormatted: '3:05',
+        fileName: 'Take on Me.mp3',
+        artist: 'a-ha',
+        duration: 227,
+        durationFormatted: '3:47',
       },
       {
-        title: 'Япония уээ эээ ээ эээээээ ээээээээээ ээээээээээээээээээээ эээээээээээээээээ',
+        title: 'Everything I am (Official Instrumental HQ)',
         id: 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbc',
         imageUrl: 'image4.jpg',
-        fileName: 'японский сэмпл 128 бпм.mp3',
-        artist: 'Я играю в иииигры ыоврлоыфп лыфовр лфыово рфыловр ',
-        duration: 185,
-        durationFormatted: '3:05',
+        fileName: 'Kanye West - Everything I am (Official Instrumental HQ).mp3',
+        artist: 'Kanye West ',
+        duration: 227,
+        durationFormatted: '3:47',
       },
       {
-        title: 'Япония уээ эээ ээ эээээээ ээээээээээ ээээээээээээээээээээ эээээээээээээээээ',
+        title: 'HEAVEN-TO-ME',
         id: 'dddddddd-dddd-dddd-dddd-ddddddddddde',
         imageUrl: 'image5.jpg',
-        fileName: 'японский сэмпл 128 бпм.mp3',
-        artist: 'Я играю в иииигры ыоврлоыфп лыфовр лфыово рфыловр ',
-        duration: 185,
-        durationFormatted: '3:05',
+        fileName: 'Tyler-The-Creator-HEAVEN-TO-ME-Instrumental-Prod.-By-John-Legend-Kanye-West (1).mp3',
+        artist: 'Tyler, The Creator',
+        duration: 230,
+        durationFormatted: '3:50',
       },
     ];
-    const trackData = data.find((track) => track.id === track_id);
-    const currentIndex = data.findIndex((track) => track.id === track_id);
-    const nextTrackObject = data[currentIndex + 1];
-    this.nextTrackId = nextTrackObject ? nextTrackObject.id : null;
-    const prevTrackObject = data[currentIndex - 1];
-    this.prevTrackId = prevTrackObject ? prevTrackObject.id : null;
+  }
+
+  async init() {
+    this.checkAuth();
+  }
+
+  async destroy() {
+    const playerElement = document.querySelector('.player');
+    if (playerElement) {
+      playerElement.remove();
+    }
+    this.audio.pause();
+    this.audio.src = '';
+    this.currentTrack = null;
+    this.canSaveTime = true;
+    this.nextTrackId = null;
+    this.prevTrackId = null;
+  }
+
+  async getDataTrackById(track_id) {
+    // const trackData = await apiServise.loadTrackById(track_id);
+    // return trackData;
+    // const data = [
+    //   {
+    //     title: 'Японский сэмпл',
+    //     id: '66666666-6666-6666-6666-666666666666',
+    //     imageUrl: 'image1.jpg',
+    //     fileName: 'японский сэмпл 128 бпм.mp3',
+    //     artist: 'Артём Голубев',
+    //     duration: 185,
+    //     durationFormatted: '3:05',
+    //   },
+    //   {
+    //     title: 'HAZARD DUTY PAY!',
+    //     id: '77777777-7777-7777-7777-777777777777',
+    //     imageUrl: 'image2.jpg',
+    //     fileName: 'JPEGMAFIA - HAZARD DUTY PAY! (Instrumental).mp3',
+    //     artist: 'JPEGMAFIA',
+    //     duration: 157,
+    //     durationFormatted: '2:37',
+    //   },
+    //   {
+    //     title: 'Take on Me',
+    //     id: '88888888-8888-8888-8888-888888888888',
+    //     imageUrl: 'image3.jpg',
+    //     fileName: 'Take on Me.mp3',
+    //     artist: 'a-ha',
+    //     duration: 227,
+    //     durationFormatted: '3:47',
+    //   },
+    //   {
+    //     title: 'Everything I am (Official Instrumental HQ)',
+    //     id: 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbc',
+    //     imageUrl: 'image4.jpg',
+    //     fileName: 'Kanye West - Everything I am (Official Instrumental HQ).mp3',
+    //     artist: 'Kanye West ',
+    //     duration: 227,
+    //     durationFormatted: '3:47',
+    //   },
+    //   {
+    //     title: 'HEAVEN-TO-ME',
+    //     id: 'dddddddd-dddd-dddd-dddd-ddddddddddde',
+    //     imageUrl: 'image5.jpg',
+    //     fileName: 'Tyler-The-Creator-HEAVEN-TO-ME-Instrumental-Prod.-By-John-Legend-Kanye-West (1).mp3',
+    //     artist: 'Tyler, The Creator',
+    //     duration: 230,
+    //     durationFormatted: '3:50',
+    //   },
+    // ];
+    if (!track_id) return null;
+    const trackData = this.allData.find((track) => track.id === track_id);
+    // const currentIndex = data.findIndex((track) => track.id === track_id);
+    // const nextTrackObject = data[currentIndex + 1];
+    // this.nextTrackId = nextTrackObject ? nextTrackObject.id : null;
+    // const prevTrackObject = data[currentIndex - 1];
+    // this.prevTrackId = prevTrackObject ? prevTrackObject.id : null;
     return trackData;
   }
 
-  loadTrack(trackData) {
+  async loadTrack(trackData) {
+    if (!trackData) return;
     this.currentTrack = trackData;
     this.loadTrackInfo(this.currentTrack);
     localStorage.setItem('currentTrackId', this.currentTrack.id);
+
+    const currentIndex = this.allData.findIndex((track) => track.id === this.currentTrack.id);
+    const nextTrackObject = this.allData[currentIndex + 1];
+    this.nextTrackId = nextTrackObject ? nextTrackObject.id : null;
+    const prevTrackObject = this.allData[currentIndex - 1];
+    this.prevTrackId = prevTrackObject ? prevTrackObject.id : null;
+
+    const [nextTrackData, prevTrackData] = await Promise.all([this.getDataTrackById(this.nextTrackId), this.getDataTrackById(this.prevTrackId)]);
+
+    const event = new CustomEvent('trackchange', {
+      detail: {
+        prev: prevTrackData,
+        current: this.currentTrack,
+        next: nextTrackData,
+      },
+    });
+    this.dispatchEvent(event);
+  }
+
+  async checkAuth() {
+    const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+    if (isAuthenticated) {
+      this.render();
+    } else {
+      return;
+    }
   }
 
   async render() {
@@ -112,17 +195,9 @@ export class Player {
     this.setInitialPLayTime();
     this.trackSwitching();
 
-    const storedTrackStatus = localStorage.getItem('isPlaying');
-    if (storedTrackStatus === 'true') {
-      this.audio.play().catch((e) => {
-        this.togglePlayPauseSwitch(false);
-        localStorage.setItem('isPlaying', 'false');
-      });
-      this.togglePlayPauseSwitch(true);
-    } else {
-      this.audio.pause();
-      this.togglePlayPauseSwitch(false);
-    }
+    this.audio.addEventListener('ended', () => {
+      this.nextTrack();
+    });
   }
 
   async loadAndPlayTrackById(trackId) {
@@ -198,6 +273,23 @@ export class Player {
         volumeIcon.classList.add('level-3');
       }
     }
+
+    volumeSlider.addEventListener('wheel', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      const step = 5;
+      const delta = Math.sign(e.deltaY) * -step; // Инвертируем направление
+      const currentVolume = parseInt(volumeSlider.value);
+      const newVolume = Math.max(0, Math.min(100, currentVolume + delta));
+
+      volumeSlider.value = newVolume;
+      updateVolumeSlider(newVolume);
+
+      volumeSlider.dispatchEvent(new Event('input'));
+      volumeSlider.dispatchEvent(new Event('change'));
+    });
+
     updateVolumeSlider(volumeSlider.value);
     volumeSlider.addEventListener('input', function () {
       updateVolumeSlider(this.value);

@@ -4,10 +4,10 @@ export function persistence() {
   window.addEventListener('storage', () => {
     const currentPlayingtrack = localStorage.getItem('isPlaying');
     if (currentPlayingtrack === 'true') {
-      player._toggleplayPauseSwitch(true);
+      player.togglePlayPauseSwitch(true);
       player.audio.play();
     } else {
-      player._toggleplayPauseSwitch(false);
+      player.togglePlayPauseSwitch(false);
       player.audio.pause();
     }
   });
