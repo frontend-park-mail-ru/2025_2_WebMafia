@@ -10,6 +10,22 @@
   box-sizing: border-box;
 }
 
+.hidden {
+  opacity: 0 !important; 
+  pointer-events: none !important; 
+  transform: scale(0.8) !important;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.card-fade-out {
+  opacity: 0;
+  transform: scale(0.1); 
+}
+
+.card-reset {
+  transition: none !important; 
+}
+
 /* Обёртка для слайдера */
 .card-slider {
   position: relative;
@@ -49,17 +65,21 @@
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
+.card-position-current img{
+  filter: brightness(90%);
+}
+
 .card-position-prev {
   z-index: 5;
   transform: translateX(-65%) scale(0.9);
-  filter: brightness(50%) blur(2px);
+  filter: brightness(50%) blur(3px);
   opacity: 1;
 }
 
 .card-position-next {
   z-index: 5;
   transform: translateX(65%) scale(0.9);
-  filter: brightness(50%) blur(2px);
+  filter: brightness(50%) blur(3px);
   opacity: 1;
 }
 

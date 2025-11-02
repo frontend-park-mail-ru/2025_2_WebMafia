@@ -93,6 +93,23 @@ export class MainPage {
 
     function playerSliderDataSync({ prev, current, next }) {
       const playerData = (track) => {
+        const prevCard = document.querySelector('.card-position-prev');
+        const nextCard = document.querySelector('.card-position-next');
+        if (next) {
+          nextBtn.classList.remove('hidden');
+          nextCard.classList.remove('hidden');
+        } else {
+          nextBtn.classList.add('hidden');
+          nextCard.classList.add('hidden');
+        }
+
+        if (prev) {
+          prevBtn.classList.remove('hidden');
+          prevCard.classList.remove('hidden');
+        } else {
+          prevBtn.classList.add('hidden');
+          prevCard.classList.add('hidden');
+        }
         if (!track) {
           return { img: '/static/img/default_album_avatar.png', name: '' };
         }
@@ -106,6 +123,7 @@ export class MainPage {
 
       cardsData = [playerData(prev), playerData(current), playerData(next)];
       updateAllCardsUI();
+      console.log(cardsData);
     }
 
     function updateAllCardsUI() {
@@ -165,17 +183,49 @@ export class MainPage {
       const prevCard = document.querySelector('.card-position-prev');
       const nextCard = document.querySelector('.card-position-next');
 
-      currentCard.classList.remove('card-position-current');
-      prevCard.classList.remove('card-position-prev');
-      nextCard.classList.remove('card-position-next');
+      // currentCard.classList.remove('card-position-current');
+      // prevCard.classList.remove('card-position-prev');
+      // nextCard.classList.remove('card-position-next');
+
+      // if (direction === 'next') {
+      //   currentCard.classList.add('card-position-prev');
+      //   nextCard.classList.add('card-position-current');
+      //   prevCard.classList.add('card-position-next');
+      // } else {
+      //   currentCard.classList.add('card-position-next');
+      //   prevCard.classList.add('card-position-current');
+      //   nextCard.classList.add('card-position-prev');
+      // }
 
       if (direction === 'next') {
+        prevCard.classList.add('card-fade-out');
+
+        currentCard.classList.remove('card-position-current');
         currentCard.classList.add('card-position-prev');
+
+        nextCard.classList.remove('card-position-next');
         nextCard.classList.add('card-position-current');
+
+        prevCard.classList.add('card-reset');
+        prevCard.classList.remove('card-position-prev', 'card-fade-out');
+
+        void prevCard.offsetWidth;
+
+        prevCard.classList.remove('card-reset');
         prevCard.classList.add('card-position-next');
       } else {
+        nextCard.classList.add('card-fade-out');
+
+        currentCard.classList.remove('card-position-current');
         currentCard.classList.add('card-position-next');
+
+        prevCard.classList.remove('card-position-prev');
         prevCard.classList.add('card-position-current');
+
+        nextCard.classList.add('card-reset');
+        nextCard.classList.remove('card-position-next', 'card-fade-out');
+        void nextCard.offsetWidth;
+        nextCard.classList.remove('card-reset');
         nextCard.classList.add('card-position-prev');
       }
 
@@ -186,17 +236,18 @@ export class MainPage {
     }
 
     nextBtn.addEventListener('click', () => {
+      if (isAnimating) return;
       shiftCards('next');
       player.nextTrack();
     });
     prevBtn.addEventListener('click', () => {
+      if (isAnimating) return;
       shiftCards('prev');
       player.prevTrack();
     });
 
     if (player.currentTrack) {
       player.getPrevAndNextTracks();
-      // player.loadTrack(player.currentTrack);
     }
     initializeSlider();
   }
