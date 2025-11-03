@@ -20,21 +20,27 @@
 }
 
 .like-btn {
-  width: 30px;
-  height: 30px;
-  stroke: #fff;
+  all: unset;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   stroke-width: 2px;
   stroke-linecap: round;
   stroke-linejoin: round;
   transition: transform 0.3s;
 }
 
-.like-btn.active {
+.white svg {
+  color: #fafafa;
+  stroke: #fafafa;
+}
+
+.like-btn.active svg {
   fill: #a866eb;
   stroke: #a866eb;
 }
 
-.like-btn:hover {
+.like-btn:hover svg {
   stroke: #a866eb;
   fill: #a866eb;
   cursor: pointer;
@@ -84,7 +90,7 @@
   background: none;
   border: none;
   cursor: pointer;
-  color: #fff;
+  padding: 0;
   transition: transform 0.2s;
   align-items: center;
 }
@@ -119,9 +125,10 @@
   height: 30px;
 }
 
-.control-btn:hover {
+.control-btn:hover svg {
   transform: scale(1.01);
   color: #a866eb;
+  stroke: #a866eb;
 }
 
 .progress-remote {

@@ -113,7 +113,11 @@
 }
 
 .play-button-album {
-  margin: 0 12px;
+  margin: 0 15px;
+}
+
+.black svg {
+  stroke: #000;
 }
 
 .tracks-card {
@@ -189,4 +193,43 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
+}
+
+.album-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.album-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 600;
+  font-size: 24px;
+}
+
+.all-description {
+  max-width: 50vh;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.close-button svg {
+  fill: #666;
+}
+
+.close-button:hover svg {
+  fill: #000;
+}
+
+.header-divider {
+  height: 1px;
+  background-color: #ccc;
+  margin: 8px 0;
 }

@@ -5,7 +5,7 @@ import { sidebar } from '../sidebar/sidebar.js';
 import { initScrollbar } from '../../scrollbar.js';
 import { slider } from '../../slider.js';
 import { player } from '../player/player.js';
-import { playsParser, durationParser, getValidImage } from "../../parsers.js";
+import { playsParser, durationParser, getValidImage, totalDurationParser, tracksNumParser } from "../../parsers.js";
 
 export class AlbumPage {
   async render(id) {
@@ -34,8 +34,8 @@ export class AlbumPage {
           duration: durationParser(track.duration_s),
         };
       });
-      pageData.totalDuration = Math.floor(totalDuration / 60);
-      pageData.tracksNum = pageData.tracks.length;
+      pageData.totalDuration = totalDurationParser(totalDuration);
+      pageData.tracksNum = tracksNumParser(pageData.tracks.length);
       if (pageData.tracksNum) pageData.firstTrack = pageData.tracks[0].id;
 
     } catch (error) {
@@ -66,5 +66,35 @@ export class AlbumPage {
 
     slider.sliderFunction();
     initScrollbar();
+    this.addEventListeners();
+  }
+
+  addEventListeners() {
+    const getDescriptionButton = document.getElementById('getDescription');
+    const getDescriptionOverlay = document.getElementById('albumDescriptionOverlay');
+
+    if (getDescriptionButton && getDescriptionOverlay) {
+      getDescriptionButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        getDescriptionOverlay.classList.add('active');
+      });
+    }
+
+    const closeDescriptionButton = document.getElementById('closeDescriptionButton');
+    if (closeDescriptionButton && getDescriptionOverlay) {
+      closeDescriptionButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        getDescriptionOverlay.classList.remove('active');
+      });
+    }
+
+    if (getDescriptionOverlay) {
+      getDescriptionOverlay.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (e.target === getDescriptionOverlay) {
+          getDescriptionOverlay.classList.remove('active');
+        }
+      });
+    }
   }
 }

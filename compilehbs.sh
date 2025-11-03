@@ -47,3 +47,5 @@ handlebars public/static/js/partials/pauseBtn.hbs -f public/static/js/partials/p
 handlebars public/static/js/partials/volumeBar.hbs -f public/static/js/partials/volumeBar.tmpl.js
 
 handlebars public/static/js/partials/likeBtn.hbs -f public/static/js/partials/likeBtn.tmpl.js
+
+handlebars public/static/js/partials/close.hbs -f public/static/js/partials/close.tmpl.js

@@ -13,15 +13,15 @@
         <div class="album-card-title">{{ title }}</div>
         <div class="album-card-info">
           <div class="card-sub">{{ type }}<span class="dot"></span>{{ year }}</div>
-          <div class="card-sub">{{ tracksNum }} треков<span class="dot"></span>{{ totalDuration }} минут</div>
+          <div class="card-sub">{{ tracksNum }}<span class="dot"></span>{{ totalDuration }}</div>
         </div>
         {{#if description}}
-          <div class="card-sub album-description">{{ description }}</div>
+          <div class="card-sub album-description" id="getDescription">{{ description }}</div>
         {{/if}}
         <div class="album-buttons">
-          {{> likeBtn }}
+          <button class="like-btn black">{{> likeBtn }}</button>
           <button class="play-button play-button-album" data-artist-id="{{ firstTrack }}"></button>
-          <button class="control-btn shuffle">{{> shuffle}}</button>
+          <button class="control-btn">{{> shuffle}}</button>
         </div>
       </div>
       <div class="tracks-card">
@@ -45,5 +45,15 @@
       </div>
     </div>
     <div class="turquoise-oval"></div>
+    <div class="edit-profile-overlay" id="albumDescriptionOverlay">
+      <div class="edit-profile-window">
+        <div class="album-header">
+          <span class="album-title">{{ title }}</span>
+          <button id="closeDescriptionButton" class="close-button" aria-label="Закрыть">{{> close }}</button>
+        </div>
+        <div class="header-divider"></div>
+        <div class="card-sub all-description">{{ description }}</div>
+      </div>
+    </div>
   </div>
 </div>
