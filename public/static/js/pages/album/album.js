@@ -5,6 +5,7 @@ import { sidebar } from '../sidebar/sidebar.js';
 import { initScrollbar } from '../../scrollbar.js';
 import { slider } from '../../slider.js';
 import { player } from '../player/player.js';
+import { playsParser, durationParser, getValidImage } from "../../parsers.js";
 
 export class AlbumPage {
   async render(id) {
@@ -19,7 +20,7 @@ export class AlbumPage {
         title: data.album.title,
         type: data.album.type,
         year: data.album.release_date ? data.album.release_date.slice(0, 4) : '',
-        cover: data.album.avatar_url,
+        cover: getValidImage(data.album.avatar_url, 'default-album.png'),
         artist: data.album.artists[0],
         description: data.album.description,
       };
@@ -29,13 +30,13 @@ export class AlbumPage {
         return {
           id: track.id,
           name: track.title,
-          plays: track.play_count,
-          duration: track.duration_s,
+          plays: playsParser(track.play_count),
+          duration: durationParser(track.duration_s),
         };
       });
       pageData.totalDuration = Math.floor(totalDuration / 60);
       pageData.tracksNum = pageData.tracks.length;
-      pageData.firstTrack = pageData.tracks[0].id
+      if (pageData.tracksNum) pageData.firstTrack = pageData.tracks[0].id;
 
     } catch (error) {
       console.error('Failed to load album page data:', error);
