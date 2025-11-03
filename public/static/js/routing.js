@@ -60,6 +60,7 @@ export class Router {
       window.history.pushState({}, '', path);
     }
     this.handleLocation();
+    window.dispatchEvent(new CustomEvent('va-navigate'));
   }
 }
 

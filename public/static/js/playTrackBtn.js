@@ -1,7 +1,7 @@
 import { player } from './pages/player/player.js';
 
 export function playTrack() {
-  const playBtn = document.querySelectorAll('.play-button-track, .play-button');
+  const playBtn = document.querySelectorAll('.play-button-track, .play-button, .current-card-btn.play');
   let currentTrackId = null;
   playBtn.forEach((button) => {
     button.addEventListener('click', (event) => {

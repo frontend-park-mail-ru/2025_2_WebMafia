@@ -58,8 +58,8 @@ export class LoginPage {
 
         localStorage.setItem('isAuthenticated', 'true');
 
-        await player.init();
         router.navigate('/');
+        await player.init();
       } catch (error) {
         console.error('Login failed:', error.message);
 

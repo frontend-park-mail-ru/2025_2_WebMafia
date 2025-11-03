@@ -99,9 +99,9 @@ export class RegistrationPage {
         console.log('Auto-login successful');
 
         localStorage.setItem('isAuthenticated', 'true');
-        await player.init();
 
         router.navigate('/');
+        await player.init();
       } catch (error) {
         console.error('Registration or auto-login failed:', error.message);
 

@@ -18,8 +18,8 @@
 }
 
 .card-fade-out {
-  opacity: 0;
-  transform: scale(0.1); 
+  opacity: 0 !important;
+  transform: scale(0.8) !important; 
 }
 
 .card-reset {
@@ -100,14 +100,14 @@
 /* кнопка Play/Pause поверх */
 .current-card-btn.play {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  top: 30%;
+  left: 40%;
+  /* transform: translate(-50%, -50%); */
   width: 56px;
   height: 56px;
   border-radius: 50%;
   border: none;
-  background-color: #9c58e0;
+  background: linear-gradient(157deg, #7e4dff, #a766ff, #da96ff) right bottom;
   color: white;
   font-size: 22px;
   cursor: pointer;
@@ -115,7 +115,9 @@
   align-items: center;
   justify-content: center;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  transition: background-color 0.2s ease;
+  transition: transform 0.3s ease,
+    background-position 0.5s ease,
+    background 0.5s ease;
 }
 
 .current-card-btn.play::before {
@@ -128,8 +130,24 @@
   margin-left: 2px;
 }
 
-.current-card-btn.play:hover {
-  background-color: #a866eb;
+.current-card-btn.play:hover,
+.current-card-btn.play.paused:hover  {
+  transform: scale(1.03);
+  background-position: left top;
+}
+
+/* Новые стили для состояния паузы */
+.current-card-btn.play.paused::before {
+  border-style: solid;
+  border-width: 0;
+  background-color: transparent; /* Убираем фон от треугольника */
+  height: 20px; /* Высота полос */
+  width: 16px; /* Общая ширина значка */
+  opacity: 1;
+
+  /* Создаем две полосы с помощью box-shadow */
+  box-shadow: inset 5px 0 0 0 white, inset -5px 0 0 0 white;
+  margin: 0;
 }
 
 .current-card-name {

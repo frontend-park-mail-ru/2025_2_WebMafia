@@ -3,7 +3,6 @@
 export class Player extends EventTarget {
   constructor() {
     super();
-    // Создаем аудиоэлемент, который будет проигрывать музыку
     this.audio = new Audio();
     this.currentTrack = null;
     this.canSaveTime = true;
@@ -16,7 +15,7 @@ export class Player extends EventTarget {
         imageUrl: 'image1.jpg',
         fileName: 'японский сэмпл 128 бпм.mp3',
         artist: 'Артём Голубев',
-        duration: 185,
+        duration_ms: 185000,
         durationFormatted: '3:05',
       },
       {
@@ -25,7 +24,7 @@ export class Player extends EventTarget {
         imageUrl: 'image2.jpg',
         fileName: 'JPEGMAFIA - HAZARD DUTY PAY! (Instrumental).mp3',
         artist: 'JPEGMAFIA',
-        duration: 157,
+        duration_ms: 157000,
         durationFormatted: '2:37',
       },
       {
@@ -34,7 +33,7 @@ export class Player extends EventTarget {
         imageUrl: 'image3.jpg',
         fileName: 'Take on Me.mp3',
         artist: 'a-ha',
-        duration: 227,
+        duration_ms: 227000,
         durationFormatted: '3:47',
       },
       {
@@ -43,7 +42,7 @@ export class Player extends EventTarget {
         imageUrl: 'image4.jpg',
         fileName: 'Kanye West - Everything I am (Official Instrumental HQ).mp3',
         artist: 'Kanye West ',
-        duration: 227,
+        duration_ms: 227000,
         durationFormatted: '3:47',
       },
       {
@@ -52,18 +51,51 @@ export class Player extends EventTarget {
         imageUrl: 'image5.jpg',
         fileName: 'Tyler-The-Creator-HEAVEN-TO-ME-Instrumental-Prod.-By-John-Legend-Kanye-West (1).mp3',
         artist: 'Tyler, The Creator',
-        duration: 230,
+        duration_ms: 230000,
         durationFormatted: '3:50',
       },
     ];
   }
 
   async init() {
-    this.checkAuth();
+    // this.checkAuth();
+    // Мы подписываемся на события, которые генерирует ваш роутер,
+    // чтобы знать, когда URL меняется.
+    window.addEventListener('popstate', () => this.updateVisibility());
+    // Также нам нужен способ "подслушать" вызовы `router.navigate()`.
+    // Создадим кастомное событие для этого.
+    window.addEventListener('va-navigate', () => this.updateVisibility());
+    // Запускаем проверку один раз при первоначальной загрузке
+    this.updateVisibility();
     this.trackSwitching();
     this.setInitialVolume();
     this.setInitialPLayTime();
-    this.trackSwitching();
+  }
+
+  updateVisibility() {
+    const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+    const path = window.location.pathname;
+    const isAuthPage = path === '/login' || path === '/register';
+
+    if (isAuthenticated && !isAuthPage) {
+      // Условия соблюдены -> ПОКАЗАТЬ плеер
+      this.render(); // render сам проверит, не отрисован ли уже плеер
+    }
+    if (!isAuthPage) {
+      this.renderWhithoutData();
+    } else {
+      this.destroy();
+    }
+  }
+
+  async renderWhithoutData() {
+    const contentTemplate = Handlebars.templates['player.hbs'];
+    const playerHTML = contentTemplate();
+
+    const playerСontainer = document.getElementById('player-container');
+    if (playerСontainer && !document.getElementById('player')) {
+      playerСontainer.insertAdjacentHTML('afterbegin', playerHTML);
+    }
   }
 
   async destroy() {
@@ -144,9 +176,9 @@ export class Player extends EventTarget {
 
     const storedTrackId = localStorage.getItem('currentTrackId');
     let storedTrackData = await this.getDataTrackById(storedTrackId);
-    this.getPrevAndNextTracks();
 
     this.loadTrack(storedTrackData);
+    this.getPrevAndNextTracks();
     this.setInitialVolume();
     this.setInitialPLayTime();
     this.trackSwitching();
@@ -173,7 +205,12 @@ export class Player extends EventTarget {
   loadTrackInfo(track) {
     document.querySelector('.track-title').textContent = track.title;
     document.querySelector('.track-artist').textContent = track.artist;
-    document.querySelector('.track-time.total').textContent = track.durationFormatted;
+    // document.querySelector('.track-time.total').textContent = track.durationFormatted;
+    const durationInSeconds = Math.round(track.duration_ms / 1000);
+    const minutes = Math.floor(durationInSeconds / 60);
+    const seconds = durationInSeconds % 60;
+    const durationFormatted = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    document.querySelector('.track-time.total').textContent = durationFormatted;
 
     document.querySelector('.track-cover-player').src = `static/img/${track.imageUrl}`;
 
@@ -183,14 +220,15 @@ export class Player extends EventTarget {
 
   updateCurrentTimeAndSlider() {
     const currentTime = this.audio.currentTime;
-    const duration = this.currentTrack.duration;
+    const duration_ms = Math.round(this.currentTrack.duration_ms / 1000);
+    const duration_s = duration_ms / 1000;
 
     const minutes = Math.floor(currentTime / 60);
     const seconds = Math.floor(currentTime % 60);
 
     document.querySelector('.track-time.current').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
 
-    const percent = (currentTime / duration) * 100;
+    const percent = (currentTime / duration_ms) * 100;
     const timeRegulator = document.querySelector('.remote-slider');
     if (timeRegulator) {
       timeRegulator.value = percent;
@@ -310,8 +348,8 @@ export class Player extends EventTarget {
         const sliderElement = timeRegulator;
         const value = sliderElement.value;
         sliderElement.style.setProperty('--progress', value + '%');
-        const duration = this.currentTrack.duration;
-        const newTime = (value / 100) * duration;
+        const duration_ms = Math.round(this.currentTrack.duration_ms / 1000);
+        const newTime = (value / 100) * duration_ms;
         this.audio.currentTime = newTime;
       }.bind(this)
     );
@@ -355,12 +393,13 @@ export class Player extends EventTarget {
   }
 
   setInitialPLayTime() {
-    const duration = this.currentTrack.duration;
+    const duration_ms = Math.round(this.currentTrack.duration_ms / 1000);
+    const duration_s = duration_ms / 1000;
     const timeRegulator = document.querySelector('.remote-slider');
     const storedTime = parseFloat(localStorage.getItem('playTime'));
     timeRegulator.value = storedTime;
     this.audio.currentTime = storedTime;
-    const percent = (storedTime / duration) * 100;
+    const percent = (storedTime / duration_ms) * 100;
     timeRegulator.style.setProperty('--progress', percent + '%');
   }
 
