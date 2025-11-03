@@ -25,6 +25,14 @@
 }
 
 .like-btn {
+  background-color: inherit;
+  border: none;
+  width: 30px;
+  height: 30px;
+}
+
+.like-btn svg {
+  background-color: inherit;
   align-items: center;
   width: 30px;
   height: 30px;
@@ -36,14 +44,13 @@
   fill: none;
 }
 
-.like-btn.active {
+.like-btn.active svg {
   fill: #a866eb;
   stroke: #a866eb;
 }
 
-.like-btn:hover {
+.like-btn:hover svg{
   stroke: #a866eb;
-  fill: #a866eb;
   cursor: pointer;
   transform: scale(1.03);
 }

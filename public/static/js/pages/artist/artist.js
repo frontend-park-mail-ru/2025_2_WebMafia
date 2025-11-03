@@ -85,7 +85,7 @@ export class ArtistPage {
     const contentTemplate = Handlebars.templates['artistPage.hbs'];
     document.getElementById('app').innerHTML = contentTemplate(pageData);
 
-    await Promise.all([header.render(), sidebar.render(), player.render()]);
+    await Promise.all([header.render(), sidebar.render()]);
 
     slider.sliderFunction();
     initScrollbar();

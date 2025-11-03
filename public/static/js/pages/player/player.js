@@ -61,15 +61,17 @@ export class Player extends EventTarget {
     // this.checkAuth();
     // Мы подписываемся на события, которые генерирует ваш роутер,
     // чтобы знать, когда URL меняется.
-    window.addEventListener('popstate', () => this.updateVisibility());
+    // window.addEventListener('popstate', () => this.updateVisibility());
     // Также нам нужен способ "подслушать" вызовы `router.navigate()`.
+    const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
     // Создадим кастомное событие для этого.
-    window.addEventListener('va-navigate', () => this.updateVisibility());
+    if (!isAuthenticated) {
+      window.addEventListener('va-navigate', () => this.updateVisibility());
+    }
     // Запускаем проверку один раз при первоначальной загрузке
     this.updateVisibility();
     this.trackSwitching();
-    // this.setInitialVolume();
-    // this.setInitialPLayTime();
+    this.likeTrack();
   }
 
   updateVisibility() {
@@ -78,7 +80,6 @@ export class Player extends EventTarget {
     const isAuthPage = path === '/login' || path === '/register';
 
     if (isAuthenticated && !isAuthPage) {
-      // Условия соблюдены -> ПОКАЗАТЬ плеер
       this.render();
     }
     if (!isAuthPage) {
@@ -96,6 +97,12 @@ export class Player extends EventTarget {
     if (playerСontainer && !document.getElementById('player')) {
       playerСontainer.insertAdjacentHTML('afterbegin', playerHTML);
     }
+
+    this.volumeRender();
+    this.playPauseSwitch();
+    this.sliderColorChange();
+    this.likeTrack();
+    this.soundChange();
   }
 
   async destroy() {
@@ -144,15 +151,6 @@ export class Player extends EventTarget {
       },
     });
     this.dispatchEvent(event);
-  }
-
-  async checkAuth() {
-    const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
-    if (isAuthenticated) {
-      this.render();
-    } else {
-      return;
-    }
   }
 
   async render() {

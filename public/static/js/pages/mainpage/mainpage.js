@@ -83,7 +83,7 @@ export class MainPage {
   }
 
   setPlayButtonsOnAuth() {
-    const playbtn = document.querySelectorAll('.play-button');
+    const playbtn = document.querySelectorAll('.play-button-track, .play-button, .current-card-btn.play');
     playbtn.forEach((button) => {
       button.addEventListener('click', (event) => {
         const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
@@ -92,7 +92,8 @@ export class MainPage {
           event.stopPropagation();
           router.navigate('/login');
         } else {
-          playTrack();
+          // this.nowPlayingCardSlider();
+          // playTrack();
         }
       });
     });
@@ -168,6 +169,7 @@ export class MainPage {
         nextCard.querySelector('img').src = cardsData[2].img;
         updateCardUI(nextCard, null);
       }
+      playTrack();
     }
 
     // Функция для управляет UI элементами на карточке.
