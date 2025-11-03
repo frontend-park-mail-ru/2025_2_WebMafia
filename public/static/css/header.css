@@ -96,7 +96,7 @@
 
 .dropdown-menu {
   position: absolute;
-  right: -13px;
+  right: -3px;
   top: 100%;
   background: linear-gradient(125deg, #a766ff, #da96ff);
   border-radius: 30px;

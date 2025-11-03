@@ -84,7 +84,7 @@
 }
 
 /* Стили для контента на карточке */
-.current-card-btn.play,
+.current-card-btn.play, .current-card-btn.play.pause,
 .current-card-name {
   position: absolute;
   opacity: 0;
@@ -92,7 +92,7 @@
   z-index: 11;
 }
 
-.card-position-current .current-card-btn.play,
+.card-position-current .current-card-btn.play, .current-card-btn.play.pause,
 .card-position-current .current-card-name {
   opacity: 1;
 }
@@ -102,6 +102,7 @@
   position: absolute;
   top: 30%;
   left: 40%;
+
   /* transform: translate(-50%, -50%); */
   width: 56px;
   height: 56px;
