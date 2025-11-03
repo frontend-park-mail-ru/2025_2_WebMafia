@@ -140,9 +140,9 @@
 .current-card-btn.play.paused::before {
   border-style: solid;
   border-width: 0;
-  background-color: transparent; /* Убираем фон от треугольника */
-  height: 20px; /* Высота полос */
-  width: 16px; /* Общая ширина значка */
+  background-color: transparent; 
+  height: 20px; 
+  width: 16px; 
   opacity: 1;
 
   /* Создаем две полосы с помощью box-shadow */

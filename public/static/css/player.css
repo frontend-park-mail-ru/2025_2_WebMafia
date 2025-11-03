@@ -25,6 +25,7 @@
 }
 
 .like-btn {
+  align-items: center;
   width: 30px;
   height: 30px;
   stroke: #fff;
@@ -32,6 +33,7 @@
   stroke-linecap: round;
   stroke-linejoin: round;
   transition: transform 0.3s;
+  fill: none;
 }
 
 .like-btn.active {
