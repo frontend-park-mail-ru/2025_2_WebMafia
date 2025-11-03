@@ -10,18 +10,14 @@ import { getValidImage, playsParser } from "../../parsers.js";
 export class MainPage {
   async render() {
     let pageData = {
+      isAuthenticated: localStorage.getItem('isAuthenticated') === 'true',
       artists: [],
       albums: [],
       tracks: [],
-      nickname: 'Александр Константинов',
-      letter: '',
     };
 
     const contentTemplateWithoutData = Handlebars.templates['MainPage.hbs'];
     document.getElementById('app').innerHTML = contentTemplateWithoutData(pageData);
-
-    pageData.isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
-    pageData.letter = pageData.nickname ? pageData.nickname[0] : '';
 
     try {
       const data = await apiServise.getMainPageData();

@@ -3,13 +3,45 @@ import { router } from '../../routing.js';
 
 export class Header {
   async render() {
+    let pageData = {
+      isAuthenticated: localStorage.getItem('isAuthenticated') === 'true',
+    };
+
+    pageData.letter = pageData.nickname ? pageData.nickname[0] : '';
+
     const contentTemplate = Handlebars.templates['header.hbs'];
-    const headerHTML = contentTemplate();
+    const headerHTML = contentTemplate(pageData);
 
     const section = document.getElementById('section');
     if (section && !document.getElementById('header')) {
       section.insertAdjacentHTML('afterbegin', headerHTML);
     }
+
+    if (!pageData.isAuthenticated) return;
+
+    try {
+      const data = await apiServise.getProfileData(localStorage.getItem('user_id'));
+      pageData.avatar = data.avatar;
+      pageData.nickname = data.login;
+      pageData.avatar = data.avatar_url;
+      pageData.letter = pageData.nickname ? pageData.nickname[0] : '';
+    } catch (error) {
+      console.error('Failed to load header page data:', error);
+
+      if (error.response && error.response.status === 404) {
+        router.navigate('/not-found');
+        return;
+      }
+
+      if (error.message && error.message.includes('Network')) {
+        alert('Проблема с подключением. Попробуйте позже.');
+        return;
+      }
+
+      alert('Не удалось загрузить информацию о пользователе.');
+      return;
+    }
+
     this.addEventListeners();
     this.profileDropdown();
   }

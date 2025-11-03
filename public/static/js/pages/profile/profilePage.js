@@ -2,6 +2,7 @@ import { router } from '../../routing.js';
 //import { apiServise } from '../../data.js';
 import { initPasswordShowing } from '../../eye.js';
 import { initScrollbar } from '../../scrollbar.js';
+import { getValidImage } from "../../parsers.js";
 
 export class ProfilePage {
   async render() {
@@ -15,38 +16,47 @@ export class ProfilePage {
       isAuthenticated: true,
       top_artists: [],
       top_tracks: [],
-      recent_tracks: [],
+      recent: [],
       avatar: '',
       email: '',
       password: '',
       nickname: '',
     };
 
-    /*try {
+    try {
       const data = await apiServise.getProfilePageData();
       pageData.artists = (data.artists || []).map((artist) => ({
-        id: artist.artist_id,
+        id: artist.id,
         name: artist.name,
-        image: `static/img/${artist.avatar_url || 'default-artist.png'}`,
+        image: getValidImage(artist.avatar_url, 'default-artist.png'),
       }));
-      pageData.tracks = (data.tracks || []).map((track) => ({
-        id: track.track_id,
+      pageData.top_tracks = (data.tracks || []).map((track) => ({
+        id: track.id,
         name: track.title,
-        image: `static/img/${track.album.avatar_url || 'default-album.png'}`,
+        image: getValidImage(track.album.avatar_url, 'default-album.png'),
         artists: track.artists,
       }));
-      pageData.recently = (data.recently || []).map((track) => ({
-        id: track.track_id,
-        name: track.title,
-        image: `static/img/${track.album.avatar_url || 'default-album.png'}`,
-        artists: track.artists,
+      pageData.recent = (data.recent || []).map((artist) => ({
+        id: artist.id,
+        name: artist.name,
+        image: getValidImage(artist.avatar_url, 'default-artist.png'),
       }));
     } catch (error) {
-      console.error('Failed to load main page data:', error.message);
-      localStorage.removeItem('isAuthenticated');
-      router.navigate('/login');
+      console.error('Failed to load profile page data:', error);
+
+      if (error.response && error.response.status === 404) {
+        router.navigate('/not-found');
+        return;
+      }
+
+      if (error.message && error.message.includes('Network')) {
+        alert('Проблема с подключением. Попробуйте позже.');
+        return;
+      }
+
+      alert('Не удалось загрузить страницу профиля.');
       return;
-    }*/
+    }
 
     const contentTemplate = Handlebars.templates['profilePage.hbs'];
     document.getElementById('app').innerHTML = contentTemplate(pageData);

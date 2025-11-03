@@ -7,6 +7,7 @@ export class apiServises {
   }
 
   async request(endpoint, options = {}) {
+    console.log(options);
     const url = `${this.baseURL}${endpoint}`;
 
     const config = {
@@ -80,7 +81,41 @@ export class apiServises {
   }
 
   async getProfilePageData() {
-    return this.request('/profile');
+    try {
+      const [artists, top_tracks] = await Promise.all([
+        this.request('/artists?limit=10').catch(() => []),
+        this.request(`/tracks?limit=5`).catch(() => []),
+      ]);
+
+      return {
+        top_artists: artists || [],
+        top_tracks: top_tracks || [],
+        recent: artists || [],
+      };
+    } catch (error) {
+      console.error('Failed to load profile page data:', error);
+      throw error;
+    }
+  }
+
+  async getProfileData(ID) {
+    try {
+      console.log(localStorage);
+      const [profile, avatar] = await Promise.all([
+        this.request('/profile', { method: 'PUT', body: { ID } }).catch(() => []),
+        this.request(`/avatar`, { method: 'POST', body: { ID } }).catch(() => []),
+      ]);
+
+      console.log(profile, avatar);
+
+      return {
+        profile: profile,
+        avatar: avatar,
+      };
+    } catch (error) {
+      console.error('Failed to load profile data:', error);
+      throw error;
+    }
   }
 
   async loginUser(login, password) {
