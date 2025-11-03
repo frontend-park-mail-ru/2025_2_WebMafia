@@ -109,10 +109,11 @@
 .album-buttons {
   display: flex;
   align-items: center;
+  margin-top: 13px;
 }
 
 .play-button-album {
-  margin: 13px;
+  margin: 0 12px;
 }
 
 .tracks-card {

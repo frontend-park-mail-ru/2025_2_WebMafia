@@ -50,8 +50,10 @@ export class Header {
       dropDownMenu.classList.toggle('show');
     });
 
-    profileBtn.addEventListener('click', (e) => {
-      if (!profileBtn.contains(e.target) && !dropDownMenu.contains(e.target)) {
+    document.addEventListener('click', (e) => {
+      const isClickInside = profileBtn.contains(e.target) || dropDownMenu.contains(e.target);
+
+      if (!isClickInside) {
         dropDownMenu.classList.remove('show');
       }
     });

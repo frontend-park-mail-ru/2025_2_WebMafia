@@ -38,9 +38,19 @@ export class AlbumPage {
       pageData.firstTrack = pageData.tracks[0].id
 
     } catch (error) {
-      console.error('Failed to load album page data:', error.message);
-      localStorage.removeItem('isAuthenticated');
-      router.navigate('/login');
+      console.error('Failed to load album page data:', error);
+
+      if (error.response && error.response.status === 404) {
+        router.navigate('/not-found');
+        return;
+      }
+
+      if (error.message && error.message.includes('Network')) {
+        alert('Проблема с подключением. Попробуйте позже.');
+        return;
+      }
+
+      alert('Не удалось загрузить страницу альбома.');
       return;
     }
 

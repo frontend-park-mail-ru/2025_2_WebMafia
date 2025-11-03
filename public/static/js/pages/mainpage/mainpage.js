@@ -5,6 +5,7 @@ import { sidebar } from '../sidebar/sidebar.js';
 import { initScrollbar } from '../../scrollbar.js';
 import { slider } from '../../slider.js';
 import { player } from '../player/player.js';
+import { getValidImage, playsParser } from "../../parsers.js";
 
 export class MainPage {
   async render() {
@@ -18,18 +19,12 @@ export class MainPage {
     const contentTemplateWithoutData = Handlebars.templates['MainPage.hbs'];
     document.getElementById('app').innerHTML = contentTemplateWithoutData(pageData);
 
-    function getValidImage(url, defaultImage) {
-      if (!url) return `static/img/${defaultImage}`;
-      return url.startsWith('http') ? url : `static/img/${url}`;
-    }
-
     try {
       const data = await apiServise.getMainPageData();
       pageData.artists = (data.artists || []).map((artist) => ({
         id: artist.id,
         name: artist.name,
-        listeners: artist.listeners || 0,
-        //Заглушки пока не доделана minio
+        listeners: playsParser(artist.listeners || 0),
         image: getValidImage(artist.avatar_url, 'default_artist_avatar.png'),
       }));
       pageData.albums = (data.albums || []).map((album) => ({
@@ -37,6 +32,7 @@ export class MainPage {
         name: album.title,
         image: getValidImage(album.avatar_url, 'default_album_avatar.png'),
         artist: album.artists ? album.artists[0].name : 'Unknown Artist',
+        type: album.type,
       }));
       pageData.tracks = (data.tracks || []).map((track) => ({
         id: track.id,
@@ -45,18 +41,30 @@ export class MainPage {
         artists: track.artists,
       }));
     } catch (error) {
-      console.error('Failed to load main page data:', error.message);
-      localStorage.removeItem('isAuthenticated');
-      router.navigate('/login');
+      console.error('Failed to load main page data:', error);
+
+      if (error.response && error.response.status === 404) {
+        router.navigate('/not-found');
+        return;
+      }
+
+      if (error.message && error.message.includes('Network')) {
+        alert('Проблема с подключением. Попробуйте позже.');
+        return;
+      }
+
+      alert('Не удалось загрузить главную страницу.');
       return;
     }
 
     const contentTemplate = Handlebars.templates['MainPage.hbs'];
     document.getElementById('app').innerHTML = contentTemplate(pageData);
 
-    header.render();
-    sidebar.render();
-    player.render();
+    await Promise.all([
+      header.render(),
+      sidebar.render(),
+      player.render(),
+    ]);
 
     slider.sliderFunction();
     this.nowPlayingCardSlider();
