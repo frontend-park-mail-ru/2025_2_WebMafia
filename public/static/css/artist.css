@@ -165,7 +165,7 @@
 .right-row-content {
   flex: 1;
   display: grid;
-  grid-template-columns: 40% 20% 20% 15% 5%;
+  grid-template-columns: 35% 20% 20% 20% 5%;
   align-items: center;
   gap: 8px;
 }
@@ -252,7 +252,7 @@
   color: black;
 }
 
-.track-performer:hover {
+.track-performer:hover, .track-album-name:hover {
   text-decoration: underline;
 }
 
