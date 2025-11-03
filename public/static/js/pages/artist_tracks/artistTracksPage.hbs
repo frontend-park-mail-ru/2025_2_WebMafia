@@ -1,0 +1,29 @@
+<div class="section" id="section">
+  {{> header}}
+  <div class="layout">
+    {{> sidebar}}
+    <div class="page" id="scrollContent">
+      <div class="title">
+        <div class="title-name">Треки исполнителя {{ artistName }}</div>
+      </div>
+      <div class="tracks-table" style="padding: 20px;">
+        {{#each tracks}}
+        <div class="track-row">
+          <div class="track-number">{{numeration @index}}</div>
+          <div class="track-cover-wrapper">
+            <img class="track-cover" src="/{{ cover }}" alt="{{ name }}" />
+            <button class="play-popular-track">{{> play }}</button>
+          </div>
+          <div class="right-row-content">
+            <div class="track-name">{{ name }}</div>
+            <div class="track-plays-num">{{ plays }} прослушиваний</div>
+            <div class="track-album-name">{{ album }}</div>
+            <div class="track-duration">{{ duration }}</div>
+          </div>
+        </div>
+        {{/each}}
+      </div>
+    </div>
+  </div>
+  {{> player}}
+</div>

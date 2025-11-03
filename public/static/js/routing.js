@@ -4,6 +4,8 @@ import { LoginPage } from './pages/login/login.js';
 import { RegistrationPage } from './pages/register/register.js';
 import { ArtistPage } from './pages/artist_page/artistPage.js';
 import { ProfilePage } from './pages/profile/profilePage.js';
+import { ArtistAlbumsPage } from './pages/artist_albums/artistAlbumsPage.js';
+import { ArtistTracksPage } from './pages/artist_tracks/artistTracksPage.js';
 
 export class Router {
   constructor() {
@@ -12,6 +14,8 @@ export class Router {
       { pattern: /^\/login$/, component: new LoginPage() },
       { pattern: /^\/register$/, component: new RegistrationPage() },
       { pattern: /^\/artist\/([^/]+)$/, component: new ArtistPage() },
+      { pattern: /^\/artist\/([^/]+)\/albums$/, component: new ArtistAlbumsPage() },
+      { pattern: /^\/artist\/([^/]+)\/tracks$/, component: new ArtistTracksPage() },
       { pattern: /^\/profile$/, component: new ProfilePage() },
     ];
     this.handleLocation = this.handleLocation.bind(this);

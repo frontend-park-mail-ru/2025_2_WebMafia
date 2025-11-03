@@ -26,6 +26,7 @@ export class ArtistPage {
 
     let pageData = {
       isAuthenticated: true,
+      id: 1,
       albums: [
         {
           name: 'Zeit',

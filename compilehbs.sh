@@ -45,3 +45,7 @@ handlebars public/static/js/partials/pauseBtn.hbs -f public/static/js/partials/p
 handlebars public/static/js/partials/volumeBar.hbs -f public/static/js/partials/volumeBar.tmpl.js
 
 handlebars public/static/js/partials/likeBtn.hbs -f public/static/js/partials/likeBtn.tmpl.js
+
+handlebars public/static/js/pages/artist_albums/artistAlbumsPage.hbs -f public/static/js/pages/artist_albums/artistAlbumsPage.tmpl.js
+
+handlebars public/static/js/pages/artist_tracks/artistTracksPage.hbs -f public/static/js/pages/artist_tracks/artistTracksPage.tmpl.js
