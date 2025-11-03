@@ -97,9 +97,9 @@ export class MainPage {
     const cardElements = document.querySelectorAll('.now-playing-container-card');
 
     let cardsData = [
-      { img: '/static/img/default_album_avatar.png', name: '' },
-      { img: '/static/img/default_album_avatar.png', name: '' },
-      { img: '/static/img/default_album_avatar.png', name: '' },
+      { img: '/static/img/default_album_avatar.png', name: '', id: null },
+      { img: '/static/img/default_album_avatar.png', name: '', id: null },
+      { img: '/static/img/default_album_avatar.png', name: '', id: null },
     ];
 
     player.addEventListener('trackchange', (event) => {
@@ -173,6 +173,7 @@ export class MainPage {
       if (data && data.name) {
         const playButton = document.createElement('button');
         playButton.className = 'current-card-btn play';
+        playButton.dataset.trackId = data.id;
         const nameP = document.createElement('p');
         nameP.className = 'current-card-name';
         nameP.textContent = data.name;

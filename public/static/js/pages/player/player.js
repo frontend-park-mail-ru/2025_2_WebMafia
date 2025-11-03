@@ -68,8 +68,8 @@ export class Player extends EventTarget {
     // Запускаем проверку один раз при первоначальной загрузке
     this.updateVisibility();
     this.trackSwitching();
-    this.setInitialVolume();
-    this.setInitialPLayTime();
+    // this.setInitialVolume();
+    // this.setInitialPLayTime();
   }
 
   updateVisibility() {
@@ -79,7 +79,7 @@ export class Player extends EventTarget {
 
     if (isAuthenticated && !isAuthPage) {
       // Условия соблюдены -> ПОКАЗАТЬ плеер
-      this.render(); // render сам проверит, не отрисован ли уже плеер
+      this.render();
     }
     if (!isAuthPage) {
       this.renderWhithoutData();
@@ -181,7 +181,6 @@ export class Player extends EventTarget {
     this.getPrevAndNextTracks();
     this.setInitialVolume();
     this.setInitialPLayTime();
-    this.trackSwitching();
 
     this.audio.addEventListener('ended', () => {
       this.nextTrack();
