@@ -18,8 +18,10 @@ export class Header {
     if (section && !document.getElementById('header')) {
       section.insertAdjacentHTML('afterbegin', headerHTML);
     }
-    this.addEventListeners();
-    this.profileDropdown();
+    if (pageData.isAuthenticated) {
+      this.addEventListeners();
+      this.profileDropdown();
+    }
   }
 
   addEventListeners() {

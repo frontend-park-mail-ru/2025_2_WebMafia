@@ -163,7 +163,6 @@ body {
 
 .play-button {
   cursor: pointer;
-  position: absolute;
   width: 56px;
   height: 56px;
   color: white;
@@ -180,6 +179,7 @@ body {
 }
 
 .play-button-placement {
+  position: absolute;
   opacity: 0;
   top: 50%;
   left: 60%;
@@ -191,11 +191,11 @@ body {
   height: 0;
   border-style: solid;
   border-width: 10px 0 10px 16px;
-  border-color: transparent transparent transparent #ffffff;
+  border-color: transparent transparent transparent #fafafa;
   margin-left: 2px;
 }
 
-.play-button-placement:hover {
+.play-button:hover {
   transform: scale(1.03);
   background-position: left top;
 }
@@ -319,6 +319,7 @@ body {
 }
 
 .play-button-track {
+  position: absolute;
   left: 24px;
   opacity: 0;
 }

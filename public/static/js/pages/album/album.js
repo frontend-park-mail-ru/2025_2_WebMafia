@@ -21,6 +21,7 @@ export class AlbumPage {
         year: data.album.release_date ? data.album.release_date.slice(0, 4) : '',
         cover: data.album.avatar_url,
         artist: data.album.artists[0],
+        description: data.album.description,
       };
       let totalDuration = 0;
       pageData.tracks = (data.tracks || []).map((track) => {
@@ -28,13 +29,13 @@ export class AlbumPage {
         return {
           id: track.id,
           name: track.title,
+          plays: track.play_count,
           duration: track.duration_s,
         };
       });
-      if (pageData.type === 'Альбом') {
-        pageData.totalDuration = Math.floor(totalDuration / 60);
-        pageData.tracksNum = pageData.tracks.length;
-      }
+      pageData.totalDuration = Math.floor(totalDuration / 60);
+      pageData.tracksNum = pageData.tracks.length;
+      pageData.firstTrack = pageData.tracks[0].id
 
     } catch (error) {
       console.error('Failed to load album page data:', error.message);

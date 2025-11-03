@@ -2,20 +2,45 @@
   <div class="layout">
     {{> sidebar}}
     <div class="album-page" id="scrollContent">
-      <div class="blue-background-circle profile-blue-position"></div>
-      <div class="purple-background-circle profile-purple-position"></div>
+      <div class="blue-background-circle album-blue-position"></div>
+      <div class="purple-background-circle album-purple-position"></div>
       <div class="album-card">
         <div class="album-artist">
-          <img class="album-artist-avatar" src="{{ artist.avatar_url }}"/>
-          <a href="artist/{{ artist.id }}" class="album-artist-name">{{ artist.name }}</a>
+          <img class="album-artist-avatar" src="{{ artist.avatar_url }}" alt="{{ artist.name }}" />
+          <a href="artist/{{ artist.id }}" title="{{ artist.name }}" class="album-artist-name">{{ artist.name }}</a>
         </div>
-        <img class="album-cover" src="{{ cover }}" alt="" />
+        <img class="album-cover" src="{{ cover }}" alt="{{ title }}" />
         <div class="album-card-title">{{ title }}</div>
         <div class="album-card-info">
           <div class="card-sub">{{ type }}<span class="dot"></span>{{ year }}</div>
-          {{#if tracksNum}}
-            <div class="card-sub">{{ tracksNum }} треков<span class="dot"></span>{{ totalDuration }} минут</div>
-          {{/if}}
+          <div class="card-sub">{{ tracksNum }} треков<span class="dot"></span>{{ totalDuration }} минут</div>
+        </div>
+        {{#if description}}
+          <div class="card-sub album-description">{{ description }}</div>
+        {{/if}}
+        <div class="album-buttons">
+          {{> likeBtn }}
+          <button class="play-button play-button-album" data-artist-id="{{ firstTrack }}"></button>
+          <button class="control-btn shuffle">{{> shuffle}}</button>
+        </div>
+      </div>
+      <div class="tracks-card">
+        <div class="album-table">
+          {{#each tracks}}
+            <div class="album-row">
+              <div class="album-play-wrapper">
+                <div class="album-track-number">{{numeration @index}}</div>
+                <button class="play-album-track">{{> play }}</button>
+              </div>
+              <div class="tracks-duration-wrapper">
+                <div class="album-track-info">
+                  <div class="track-name">{{ name }}</div>
+                  <div class="track-plays-num">{{ plays }} прослушиваний</div>
+                </div>
+                <div class="track-duration">{{ duration }}</div>
+              </div>
+            </div>
+          {{/each}}
         </div>
       </div>
     </div>
