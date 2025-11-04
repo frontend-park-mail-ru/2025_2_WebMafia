@@ -162,6 +162,11 @@ body {
   transform: scale(1.01);
 }
 
+.card.active {
+  background-color: rgba(0, 0, 0, 0.1);
+  transform: scale(1.01);
+}
+
 .play-button {
   cursor: pointer;
   position: absolute;
@@ -233,6 +238,10 @@ body {
   flex-shrink: 0;
 }
 
+.card.active img {
+  filter: brightness(70%);
+}
+
 .card a {
   text-decoration: none;
   color: inherit;
@@ -295,6 +304,15 @@ body {
 .card-tracks:hover {
   background-color: rgba(0, 0, 0, 0.1);
   transform: scale(1.01);
+}
+
+.card-tracks.active{
+  background-color: rgba(0, 0, 0, 0.1);
+  transform: scale(1.01);
+}
+
+.card-tracks.active img{
+  filter: brightness(70%);
 }
 
 .card-track-content {

@@ -13,7 +13,7 @@ export class Player extends EventTarget {
         title: 'Японский сэмпл',
         id: '66666666-6666-6666-6666-666666666666',
         imageUrl: 'image1.jpg',
-        fileName: 'японский сэмпл 128 бпм.mp3',
+        file_url: 'японский сэмпл 128 бпм.mp3',
         artist: 'Артём Голубев',
         duration_ms: 185000,
         durationFormatted: '3:05',
@@ -22,7 +22,7 @@ export class Player extends EventTarget {
         title: 'HAZARD DUTY PAY!',
         id: '77777777-7777-7777-7777-777777777777',
         imageUrl: 'image2.jpg',
-        fileName: 'JPEGMAFIA - HAZARD DUTY PAY! (Instrumental).mp3',
+        file_url: 'JPEGMAFIA - HAZARD DUTY PAY! (Instrumental).mp3',
         artist: 'JPEGMAFIA',
         duration_ms: 157000,
         durationFormatted: '2:37',
@@ -31,7 +31,7 @@ export class Player extends EventTarget {
         title: 'Take on Me',
         id: '88888888-8888-8888-8888-888888888888',
         imageUrl: 'image3.jpg',
-        fileName: 'Take on Me.mp3',
+        file_url: 'Take on Me.mp3',
         artist: 'a-ha',
         duration_ms: 227000,
         durationFormatted: '3:47',
@@ -40,7 +40,7 @@ export class Player extends EventTarget {
         title: 'Everything I am (Official Instrumental HQ)',
         id: 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbc',
         imageUrl: 'image4.jpg',
-        fileName: 'Kanye West - Everything I am (Official Instrumental HQ).mp3',
+        file_url: 'Kanye West - Everything I am (Official Instrumental HQ).mp3',
         artist: 'Kanye West ',
         duration_ms: 227000,
         durationFormatted: '3:47',
@@ -49,7 +49,7 @@ export class Player extends EventTarget {
         title: 'HEAVEN-TO-ME',
         id: 'dddddddd-dddd-dddd-dddd-ddddddddddde',
         imageUrl: 'image5.jpg',
-        fileName: 'Tyler-The-Creator-HEAVEN-TO-ME-Instrumental-Prod.-By-John-Legend-Kanye-West (1).mp3',
+        file_url: 'Tyler-The-Creator-HEAVEN-TO-ME-Instrumental-Prod.-By-John-Legend-Kanye-West (1).mp3',
         artist: 'Tyler, The Creator',
         duration_ms: 230000,
         durationFormatted: '3:50',
@@ -211,7 +211,10 @@ export class Player extends EventTarget {
 
     document.querySelector('.track-cover-player').src = `static/img/${track.imageUrl}`;
 
-    this.audio.src = `static/music/${track.fileName}`;
+    this.audio.src = `static/music/${track.file_url}`;
+    // let file_url = track.file_url;
+    // this.audio.src = file_url ? `http://localhost:8099/music/tracks/${file_url}.webm` : `static/music/${file_url}`;
+
     this.audio.load();
   }
 

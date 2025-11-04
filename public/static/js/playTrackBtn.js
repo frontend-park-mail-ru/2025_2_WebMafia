@@ -47,5 +47,10 @@ export function playTrack() {
         button.classList.remove('paused', 'is-active');
       }
     });
+    document.querySelectorAll('.card, .card-tracks').forEach((card) => {
+      const buttons = card.querySelector('.play-button-track') || card.querySelector('.play-button');
+      const trackId = buttons ? buttons.dataset.trackId : null;
+      card.classList.toggle('active', trackId === playerTrackId);
+    });
   }
 }
