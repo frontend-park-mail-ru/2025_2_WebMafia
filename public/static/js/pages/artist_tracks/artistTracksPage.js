@@ -27,14 +27,15 @@ export class ArtistTracksPage {
 
     try {
       const data = await apiServise.getArtistTracks(artistId);
+      console.log(data);
       if (data) {
-        pageData.artistName = data.artistName;
+        pageData.artistName = data.artist.name;
         pageData.tracks = data.tracks.map((track) => ({
           id: track.id,
-          name: track.name,
+          name: track.title,
           plays: track.plays || 0,
-          duration: track.duration,
-          cover: track.cover,
+          duration: track.duration_s,
+          cover: track.album.avatar_url,
         }));
       }
     } catch (error) {

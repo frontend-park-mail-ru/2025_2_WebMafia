@@ -23,14 +23,13 @@ export class ArtistAlbumsPage {
 
     try {
       const data = await apiServise.getArtistAlbums(artistId);
+      console.log(data);
       if (data) {
-        pageData.artistName = data.artistName;
+        pageData.artistName = data.artist.name;
         pageData.albums = data.albums.map((album) => ({
           id: album.id,
-          name: album.name,
-          plays: album.plays || 0,
-          duration: album.duration,
-          cover: album.image,
+          name: album.title,
+          cover: album.avatar_url,
         }));
       }
     } catch (error) {

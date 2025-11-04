@@ -16,6 +16,7 @@ export class ArtistPage {
       similar_artists: [],
       nickname: 'Александр Константинов',
       letter: '',
+      id: '',
     };
 
     const contentTemplateWithoutData = Handlebars.templates['artistPage.hbs'];
@@ -26,6 +27,7 @@ export class ArtistPage {
 
     try {
       const data = await apiServise.getArtistPageData(id);
+      pageData.id = data.artist.id;
       pageData.name = data.artist ? data.artist.name : 'Unknown Artist';
 
       document.querySelector('head title').textContent = pageData.name;
