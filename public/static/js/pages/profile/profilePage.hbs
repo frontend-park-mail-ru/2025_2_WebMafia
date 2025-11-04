@@ -8,7 +8,7 @@
         <div class="purple-background-circle profile-purple-position"></div>
         <div class="profile-avatar">
           {{#if avatar}}
-          <img src="{{ avatar }}" alt="Ваш аватар" />
+          <img src="{{ avatar }}" alt="Ваш аватар" class="profile-avatar__image" />
           {{else}}
           <div class="default-avatar default-avatar-profile">AK</div>
           {{/if}}
@@ -91,13 +91,14 @@
             <div class="edit-avatar">
               <div class="edit-avatar-placement">
                 {{#if avatar}}
-                <img src="{{ avatar }}" alt="Ваш аватар" />
+                <img src="{{ avatar }}" alt="Ваш аватар" class="edit-avatar-placement__image" />
                 {{else}}
                 <div class="default-avatar profile-edit-avatar">A</div>
                 {{/if}}
               </div>
               <div class="edit-avatar-buttons">
                 <button id="setAvatarButton" class="secondary-button save-avatar-button-size">Выбрать фото</button>
+                <input type="file" id="avatarInput" accept="image/*" style="display: none;" />
                 <button id="deleteAvatarButton" class="secondary-button save-avatar-button-size">Удалить фото</button>
               </div>
             </div>

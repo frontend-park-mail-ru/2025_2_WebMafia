@@ -5,7 +5,7 @@ import { sidebar } from '../sidebar/sidebar.js';
 import { initScrollbar } from '../../scrollbar.js';
 import { slider } from '../../slider.js';
 import { player } from '../player/player.js';
-import { getValidImage, playsParser } from "../../parsers.js";
+import { getValidImage, playsParser } from '../../parsers.js';
 
 export class MainPage {
   async render() {
@@ -64,11 +64,7 @@ export class MainPage {
     const contentTemplate = Handlebars.templates['MainPage.hbs'];
     document.getElementById('app').innerHTML = contentTemplate(pageData);
 
-    await Promise.all([
-      header.render(),
-      sidebar.render(),
-      player.render(),
-    ]);
+    await Promise.all([header.render(), sidebar.render(), player.render()]);
 
     slider.sliderFunction();
     this.nowPlayingCardSlider();

@@ -86,6 +86,16 @@
   height: 48px;
   border: 3px solid #fff;
   border-radius: 50%;
+  overflow: hidden; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile-avatar-header__image{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .default-avatar-header {

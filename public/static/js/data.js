@@ -1,4 +1,6 @@
 const API_BASE_URL = 'http://localhost:8080/api/v1';
+const MINIO_ENDPOINT = 'http://localhost:8099'; // Ваш публичный адрес MinIO
+const MINIO_AVATAR_BUCKET = 'avatars'; // Название бакета для аватаров
 
 export class apiServises {
   constructor() {
@@ -41,11 +43,7 @@ export class apiServises {
 
   async getMainPageData() {
     try {
-      const [albums, tracks, artists] = await Promise.all([
-        this.request('/albums?limit=20').catch(() => []),
-        this.request('/tracks?limit=30').catch(() => []),
-        this.request('/artists?limit=20').catch(() => [])
-      ]);
+      const [albums, tracks, artists] = await Promise.all([this.request('/albums?limit=20').catch(() => []), this.request('/tracks?limit=30').catch(() => []), this.request('/artists?limit=20').catch(() => [])]);
 
       return {
         albums: albums || [],
@@ -64,14 +62,14 @@ export class apiServises {
         this.request(`/artists/${id}/albums`).catch(() => []),
         this.request(`/artists/${id}/tracks?limit=5`).catch(() => []),
         this.request(`/artists/${id}`).catch(() => []),
-        this.request('/artists?limit=10').catch(() => [])
+        this.request('/artists?limit=10').catch(() => []),
       ]);
 
       return {
         albums: albums || [],
         popular_tracks: popular_tracks || [],
         artist: artist || {},
-        similar_artists: similar_artists || []
+        similar_artists: similar_artists || [],
       };
     } catch (error) {
       console.error('Failed to load artist page data:', error);
@@ -82,6 +80,37 @@ export class apiServises {
   async getProfilePageData() {
     return this.request('/profile');
   }
+
+  async getUserData() {
+    return this.request('/me');
+  }
+
+  // async uploadAvatar(file) {
+  //   // Генерируем уникальное имя файла, чтобы избежать перезаписи
+  //   const fileExtension = file.name.split('.').pop();
+  //   const uniqueFileName = `${crypto.randomUUID()}.${fileExtension}`;
+
+  //   // Формируем полный URL для загрузки
+  //   const uploadUrl = `${MINIO_ENDPOINT}/${MINIO_AVATAR_BUCKET}/${uniqueFileName}`;
+
+  //   console.log(`Uploading to: ${uploadUrl}`);
+
+  //   const response = await fetch(uploadUrl, {
+  //     method: 'PUT',
+  //     body: file,
+  //     headers: {
+  //       credentials: 'include',
+  //       'Content-Type': file.type,
+  //     },
+  //   });
+
+  //   if (!response.ok) {
+  //     throw new Error('Не удалось загрузить файл напрямую в хранилище.');
+  //   }
+
+  //   // Возвращаем публичный URL, по которому будет доступен файл
+  //   return uploadUrl;
+  // }
 
   async loginUser(login, password) {
     return this.request('/login', {

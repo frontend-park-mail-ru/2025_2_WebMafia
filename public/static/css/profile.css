@@ -36,6 +36,17 @@
   border-radius: 50%;
   box-shadow: 0 15px 4px 0 rgba(0, 0, 0, 0.15);
   margin: 37px 0 0 60px;
+  overflow: hidden; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* NEW CLASS for the image itself */
+.profile-avatar__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; 
 }
 
 .default-avatar {
@@ -181,6 +192,16 @@
   width: 200px;
   height: 200px;
   border-radius: 50%;
+  overflow: hidden; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.edit-avatar-placement__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .save-profile-button-size {
