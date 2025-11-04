@@ -2,6 +2,7 @@ import { FormValidator } from '../../validation.js';
 import { apiServise } from '../../data.js';
 import { router } from '../../routing.js';
 import { initPasswordShowing } from '../../eye.js';
+import { player } from '../player/player.js';
 
 export class RegistrationPage {
   async render() {
@@ -98,7 +99,9 @@ export class RegistrationPage {
         console.log('Auto-login successful');
 
         localStorage.setItem('isAuthenticated', 'true');
+
         router.navigate('/');
+        await player.init();
       } catch (error) {
         console.error('Registration or auto-login failed:', error.message);
 

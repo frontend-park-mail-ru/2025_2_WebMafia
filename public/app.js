@@ -1,4 +1,7 @@
+import { player } from './static/js/pages/player/player.js';
 import { router } from './static/js/routing.js';
+import { persistence } from './static/js/utils/persistence.js';
+import { spaceToggle } from './static/js/utils/playerSpace.js';
 
 document.addEventListener('DOMContentLoaded', function () {
   initializePage();
@@ -30,5 +33,8 @@ function registerPartials() {
 
 function initializePage() {
   registerPartials();
+  persistence();
+  spaceToggle();
+  player.init();
   router.init();
 }

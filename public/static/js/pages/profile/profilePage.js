@@ -2,6 +2,8 @@ import { router } from '../../routing.js';
 import { apiServise } from '../../data.js';
 import { initPasswordShowing } from '../../eye.js';
 import { initScrollbar } from '../../scrollbar.js';
+import { player } from '../player/player.js';
+import { header } from '../header/header.js';
 
 export class ProfilePage {
   async render() {
@@ -77,6 +79,7 @@ export class ProfilePage {
     const contentTemplate = Handlebars.templates['profilePage.hbs'];
     document.getElementById('app').innerHTML = contentTemplate(this.pageData);
 
+    header.render();
     this.addEventListeners();
     initPasswordShowing();
     initScrollbar();
