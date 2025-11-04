@@ -4,9 +4,9 @@
     {{> sidebar}}
     <div class="page" id="scrollContent">
       <div class="title">
-        <div class="title-name">Треки исполнителя {{ artistName }}</div>
+        <div class="title-name-track-by-artist">Треки {{ artistName }}</div>
       </div>
-      <div class="tracks-table" style="padding: 20px;">
+      <div class="tracks-table-track-by-artist">
         {{#each tracks}}
         <div class="track-row">
           <div class="track-number">{{numeration @index}}</div>

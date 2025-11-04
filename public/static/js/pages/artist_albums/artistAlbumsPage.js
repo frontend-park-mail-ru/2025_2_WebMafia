@@ -13,7 +13,32 @@ export class ArtistAlbumsPage {
       return;
     }
 
-    const pageData = await apiServise.getArtistAlbums(artistId);
+    let pageData = {
+      isAuthenticated: true,
+      albums: [],
+      artistName: '',
+      nickname: 'Александр Константинов',
+      letter: '',
+    };
+
+    try {
+      const data = await apiServise.getArtistAlbums(artistId);
+      if (data) {
+        pageData.artistName = data.artistName;
+        pageData.albums = data.albums.map((album) => ({
+          id: album.id,
+          name: album.name,
+          plays: album.plays || 0,
+          duration: album.duration,
+          cover: album.image,
+        }));
+      }
+    } catch (error) {
+      console.error('Failed to load main page data:', error.message);
+      localStorage.removeItem('isAuthenticated');
+      router.navigate('/login');
+      return;
+    }
 
     const contentTemplate = Handlebars.templates['artistAlbumsPage.hbs'];
     document.getElementById('app').innerHTML = contentTemplate(pageData);

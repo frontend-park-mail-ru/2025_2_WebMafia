@@ -12,12 +12,37 @@ export class ArtistTracksPage {
       router.navigate('/login');
       return;
     }
-    
+
     Handlebars.registerHelper('numeration', function (value) {
       return parseInt(value) + 1;
     });
 
-    const pageData = await apiServise.getArtistTracks(artistId);
+    let pageData = {
+      isAuthenticated: true,
+      tracks: [],
+      artistName: '',
+      nickname: 'Александр Константинов',
+      letter: '',
+    };
+
+    try {
+      const data = await apiServise.getArtistTracks(artistId);
+      if (data) {
+        pageData.artistName = data.artistName;
+        pageData.tracks = data.tracks.map((track) => ({
+          id: track.id,
+          name: track.name,
+          plays: track.plays || 0,
+          duration: track.duration,
+          cover: track.cover,
+        }));
+      }
+    } catch (error) {
+      console.error('Failed to load main page data:', error.message);
+      localStorage.removeItem('isAuthenticated');
+      router.navigate('/login');
+      return;
+    }
 
     const contentTemplate = Handlebars.templates['artistTracksPage.hbs'];
     document.getElementById('app').innerHTML = contentTemplate(pageData);
