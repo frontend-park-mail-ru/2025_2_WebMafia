@@ -11,7 +11,7 @@ export class Player extends EventTarget {
     this.allData = [
       {
         title: 'Японский сэмпл',
-        id: '66666666-6666-6666-6666-666666666666',
+        id: '91f5c6a7-abab-4e6b-a65c-7a143f82c2b7',
         imageUrl: 'image1.jpg',
         file_url: 'японский сэмпл 128 бпм.mp3',
         artist: 'Артём Голубев',
@@ -20,7 +20,7 @@ export class Player extends EventTarget {
       },
       {
         title: 'HAZARD DUTY PAY!',
-        id: '77777777-7777-7777-7777-777777777777',
+        id: 'aecde8e4-349a-48ae-b0fb-6bc739e4602a',
         imageUrl: 'image2.jpg',
         file_url: 'JPEGMAFIA - HAZARD DUTY PAY! (Instrumental).mp3',
         artist: 'JPEGMAFIA',
@@ -29,7 +29,7 @@ export class Player extends EventTarget {
       },
       {
         title: 'Take on Me',
-        id: '88888888-8888-8888-8888-888888888888',
+        id: 'aee6fd92-8036-4b41-bc3d-030f80846704',
         imageUrl: 'image3.jpg',
         file_url: 'Take on Me.mp3',
         artist: 'a-ha',
@@ -38,7 +38,7 @@ export class Player extends EventTarget {
       },
       {
         title: 'Everything I am (Official Instrumental HQ)',
-        id: 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbc',
+        id: '7e4f2ebf-2ff0-4e4d-9fbc-d0904a32be55',
         imageUrl: 'image4.jpg',
         file_url: 'Kanye West - Everything I am (Official Instrumental HQ).mp3',
         artist: 'Kanye West ',
@@ -47,7 +47,7 @@ export class Player extends EventTarget {
       },
       {
         title: 'HEAVEN-TO-ME',
-        id: 'dddddddd-dddd-dddd-dddd-ddddddddddde',
+        id: 'a2840de3-563c-439d-853d-5b2d40112754',
         imageUrl: 'image5.jpg',
         file_url: 'Tyler-The-Creator-HEAVEN-TO-ME-Instrumental-Prod.-By-John-Legend-Kanye-West (1).mp3',
         artist: 'Tyler, The Creator',

@@ -23,32 +23,15 @@ export class ProfilePage {
       id: 'mock-user-123',
       login: 'Александр Константинов',
       email: 'mock.user@example.com',
-      avatar: 'static/img/default_artist_avatar.png', // Начальный аватар-заглушка
+      avatar: '', // Начальный аватар-заглушка
     };
 
-    if (this.pageData.avatar === '') {
-      this.pageData.avatar === 'static/img/default_artist_avatar.png';
-    }
-
-    // try {
-    //   const data = await apiServise.getUserData();
-    //   console.log(data);
-    // } catch (error) {
-    //   console.error('Failed to load main page data:', error);
-
-    //   if (error.response && error.response.status === 404) {
-    //     router.navigate('/not-found');
-    //     return;
-    //   }
-
-    //   if (error.message && error.message.includes('Network')) {
-    //     alert('Проблема с подключением. Попробуйте позже.');
-    //     return;
-    //   }
-
-    //   alert('Не удалось загрузить главную страницу.');
-    //   return;
+    // if (this.pageData.avatar === '') {
+    //   this.pageData.avatar === 'static/img/default_artist_avatar.png';
     // }
+
+    const data = await apiServise.getUserData();
+    console.log(data);
 
     /*try {
       const data = await apiServise.getProfilePageData();
@@ -77,7 +60,7 @@ export class ProfilePage {
     }*/
 
     const contentTemplate = Handlebars.templates['profilePage.hbs'];
-    document.getElementById('app').innerHTML = contentTemplate(this.pageData);
+    document.getElementById('app').innerHTML = contentTemplate(this.data);
 
     header.render();
     this.addEventListeners();
@@ -134,6 +117,8 @@ export class ProfilePage {
         if (file) {
           const reader = new FileReader();
           reader.onload = (event) => {
+            const newAvatarUrl = URL.createObjectURL(file);
+            this.pageData.avatar = newAvatarUrl;
             const avatarPreviewInModal = document.querySelector('.edit-avatar-placement img');
             if (avatarPreviewInModal) avatarPreviewInModal.src = event.target.result;
           };
