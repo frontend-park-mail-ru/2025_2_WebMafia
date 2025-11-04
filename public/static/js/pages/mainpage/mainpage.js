@@ -5,17 +5,19 @@ import { sidebar } from '../sidebar/sidebar.js';
 import { initScrollbar } from '../../scrollbar.js';
 import { slider } from '../../slider.js';
 import { player } from '../player/player.js';
+import { playTrack } from '../../playTrackBtn.js';
+import { getValidImage, playsParser } from '../../parsers.js';
 
 export class MainPage {
   async render() {
     const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
-    if (!isAuthenticated) {
-      router.navigate('/login');
-      return;
-    }
+    // if (!isAuthenticated) {
+    //   router.navigate('/login');
+    //   return;
+    // }
 
     let pageData = {
-      isAuthenticated: true,
+      isAuthenticated: isAuthenticated,
       artists: [],
       albums: [],
       tracks: [],
@@ -26,11 +28,7 @@ export class MainPage {
     const contentTemplateWithoutData = Handlebars.templates['MainPage.hbs'];
     document.getElementById('app').innerHTML = contentTemplateWithoutData(pageData);
 
-    function getValidImage(url, defaultImage) {
-      if (!url) return `static/img/${defaultImage}`;
-      return url.startsWith('http') ? url : `static/img/${url}`;
-    }
-
+    pageData.isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
     pageData.letter = pageData.nickname ? pageData.nickname[0] : '';
 
     try {
@@ -38,8 +36,7 @@ export class MainPage {
       pageData.artists = (data.artists || []).map((artist) => ({
         id: artist.id,
         name: artist.name,
-        listeners: artist.listeners || 0,
-        //Заглушки пока не доделана minio
+        listeners: playsParser(artist.listeners || 0),
         image: getValidImage(artist.avatar_url, 'default_artist_avatar.png'),
       }));
       pageData.albums = (data.albums || []).map((album) => ({
@@ -47,6 +44,7 @@ export class MainPage {
         name: album.title,
         image: getValidImage(album.avatar_url, 'default_album_avatar.png'),
         artist: album.artists ? album.artists[0].name : 'Unknown Artist',
+        type: album.type,
       }));
       pageData.tracks = (data.tracks || []).map((track) => ({
         id: track.id,
@@ -55,9 +53,19 @@ export class MainPage {
         artists: track.artists,
       }));
     } catch (error) {
-      console.error('Failed to load main page data:', error.message);
-      localStorage.removeItem('isAuthenticated');
-      router.navigate('/login');
+      console.error('Failed to load main page data:', error);
+
+      if (error.response && error.response.status === 404) {
+        router.navigate('/not-found');
+        return;
+      }
+
+      if (error.message && error.message.includes('Network')) {
+        alert('Проблема с подключением. Попробуйте позже.');
+        return;
+      }
+
+      alert('Не удалось загрузить главную страницу.');
       return;
     }
 
@@ -66,11 +74,29 @@ export class MainPage {
 
     header.render();
     sidebar.render();
-    player.render();
 
     slider.sliderFunction();
     this.nowPlayingCardSlider();
     initScrollbar();
+    this.setPlayButtonsOnAuth();
+    playTrack();
+  }
+
+  setPlayButtonsOnAuth() {
+    const playbtn = document.querySelectorAll('.play-button-track, .play-button, .current-card-btn.play');
+    playbtn.forEach((button) => {
+      button.addEventListener('click', (event) => {
+        const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+        if (!isAuthenticated) {
+          event.preventDefault();
+          event.stopPropagation();
+          router.navigate('/login');
+        } else {
+          // this.nowPlayingCardSlider();
+          // playTrack();
+        }
+      });
+    });
   }
 
   nowPlayingCardSlider() {
@@ -79,33 +105,87 @@ export class MainPage {
     const cardElements = document.querySelectorAll('.now-playing-container-card');
 
     let cardsData = [
-      { img: '/static/img/image11.jpg', name: 'Tyler, the Creator' },
-      { img: '/static/img/image12.jpg', name: 'Playboi Carti' },
-      { img: '/static/img/image13.jpg', name: 'Jpegmafiaaaaaa aaaaaaaa aa' },
+      { img: '/static/img/default_album_avatar.png', name: '', id: null },
+      { img: '/static/img/default_album_avatar.png', name: '', id: null },
+      { img: '/static/img/default_album_avatar.png', name: '', id: null },
     ];
 
-    let currentIndex = 0;
+    player.addEventListener('trackchange', (event) => {
+      playerSliderDataSync(event.detail);
+    });
+
     let isAnimating = false;
+    const animationDuration = 500; // Должно совпадать с 'transition' в вашем CSS
+
+    function playerSliderDataSync({ prev, current, next }) {
+      const prevCard = document.querySelector('.card-position-prev');
+      const nextCard = document.querySelector('.card-position-next');
+      if (next) {
+        nextBtn.classList.remove('hidden');
+        nextCard.classList.remove('hidden');
+      } else {
+        nextBtn.classList.add('hidden');
+        nextCard.classList.add('hidden');
+      }
+
+      if (prev) {
+        prevBtn.classList.remove('hidden');
+        prevCard.classList.remove('hidden');
+      } else {
+        prevBtn.classList.add('hidden');
+        prevCard.classList.add('hidden');
+      }
+
+      cardsData = [playerData(prev), playerData(current), playerData(next)];
+      updateAllCardsUI();
+    }
+
+    function playerData(track) {
+      if (!track) {
+        return { img: '/static/img/default_album_avatar.png', name: '' };
+      }
+      return {
+        title: track.title,
+        id: track.id,
+        img: `static/img/${track.imageUrl}`,
+        name: track.artist,
+      };
+    }
+
+    function updateAllCardsUI() {
+      const prevCard = document.querySelector('.card-position-prev');
+      const currentCard = document.querySelector('.card-position-current');
+      const nextCard = document.querySelector('.card-position-next');
+
+      if (prevCard) {
+        prevCard.querySelector('img').src = cardsData[0].img;
+        updateCardUI(prevCard, null);
+      }
+      if (currentCard) {
+        currentCard.querySelector('img').src = cardsData[1].img;
+        updateCardUI(currentCard, cardsData[1]);
+      }
+      if (nextCard) {
+        nextCard.querySelector('img').src = cardsData[2].img;
+        updateCardUI(nextCard, null);
+      }
+      playTrack();
+    }
 
     // Функция для управляет UI элементами на карточке.
     function updateCardUI(card, data = null) {
-      // 1. Очистка: всегда удаляем старые элементы, если они есть.
       const existingButton = card.querySelector('.current-card-btn.play');
       const existingName = card.querySelector('.current-card-name');
       if (existingButton) existingButton.remove();
       if (existingName) existingName.remove();
 
-      if (data) {
-        // Создаем кнопку Play
+      if (data && data.name) {
         const playButton = document.createElement('button');
         playButton.className = 'current-card-btn play';
-
-        // Создаем параграф для имени
+        playButton.dataset.trackId = data.id;
         const nameP = document.createElement('p');
         nameP.className = 'current-card-name';
         nameP.textContent = data.name;
-
-        // Добавляем созданные элементы в карточку
         card.appendChild(playButton);
         card.appendChild(nameP);
       }
@@ -114,23 +194,12 @@ export class MainPage {
     // Функция для первоначальной расстановки
     function initializeSlider() {
       cardElements.forEach((card, i) => {
-        let dataIndex;
-        if (i === 0) dataIndex = (currentIndex - 1 + cardsData.length) % cardsData.length;
-        if (i === 1) dataIndex = currentIndex;
-        if (i === 2) dataIndex = (currentIndex + 1) % cardsData.length;
-
-        card.querySelector('img').src = cardsData[dataIndex].img;
-
-        if (i === 1) {
-          updateCardUI(card, cardsData[currentIndex]);
-        }
-
-        // Назначаем классы
         card.classList.remove('card-position-prev', 'card-position-current', 'card-position-next');
         if (i === 0) card.classList.add('card-position-prev');
         if (i === 1) card.classList.add('card-position-current');
         if (i === 2) card.classList.add('card-position-next');
       });
+      updateAllCardsUI();
     }
 
     // Функция сдвига карточек
@@ -142,44 +211,48 @@ export class MainPage {
       const prevCard = document.querySelector('.card-position-prev');
       const nextCard = document.querySelector('.card-position-next');
 
-      updateCardUI(currentCard, null);
-
-      if (direction === 'next') {
-        currentIndex = (currentIndex + 1) % cardsData.length;
-        updateCardUI(nextCard, cardsData[currentIndex]);
-      } else {
-        currentIndex = (currentIndex - 1 + cardsData.length) % cardsData.length;
-        updateCardUI(prevCard, cardsData[currentIndex]);
-      }
-
       currentCard.classList.remove('card-position-current');
       prevCard.classList.remove('card-position-prev');
       nextCard.classList.remove('card-position-next');
 
       if (direction === 'next') {
+        prevCard.classList.add('hidden');
+        currentCard.classList.add('hidden');
+        prevCard.classList.remove('hidden');
+        prevCard.classList.add('card-position-next');
+        currentCard.classList.remove('hidden');
         currentCard.classList.add('card-position-prev');
         nextCard.classList.add('card-position-current');
-        prevCard.classList.add('card-position-next');
-
-        const newNextDataIndex = (currentIndex + 1) % cardsData.length;
-        prevCard.querySelector('img').src = cardsData[newNextDataIndex].img;
       } else {
+        nextCard.classList.add('hidden');
+        currentCard.classList.add('hidden');
+        nextCard.classList.remove('hidden');
+        nextCard.classList.add('card-position-prev');
+        currentCard.classList.remove('hidden');
         currentCard.classList.add('card-position-next');
         prevCard.classList.add('card-position-current');
-        nextCard.classList.add('card-position-prev');
-
-        const newPrevDataIndex = (currentIndex - 1 + cardsData.length) % cardsData.length;
-        nextCard.querySelector('img').src = cardsData[newPrevDataIndex].img;
       }
 
       setTimeout(() => {
         isAnimating = false;
-      }, 500);
+        updateAllCardsUI();
+      }, animationDuration);
     }
 
-    nextBtn.addEventListener('click', () => shiftCards('next'));
-    prevBtn.addEventListener('click', () => shiftCards('prev'));
+    nextBtn.addEventListener('click', () => {
+      if (isAnimating) return;
+      shiftCards('next');
+      player.nextTrack();
+    });
+    prevBtn.addEventListener('click', () => {
+      if (isAnimating) return;
+      shiftCards('prev');
+      player.prevTrack();
+    });
 
+    if (player.currentTrack) {
+      player.getPrevAndNextTracks();
+    }
     initializeSlider();
   }
 }

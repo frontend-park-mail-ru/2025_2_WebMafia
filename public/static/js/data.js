@@ -6,8 +6,41 @@ export class apiServises {
     this.csrfToken = null;
   }
 
+  async getCsrfToken() {
+    try {
+      const response = await this.request('/csrf-token');
+      const token = response.token || response.csrfToken;
+      this.csrfToken = token;
+      console.log('CSRF token fetched and stored:', this.csrfToken);
+      return this.csrfToken;
+    } catch (error) {
+      console.error('Failed to fetch CSRF token:', error);
+      this.csrfToken = null;
+      throw error;
+    }
+  }
+
+  async ensureCsrfToken() {
+    if (!this.csrfToken) {
+      await this.getCsrfToken();
+    }
+  }
+
   async request(endpoint, options = {}) {
+    const isCsrfRequest = endpoint === '/csrf-token';
     const url = `${this.baseURL}${endpoint}`;
+    const method = options.method || 'GET';
+
+    if (!['GET', 'HEAD', 'OPTIONS'].includes(method.toUpperCase()) && !isCsrfRequest) {
+      await this.ensureCsrfToken();
+
+      if (this.csrfToken) {
+        if (!options.headers) {
+          options.headers = {};
+        }
+        options.headers['X-CSRF-Token'] = this.csrfToken;
+      }
+    }
 
     const config = {
       method: options.method || 'GET',
@@ -41,7 +74,7 @@ export class apiServises {
 
   async getMainPageData() {
     try {
-      const [albums, tracks, artists] = await Promise.all([this.request('/albums').catch(() => []), this.request('/tracks').catch(() => []), this.request('/artists').catch(() => [])]);
+      const [albums, tracks, artists] = await Promise.all([this.request('/albums?limit=20').catch(() => []), this.request('/tracks?limit=30').catch(() => []), this.request('/artists?limit=20').catch(() => [])]);
 
       return {
         albums: albums || [],
@@ -50,6 +83,27 @@ export class apiServises {
       };
     } catch (error) {
       console.error('Failed to load main page data:', error);
+      throw error;
+    }
+  }
+
+  async getArtistPageData(id) {
+    try {
+      const [albums, popular_tracks, artist, similar_artists] = await Promise.all([
+        this.request(`/artists/${id}/albums`).catch(() => []),
+        this.request(`/artists/${id}/tracks?limit=5`).catch(() => []),
+        this.request(`/artists/${id}`).catch(() => []),
+        this.request('/artists?limit=10').catch(() => []),
+      ]);
+
+      return {
+        albums: albums || [],
+        popular_tracks: popular_tracks || [],
+        artist: artist || {},
+        similar_artists: similar_artists || [],
+      };
+    } catch (error) {
+      console.error('Failed to load artist page data:', error);
       throw error;
     }
   }
@@ -76,20 +130,6 @@ export class apiServises {
     return this.request('/logout', {
       method: 'POST',
     });
-  }
-
-  async loadtrack() {
-    return {
-      track: {
-        title: 'Японский сэмпл',
-        id: '1',
-        imageUrl: 'image1.jpg',
-        fileName: 'японский сэмпл 128 бпм.mp3',
-        artist: 'Неизвестный исполнитель',
-        duration: 185,
-        durationFormatted: '3:05',
-      },
-    };
   }
 
   async getArtistAlbums(artistId) {

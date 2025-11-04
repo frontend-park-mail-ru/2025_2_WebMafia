@@ -1,4 +1,7 @@
+import { player } from './static/js/pages/player/player.js';
 import { router } from './static/js/routing.js';
+import { persistence } from './static/js/utils/persistence.js';
+import { spaceToggle } from './static/js/utils/playerSpace.js';
 
 document.addEventListener('DOMContentLoaded', function () {
   initializePage();
@@ -23,9 +26,15 @@ function registerPartials() {
   Handlebars.registerPartial('prevTrack', Handlebars.templates['prevTrack.hbs']);
   Handlebars.registerPartial('volumeBar', Handlebars.templates['volumeBar.hbs']);
   Handlebars.registerPartial('likeBtn', Handlebars.templates['likeBtn.hbs']);
+  Handlebars.registerHelper('numeration', function (value) {
+    return parseInt(value) + 1;
+  });
 }
 
 function initializePage() {
   registerPartials();
+  persistence();
+  spaceToggle();
+  player.init();
   router.init();
 }
