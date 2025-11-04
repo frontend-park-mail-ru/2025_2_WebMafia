@@ -56,7 +56,6 @@ export class LoginPage {
         console.log('Login successful:', response);
 
         localStorage.setItem('isAuthenticated', 'true');
-        localStorage.setItem('user_id', response.id);
 
         router.navigate('/');
       } catch (error) {

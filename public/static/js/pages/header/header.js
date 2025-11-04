@@ -1,5 +1,6 @@
 import { apiServise } from '../../data.js';
 import { router } from '../../routing.js';
+import { getValidImage } from "../../parsers.js";
 
 export class Header {
   async render() {
@@ -20,27 +21,18 @@ export class Header {
     if (!pageData.isAuthenticated) return;
 
     try {
-      const data = await apiServise.getProfileData(localStorage.getItem('user_id'));
-      pageData.avatar = data.avatar;
-      pageData.nickname = data.login;
-      pageData.avatar = data.avatar_url;
+      const data = await apiServise.getProfileData();
+      pageData.avatar = getValidImage(data.AvatarURL);
+      pageData.nickname = data.Login;
       pageData.letter = pageData.nickname ? pageData.nickname[0] : '';
     } catch (error) {
-      console.error('Failed to load header page data:', error);
-
-      if (error.response && error.response.status === 404) {
-        router.navigate('/not-found');
-        return;
-      }
-
-      if (error.message && error.message.includes('Network')) {
-        alert('Проблема с подключением. Попробуйте позже.');
-        return;
-      }
-
-      alert('Не удалось загрузить информацию о пользователе.');
+      console.error('Failed to load user data:', error);
+      localStorage.removeItem('isAuthenticated');
+      router.navigate('/');
       return;
     }
+
+    document.getElementById('header').outerHTML = contentTemplate(pageData);
 
     this.addEventListeners();
     this.profileDropdown();

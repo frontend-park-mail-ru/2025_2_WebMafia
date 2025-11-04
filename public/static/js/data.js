@@ -7,21 +7,21 @@ export class apiServises {
   }
 
   async request(endpoint, options = {}) {
-    console.log(options);
     const url = `${this.baseURL}${endpoint}`;
+    const isFormData = options.body instanceof FormData;
 
     const config = {
       method: options.method || 'GET',
       credentials: 'include',
       headers: {
-        'Content-Type': 'application/json',
+        ...(!isFormData ? { 'Content-Type': 'application/json' } : {}),
         ...options.headers,
       },
       ...options,
     };
 
     if (options.body) {
-      config.body = JSON.stringify(options.body);
+      config.body = isFormData ? options.body : JSON.stringify(options.body);
     }
 
     const response = await fetch(url, config);
@@ -82,15 +82,17 @@ export class apiServises {
 
   async getProfilePageData() {
     try {
-      const [artists, top_tracks] = await Promise.all([
+      const [artists, top_tracks, profile] = await Promise.all([
         this.request('/artists?limit=10').catch(() => []),
         this.request(`/tracks?limit=5`).catch(() => []),
+        this.request(`/me`)
       ]);
 
       return {
         top_artists: artists || [],
         top_tracks: top_tracks || [],
         recent: artists || [],
+        profile: profile,
       };
     } catch (error) {
       console.error('Failed to load profile page data:', error);
@@ -98,24 +100,39 @@ export class apiServises {
     }
   }
 
-  async getProfileData(ID) {
+  async getProfileData() {
     try {
-      console.log(localStorage);
-      const [profile, avatar] = await Promise.all([
-        this.request('/profile', { method: 'PUT', body: { ID } }).catch(() => []),
-        this.request(`/avatar`, { method: 'POST', body: { ID } }).catch(() => []),
-      ]);
-
-      console.log(profile, avatar);
-
-      return {
-        profile: profile,
-        avatar: avatar,
-      };
+      const profile = await this.request(`/me`);
+      return profile;
     } catch (error) {
       console.error('Failed to load profile data:', error);
       throw error;
     }
+  }
+
+  async getCSRFToken() {
+    if (this.csrfToken) return this.csrfToken;
+
+    const data = await this.request('/csrf-token');
+    this.csrfToken = data.csrf_token;
+    return this.csrfToken;
+  }
+
+  async uploadAvatar(file) {
+    const csrfToken = await this.getCSRFToken();
+
+    const formData = new FormData();
+    formData.append('avatar', file);
+
+    const data = await this.request('/avatar', {
+      method: 'POST',
+      headers: {
+        'X-CSRF-Token': csrfToken,
+      },
+      body: formData,
+    });
+
+    return data;
   }
 
   async loginUser(login, password) {
@@ -133,8 +150,12 @@ export class apiServises {
   }
 
   async logoutUser() {
+    const csrfToken = await this.getCSRFToken();
     return this.request('/logout', {
       method: 'POST',
+      headers: {
+        'X-CSRF-Token': csrfToken,
+      },
     });
   }
 }

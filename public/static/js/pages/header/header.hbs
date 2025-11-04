@@ -10,9 +10,9 @@
     <div class="profile-dropdown">
       <div class="header-username">{{ nickname }}</div>
       <button class="profile-btn">
-        <div class="profile-avatar-header">
+        <div class="profile-avatar-header user-avatar">
           {{#if avatar}}
-          <img src="{{ avatar }}" alt="Ваш аватар" />
+          <img src="{{ avatar }}" alt="Ваш аватар" class="profile-image" />
           {{else}}
           <div class="default-avatar default-avatar-header">{{ letter }}</div>
           {{/if}}

@@ -1,8 +1,12 @@
 import { router } from '../../routing.js';
-//import { apiServise } from '../../data.js';
+import { apiServise } from '../../data.js';
 import { initPasswordShowing } from '../../eye.js';
 import { initScrollbar } from '../../scrollbar.js';
-import { getValidImage } from "../../parsers.js";
+import { durationParser, getValidImage, playsParser } from "../../parsers.js";
+import { header } from "../header/header.js";
+import { sidebar } from "../sidebar/sidebar.js";
+import { player } from "../player/player.js";
+import { slider } from "../../slider.js";
 
 export class ProfilePage {
   async render() {
@@ -17,50 +21,53 @@ export class ProfilePage {
       top_artists: [],
       top_tracks: [],
       recent: [],
-      avatar: '',
-      email: '',
-      password: '',
-      nickname: '',
     };
+
+    const contentTemplate = Handlebars.templates['profilePage.hbs'];
+    document.getElementById('app').innerHTML = contentTemplate(pageData);
 
     try {
       const data = await apiServise.getProfilePageData();
-      pageData.artists = (data.artists || []).map((artist) => ({
+      pageData.avatar = getValidImage(data.profile.AvatarURL);
+      pageData.nickname = data.profile.Login;
+      pageData.letter = pageData.nickname ? pageData.nickname[0] : '';
+      pageData.email = data.profile.Email;
+      pageData.top_artists = (data.top_artists || []).map((artist) => ({
         id: artist.id,
         name: artist.name,
-        image: getValidImage(artist.avatar_url, 'default-artist.png'),
+        image: getValidImage('artists/' + artist.avatar_url, 'default-artist.png'),
       }));
-      pageData.top_tracks = (data.tracks || []).map((track) => ({
+      pageData.top_tracks = (data.top_tracks || []).map((track) => ({
         id: track.id,
         name: track.title,
-        image: getValidImage(track.album.avatar_url, 'default-album.png'),
+        plays: playsParser(track.play_count) || 0,
+        album: track.album.title,
+        album_id: track.album.id,
+        duration: durationParser(track.duration_s),
+        cover: getValidImage('albums/' + track.album.avatar_url, 'default-album.png'),
         artists: track.artists,
       }));
       pageData.recent = (data.recent || []).map((artist) => ({
         id: artist.id,
         name: artist.name,
-        image: getValidImage(artist.avatar_url, 'default-artist.png'),
+        image: getValidImage('artists/' + artist.avatar_url, 'default-artist.png'),
       }));
     } catch (error) {
       console.error('Failed to load profile page data:', error);
-
-      if (error.response && error.response.status === 404) {
-        router.navigate('/not-found');
-        return;
-      }
-
-      if (error.message && error.message.includes('Network')) {
-        alert('Проблема с подключением. Попробуйте позже.');
-        return;
-      }
-
-      alert('Не удалось загрузить страницу профиля.');
+      localStorage.removeItem('isAuthenticated');
+      router.navigate('/');
       return;
     }
 
-    const contentTemplate = Handlebars.templates['profilePage.hbs'];
     document.getElementById('app').innerHTML = contentTemplate(pageData);
 
+    await Promise.all([
+      header.render(),
+      sidebar.render(),
+      player.render(),
+    ]);
+
+    slider.sliderFunction();
     this.addEventListeners();
     initPasswordShowing();
     initScrollbar();
@@ -91,6 +98,47 @@ export class ProfilePage {
         if (e.target === editProfileOverlay) {
           editProfileOverlay.classList.remove('active');
         }
+      });
+    }
+
+    const setAvatarButton = document.getElementById('setAvatarButton');
+    if (setAvatarButton) {
+      setAvatarButton.addEventListener('click', async (e) => {
+        e.preventDefault();
+
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = 'image/*';
+        input.click();
+
+        input.addEventListener('change', async () => {
+          const file = input.files[0];
+          if (!file) return;
+
+          if (file.size > 5 * 1024 * 1024) {
+            alert('Файл слишком большой (максимум 5МБ)');
+            return;
+          }
+
+          try {
+            const response = await apiServise.uploadAvatar(file);
+            const newAvatarUrl = getValidImage(response.avatar_url);
+
+            const avatarContainers = document.querySelectorAll('.user-avatar');
+
+            avatarContainers.forEach(container => {
+                const existingImg = container.querySelector('img');
+                if (existingImg) {
+                    existingImg.src = newAvatarUrl;
+                } else {
+                    container.innerHTML = `<img src="${newAvatarUrl}" alt="Ваш аватар" class="profile-image" />`;
+                }
+            });
+        } catch (err) {
+            console.error('Ошибка загрузки аватара:', err);
+            alert('Не удалось загрузить аватар.');
+        }
+        });
       });
     }
   }
