@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://localhost:8080/api/v1';
+const API_BASE_URL = 'http://217.16.17.173:8080/api/v1';
 
 export class apiServises {
   constructor() {
@@ -102,6 +102,17 @@ export class apiServises {
         artist: artist || {},
         similar_artists: similar_artists || [],
       };
+    } catch (error) {
+      console.error('Failed to load artist page data:', error);
+      throw error;
+    }
+  }
+
+  async loadTrackById(id) {
+    if (!id) return null;
+    try {
+      const track = await Promise.all([this.request(`/tracks/${id}`).catch(() => [])]);
+      return track;
     } catch (error) {
       console.error('Failed to load artist page data:', error);
       throw error;

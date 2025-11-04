@@ -1,4 +1,4 @@
-// import { apiServise } from '../../data';
+import { apiServise } from '../../data.js';
 
 export class Player extends EventTarget {
   constructor() {
@@ -8,53 +8,53 @@ export class Player extends EventTarget {
     this.canSaveTime = true;
     this.nextTrackId = null;
     this.prevTrackId = null;
-    this.allData = [
-      {
-        title: 'Японский сэмпл',
-        id: '66666666-6666-6666-6666-666666666666',
-        imageUrl: 'image1.jpg',
-        file_url: 'японский сэмпл 128 бпм.mp3',
-        artist: 'Артём Голубев',
-        duration_ms: 185000,
-        durationFormatted: '3:05',
-      },
-      {
-        title: 'HAZARD DUTY PAY!',
-        id: '77777777-7777-7777-7777-777777777777',
-        imageUrl: 'image2.jpg',
-        file_url: 'JPEGMAFIA - HAZARD DUTY PAY! (Instrumental).mp3',
-        artist: 'JPEGMAFIA',
-        duration_ms: 157000,
-        durationFormatted: '2:37',
-      },
-      {
-        title: 'Take on Me',
-        id: '88888888-8888-8888-8888-888888888888',
-        imageUrl: 'image3.jpg',
-        file_url: 'Take on Me.mp3',
-        artist: 'a-ha',
-        duration_ms: 227000,
-        durationFormatted: '3:47',
-      },
-      {
-        title: 'Everything I am (Official Instrumental HQ)',
-        id: 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbc',
-        imageUrl: 'image4.jpg',
-        file_url: 'Kanye West - Everything I am (Official Instrumental HQ).mp3',
-        artist: 'Kanye West ',
-        duration_ms: 227000,
-        durationFormatted: '3:47',
-      },
-      {
-        title: 'HEAVEN-TO-ME',
-        id: 'dddddddd-dddd-dddd-dddd-ddddddddddde',
-        imageUrl: 'image5.jpg',
-        file_url: 'Tyler-The-Creator-HEAVEN-TO-ME-Instrumental-Prod.-By-John-Legend-Kanye-West (1).mp3',
-        artist: 'Tyler, The Creator',
-        duration_ms: 230000,
-        durationFormatted: '3:50',
-      },
-    ];
+    // this.allData = [
+    //   {
+    //     title: 'Японский сэмпл',
+    //     id: '66666666-6666-6666-6666-666666666666',
+    //     imageUrl: 'image1.jpg',
+    //     file_url: 'японский сэмпл 128 бпм.mp3',
+    //     artist: 'Артём Голубев',
+    //     duration_ms: 185000,
+    //     durationFormatted: '3:05',
+    //   },
+    //   {
+    //     title: 'HAZARD DUTY PAY!',
+    //     id: '77777777-7777-7777-7777-777777777777',
+    //     imageUrl: 'image2.jpg',
+    //     file_url: 'JPEGMAFIA - HAZARD DUTY PAY! (Instrumental).mp3',
+    //     artist: 'JPEGMAFIA',
+    //     duration_ms: 157000,
+    //     durationFormatted: '2:37',
+    //   },
+    //   {
+    //     title: 'Take on Me',
+    //     id: '88888888-8888-8888-8888-888888888888',
+    //     imageUrl: 'image3.jpg',
+    //     file_url: 'Take on Me.mp3',
+    //     artist: 'a-ha',
+    //     duration_ms: 227000,
+    //     durationFormatted: '3:47',
+    //   },
+    //   {
+    //     title: 'Everything I am (Official Instrumental HQ)',
+    //     id: 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbc',
+    //     imageUrl: 'image4.jpg',
+    //     file_url: 'Kanye West - Everything I am (Official Instrumental HQ).mp3',
+    //     artist: 'Kanye West ',
+    //     duration_ms: 227000,
+    //     durationFormatted: '3:47',
+    //   },
+    //   {
+    //     title: 'HEAVEN-TO-ME',
+    //     id: 'dddddddd-dddd-dddd-dddd-ddddddddddde',
+    //     imageUrl: 'image5.jpg',
+    //     file_url: 'Tyler-The-Creator-HEAVEN-TO-ME-Instrumental-Prod.-By-John-Legend-Kanye-West (1).mp3',
+    //     artist: 'Tyler, The Creator',
+    //     duration_ms: 230000,
+    //     durationFormatted: '3:50',
+    //   },
+    // ];
   }
 
   async init() {
@@ -119,11 +119,11 @@ export class Player extends EventTarget {
   }
 
   async getDataTrackById(track_id) {
-    // const trackData = await apiServise.loadTrackById(track_id);
-    // return trackData;
     if (!track_id) return null;
-    const trackData = this.allData.find((track) => track.id === track_id);
+    const trackData = await apiServise.loadTrackById(track_id);
     return trackData;
+    // const trackData = this.allData.find((track) => track.id === track_id);
+    // return trackData;
   }
 
   async loadTrack(trackData) {
@@ -135,22 +135,49 @@ export class Player extends EventTarget {
   }
 
   async getPrevAndNextTracks() {
-    const currentIndex = this.allData.findIndex((track) => track.id === this.currentTrack.id);
-    const nextTrackObject = this.allData[currentIndex + 1];
-    this.nextTrackId = nextTrackObject ? nextTrackObject.id : null;
-    const prevTrackObject = this.allData[currentIndex - 1];
-    this.prevTrackId = prevTrackObject ? prevTrackObject.id : null;
+    if (!this.currentTrack || !this.currentTrack.id) {
+      console.warn('Невозможно определить соседей: текущий трек не установлен.');
+      return;
+    }
 
-    const [nextTrackData, prevTrackData] = await Promise.all([this.getDataTrackById(this.nextTrackId), this.getDataTrackById(this.prevTrackId)]);
+    try {
+      // 1. Загружаем ВЕСЬ список треков.
+      // В идеале, здесь должен быть запрос, который возвращает только ID,
+      // но для начала сойдет и полный список.
+      const allTracks = await apiServise.request('/tracks?limit=4').catch(() => []); // Увеличим лимит
 
-    const event = new CustomEvent('trackchange', {
-      detail: {
-        prev: prevTrackData,
-        current: this.currentTrack,
-        next: nextTrackData,
-      },
-    });
-    this.dispatchEvent(event);
+      if (!allTracks || !Array.isArray(allTracks)) {
+        console.warn('⚠️ Не удалось получить список треков для определения соседей');
+        return;
+      }
+
+      // 2. Находим индекс текущего трека в этом списке
+      const currentIndex = allTracks.findIndex((t) => t.id === this.currentTrack.id);
+      if (currentIndex === -1) {
+        console.warn('⚠️ Текущий трек не найден в общем списке треков.');
+        // В этом случае мы не можем определить соседей, но это не должно ломать плеер
+        this.nextTrackId = null;
+        this.prevTrackId = null;
+      } else {
+        // 3. Определяем соседние объекты
+        const nextTrackObject = allTracks[currentIndex + 1];
+        const prevTrackObject = allTracks[currentIndex - 1];
+
+        this.nextTrackId = nextTrackObject ? nextTrackObject.id : null;
+        this.prevTrackId = prevTrackObject ? prevTrackObject.id : null;
+      }
+
+      // 4. Загружаем полные данные для соседних треков
+      const [nextTrackData, prevTrackData] = await Promise.all([this.getDataTrackById(this.nextTrackId), this.getDataTrackById(this.prevTrackId)]);
+
+      // 5. Генерируем событие для обновления слайдера
+      const event = new CustomEvent('trackchange', {
+        detail: { prev: prevTrackData, current: this.currentTrack, next: nextTrackData },
+      });
+      this.dispatchEvent(event);
+    } catch (error) {
+      console.error('Ошибка при получении предыдущего/следующего треков:', error);
+    }
   }
 
   async render() {
@@ -200,20 +227,23 @@ export class Player extends EventTarget {
   }
 
   loadTrackInfo(track) {
+    console.log(track);
     document.querySelector('.track-title').textContent = track.title;
-    document.querySelector('.track-artist').textContent = track.artist;
-    // document.querySelector('.track-time.total').textContent = track.durationFormatted;
-    const durationInSeconds = Math.round(track.duration_ms / 1000);
+    const artistName = track.artists[1].name; // Иначе, подставляем заглушк
+    document.querySelector('.track-artist').textContent = artistName;
+
+    const durationInSeconds = track.duration_s;
     const minutes = Math.floor(durationInSeconds / 60);
     const seconds = durationInSeconds % 60;
     const durationFormatted = `${minutes}:${seconds.toString().padStart(2, '0')}`;
     document.querySelector('.track-time.total').textContent = durationFormatted;
 
-    document.querySelector('.track-cover-player').src = `static/img/${track.imageUrl}`;
+    const imageUrl = track.album && track.album.avatar_url ? `http://217.16.17.173:8099/music/${track.album.avatar_url}` : 'static/img/default_album_avatar.png';
+    document.querySelector('.track-cover-player').src = imageUrl;
 
-    this.audio.src = `static/music/${track.file_url}`;
-    // let file_url = track.file_url;
-    // this.audio.src = file_url ? `http://localhost:8099/music/tracks/${file_url}.webm` : `static/music/${file_url}`;
+    // this.audio.src = `static/music/${track.file_url}`;
+    let file_url = track.file_url;
+    this.audio.src = file_url ? `http://217.16.17.173:8099/music/tracks/${file_url}` : `static/music/${file_url}`;
 
     this.audio.load();
   }
@@ -393,7 +423,7 @@ export class Player extends EventTarget {
   }
 
   setInitialPLayTime() {
-    const duration_ms = Math.round(this.currentTrack.duration_ms / 1000);
+    const duration_ms = this.currentTrack.duration_s;
     const duration_s = duration_ms / 1000;
     const timeRegulator = document.querySelector('.remote-slider');
     const storedTime = parseFloat(localStorage.getItem('playTime'));
