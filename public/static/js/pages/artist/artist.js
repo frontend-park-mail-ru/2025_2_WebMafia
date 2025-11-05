@@ -91,7 +91,27 @@ export class ArtistPage {
     slider.sliderFunction();
     initScrollbar();
     this.addEventListeners();
+    this.setPlayButtonsOnAuth();
+    playTrack();
   }
+
+  setPlayButtonsOnAuth() {
+    const playbtn = document.querySelectorAll('.play-button-track, .play-button, .current-card-btn.play, .play-popular-track');
+    playbtn.forEach((button) => {
+      button.addEventListener('click', (event) => {
+        const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+        if (!isAuthenticated) {
+          event.preventDefault();
+          event.stopPropagation();
+          router.navigate('/login');
+        } else {
+          // this.nowPlayingCardSlider();
+          // playTrack();
+        }
+      });
+    });
+  }
+
 
   addEventListeners() {
     const showInfoBtn = document.getElementById('showArtistDescription');

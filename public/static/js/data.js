@@ -81,17 +81,6 @@ export class apiServises {
     }
   }
 
-  async loadTrackById(id) {
-    if (!id) return null;
-    try {
-      const track = this.request(`/tracks/${id}`).catch(() => []);
-      return track;
-    } catch (error) {
-      console.error('Failed to load artist page data:', error);
-      throw error;
-    }
-  }
-
   async getProfilePageData() {
     try {
       const [artists, top_tracks, profile] = await Promise.all([
@@ -114,7 +103,7 @@ export class apiServises {
 
   async getProfileData() {
     try {
-      const profile = await this.request(`/me`);
+      const profile = await this.request('/me');
       return profile;
     } catch (error) {
       console.error('Failed to load profile data:', error);
@@ -128,6 +117,17 @@ export class apiServises {
     const data = await this.request('/csrf-token');
     this.csrfToken = data.csrf_token;
     return this.csrfToken;
+  }
+
+  async loadTrackById(id) {
+    if (!id) return null;
+    try {
+      const track = this.request(`/tracks/${id}`).catch(() => []);
+      return track;
+    } catch (error) {
+      console.error('Failed to load artist page data:', error);
+      throw error;
+    }
   }
 
   async uploadAvatar(file) {

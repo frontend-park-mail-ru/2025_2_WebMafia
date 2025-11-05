@@ -2,11 +2,11 @@ import { router } from '../../routing.js';
 import { apiServise } from '../../data.js';
 import { initPasswordShowing } from '../../eye.js';
 import { initScrollbar } from '../../scrollbar.js';
-import { durationParser, getValidImage, playsParser } from "../../parsers.js";
-import { header } from "../header/header.js";
-import { sidebar } from "../sidebar/sidebar.js";
-import { player } from "../player/player.js";
-import { slider } from "../../slider.js";
+import { durationParser, getValidImage, playsParser } from '../../parsers.js';
+import { sidebar } from '../sidebar/sidebar.js';
+import { slider } from '../../slider.js';
+import { player } from '../player/player.js';
+import { header } from '../header/header.js';
 
 export class ProfilePage {
   async render() {
@@ -17,7 +17,7 @@ export class ProfilePage {
     }
 
     let pageData = {
-      isAuthenticated: true,
+      isAuthenticated: isAuthenticated,
       top_artists: [],
       top_tracks: [],
       recent: [],
@@ -61,10 +61,7 @@ export class ProfilePage {
 
     document.getElementById('app').innerHTML = contentTemplate(pageData);
 
-    await Promise.all([
-      header.render(),
-      sidebar.render(),
-    ]);
+    await Promise.all([header.render(), sidebar.render()]);
 
     slider.sliderFunction();
     this.addEventListeners(pageData.letter);
@@ -128,7 +125,7 @@ export class ProfilePage {
 
               const avatarContainers = document.querySelectorAll('.user-avatar');
 
-              avatarContainers.forEach(container => {
+              avatarContainers.forEach((container) => {
                 let img = container.querySelector('img');
                 if (!img) {
                   img = document.createElement('img');
@@ -142,10 +139,7 @@ export class ProfilePage {
               });
 
               if (!document.getElementById('deleteAvatarButton')) {
-                editAvatarButtons.insertAdjacentHTML(
-                  'beforeend',
-                  `<button id="deleteAvatarButton" class="secondary-button save-avatar-button-size">Удалить фото</button>`
-                );
+                editAvatarButtons.insertAdjacentHTML('beforeend', `<button id="deleteAvatarButton" class="secondary-button save-avatar-button-size">Удалить фото</button>`);
               }
             } catch (err) {
               console.error('Ошибка загрузки аватара:', err);
