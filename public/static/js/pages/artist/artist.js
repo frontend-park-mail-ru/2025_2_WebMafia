@@ -1,11 +1,11 @@
 import { router } from '../../routing.js';
 import { initScrollbar } from '../../scrollbar.js';
-import { apiServise } from "../../data.js";
-import { durationParser, getValidImage, playsParser } from "../../parsers.js";
-import { header } from "../header/header.js";
-import { sidebar } from "../sidebar/sidebar.js";
-import { player } from "../player/player.js";
-import { slider } from "../../slider.js";
+import { apiServise } from '../../data.js';
+import { durationParser, getValidImage, playsParser } from '../../parsers.js';
+import { header } from '../header/header.js';
+import { sidebar } from '../sidebar/sidebar.js';
+import { player } from '../player/player.js';
+import { slider } from '../../slider.js';
 
 export class ArtistPage {
   async render(id) {
@@ -48,7 +48,7 @@ export class ArtistPage {
         cover: getValidImage('albums/' + track.album.avatar_url, 'default-album.png'),
         artists: track.artists,
       }));
-      data.albums.forEach(album => {
+      data.albums.forEach((album) => {
         const item = {
           id: album.id,
           name: album.title,
@@ -83,11 +83,7 @@ export class ArtistPage {
     const contentTemplate = Handlebars.templates['artistPage.hbs'];
     document.getElementById('app').innerHTML = contentTemplate(pageData);
 
-    await Promise.all([
-      header.render(),
-      sidebar.render(),
-      player.render(),
-    ]);
+    await Promise.all([header.render(), sidebar.render()]);
 
     slider.sliderFunction();
     initScrollbar();

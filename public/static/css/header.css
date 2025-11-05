@@ -32,7 +32,7 @@
 }
 
 .head-right {
-  margin-right: 23px;
+  margin-right: 20px;
 }
 
 .nav-link.main {
@@ -41,32 +41,34 @@
 }
 
 .nav-link.login {
-  font-size: 16px;
+  color: #0a0a0a;
+  text-decoration: none;
+  font-size: 24px;
+  border-radius: 14px;
+  padding: 10px 15px;
   font-weight: 600;
 }
 
 .nav-link.register {
-  /* background: #9C58E0; */
-  background: linear-gradient(-45deg, #4e85e1, #64cfd9);
-  animation: gradient 10s ease infinite;
-  background-size: 400% 400%;
-  border-radius: 20rem;
-  padding: 5px 10px;
-  color: #3e197c;
-  margin-left: 40px;
-  font-size: 26px;
+  color: #0a0a0a;
+  text-decoration: none;
+  padding: 10px 15px;
+  font-size: 24px;
+  border-radius: 14px;
+  margin-left: 20px;
   font-weight: 600;
 }
 
 .nav-link.login:hover {
-  color: #4e85e1;
+  background: linear-gradient(157deg, #7e4dff, #a766ff, #da96ff) right bottom;
+  font-weight: 600;
+  color: #fff;
 }
 
 .nav-link.register:hover {
-  color: #9c58e0;
-  background: linear-gradient(-45deg, #acdde7, #ffffff);
-  animation: gradient 10s ease infinite;
-  background-size: 400% 400%;
+  background: linear-gradient(157deg, #7e4dff, #a766ff, #da96ff) right bottom;
+  font-weight: 600;
+  color: #fff;
 }
 
 .profile-dropdown {

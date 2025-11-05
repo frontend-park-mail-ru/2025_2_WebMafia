@@ -2,7 +2,7 @@ import { MainPage } from './pages/mainpage/mainpage.js';
 import { notFoundPage } from './pages/notfoundpage/notFoundPage.js';
 import { LoginPage } from './pages/login/login.js';
 import { RegistrationPage } from './pages/register/register.js';
-import { ArtistPage } from './pages/artist/artist.js'
+import { ArtistPage } from './pages/artist/artist.js';
 import { ProfilePage } from './pages/profile/profilePage.js';
 
 export class Router {
@@ -11,7 +11,7 @@ export class Router {
       { pattern: /^\/$/, component: new MainPage() },
       { pattern: /^\/login$/, component: new LoginPage() },
       { pattern: /^\/register$/, component: new RegistrationPage() },
-      { pattern: /^\/artist\/([^/]+)$/, component: new ArtistPage() },
+      { pattern: /^\/artist\/([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})$/, component: new ArtistPage() },
       { pattern: /^\/profile$/, component: new ProfilePage() },
     ];
     this.handleLocation = this.handleLocation.bind(this);
@@ -60,6 +60,7 @@ export class Router {
       window.history.pushState({}, '', path);
     }
     this.handleLocation();
+    window.dispatchEvent(new CustomEvent('va-navigate'));
   }
 }
 

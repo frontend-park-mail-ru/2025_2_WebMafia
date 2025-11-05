@@ -1,6 +1,7 @@
 import { apiServise } from '../../data.js';
 import { router } from '../../routing.js';
-import { getValidImage } from "../../parsers.js";
+import { getValidImage } from '../../parsers.js';
+import { player } from '../player/player.js';
 
 export class Header {
   async render() {
@@ -40,6 +41,8 @@ export class Header {
 
   addEventListeners() {
     const logoutButton = document.getElementById('logoutBtn');
+    const logoinButton = document.getElementById('nav-link.login');
+    const registerButton = document.getElementById('nav-link.register');
     if (logoutButton) {
       logoutButton.addEventListener('click', async (e) => {
         e.preventDefault();
@@ -48,7 +51,12 @@ export class Header {
         } catch (error) {
           console.error('Logout request failed:', error.message);
         } finally {
-          localStorage.removeItem('isAuthenticated');
+          localStorage.setItem('isAuthenticated', 'false');
+          localStorage.removeItem('currentTrackId');
+          localStorage.removeItem('isPlaying');
+          localStorage.removeItem('playTime');
+          localStorage.removeItem('volume');
+          await player.destroy();
           router.navigate('/login');
         }
       });

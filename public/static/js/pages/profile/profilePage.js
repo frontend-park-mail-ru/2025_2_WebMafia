@@ -2,11 +2,11 @@ import { router } from '../../routing.js';
 import { apiServise } from '../../data.js';
 import { initPasswordShowing } from '../../eye.js';
 import { initScrollbar } from '../../scrollbar.js';
-import { durationParser, getValidImage, playsParser } from "../../parsers.js";
-import { header } from "../header/header.js";
-import { sidebar } from "../sidebar/sidebar.js";
-import { player } from "../player/player.js";
-import { slider } from "../../slider.js";
+import { durationParser, getValidImage, playsParser } from '../../parsers.js';
+import { sidebar } from '../sidebar/sidebar.js';
+import { slider } from '../../slider.js';
+import { player } from '../player/player.js';
+import { header } from '../header/header.js';
 
 export class ProfilePage {
   async render() {
@@ -26,48 +26,7 @@ export class ProfilePage {
     const contentTemplate = Handlebars.templates['profilePage.hbs'];
     document.getElementById('app').innerHTML = contentTemplate(pageData);
 
-    try {
-      const data = await apiServise.getProfilePageData();
-      pageData.avatar = getValidImage(data.profile.AvatarURL);
-      pageData.nickname = data.profile.Login;
-      pageData.letter = pageData.nickname ? pageData.nickname[0] : '';
-      pageData.email = data.profile.Email;
-      pageData.top_artists = (data.top_artists || []).map((artist) => ({
-        id: artist.id,
-        name: artist.name,
-        image: getValidImage('artists/' + artist.avatar_url, 'default-artist.png'),
-      }));
-      pageData.top_tracks = (data.top_tracks || []).map((track) => ({
-        id: track.id,
-        name: track.title,
-        plays: playsParser(track.play_count) || 0,
-        album: track.album.title,
-        album_id: track.album.id,
-        duration: durationParser(track.duration_s),
-        cover: getValidImage('albums/' + track.album.avatar_url, 'default-album.png'),
-        artists: track.artists,
-      }));
-      pageData.recent = (data.recent || []).map((artist) => ({
-        id: artist.id,
-        name: artist.name,
-        image: getValidImage('artists/' + artist.avatar_url, 'default-artist.png'),
-      }));
-    } catch (error) {
-      console.error('Failed to load profile page data:', error);
-      localStorage.removeItem('isAuthenticated');
-      router.navigate('/');
-      return;
-    }
-
-    document.getElementById('app').innerHTML = contentTemplate(pageData);
-
-    await Promise.all([
-      header.render(),
-      sidebar.render(),
-      player.render(),
-    ]);
-
-    slider.sliderFunction();
+    header.render();
     this.addEventListeners();
     initPasswordShowing();
     initScrollbar();
@@ -126,18 +85,18 @@ export class ProfilePage {
 
             const avatarContainers = document.querySelectorAll('.user-avatar');
 
-            avatarContainers.forEach(container => {
-                const existingImg = container.querySelector('img');
-                if (existingImg) {
-                    existingImg.src = newAvatarUrl;
-                } else {
-                    container.innerHTML = `<img src="${newAvatarUrl}" alt="Ваш аватар" class="profile-image" />`;
-                }
+            avatarContainers.forEach((container) => {
+              const existingImg = container.querySelector('img');
+              if (existingImg) {
+                existingImg.src = newAvatarUrl;
+              } else {
+                container.innerHTML = `<img src="${newAvatarUrl}" alt="Ваш аватар" class="profile-image" />`;
+              }
             });
-        } catch (err) {
+          } catch (err) {
             console.error('Ошибка загрузки аватара:', err);
             alert('Не удалось загрузить аватар.');
-        }
+          }
         });
       });
     }
