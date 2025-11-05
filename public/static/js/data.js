@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://217.16.17.173:8080/api/v1';
+const API_BASE_URL = 'http://localhost:8080/api/v1';
 export const API_AVATARS_URL = 'http://217.16.17.173:8099/avatars';
 
 export class apiServises {
@@ -79,7 +79,7 @@ export class apiServises {
 
   async getProfilePageData() {
     try {
-      const [artists, top_tracks, profile] = await Promise.all([this.request('/artists?limit=10').catch(() => []), this.request(`/tracks?limit=5`).catch(() => []), this.request(`/me`)]);
+      const [artists, top_tracks, profile] = await Promise.all([this.request('/artists?limit=10').catch(() => []), this.request('/tracks?limit=5').catch(() => []), this.request('/me')]);
 
       return {
         top_artists: artists || [],
