@@ -32,7 +32,7 @@
               <div class="track-number">{{numeration @index}}</div>
               <div class="track-cover-wrapper">
                 <img class="track-cover" src="{{ cover }}" alt="{{ name }}" />
-                <button class="play-popular-track">{{> play }}</button>
+                <button class="play-popular-track" data-track-id="{{ id }}">{{> play }}</button>
               </div>
               <div class="right-row-content">
                 <div class="track-name">{{ name }}</div>

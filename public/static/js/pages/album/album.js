@@ -13,6 +13,7 @@ export class AlbumPage {
 
     const contentTemplateWithoutData = Handlebars.templates['album.hbs'];
     document.getElementById('app').innerHTML = contentTemplateWithoutData(pageData);
+    document.querySelector('head title').textContent = 'Wave Music';
 
     try {
       const data = await apiServise.getAlbumPageData(id);
@@ -62,6 +63,7 @@ export class AlbumPage {
 
     const contentTemplate = Handlebars.templates['album.hbs'];
     document.getElementById('app').innerHTML = contentTemplate(pageData);
+    document.querySelector('head title').textContent = pageData.title;
 
     await Promise.all([
       header.render(),

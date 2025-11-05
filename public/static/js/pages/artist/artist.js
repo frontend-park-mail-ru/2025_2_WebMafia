@@ -9,6 +9,7 @@ import { slider } from '../../slider.js';
 export class ArtistPage {
   async render(id) {
     let pageData = {
+      isAuthenticated: localStorage.getItem('isAuthenticated') === 'true',
       albums: [],
       popular_tracks: [],
       singls: [],
@@ -17,21 +18,15 @@ export class ArtistPage {
 
     const contentTemplateWithoutData = Handlebars.templates['artistPage.hbs'];
     document.getElementById('app').innerHTML = contentTemplateWithoutData(pageData);
-
-    pageData.isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
-    pageData.letter = pageData.nickname ? pageData.nickname[0] : '';
+    document.querySelector('head title').textContent = 'Wave music';
 
     try {
       const data = await apiServise.getArtistPageData(id);
       pageData.id = data.artist.id;
       pageData.name = data.artist ? data.artist.name : 'Unknown Artist';
-
-      document.querySelector('head title').textContent = pageData.name;
-
       pageData.artist_header = getValidImage('artists/' + data.artist.header_url, 'default-artist.png');
       pageData.description = data.artist.description;
       pageData.listeners = data.artist.play_count || 0;
-
       pageData.similar_artists = (data.similar_artists || []).map((artist) => ({
         id: artist.id,
         name: artist.name,
@@ -82,6 +77,7 @@ export class ArtistPage {
 
     const contentTemplate = Handlebars.templates['artistPage.hbs'];
     document.getElementById('app').innerHTML = contentTemplate(pageData);
+    document.querySelector('head title').textContent = pageData.name;
 
     await Promise.all([
       header.render(),
