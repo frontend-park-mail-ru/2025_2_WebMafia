@@ -1,4 +1,4 @@
-import {apiServise, API_AVATARS_URL, API_TRACKS_URL} from '../../data.js';
+import { apiServise, API_AVATARS_URL, API_TRACKS_URL } from '../../data.js';
 
 export class Player extends EventTarget {
   constructor() {
@@ -75,13 +75,11 @@ export class Player extends EventTarget {
     if (!track_id) return null;
     const trackData = await apiServise.loadTrackById(track_id);
     return trackData;
-    // const trackData = this.allData.find((track) => track.id === track_id);
-    // return trackData;
   }
 
   async loadTrack(trackData) {
     if (!trackData) return;
-    this.currentTrack = trackData[0];
+    this.currentTrack = trackData;
     console.log('curtrack', this.currentTrack.id);
     this.loadTrackInfo(this.currentTrack);
     localStorage.setItem('currentTrackId', this.currentTrack.id);
@@ -112,7 +110,7 @@ export class Player extends EventTarget {
 
       const [nextTrackData, prevTrackData] = await Promise.all([this.getDataTrackById(this.nextTrackId), this.getDataTrackById(this.prevTrackId)]);
       const event = new CustomEvent('trackchange', {
-        detail: { prev: prevTrackData ? prevTrackData[0] : null, current: this.currentTrack, next: nextTrackData ? nextTrackData[0] : null },
+        detail: { prev: prevTrackData ? prevTrackData : null, current: this.currentTrack, next: nextTrackData ? nextTrackData : null },
       });
       this.dispatchEvent(event);
     } catch (error) {
@@ -171,6 +169,7 @@ export class Player extends EventTarget {
     const durationFormatted = `${minutes}:${seconds.toString().padStart(2, '0')}`;
     document.querySelector('.track-time.total').textContent = durationFormatted;
 
+    const filename = track.album.avatar_url;
     const imageUrl = track.album && track.album.avatar_url ? `${API_AVATARS_URL}/albums/${track.album.avatar_url}` : 'static/img/default_album_avatar.png';
     document.querySelector('.track-cover-player').src = imageUrl;
 
@@ -183,7 +182,7 @@ export class Player extends EventTarget {
   updateCurrentTimeAndSlider() {
     const currentTime = this.audio.currentTime;
     const duration_ms = this.currentTrack.duration_s;
-    const duration_s = duration_ms / 1000;
+    console.log(currentTime);
 
     const minutes = Math.floor(currentTime / 60);
     const seconds = Math.floor(currentTime % 60);
@@ -356,7 +355,6 @@ export class Player extends EventTarget {
 
   setInitialPLayTime() {
     const duration_ms = this.currentTrack.duration_s;
-    const duration_s = duration_ms / 1000;
     const timeRegulator = document.querySelector('.remote-slider');
     const storedTime = parseFloat(localStorage.getItem('playTime'));
     timeRegulator.value = storedTime;
