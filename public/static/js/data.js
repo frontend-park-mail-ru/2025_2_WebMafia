@@ -1,5 +1,5 @@
-const API_BASE_URL = 'http://217.16.17.173:8080/api/v1';export const API_AVATARS_URL = 'http://217.16.17.173:8099/avatars';
-
+const API_BASE_URL = 'http://217.16.17.173:8080/api/v1';
+export const API_AVATARS_URL = 'http://217.16.17.173:8099/avatars';
 
 export class apiServises {
   constructor() {
@@ -73,6 +73,22 @@ export class apiServises {
       };
     } catch (error) {
       console.error('Failed to load artist page data:', error);
+      throw error;
+    }
+  }
+
+  async getProfilePageData() {
+    try {
+      const [artists, top_tracks, profile] = await Promise.all([this.request('/artists?limit=10').catch(() => []), this.request(`/tracks?limit=5`).catch(() => []), this.request(`/me`)]);
+
+      return {
+        top_artists: artists || [],
+        top_tracks: top_tracks || [],
+        recent: artists || [],
+        profile: profile,
+      };
+    } catch (error) {
+      console.error('Failed to load profile page data:', error);
       throw error;
     }
   }
