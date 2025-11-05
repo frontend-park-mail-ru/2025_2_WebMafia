@@ -5,6 +5,8 @@ import { durationParser, getValidImage, playsParser } from '../../parsers.js';
 import { header } from '../header/header.js';
 import { sidebar } from '../sidebar/sidebar.js';
 import { slider } from '../../slider.js';
+import { playTrack } from '../../playTrackBtn.js';
+
 
 export class ArtistPage {
   async render(id) {

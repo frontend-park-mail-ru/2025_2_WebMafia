@@ -1,7 +1,7 @@
 import { player } from './pages/player/player.js';
 
 export function playTrack() {
-  const playBtn = document.querySelectorAll('.play-button-track, .play-button, .current-card-btn.play, .play-popular-track');
+  const playBtn = document.querySelectorAll('.play-button-track, .play-button, .current-card-btn.play, .play-popular-track, .play-album-track');
   let currentTrackId = player.currentTrack ? player.currentTrack.id : null;
 
   playBtn.forEach((button) => {
@@ -36,7 +36,7 @@ export function playTrack() {
   function updateButtons() {
     const playerTrackId = player.currentTrack ? player.currentTrack.id : null;
 
-    document.querySelectorAll('.play-button-track, .play-button, .current-card-btn.play, .play-popular-track').forEach((button) => {
+    document.querySelectorAll('.play-button-track, .play-button, .current-card-btn.play, .play-popular-track, .play-album-track').forEach((button) => {
       const buttonTrackId = button.dataset.trackId;
       const isCurrent = playerTrackId && buttonTrackId === playerTrackId;
 
@@ -47,8 +47,8 @@ export function playTrack() {
         button.classList.remove('paused', 'is-active');
       }
     });
-    document.querySelectorAll('.card, .card-tracks, .track-row').forEach((card) => {
-      const buttons = card.querySelector('.play-button-track') || card.querySelector('.play-button') || card.querySelector('.play-popular-track');
+    document.querySelectorAll('.card, .card-tracks, .track-row, .album-row').forEach((card) => {
+      const buttons = card.querySelector('.play-button-track') || card.querySelector('.play-button') || card.querySelector('.play-popular-track') || card.querySelector('.play-album-track');
       const trackId = buttons ? buttons.dataset.trackId : null;
       card.classList.toggle('active', trackId === playerTrackId);
     });

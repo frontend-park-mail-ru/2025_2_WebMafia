@@ -143,6 +143,10 @@
   height: 75px;
 }
 
+.album-row.active {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
 .album-row:hover {
   background-color: rgba(0, 0, 0, 0.2);
 }

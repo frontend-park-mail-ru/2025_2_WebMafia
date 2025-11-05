@@ -6,6 +6,7 @@ import { initScrollbar } from '../../scrollbar.js';
 import { slider } from '../../slider.js';
 import { player } from '../player/player.js';
 import { playsParser, durationParser, getValidImage, totalDurationParser, tracksNumParser } from "../../parsers.js";
+import { playTrack } from '../../playTrackBtn.js';
 
 export class AlbumPage {
   async render(id) {
@@ -68,12 +69,12 @@ export class AlbumPage {
     await Promise.all([
       header.render(),
       sidebar.render(),
-      player.render(),
     ]);
 
     slider.sliderFunction();
     initScrollbar();
     this.addEventListeners();
+    playTrack();
   }
 
   addEventListeners() {
