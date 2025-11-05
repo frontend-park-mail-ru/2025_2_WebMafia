@@ -49,16 +49,7 @@ export class Header {
           console.error('Logout request failed:', error.message);
         } finally {
           localStorage.removeItem('isAuthenticated');
-<<<<<<< HEAD
           router.navigate('/login');
-=======
-          localStorage.removeItem('currentTrackId');
-          localStorage.removeItem('isPlaying');
-          localStorage.removeItem('playTime');
-          localStorage.removeItem('volume');
-          await player.destroy();
-          router.navigate('/');
->>>>>>> 4a00ad9f999e6fe8d90b3fc5c59e3a1523872ef9
         }
       });
     }
