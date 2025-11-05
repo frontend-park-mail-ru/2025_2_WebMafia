@@ -198,6 +198,10 @@
   opacity: 1;
 }
 
+.play-popular-track.is-active  {
+  opacity: 1;
+}
+
 .track-cover {
   width: 40px;
   height: 40px;
@@ -211,7 +215,8 @@
 }
 
 .track-row.active{
-  filter: brightness(0.4);
+  /* filter: brightness(0.4); */
+  background-color: rgba(0, 0, 0, 0.2);
 }
 
 .track-name {

@@ -47,7 +47,7 @@ export function playTrack() {
         button.classList.remove('paused', 'is-active');
       }
     });
-    document.querySelectorAll('.card, .card-tracks, track-row').forEach((card) => {
+    document.querySelectorAll('.card, .card-tracks, .track-row').forEach((card) => {
       const buttons = card.querySelector('.play-button-track') || card.querySelector('.play-button') || card.querySelector('.play-popular-track');
       const trackId = buttons ? buttons.dataset.trackId : null;
       card.classList.toggle('active', trackId === playerTrackId);

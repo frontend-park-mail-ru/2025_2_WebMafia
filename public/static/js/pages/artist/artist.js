@@ -88,7 +88,6 @@ export class ArtistPage {
     await Promise.all([
       header.render(),
       sidebar.render(),
-      player.render(),
     ]);
 
     slider.sliderFunction();
