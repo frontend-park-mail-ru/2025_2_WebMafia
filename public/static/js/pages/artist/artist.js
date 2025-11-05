@@ -4,9 +4,7 @@ import { apiServise } from '../../data.js';
 import { durationParser, getValidImage, playsParser } from '../../parsers.js';
 import { header } from '../header/header.js';
 import { sidebar } from '../sidebar/sidebar.js';
-import { player } from '../player/player.js';
 import { slider } from '../../slider.js';
-import { playTrack } from '../../playTrackBtn.js';
 
 export class ArtistPage {
   async render(id) {
@@ -88,7 +86,6 @@ export class ArtistPage {
     await Promise.all([
       header.render(),
       sidebar.render(),
-      player.render(),
     ]);
 
     slider.sliderFunction();

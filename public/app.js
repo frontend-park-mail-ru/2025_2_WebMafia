@@ -26,6 +26,7 @@ function registerPartials() {
   Handlebars.registerPartial('prevTrack', Handlebars.templates['prevTrack.hbs']);
   Handlebars.registerPartial('volumeBar', Handlebars.templates['volumeBar.hbs']);
   Handlebars.registerPartial('likeBtn', Handlebars.templates['likeBtn.hbs']);
+  Handlebars.registerPartial('close', Handlebars.templates['close.hbs']);
   Handlebars.registerHelper('numeration', function (value) {
     return parseInt(value) + 1;
   });

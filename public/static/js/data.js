@@ -1,5 +1,5 @@
-const API_BASE_URL = 'http://217.16.17.173:8080/api/v1';
-export const API_AVATARS_URL = 'http://217.16.17.173:8099/avatars'
+const API_BASE_URL = 'http://localhost:8080/api/v1';
+export const API_AVATARS_URL = 'http://localhost:8099/avatars'
 
 export class apiServises {
   constructor() {
@@ -158,6 +158,19 @@ export class apiServises {
       });
     } catch (error) {
       console.error('Ошибка при удалении аватара:', error);
+      throw error;
+    }
+  }
+
+  async getAlbumPageData(id) {
+    try {
+      const [album, tracks] = await Promise.all([
+        this.request(`/albums/${id}`).catch(() => []),
+        this.request(`/albums/${id}/tracks`).catch(() => [])
+      ]);
+      return { album: album || {}, tracks: tracks || [] };
+    } catch (error) {
+      console.error('Failed to load album page data:', error);
       throw error;
     }
   }
