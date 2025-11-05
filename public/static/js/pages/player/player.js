@@ -1,4 +1,4 @@
-import { apiServise } from '../../data.js';
+import {apiServise, API_AVATARS_URL, API_TRACKS_URL} from '../../data.js';
 
 export class Player extends EventTarget {
   constructor() {
@@ -16,39 +16,39 @@ export class Player extends EventTarget {
     if (!isAuthenticated) {
       window.addEventListener('va-navigate', () => this.updateVisibility());
     }
-    this.updateVisibility();
+    await this.updateVisibility();
     this.trackSwitching();
     this.likeTrack();
     this.soundChange();
     this.playPauseSwitch();
   }
 
-  updateVisibility() {
+  async updateVisibility() {
     const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
     const path = window.location.pathname;
     const isAuthPage = path === '/login' || path === '/register';
 
     if (isAuthenticated && !isAuthPage) {
       if (!document.getElementById('player')) {
-        this.render(); // только если плеера ещё нет
+        await this.render(); // только если плеера ещё нет
       }
     }
     if (!isAuthPage) {
       if (!document.getElementById('player')) {
-        this.renderWhithoutData();
+        await this.renderWithoutData();
       }
     } else {
-      this.destroy();
+      await this.destroy();
     }
   }
 
-  async renderWhithoutData() {
+  async renderWithoutData() {
     const contentTemplate = Handlebars.templates['player.hbs'];
     const playerHTML = contentTemplate();
 
-    const playerСontainer = document.getElementById('player-container');
-    if (playerСontainer && !document.getElementById('player')) {
-      playerСontainer.insertAdjacentHTML('afterbegin', playerHTML);
+    const playerContainer = document.getElementById('player-container');
+    if (playerContainer && !document.getElementById('player')) {
+      playerContainer.insertAdjacentHTML('afterbegin', playerHTML);
     }
 
     this.volumeRender();
@@ -83,7 +83,7 @@ export class Player extends EventTarget {
     console.log('curtrack', this.currentTrack.id);
     this.loadTrackInfo(this.currentTrack);
     localStorage.setItem('currentTrackId', this.currentTrack.id);
-    this.getPrevAndNextTracks();
+    await this.getPrevAndNextTracks();
   }
 
   async getPrevAndNextTracks() {
@@ -97,7 +97,7 @@ export class Player extends EventTarget {
 
       const currentIndex = allTracks.findIndex((t) => t.id === this.currentTrack.id);
       if (currentIndex === -1) {
-        console.warn('⚠️ Текущий трек не найден в общем списке треков.');
+        console.warn('Текущий трек не найден в общем списке треков.');
         this.nextTrackId = null;
         this.prevTrackId = null;
       } else {
@@ -119,19 +119,7 @@ export class Player extends EventTarget {
   }
 
   async render() {
-    const contentTemplate = Handlebars.templates['player.hbs'];
-    const playerHTML = contentTemplate();
-
-    const playerСontainer = document.getElementById('player-container');
-    if (playerСontainer && !document.getElementById('player')) {
-      playerСontainer.insertAdjacentHTML('afterbegin', playerHTML);
-    }
-
-    this.volumeRender();
-    this.playPauseSwitch();
-    this.sliderColorChange();
-    this.likeTrack();
-    this.soundChange();
+    await this.renderWithoutData()
 
     this.audio.addEventListener('timeupdate', () => {
       this.updateCurrentTimeAndSlider();
@@ -140,8 +128,11 @@ export class Player extends EventTarget {
     const storedTrackId = localStorage.getItem('currentTrackId');
     let storedTrackData = await this.getDataTrackById(storedTrackId);
 
-    this.loadTrack(storedTrackData);
-    this.getPrevAndNextTracks();
+    await Promise.all([
+      this.loadTrack(storedTrackData),
+      this.getPrevAndNextTracks(),
+    ]);
+
     this.setInitialVolume();
     this.setInitialPLayTime();
 
@@ -158,15 +149,18 @@ export class Player extends EventTarget {
       return;
     }
 
-    this.loadTrack(trackData);
-    this.audio.play();
+    await Promise.all([
+      this.loadTrack(trackData),
+      this.audio.play()
+    ]);
+
     this.togglePlayPauseSwitch(true);
     localStorage.setItem('isPlaying', 'true');
   }
 
   loadTrackInfo(track) {
     document.querySelector('.track-title').textContent = track.title;
-    const artistName = track.artists?.[0]?.name; // Иначе, подставляем заглушк
+    const artistName = track.artists?.[0]?.name;
     document.querySelector('.track-artist').textContent = artistName;
 
     const durationInSeconds = track.duration_s;
@@ -175,12 +169,16 @@ export class Player extends EventTarget {
     const durationFormatted = `${minutes}:${seconds.toString().padStart(2, '0')}`;
     document.querySelector('.track-time.total').textContent = durationFormatted;
 
+<<<<<<< HEAD
     const filename = track.album.avatar_url;
     const imageUrl = track.album && track.album.avatar_url ? `http://217.16.17.173:8099/avatars/albums/${filename}` : 'static/img/default_album_avatar.png';
+=======
+    const imageUrl = track.album && track.album.avatar_url ? `${API_AVATARS_URL}/albums/${track.album.avatar_url}` : 'static/img/default_album_avatar.png';
+>>>>>>> 0ff78be700307ce74dd34580ab3312cf9ebc525e
     document.querySelector('.track-cover-player').src = imageUrl;
 
     let file_url = track.file_url;
-    this.audio.src = file_url ? `http://217.16.17.173:8099/music/tracks/${file_url}` : `static/music/${file_url}`;
+    this.audio.src = file_url ? `${API_TRACKS_URL}/${file_url}` : `static/music/${file_url}`;
 
     this.audio.load();
   }
@@ -224,7 +222,7 @@ export class Player extends EventTarget {
     function updateVolumeSlider(volume) {
       volumeIcon.classList.remove('level-0', 'level-1', 'level-2', 'level-3');
 
-      if (volume == 0) {
+      if (volume === 0) {
         volumeIcon.classList.add('level-0');
       } else if (volume <= 35) {
         volumeIcon.classList.add('level-1');
@@ -280,8 +278,8 @@ export class Player extends EventTarget {
     const pauseBtn = document.querySelector('.control-btn.pause');
     playBtn.classList.add('active');
     pauseBtn.classList.add('disactive');
-    playBtn.addEventListener('click', () => {
-      this.audio.play();
+    playBtn.addEventListener('click', async () => {
+      await this.audio.play();
       localStorage.setItem('isPlaying', 'true');
       localStorage.setItem('currentTrackId', this.currentTrack.id);
       this.togglePlayPauseSwitch(true);
@@ -293,10 +291,10 @@ export class Player extends EventTarget {
     });
   }
 
-  togglePlayPause() {
+  async togglePlayPause() {
     if (this.audio.paused) {
       // Если стоит на паузе, запускаем
-      this.audio.play();
+      await this.audio.play();
       localStorage.setItem('isPlaying', 'true');
       this.togglePlayPauseSwitch(true);
     } else {
@@ -373,21 +371,21 @@ export class Player extends EventTarget {
     const nextBtn = document.querySelector('.control-btn.next');
     const prevBtn = document.querySelector('.control-btn.prev');
 
-    nextBtn.addEventListener('click', () => {
-      this.nextTrack();
+    nextBtn.addEventListener('click', async () => {
+      await this.nextTrack();
     });
 
-    prevBtn.addEventListener('click', () => {
-      this.prevTrack();
+    prevBtn.addEventListener('click', async () => {
+      await this.prevTrack();
     });
   }
 
-  nextTrack() {
-    this.loadAndPlayTrackById(this.nextTrackId);
+  async nextTrack() {
+    await this.loadAndPlayTrackById(this.nextTrackId);
   }
 
-  prevTrack() {
-    this.loadAndPlayTrackById(this.prevTrackId);
+  async prevTrack() {
+    await this.loadAndPlayTrackById(this.prevTrackId);
   }
 }
 

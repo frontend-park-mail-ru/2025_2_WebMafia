@@ -1,5 +1,10 @@
 const API_BASE_URL = 'http://217.16.17.173:8080/api/v1';
+<<<<<<< HEAD
 export const API_AVATARS_URL = 'http://217.16.17.173:8099/avatars';
+=======
+export const API_AVATARS_URL = 'http://217.16.17.173:8099/avatars'
+export const API_TRACKS_URL = 'http://217.16.17.173:8099/music/tracks'
+>>>>>>> 0ff78be700307ce74dd34580ab3312cf9ebc525e
 
 export class apiServises {
   constructor() {
@@ -83,7 +88,11 @@ export class apiServises {
 
   async getProfilePageData() {
     try {
-      const [artists, top_tracks, profile] = await Promise.all([this.request('/artists?limit=10').catch(() => []), this.request('/tracks?limit=5').catch(() => []), this.request('/me')]);
+      const [artists, top_tracks, profile] = await Promise.all([
+        this.request('/artists?limit=10').catch(() => []),
+        this.request(`/tracks?limit=5`).catch(() => []),
+        this.request(`/me`)
+      ]);
 
       return {
         top_artists: artists || [],
@@ -154,6 +163,19 @@ export class apiServises {
       });
     } catch (error) {
       console.error('Ошибка при удалении аватара:', error);
+      throw error;
+    }
+  }
+
+  async getAlbumPageData(id) {
+    try {
+      const [album, tracks] = await Promise.all([
+        this.request(`/albums/${id}`).catch(() => []),
+        this.request(`/albums/${id}/tracks`).catch(() => [])
+      ]);
+      return { album: album || {}, tracks: tracks || [] };
+    } catch (error) {
+      console.error('Failed to load album page data:', error);
       throw error;
     }
   }

@@ -47,7 +47,7 @@
 }
 
 .page-wrapper {
-  margin: 0 15px 0 10px;
+  margin: 0 20px;
   clip-path: inset(0 round 30px);
   display: flex;
   flex-direction: column;
@@ -192,6 +192,8 @@
 
 .play-popular-track svg {
   fill: #fafafa;
+  height: 18px;
+  width: 18px;
 }
 
 .track-row:hover .play-popular-track {

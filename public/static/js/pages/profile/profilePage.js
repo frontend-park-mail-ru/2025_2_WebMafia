@@ -17,7 +17,7 @@ export class ProfilePage {
     }
 
     let pageData = {
-      isAuthenticated: isAuthenticated,
+      isAuthenticated: true,
       top_artists: [],
       top_tracks: [],
       recent: [],
@@ -25,6 +25,7 @@ export class ProfilePage {
 
     const contentTemplate = Handlebars.templates['profilePage.hbs'];
     document.getElementById('app').innerHTML = contentTemplate(pageData);
+    document.querySelector('head title').textContent = 'Wave music';
 
     try {
       const data = await apiServise.getProfilePageData();
@@ -60,6 +61,7 @@ export class ProfilePage {
     }
 
     document.getElementById('app').innerHTML = contentTemplate(pageData);
+    document.querySelector('head title').textContent = pageData.nickname;
 
     await Promise.all([header.render(), sidebar.render()]);
 

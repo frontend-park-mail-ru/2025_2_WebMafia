@@ -49,7 +49,7 @@ export class Header {
           console.error('Logout request failed:', error.message);
         } finally {
           localStorage.removeItem('isAuthenticated');
-          router.navigate('/login');
+          router.navigate('/');
         }
       });
     }

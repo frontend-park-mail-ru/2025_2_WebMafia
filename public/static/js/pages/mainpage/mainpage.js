@@ -19,6 +19,7 @@ export class MainPage {
 
     const contentTemplate = Handlebars.templates['MainPage.hbs'];
     document.getElementById('app').innerHTML = contentTemplate(pageData);
+    document.querySelector('head title').textContent = 'Wave Music';
 
     try {
       const data = await apiServise.getMainPageData();
@@ -40,6 +41,7 @@ export class MainPage {
         name: track.title,
         image: getValidImage('albums/' + track.album.avatar_url, 'default_album_avatar.png'),
         artists: track.artists,
+        album_id: track.album.id,
       }));
     } catch (error) {
       console.error('Failed to load main page data:', error);

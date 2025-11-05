@@ -31,7 +31,7 @@ body {
   flex: 1;
   background-color: #ffffff;
   border-radius: 30px;
-  padding: 0 0 0 12px;
+  padding: 20px 0 0 12px;
   color: black;
   overflow-y: auto;
   overflow-x: hidden;
@@ -169,7 +169,6 @@ body {
 
 .play-button {
   cursor: pointer;
-  position: absolute;
   width: 56px;
   height: 56px;
   color: white;
@@ -186,6 +185,7 @@ body {
 }
 
 .play-button-placement {
+  position: absolute;
   opacity: 0;
   top: 50%;
   left: 60%;
@@ -197,7 +197,7 @@ body {
   height: 0;
   border-style: solid;
   border-width: 10px 0 10px 16px;
-  border-color: transparent transparent transparent #ffffff;
+  border-color: transparent transparent transparent #fafafa;
   margin-left: 2px;
 }
 
@@ -215,8 +215,7 @@ body {
   margin: 0;
 }
 
-
-.play-button-placement:hover {
+.play-button:hover {
   transform: scale(1.03);
   background-position: left top;
 }
@@ -267,11 +266,11 @@ body {
   margin-top: 3px;
 }
 
-.card-sub .dot {
+.dot {
   display: inline-block;
   width: 4px;
   height: 4px;
-  background: #393939;
+  background: #636363;
   border-radius: 50%;
 }
 
@@ -357,6 +356,7 @@ body {
 }
 
 .play-button-track {
+  position: absolute;
   left: 24px;
   opacity: 0;
 }
@@ -366,16 +366,13 @@ body {
   background-position: left top;
 }
 
-/* Новые стили для состояния паузы */
 .play-button-track.paused::before {
   border-style: solid;
   border-width: 0;
-  background-color: transparent; /* Убираем фон от треугольника */
-  height: 20px; /* Высота полос */
-  width: 16px; /* Общая ширина значка */
+  background-color: transparent;
+  height: 20px;
+  width: 16px;
   opacity: 1;
-
-  /* Создаем две полосы с помощью box-shadow */
   box-shadow: inset 5px 0 0 0 white, inset -5px 0 0 0 white;
   margin: 0;
 }
