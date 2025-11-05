@@ -37,19 +37,19 @@ export class MainPage {
         id: artist.id,
         name: artist.name,
         listeners: playsParser(artist.listeners || 0),
-        image: getValidImage(artist.avatar_url, 'default_artist_avatar.png'),
+        image: getValidImage(`http://217.16.17.173:8099/avatars/artists/${artist.avatar_url}`, 'default_artist_avatar.png'),
       }));
       pageData.albums = (data.albums || []).map((album) => ({
         id: album.id,
         name: album.title,
-        image: getValidImage(album.avatar_url, 'default_album_avatar.png'),
+        image: getValidImage(`http://217.16.17.173:8099/avatars/albums/${album.avatar_url}`, 'default_album_avatar.png'),
         artist: album.artists ? album.artists[0].name : 'Unknown Artist',
         type: album.type,
       }));
       pageData.tracks = (data.tracks || []).map((track) => ({
         id: track.id,
         name: track.title,
-        image: getValidImage(track.album.avatar_url, 'default_album_avatar.png'),
+        image: getValidImage(`http://217.16.17.173:8099/avatars/albums/${track.album.avatar_url}`, 'default_album_avatar.png'),
         artists: track.artists,
       }));
     } catch (error) {
@@ -141,14 +141,23 @@ export class MainPage {
     }
 
     function playerData(track) {
+      // Если трека нет, возвращаем данные по умолчанию
       if (!track) {
-        return { img: '/static/img/default_album_avatar.png', name: '' };
+        return { img: '/static/img/default_album_avatar.png', name: '', id: null };
       }
+
+      // 1. Безопасно получаем URL аватара, используя ?.
+      // Это предотвратит ошибку, если track.album не существует.
+      const imageUrl = track.album?.avatar_url ? `http://217.16.17.173:8099/avatars/albums/${track.album.avatar_url}` : '/static/img/default_album_avatar.png';
+
+      // 2. Корректно получаем имя артиста из массива artists
+      const artistName = track.artists?.[0]?.name;
+
       return {
         title: track.title,
         id: track.id,
-        img: `static/img/${track.imageUrl}`,
-        name: track.artist,
+        img: imageUrl,
+        name: artistName,
       };
     }
 
@@ -159,7 +168,7 @@ export class MainPage {
 
       if (prevCard) {
         prevCard.querySelector('img').src = cardsData[0].img;
-        updateCardUI(prevCard, null);
+        updateCardUI(prevCard, cardsData[0]);
       }
       if (currentCard) {
         currentCard.querySelector('img').src = cardsData[1].img;
@@ -167,7 +176,7 @@ export class MainPage {
       }
       if (nextCard) {
         nextCard.querySelector('img').src = cardsData[2].img;
-        updateCardUI(nextCard, null);
+        updateCardUI(nextCard, cardsData[2]);
       }
       playTrack();
     }
@@ -179,7 +188,7 @@ export class MainPage {
       if (existingButton) existingButton.remove();
       if (existingName) existingName.remove();
 
-      if (data && data.name) {
+      if (data && data.name && data.id) {
         const playButton = document.createElement('button');
         playButton.className = 'current-card-btn play';
         playButton.dataset.trackId = data.id;

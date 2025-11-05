@@ -282,7 +282,7 @@ body {
   grid-template-rows: repeat(2, auto);
   max-height: 200px;
   width: 100%;
-  overflow: hidden;
+  overflow: auto;
   scroll-behavior: smooth;
   margin-left: -23px;
   padding-left: 43px;

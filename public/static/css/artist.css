@@ -210,6 +210,10 @@
   filter: brightness(0.4);
 }
 
+.track-row.active{
+  filter: brightness(0.4);
+}
+
 .track-name {
   font-size: 18px;
   font-weight: 600;
