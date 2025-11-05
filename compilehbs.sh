@@ -10,6 +10,12 @@ handlebars public/static/js/pages/artist/artistPage.hbs -f public/static/js/page
 
 handlebars public/static/js/pages/profile/profilePage.hbs -f public/static/js/pages/profile/profilePage.tmpl.js
 
+handlebars public/static/js/pages/artist_albums/artistAlbumsPage.hbs -f public/static/js/pages/artist_albums/artistAlbumsPage.tmpl.js
+
+handlebars public/static/js/pages/artist_tracks/artistTracksPage.hbs -f public/static/js/pages/artist_tracks/artistTracksPage.tmpl.js
+
+handlebars public/static/js/pages/artist_singles/artistSinglesPage.hbs -f public/static/js/pages/artist_singles/artistSinglesPage.tmpl.js
+
 handlebars public/static/js/pages/header/header.hbs -f public/static/js/pages/header/header.tmpl.js
 
 handlebars public/static/js/pages/sidebar/sidebar.hbs -f public/static/js/pages/sidebar/sidebar.tmpl.js
@@ -50,6 +56,3 @@ handlebars public/static/js/partials/likeBtn.hbs -f public/static/js/partials/li
 
 handlebars public/static/js/partials/close.hbs -f public/static/js/partials/close.tmpl.js
 
-handlebars public/static/js/pages/artist_albums/artistAlbumsPage.hbs -f public/static/js/pages/artist_albums/artistAlbumsPage.tmpl.js
-
-handlebars public/static/js/pages/artist_tracks/artistTracksPage.hbs -f public/static/js/pages/artist_tracks/artistTracksPage.tmpl.js

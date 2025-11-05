@@ -64,7 +64,7 @@ export class apiServises {
   async getArtistPageData(id) {
     try {
       const [albums, popular_tracks, artist, similar_artists] = await Promise.all([
-        this.request(`/artists/${id}/albums`).catch(() => []),
+        this.request(`/artists/${id}/albums?limit=10`).catch(() => []),
         this.request(`/artists/${id}/tracks?limit=5`).catch(() => []),
         this.request(`/artists/${id}`).catch(() => []),
         this.request('/artists?limit=10').catch(() => []),
@@ -78,6 +78,32 @@ export class apiServises {
       };
     } catch (error) {
       console.error('Failed to load artist page data:', error);
+      throw error;
+    }
+  }
+
+  async getArtistAlbums(id) {
+    try {
+      const [albums, artist] = await Promise.all([
+        this.request(`/artists/${id}/albums`).catch(() => []),
+        this.request(`/artists/${id}`).catch(() => []),
+      ]);
+      return { albums: albums, artist: artist };
+    } catch (error) {
+      console.error('Failed to load artist albums page data:', error);
+      throw error;
+    }
+  }
+
+  async getArtistTracks(id) {
+    try {
+      const [tracks, artist] = await Promise.all([
+        this.request(`/artists/${id}/tracks`).catch(() => []),
+        this.request(`/artists/${id}`).catch(() => []),
+      ]);
+      return { tracks: tracks, artist: artist };
+    } catch (error) {
+      console.error('Failed to load artist albums page data:', error);
       throw error;
     }
   }

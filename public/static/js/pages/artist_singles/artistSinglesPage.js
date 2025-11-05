@@ -3,37 +3,39 @@ import { router } from '../../routing.js';
 import { header } from '../header/header.js';
 import { sidebar } from '../sidebar/sidebar.js';
 import { initScrollbar } from '../../scrollbar.js';
-import {durationParser, getValidImage, playsParser} from '../../parsers.js';
+import { getValidImage } from '../../parsers.js';
 import { playTrack } from '../../playTrackBtn.js';
 
-export class ArtistTracksPage {
+export class ArtistSinglesPage {
   async render(artistId) {
     let pageData = {
       isAuthenticated: localStorage.getItem('isAuthenticated') === 'true',
-      tracks: [],
-      artistName: '',
+      singles: [],
     };
 
-    const contentTemplate = Handlebars.templates['artistTracksPage.hbs'];
+    const contentTemplate = Handlebars.templates['artistSinglesPage.hbs'];
     document.getElementById('app').innerHTML = contentTemplate(pageData);
 
     try {
-      const data = await apiServise.getArtistTracks(artistId);
+      const data = await apiServise.getArtistAlbums(artistId);
+      pageData.artistName = data.artist ? data.artist.name : 'Unknown Artist';
       if (data) {
-        pageData.artistName = data.artist.name;
-        pageData.tracks = data.tracks.map((track) => ({
-          id: track.id,
-          name: track.title,
-          plays: playsParser(track.play_count) || 0,
-          album: track.album.title,
-          album_id: track.album.id,
-          duration: durationParser(track.duration_s),
-          cover: getValidImage('albums/' + track.album.avatar_url, 'default-album.png'),
-          artists: track.artists,
-        }));
+        data.albums.forEach(album => {
+          const item = {
+            id: album.id,
+            name: album.title,
+            cover: getValidImage('albums/' + album.avatar_url, 'default-album.png'),
+            year: album.release_date ? album.release_date.slice(0, 4) : '',
+            type: album.type,
+          };
+
+          if (album.type && (album.type === 'Сингл' || album.type === 'EP')) {
+            pageData.singles.push(item);
+          }
+        });
       }
     } catch (error) {
-      console.error('Failed to load artist tracks page data:', error);
+      console.error('Failed to load artist singles page data:', error);
 
       if (error.response && error.response.status === 404) {
         router.navigate('/not-found');
@@ -45,7 +47,7 @@ export class ArtistTracksPage {
         return;
       }
 
-      alert('Не удалось загрузить страницу треков исполнителя.');
+      alert('Не удалось загрузить страницу синглов и EP исполнителя.');
       return;
     }
 
@@ -55,6 +57,7 @@ export class ArtistTracksPage {
       header.render(),
       sidebar.render(),
     ]);
+
     initScrollbar();
     playTrack();
   }

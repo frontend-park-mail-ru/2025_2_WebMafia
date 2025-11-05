@@ -4,10 +4,10 @@
     {{> sidebar}}
     <div class="page" id="scrollContent">
       <div class="title">
-        <div class="title-name-track-by-artist">Альбомы {{ artistName }}</div>
+        <div class="title-name-track-by-artist">Синглы и EP {{ artistName }}</div>
       </div>
       <div class="grid-layout">
-        {{#each albums}}
+        {{#each singles}}
         <div class="card">
           <a href="/album/{{ id }}">
             <img src="{{ cover }}" alt="{{ name }}" />

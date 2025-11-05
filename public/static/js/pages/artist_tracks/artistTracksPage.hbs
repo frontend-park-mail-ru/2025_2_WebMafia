@@ -8,22 +8,30 @@
       </div>
       <div class="tracks-table-track-by-artist">
         {{#each tracks}}
-        <div class="track-row">
-          <div class="track-number">{{numeration @index}}</div>
-          <div class="track-cover-wrapper">
-            <img class="track-cover" src="{{ cover }}" alt="{{ name }}" />
-            <button class="play-popular-track">{{> play }}</button>
+          <div class="track-row">
+            <div class="track-number">{{numeration @index}}</div>
+            <div class="track-cover-wrapper">
+              <img class="track-cover" src="{{ cover }}" alt="{{ name }}" />
+              <button class="play-popular-track"  data-track-id="{{ id }}">{{> play }}</button>
+            </div>
+            <div class="right-row-content">
+              <div class="track-name">{{ name }}</div>
+              <div class="track-performers">
+                {{#each artists}}
+                  <a href="artist/{{id}}" class="track-performer">
+                    {{name}}{{#unless @last}}, {{/unless}}
+                  </a>
+                {{/each}}
+              </div>
+              <div class="track-plays-num">{{ plays }} прослушиваний</div>
+              <a href="album/{{ album_id }}" class="track-album-name">
+                {{ album }}
+              </a>
+              <div class="track-duration">{{ duration }}</div>
+            </div>
           </div>
-          <div class="right-row-content">
-            <div class="track-name">{{ name }}</div>
-            <div class="track-plays-num">{{ plays }} прослушиваний</div>
-            <div class="track-album-name">{{ album }}</div>
-            <div class="track-duration">{{ duration }}</div>
-          </div>
-        </div>
         {{/each}}
       </div>
     </div>
   </div>
-  {{> player}}
 </div>

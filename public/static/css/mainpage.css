@@ -50,14 +50,6 @@ body {
   color: rgb(0, 0, 0);
 }
 
-.show-all a {
-  margin-right: 20px;
-  font-size: 20px;
-  font-weight: 600;
-  text-decoration: none;
-  color: #393939;
-}
-
 /* Slider */
 .slider {
   position: relative;

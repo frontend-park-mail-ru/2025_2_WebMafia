@@ -34,7 +34,7 @@
                 <div class="track-number">{{numeration @index}}</div>
                 <div class="track-cover-wrapper">
                   <img class="track-cover" src="{{ cover }}" alt="{{ name }}" />
-                  <button class="play-popular-track"  data-track-id="{{ id }}">{{> play }}</button>
+                  <button class="play-popular-track" data-track-id="{{ id }}">{{> play }}</button>
                 </div>
                 <div class="right-row-content">
                   <div class="track-name">{{ name }}</div>
@@ -60,7 +60,7 @@
           {{#if albums}}
           <div class="title">
             <div class="title-name">Альбомы</div>
-            <a class="secondary-button show-tracks-button" href="/artist/{{id}}/albums">Показать все</a>
+            <a class="show-all" href="/artist/{{id}}/albums">Показать всё</a>
           </div>
           <div class="slider">
             <div class="cards" id="slidebar">
@@ -85,6 +85,7 @@
           {{#if singls}}
           <div class="title">
             <div class="title-name">Синглы и EP</div>
+            <a class="show-all" href="/artist/{{id}}/singles">Показать всё</a>
           </div>
           <div class="slider">
             <p><i class="slide-btn left"></i></p>
