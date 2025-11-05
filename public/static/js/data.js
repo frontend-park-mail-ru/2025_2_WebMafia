@@ -6,54 +6,22 @@ export class apiServises {
     this.csrfToken = null;
   }
 
-  async getCsrfToken() {
-    try {
-      const response = await this.request('/csrf-token');
-      const token = response.token || response.csrfToken;
-      this.csrfToken = token;
-      console.log('CSRF token fetched and stored:', this.csrfToken);
-      return this.csrfToken;
-    } catch (error) {
-      console.error('Failed to fetch CSRF token:', error);
-      this.csrfToken = null;
-      throw error;
-    }
-  }
-
-  async ensureCsrfToken() {
-    if (!this.csrfToken) {
-      await this.getCsrfToken();
-    }
-  }
-
   async request(endpoint, options = {}) {
-    const isCsrfRequest = endpoint === '/csrf-token';
     const url = `${this.baseURL}${endpoint}`;
-    const method = options.method || 'GET';
-
-    if (!['GET', 'HEAD', 'OPTIONS'].includes(method.toUpperCase()) && !isCsrfRequest) {
-      await this.ensureCsrfToken();
-
-      if (this.csrfToken) {
-        if (!options.headers) {
-          options.headers = {};
-        }
-        options.headers['X-CSRF-Token'] = this.csrfToken;
-      }
-    }
+    const isFormData = options.body instanceof FormData;
 
     const config = {
       method: options.method || 'GET',
       credentials: 'include',
       headers: {
-        'Content-Type': 'application/json',
+        ...(!isFormData ? { 'Content-Type': 'application/json' } : {}),
         ...options.headers,
       },
       ...options,
     };
 
     if (options.body) {
-      config.body = JSON.stringify(options.body);
+      config.body = isFormData ? options.body : JSON.stringify(options.body);
     }
 
     const response = await fetch(url, config);
@@ -108,6 +76,14 @@ export class apiServises {
     }
   }
 
+  async getCSRFToken() {
+    if (this.csrfToken) return this.csrfToken;
+
+    const data = await this.request('/csrf-token');
+    this.csrfToken = data.csrf_token;
+    return this.csrfToken;
+  }
+
   async loadTrackById(id) {
     if (!id) return null;
     try {
@@ -138,8 +114,12 @@ export class apiServises {
   }
 
   async logoutUser() {
+    const csrfToken = await this.getCSRFToken();
     return this.request('/logout', {
       method: 'POST',
+      headers: {
+        'X-CSRF-Token': csrfToken,
+      },
     });
   }
 

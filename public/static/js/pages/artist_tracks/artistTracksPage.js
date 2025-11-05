@@ -5,6 +5,7 @@ import { sidebar } from '../sidebar/sidebar.js';
 import { player } from '../player/player.js';
 import { initScrollbar } from '../../scrollbar.js';
 import { getValidImage } from '../../parsers.js';
+import { playTrack } from '../../playTrackBtn.js';
 
 export class ArtistTracksPage {
   async render(artistId) {
@@ -51,7 +52,7 @@ export class ArtistTracksPage {
 
     header.render();
     sidebar.render();
-    player.render();
     initScrollbar();
+    playTrack();
   }
 }

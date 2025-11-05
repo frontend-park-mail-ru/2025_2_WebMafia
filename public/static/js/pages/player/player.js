@@ -19,6 +19,8 @@ export class Player extends EventTarget {
     this.updateVisibility();
     this.trackSwitching();
     this.likeTrack();
+    this.soundChange();
+    this.playPauseSwitch();
   }
 
   updateVisibility() {
@@ -27,10 +29,14 @@ export class Player extends EventTarget {
     const isAuthPage = path === '/login' || path === '/register';
 
     if (isAuthenticated && !isAuthPage) {
-      this.render();
+      if (!document.getElementById('player')) {
+        this.render(); // только если плеера ещё нет
+      }
     }
     if (!isAuthPage) {
-      this.renderWhithoutData();
+      if (!document.getElementById('player')) {
+        this.renderWhithoutData();
+      }
     } else {
       this.destroy();
     }
