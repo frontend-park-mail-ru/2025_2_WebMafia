@@ -48,6 +48,7 @@
   justify-content: flex-start;
   align-items: flex-start;
   color: rgb(0, 0, 0);
+  transition: color 0.3s ease;
 }
 
 .home a svg {
@@ -77,11 +78,11 @@
 }
 
 .menu-item a:hover {
-  color: #3e197c;
+  color: #a766ff;
 }
 
 .menu-item:hover {
-  color: #3e197c;
+  color: #a766ff;
 }
 
 .library-items{
