@@ -1,4 +1,5 @@
-const API_BASE_URL = 'http://217.16.17.173:8080/api/v1';
+const API_BASE_URL = 'http://217.16.17.173:8080/api/v1';export const API_AVATARS_URL = 'http://217.16.17.173:8099/avatars';
+
 
 export class apiServises {
   constructor() {
@@ -76,6 +77,16 @@ export class apiServises {
     }
   }
 
+  async getProfileData() {
+    try {
+      const profile = await this.request(`/me`);
+      return profile;
+    } catch (error) {
+      console.error('Failed to load profile data:', error);
+      throw error;
+    }
+  }
+
   async getCSRFToken() {
     if (this.csrfToken) return this.csrfToken;
 
@@ -95,8 +106,36 @@ export class apiServises {
     }
   }
 
-  async getProfilePageData() {
-    return this.request('/profile');
+  async uploadAvatar(file) {
+    const csrfToken = await this.getCSRFToken();
+
+    const formData = new FormData();
+    formData.append('avatar', file);
+
+    const data = await this.request('/avatar', {
+      method: 'POST',
+      headers: {
+        'X-CSRF-Token': csrfToken,
+      },
+      body: formData,
+    });
+
+    return data;
+  }
+
+  async deleteAvatar() {
+    try {
+      const csrfToken = await this.getCSRFToken();
+      return await this.request('/avatar', {
+        method: 'DELETE',
+        headers: {
+          'X-CSRF-Token': csrfToken,
+        },
+      });
+    } catch (error) {
+      console.error('Ошибка при удалении аватара:', error);
+      throw error;
+    }
   }
 
   async loginUser(login, password) {

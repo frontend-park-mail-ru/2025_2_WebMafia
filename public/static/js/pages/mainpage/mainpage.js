@@ -21,15 +21,10 @@ export class MainPage {
       artists: [],
       albums: [],
       tracks: [],
-      nickname: 'Александр Константинов',
-      letter: '',
     };
 
-    const contentTemplateWithoutData = Handlebars.templates['MainPage.hbs'];
-    document.getElementById('app').innerHTML = contentTemplateWithoutData(pageData);
-
-    pageData.isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
-    pageData.letter = pageData.nickname ? pageData.nickname[0] : '';
+    const contentTemplate = Handlebars.templates['MainPage.hbs'];
+    document.getElementById('app').innerHTML = contentTemplate(pageData);
 
     try {
       const data = await apiServise.getMainPageData();
@@ -37,19 +32,19 @@ export class MainPage {
         id: artist.id,
         name: artist.name,
         listeners: playsParser(artist.listeners || 0),
-        image: getValidImage(`http://217.16.17.173:8099/avatars/artists/${artist.avatar_url}`, 'default_artist_avatar.png'),
+        image: getValidImage('artists/' + artist.avatar_url, 'default_artist_avatar.png'),
       }));
       pageData.albums = (data.albums || []).map((album) => ({
         id: album.id,
         name: album.title,
-        image: getValidImage(`http://217.16.17.173:8099/avatars/albums/${album.avatar_url}`, 'default_album_avatar.png'),
+        image: getValidImage('albums/' + album.avatar_url, 'default_album_avatar.png'),
         artist: album.artists ? album.artists[0].name : 'Unknown Artist',
         type: album.type,
       }));
       pageData.tracks = (data.tracks || []).map((track) => ({
         id: track.id,
         name: track.title,
-        image: getValidImage(`http://217.16.17.173:8099/avatars/albums/${track.album.avatar_url}`, 'default_album_avatar.png'),
+        image: getValidImage('albums/' + track.album.avatar_url, 'default_album_avatar.png'),
         artists: track.artists,
       }));
     } catch (error) {
@@ -69,7 +64,6 @@ export class MainPage {
       return;
     }
 
-    const contentTemplate = Handlebars.templates['MainPage.hbs'];
     document.getElementById('app').innerHTML = contentTemplate(pageData);
 
     header.render();

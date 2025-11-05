@@ -49,7 +49,6 @@ export class Router {
         const href = link.getAttribute('href');
         if (href && href.startsWith('/')) {
           e.preventDefault();
-          e.stopPropagation();
           this.navigate(href);
         }
       }

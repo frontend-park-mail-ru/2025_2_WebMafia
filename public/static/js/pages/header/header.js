@@ -1,16 +1,40 @@
 import { apiServise } from '../../data.js';
 import { router } from '../../routing.js';
+import { getValidImage } from '../../parsers.js';
 import { player } from '../player/player.js';
 
 export class Header {
   async render() {
+    let pageData = {
+      isAuthenticated: localStorage.getItem('isAuthenticated') === 'true',
+    };
+
+    pageData.letter = pageData.nickname ? pageData.nickname[0] : '';
+
     const contentTemplate = Handlebars.templates['header.hbs'];
-    const headerHTML = contentTemplate();
+    const headerHTML = contentTemplate(pageData);
 
     const section = document.getElementById('section');
     if (section && !document.getElementById('header')) {
       section.insertAdjacentHTML('afterbegin', headerHTML);
     }
+
+    if (!pageData.isAuthenticated) return;
+
+    try {
+      const data = await apiServise.getProfileData();
+      pageData.avatar = data.AvatarURL ? getValidImage(data.AvatarURL) : data.AvatarURL;
+      pageData.nickname = data.Login;
+      pageData.letter = pageData.nickname ? pageData.nickname[0] : '';
+    } catch (error) {
+      console.error('Failed to load user data:', error);
+      localStorage.removeItem('isAuthenticated');
+      router.navigate('/');
+      return;
+    }
+
+    document.getElementById('header').outerHTML = contentTemplate(pageData);
+
     this.addEventListeners();
     this.profileDropdown();
   }

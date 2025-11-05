@@ -15,9 +15,6 @@ export class ArtistPage {
       popular_tracks: [],
       singls: [],
       similar_artists: [],
-      nickname: 'Александр Константинов',
-      letter: '',
-      id: '',
     };
 
     const contentTemplateWithoutData = Handlebars.templates['artistPage.hbs'];
@@ -34,7 +31,7 @@ export class ArtistPage {
 
       document.querySelector('head title').textContent = pageData.name;
 
-      pageData.artist_header = getValidImage(`http://217.16.17.173:8099/avatars/artists/${data.artist.avatar_url}`);
+      pageData.artist_header = getValidImage('artists/' + data.artist.header_url, 'default-artist.png');
       pageData.description = data.artist.description;
       pageData.listeners = data.artist.play_count || 0;
 
@@ -42,7 +39,7 @@ export class ArtistPage {
         id: artist.id,
         name: artist.name,
         listeners: playsParser(artist.play_count) || 0,
-        image: getValidImage(`http://217.16.17.173:8099/avatars/artists/${artist.avatar_url}`, 'default_artist_avatar.png'),
+        image: getValidImage('artists/' + artist.avatar_url, 'default-artist.png'),
       }));
       pageData.popular_tracks = (data.popular_tracks || []).map((track) => ({
         id: track.id,
@@ -51,14 +48,14 @@ export class ArtistPage {
         album: track.album.title,
         album_id: track.album.id,
         duration: durationParser(track.duration_s),
-        cover: getValidImage(`http://217.16.17.173:8099/avatars/albums/${track.album.avatar_url}`, 'default_album_avatar.png'),
+        cover: getValidImage('albums/' + track.album.avatar_url, 'default-album.png'),
         artists: track.artists,
       }));
       data.albums.forEach((album) => {
         const item = {
           id: album.id,
           name: album.title,
-          cover: getValidImage(`http://217.16.17.173:8099/avatars/albums/${album.avatar_url}`, 'default_artist_avatar.png'),
+          cover: getValidImage('albums/' + album.avatar_url, 'default-album.png'),
           year: album.release_date ? album.release_date.slice(0, 4) : '',
           type: album.type,
         };

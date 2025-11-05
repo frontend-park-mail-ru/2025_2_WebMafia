@@ -1,3 +1,5 @@
+import { API_AVATARS_URL } from './data.js';
+
 export function playsParser(plays) {
   if (plays > 1_000_000_000) {
     const value = plays / 1_000_000_000;
@@ -21,5 +23,5 @@ export function durationParser(duration) {
 
 export function getValidImage(url, defaultImage) {
   if (!url) return `static/img/${defaultImage}`;
-  return url.startsWith('http') ? url : `static/img/${defaultImage}`;
+  return `${API_AVATARS_URL}/${url}`;
 }
