@@ -1,4 +1,5 @@
 const API_BASE_URL = 'http://217.16.17.173:8080/api/v1';
+export const API_AVATARS_URL = 'http://217.16.17.173:8099/avatars'
 
 export class apiServises {
   constructor() {
@@ -42,7 +43,11 @@ export class apiServises {
 
   async getMainPageData() {
     try {
-      const [albums, tracks, artists] = await Promise.all([this.request('/albums?limit=20').catch(() => []), this.request('/tracks?limit=30').catch(() => []), this.request('/artists?limit=20').catch(() => [])]);
+      const [albums, tracks, artists] = await Promise.all([
+        this.request('/albums?limit=20').catch(() => []),
+        this.request('/tracks?limit=30').catch(() => []),
+        this.request('/artists?limit=20').catch(() => [])
+      ]);
 
       return {
         albums: albums || [],
@@ -76,18 +81,10 @@ export class apiServises {
     }
   }
 
-  async getCSRFToken() {
-    if (this.csrfToken) return this.csrfToken;
-
-    const data = await this.request('/csrf-token');
-    this.csrfToken = data.csrf_token;
-    return this.csrfToken;
-  }
-
   async loadTrackById(id) {
     if (!id) return null;
     try {
-      const track = await Promise.all([this.request(`/tracks/${id}`).catch(() => [])]);
+      const track = this.request(`/tracks/${id}`).catch(() => []);
       return track;
     } catch (error) {
       console.error('Failed to load artist page data:', error);
@@ -96,7 +93,73 @@ export class apiServises {
   }
 
   async getProfilePageData() {
-    return this.request('/profile');
+    try {
+      const [artists, top_tracks, profile] = await Promise.all([
+        this.request('/artists?limit=10').catch(() => []),
+        this.request(`/tracks?limit=5`).catch(() => []),
+        this.request(`/me`)
+      ]);
+
+      return {
+        top_artists: artists || [],
+        top_tracks: top_tracks || [],
+        recent: artists || [],
+        profile: profile,
+      };
+    } catch (error) {
+      console.error('Failed to load profile page data:', error);
+      throw error;
+    }
+  }
+
+  async getProfileData() {
+    try {
+      const profile = await this.request(`/me`);
+      return profile;
+    } catch (error) {
+      console.error('Failed to load profile data:', error);
+      throw error;
+    }
+  }
+
+  async getCSRFToken() {
+    if (this.csrfToken) return this.csrfToken;
+
+    const data = await this.request('/csrf-token');
+    this.csrfToken = data.csrf_token;
+    return this.csrfToken;
+  }
+
+  async uploadAvatar(file) {
+    const csrfToken = await this.getCSRFToken();
+
+    const formData = new FormData();
+    formData.append('avatar', file);
+
+    const data = await this.request('/avatar', {
+      method: 'POST',
+      headers: {
+        'X-CSRF-Token': csrfToken,
+      },
+      body: formData,
+    });
+
+    return data;
+  }
+
+  async deleteAvatar() {
+    try {
+      const csrfToken = await this.getCSRFToken();
+      return await this.request('/avatar', {
+        method: 'DELETE',
+        headers: {
+          'X-CSRF-Token': csrfToken,
+        },
+      });
+    } catch (error) {
+      console.error('Ошибка при удалении аватара:', error);
+      throw error;
+    }
   }
 
   async loginUser(login, password) {
@@ -121,34 +184,6 @@ export class apiServises {
         'X-CSRF-Token': csrfToken,
       },
     });
-  }
-
-  async getArtistAlbums(artistId) {
-    try {
-      const [artist, albums] = await Promise.all([this.request(`/artists/${artistId}`).catch(() => ({})), this.request(`/artists/${artistId}/albums`).catch(() => [])]);
-
-      return {
-        albums: albums || [],
-        artist: artist || {},
-      };
-    } catch (error) {
-      console.error(`Failed to load albums for artist ${artistId}:`, error);
-      throw error;
-    }
-  }
-
-  async getArtistTracks(artistId) {
-    try {
-      const [artist, tracks] = await Promise.all([this.request(`/artists/${artistId}`).catch(() => ({})), this.request(`/artists/${artistId}/tracks`).catch(() => [])]);
-
-      return {
-        tracks: tracks || [],
-        artist: artist || {},
-      };
-    } catch (error) {
-      console.error(`Failed to load tracks for artist ${artistId}:`, error);
-      throw error;
-    }
   }
 }
 
