@@ -28,7 +28,7 @@ export class ArtistPage {
 
     try {
       const data = await apiServise.getArtistPageData(id);
-      console.log('data', data);
+      pageData.id = data.artist.id;
       pageData.name = data.artist ? data.artist.name : 'Unknown Artist';
       pageData.id = data.artist.id;
 

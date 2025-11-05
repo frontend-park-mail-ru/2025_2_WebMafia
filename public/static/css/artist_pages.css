@@ -1,0 +1,20 @@
+.grid-layout {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.grid-layout .card {
+  margin: 0;
+}
+
+.title-name-track-by-artist{
+  font-weight: 700;
+  margin: 20px 0;
+  font-size: 42px;
+}
+
+.tracks-table-track-by-artist{
+ padding-right: 10px;
+}

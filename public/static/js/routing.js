@@ -4,6 +4,8 @@ import { LoginPage } from './pages/login/login.js';
 import { RegistrationPage } from './pages/register/register.js';
 import { ArtistPage } from './pages/artist/artist.js';
 import { ProfilePage } from './pages/profile/profilePage.js';
+import { ArtistAlbumsPage } from './pages/artist_albums/artistAlbumsPage.js';
+import { ArtistTracksPage } from './pages/artist_tracks/artistTracksPage.js';
 
 export class Router {
   constructor() {
@@ -11,6 +13,8 @@ export class Router {
       { pattern: /^\/$/, component: new MainPage() },
       { pattern: /^\/login$/, component: new LoginPage() },
       { pattern: /^\/register$/, component: new RegistrationPage() },
+      { pattern: /^\/artist\/([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})\/albums$/, component: new ArtistAlbumsPage() },
+      { pattern: /^\/artist\/([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})\/tracks$/, component: new ArtistTracksPage() },
       { pattern: /^\/artist\/([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})$/, component: new ArtistPage() },
       { pattern: /^\/profile$/, component: new ProfilePage() },
     ];
