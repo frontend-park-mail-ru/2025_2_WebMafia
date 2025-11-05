@@ -10,14 +10,8 @@ import { getValidImage, playsParser } from '../../parsers.js';
 
 export class MainPage {
   async render() {
-    const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
-    // if (!isAuthenticated) {
-    //   router.navigate('/login');
-    //   return;
-    // }
-
     let pageData = {
-      isAuthenticated: isAuthenticated,
+      isAuthenticated: localStorage.getItem('isAuthenticated') === 'true',
       artists: [],
       albums: [],
       tracks: [],
@@ -66,31 +60,14 @@ export class MainPage {
 
     document.getElementById('app').innerHTML = contentTemplate(pageData);
 
-    header.render();
-    sidebar.render();
+    await Promise.all([
+      header.render(),
+      sidebar.render(),
+    ]);
 
     slider.sliderFunction();
     this.nowPlayingCardSlider();
     initScrollbar();
-    this.setPlayButtonsOnAuth();
-    playTrack();
-  }
-
-  setPlayButtonsOnAuth() {
-    const playbtn = document.querySelectorAll('.play-button-track, .play-button, .current-card-btn.play');
-    playbtn.forEach((button) => {
-      button.addEventListener('click', (event) => {
-        const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
-        if (!isAuthenticated) {
-          event.preventDefault();
-          event.stopPropagation();
-          router.navigate('/login');
-        } else {
-          // this.nowPlayingCardSlider();
-          // playTrack();
-        }
-      });
-    });
   }
 
   nowPlayingCardSlider() {

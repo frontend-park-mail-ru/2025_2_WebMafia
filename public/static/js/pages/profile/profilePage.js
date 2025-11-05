@@ -173,7 +173,7 @@ export class ProfilePage {
             updateAvatarContainer('avatarEditContainer', letter, 'profile-edit-avatar');
             updateAvatarContainer('avatarHeaderContainer', letter, 'default-avatar-header');
 
-            target.remove(); // удаляем кнопку удаления
+            target.remove();
           } catch (err) {
             console.error('Ошибка при удалении аватара:', err);
             alert('Не удалось удалить аватар.');
