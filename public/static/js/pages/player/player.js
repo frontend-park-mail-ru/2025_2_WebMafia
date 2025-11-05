@@ -1,6 +1,4 @@
 import {apiServise, API_AVATARS_URL, API_TRACKS_URL} from '../../data.js';
-import {header} from "../header/header";
-import {sidebar} from "../sidebar/sidebar";
 
 export class Player extends EventTarget {
   constructor() {
