@@ -23,7 +23,7 @@ export class Header {
 
     try {
       const data = await apiServise.getProfileData();
-      pageData.avatar = getValidImage(data.AvatarURL);
+      pageData.avatar = data.AvatarURL ? getValidImage(data.AvatarURL) : data.AvatarURL;
       pageData.nickname = data.Login;
       pageData.letter = pageData.nickname ? pageData.nickname[0] : '';
     } catch (error) {
