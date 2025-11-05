@@ -95,7 +95,7 @@ export class apiServises {
 
   async getProfileData() {
     try {
-      const profile = await this.request(`/me`);
+      const profile = await this.request('/me');
       return profile;
     } catch (error) {
       console.error('Failed to load profile data:', error);
