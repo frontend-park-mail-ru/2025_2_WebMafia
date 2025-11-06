@@ -16,7 +16,7 @@ export function playTrack() {
         currentTrackId = trackId;
         await player.loadAndPlayTrackById(trackId);
       } else {
-        player.togglePlayPause();
+        await player.togglePlayPause();
       }
 
       updateButtons();
@@ -47,7 +47,7 @@ export function playTrack() {
         button.classList.remove('paused', 'is-active');
       }
     });
-    document.querySelectorAll('.card, .card-tracks, .track-row, .album-row').forEach((card) => {
+    document.querySelectorAll('.card-tracks, .track-row, .album-row').forEach((card) => {
       const buttons = card.querySelector('.play-button-track') || card.querySelector('.play-button') || card.querySelector('.play-popular-track') || card.querySelector('.play-album-track');
       const trackId = buttons ? buttons.dataset.trackId : null;
       card.classList.toggle('active', trackId === playerTrackId);

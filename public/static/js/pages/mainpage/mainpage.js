@@ -28,19 +28,19 @@ export class MainPage {
         id: artist.id,
         name: artist.name,
         listeners: playsParser(artist.listeners || 0),
-        image: getValidImage('artists/' + artist.avatar_url, 'default_artist_avatar.png'),
+        image: getValidImage('artists/' + artist.avatar_url, 'default-artist.png'),
       }));
       pageData.albums = (data.albums || []).map((album) => ({
         id: album.id,
         name: album.title,
-        image: getValidImage('albums/' + album.avatar_url, 'default_album_avatar.png'),
+        image: getValidImage('albums/' + album.avatar_url, 'default-album.png'),
         artist: album.artists ? album.artists[0].name : 'Unknown Artist',
         type: album.type,
       }));
       pageData.tracks = (data.tracks || []).map((track) => ({
         id: track.id,
         name: track.title,
-        image: getValidImage('albums/' + track.album.avatar_url, 'default_album_avatar.png'),
+        image: getValidImage('albums/' + track.album.avatar_url, 'default-album.png'),
         artists: track.artists,
         album_id: track.album.id,
       }));
@@ -77,9 +77,9 @@ export class MainPage {
     const cardElements = document.querySelectorAll('.now-playing-container-card');
 
     let cardsData = [
-      { img: '/static/img/default_album_avatar.png', name: '', id: null },
-      { img: '/static/img/default_album_avatar.png', name: '', id: null },
-      { img: '/static/img/default_album_avatar.png', name: '', id: null },
+      { img: '/static/img/default-album.png', name: '', id: null },
+      { img: '/static/img/default-album.png', name: '', id: null },
+      { img: '/static/img/default-album.png', name: '', id: null },
     ];
 
     player.addEventListener('trackchange', (event) => {
@@ -114,10 +114,10 @@ export class MainPage {
 
     function playerData(track) {
       if (!track) {
-        return { img: '/static/img/default_album_avatar.png', name: '', id: null };
+        return { img: '/static/img/default-album.png', name: '', id: null };
       }
 
-      const imageUrl = getValidImage('albums/' + tracks.album?.avatar_url, 'default_album_avatar.png');
+      const imageUrl = getValidImage('albums/' + tracks.album?.avatar_url, 'default-album.png');
       const artistName = track.artists?.[0]?.name;
 
       return {
