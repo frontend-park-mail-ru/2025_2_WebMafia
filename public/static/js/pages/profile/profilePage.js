@@ -27,10 +27,11 @@ export class ProfilePage {
 
     try {
       const data = await apiServise.getProfilePageData();
-      pageData.avatar = data.profile.AvatarURL ? getValidImage(data.profile.AvatarURL) : data.profile.AvatarURL;
-      pageData.nickname = data.profile.Login;
+      const profile = await apiServise.getProfileData();
+      pageData.avatar = profile.AvatarURL ? getValidImage(profile.AvatarURL) : profile.AvatarURL;
+      pageData.nickname = profile.Login;
       pageData.letter = pageData.nickname ? pageData.nickname[0] : '';
-      pageData.email = data.profile.Email;
+      pageData.email = profile.Email;
       pageData.top_artists = (data.top_artists || []).map((artist) => ({
         id: artist.id,
         name: artist.name,

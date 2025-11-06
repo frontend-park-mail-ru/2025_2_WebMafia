@@ -1,5 +1,5 @@
 const API_BASE_URL = 'http://localhost:8080/api/v1';
-export const API_AVATARS_URL = 'http://217.16.17.173:8099/avatars'
+export const API_AVATARS_URL = 'http://localhost:8099/avatars'
 
 export class apiServises {
   constructor() {
@@ -83,17 +83,15 @@ export class apiServises {
 
   async getProfilePageData() {
     try {
-      const [artists, top_tracks, profile] = await Promise.all([
+      const [artists, top_tracks] = await Promise.all([
         this.request('/artists?limit=10').catch(() => []),
         this.request(`/tracks?limit=5`).catch(() => []),
-        this.request(`/me`)
       ]);
 
       return {
         top_artists: artists || [],
         top_tracks: top_tracks || [],
         recent: artists || [],
-        profile: profile,
       };
     } catch (error) {
       console.error('Failed to load profile page data:', error);
@@ -121,6 +119,17 @@ export class apiServises {
 
   async uploadAvatar(file) {
     const csrfToken = await this.getCSRFToken();
+
+    const profile = await this.request(`/me`);
+
+    if (profile.AvatarURL) {
+      await this.request('/avatar', {
+        method: 'DELETE',
+        headers: {
+          'X-CSRF-Token': csrfToken,
+        },
+      });
+    }
 
     const formData = new FormData();
     formData.append('avatar', file);
