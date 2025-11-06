@@ -113,14 +113,12 @@ export class apiServises {
       const [artists, top_tracks, profile] = await Promise.all([
         this.request('/artists?limit=10').catch(() => []),
         this.request(`/tracks?limit=5`).catch(() => []),
-        this.request(`/me`)
       ]);
 
       return {
         top_artists: artists || [],
         top_tracks: top_tracks || [],
         recent: artists || [],
-        profile: profile,
       };
     } catch (error) {
       console.error('Failed to load profile page data:', error);
@@ -159,6 +157,17 @@ export class apiServises {
 
   async uploadAvatar(file) {
     const csrfToken = await this.getCSRFToken();
+
+    const profile = await this.request(`/me`);
+
+    if (profile.AvatarURL) {
+      await this.request('/avatar', {
+        method: 'DELETE',
+        headers: {
+          'X-CSRF-Token': csrfToken,
+        },
+      });
+    }
 
     const formData = new FormData();
     formData.append('avatar', file);
