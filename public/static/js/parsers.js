@@ -45,12 +45,10 @@ export function totalDurationParser(duration) {
 
   if (duration_h > 0) {
     parts.push(`${duration_h} ${pluralize(duration_h, 'час', 'часа', 'часов')}`);
-    if (duration_m > 0)
-      parts.push(`${duration_m} ${pluralize(duration_m, 'минута', 'минуты', 'минут')}`);
+    if (duration_m > 0) parts.push(`${duration_m} ${pluralize(duration_m, 'минута', 'минуты', 'минут')}`);
   } else if (duration_m > 0) {
     parts.push(`${duration_m} ${pluralize(duration_m, 'минута', 'минуты', 'минут')}`);
-    if (duration_s > 0)
-      parts.push(`${duration_s} ${pluralize(duration_s, 'секунда', 'секунды', 'секунд')}`);
+    if (duration_s > 0) parts.push(`${duration_s} ${pluralize(duration_s, 'секунда', 'секунды', 'секунд')}`);
   } else {
     parts.push(`${duration_s} ${pluralize(duration_s, 'секунда', 'секунды', 'секунд')}`);
   }

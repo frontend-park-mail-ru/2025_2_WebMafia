@@ -5,6 +5,7 @@ import { sidebar } from '../sidebar/sidebar.js';
 import { initScrollbar } from '../../scrollbar.js';
 import { getValidImage } from '../../parsers.js';
 import { playTrack } from '../../playTrackBtn.js';
+import { setPlayButtonsOnAuth } from '../../setPlayButtonsOnAuth.js';
 
 export class ArtistAlbumsPage {
   async render(artistId) {
@@ -20,7 +21,7 @@ export class ArtistAlbumsPage {
       const data = await apiServise.getArtistAlbums(artistId);
       pageData.artistName = data.artist ? data.artist.name : 'Unknown Artist';
       if (data) {
-        data.albums.forEach(album => {
+        data.albums.forEach((album) => {
           const item = {
             id: album.id,
             name: album.title,
@@ -53,12 +54,10 @@ export class ArtistAlbumsPage {
 
     document.getElementById('app').innerHTML = contentTemplate(pageData);
 
-    await Promise.all([
-      header.render(),
-      sidebar.render(),
-    ]);
+    await Promise.all([header.render(), sidebar.render()]);
 
     initScrollbar();
     playTrack();
+    setPlayButtonsOnAuth();
   }
 }

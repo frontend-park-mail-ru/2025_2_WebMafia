@@ -6,8 +6,8 @@ import { ArtistPage } from './pages/artist/artist.js';
 import { ProfilePage } from './pages/profile/profilePage.js';
 import { ArtistAlbumsPage } from './pages/artist_albums/artistAlbumsPage.js';
 import { ArtistTracksPage } from './pages/artist_tracks/artistTracksPage.js';
-import { AlbumPage } from "./pages/album/album.js";
-import { ArtistSinglesPage } from "./pages/artist_singles/artistSinglesPage.js";
+import { AlbumPage } from './pages/album/album.js';
+import { ArtistSinglesPage } from './pages/artist_singles/artistSinglesPage.js';
 
 export class Router {
   constructor() {

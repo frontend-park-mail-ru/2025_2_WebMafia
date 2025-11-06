@@ -3,7 +3,7 @@ import { router } from '../../routing.js';
 import { header } from '../header/header.js';
 import { sidebar } from '../sidebar/sidebar.js';
 import { initScrollbar } from '../../scrollbar.js';
-import {durationParser, getValidImage, playsParser} from '../../parsers.js';
+import { durationParser, getValidImage, playsParser } from '../../parsers.js';
 import { playTrack } from '../../playTrackBtn.js';
 
 export class ArtistTracksPage {
@@ -51,10 +51,7 @@ export class ArtistTracksPage {
 
     document.getElementById('app').innerHTML = contentTemplate(pageData);
 
-    await Promise.all([
-      header.render(),
-      sidebar.render(),
-    ]);
+    await Promise.all([header.render(), sidebar.render()]);
     initScrollbar();
     playTrack();
   }

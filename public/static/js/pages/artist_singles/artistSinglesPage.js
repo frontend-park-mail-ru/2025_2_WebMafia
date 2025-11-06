@@ -20,7 +20,7 @@ export class ArtistSinglesPage {
       const data = await apiServise.getArtistAlbums(artistId);
       pageData.artistName = data.artist ? data.artist.name : 'Unknown Artist';
       if (data) {
-        data.albums.forEach(album => {
+        data.albums.forEach((album) => {
           const item = {
             id: album.id,
             name: album.title,
@@ -53,10 +53,7 @@ export class ArtistSinglesPage {
 
     document.getElementById('app').innerHTML = contentTemplate(pageData);
 
-    await Promise.all([
-      header.render(),
-      sidebar.render(),
-    ]);
+    await Promise.all([header.render(), sidebar.render()]);
 
     initScrollbar();
     playTrack();

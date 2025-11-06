@@ -6,6 +6,7 @@ import { durationParser, getValidImage, playsParser } from '../../parsers.js';
 import { sidebar } from '../sidebar/sidebar.js';
 import { slider } from '../../slider.js';
 import { header } from '../header/header.js';
+import { setPlayButtonsOnAuth } from '../../setPlayButtonsOnAuth.js';
 
 export class ProfilePage {
   async render() {
@@ -71,6 +72,7 @@ export class ProfilePage {
     this.addEventListeners(pageData.profile);
     initPasswordShowing();
     initScrollbar();
+    setPlayButtonsOnAuth();
   }
 
   addEventListeners(profile) {

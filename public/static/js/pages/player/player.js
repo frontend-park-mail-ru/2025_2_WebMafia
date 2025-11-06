@@ -1,4 +1,5 @@
 import { apiServise, API_AVATARS_URL, API_TRACKS_URL } from '../../data.js';
+import {getValidImage} from "../../parsers";
 
 export class Player extends EventTarget {
   constructor() {
@@ -119,7 +120,7 @@ export class Player extends EventTarget {
   }
 
   async render() {
-    await this.renderWithoutData()
+    await this.renderWithoutData();
 
     this.audio.addEventListener('timeupdate', () => {
       this.updateCurrentTimeAndSlider();
@@ -128,10 +129,7 @@ export class Player extends EventTarget {
     const storedTrackId = localStorage.getItem('currentTrackId');
     let storedTrackData = await this.getDataTrackById(storedTrackId);
 
-    await Promise.all([
-      this.loadTrack(storedTrackData),
-      this.getPrevAndNextTracks(),
-    ]);
+    await Promise.all([this.loadTrack(storedTrackData), this.getPrevAndNextTracks()]);
 
     this.setInitialVolume();
     this.setInitialPLayTime();
@@ -149,10 +147,7 @@ export class Player extends EventTarget {
       return;
     }
 
-    await Promise.all([
-      this.loadTrack(trackData),
-      this.audio.play()
-    ]);
+    await Promise.all([this.loadTrack(trackData), this.audio.play()]);
 
     this.togglePlayPauseSwitch(true);
     localStorage.setItem('isPlaying', 'true');
@@ -169,9 +164,7 @@ export class Player extends EventTarget {
     const durationFormatted = `${minutes}:${seconds.toString().padStart(2, '0')}`;
     document.querySelector('.track-time.total').textContent = durationFormatted;
 
-    const filename = track.album.avatar_url;
-    const imageUrl = track.album && track.album.avatar_url ? `${API_AVATARS_URL}/albums/${track.album.avatar_url}` : 'static/img/default_album_avatar.png';
-    document.querySelector('.track-cover-player').src = imageUrl;
+    document.querySelector('.track-cover-player').src = getValidImage(track.album.avatar_url, 'default-album.png');
 
     let file_url = track.file_url;
     this.audio.src = file_url ? `${API_TRACKS_URL}/${file_url}` : `static/music/${file_url}`;
@@ -360,6 +353,7 @@ export class Player extends EventTarget {
     this.audio.currentTime = storedTime;
     const percent = (storedTime / duration_ms) * 100;
     timeRegulator.style.setProperty('--progress', percent + '%');
+    this.updateCurrentTimeAndSlider();
   }
 
   trackSwitching() {
