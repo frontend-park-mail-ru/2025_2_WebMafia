@@ -5,7 +5,6 @@ import { initScrollbar } from '../../scrollbar.js';
 import { durationParser, getValidImage, playsParser } from "../../parsers.js";
 import { header } from "../header/header.js";
 import { sidebar } from "../sidebar/sidebar.js";
-import { player } from "../player/player.js";
 import { slider } from "../../slider.js";
 
 export class ProfilePage {
@@ -64,7 +63,6 @@ export class ProfilePage {
     await Promise.all([
       header.render(),
       sidebar.render(),
-      player.render(),
     ]);
 
     slider.sliderFunction();
@@ -180,7 +178,7 @@ export class ProfilePage {
             updateAvatarContainer('avatarEditContainer', letter, 'profile-edit-avatar');
             updateAvatarContainer('avatarHeaderContainer', letter, 'default-avatar-header');
 
-            target.remove(); // удаляем кнопку удаления
+            target.remove();
           } catch (err) {
             console.error('Ошибка при удалении аватара:', err);
             alert('Не удалось удалить аватар.');

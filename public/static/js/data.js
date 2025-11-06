@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://217.16.17.173:8080/api/v1';
+const API_BASE_URL = 'http://localhost:8080/api/v1';
 export const API_AVATARS_URL = 'http://217.16.17.173:8099/avatars'
 
 export class apiServises {
@@ -66,14 +66,14 @@ export class apiServises {
         this.request(`/artists/${id}/albums`).catch(() => []),
         this.request(`/artists/${id}/tracks?limit=5`).catch(() => []),
         this.request(`/artists/${id}`).catch(() => []),
-        this.request('/artists?limit=10').catch(() => [])
+        this.request('/artists?limit=10').catch(() => []),
       ]);
 
       return {
         albums: albums || [],
         popular_tracks: popular_tracks || [],
         artist: artist || {},
-        similar_artists: similar_artists || []
+        similar_artists: similar_artists || [],
       };
     } catch (error) {
       console.error('Failed to load artist page data:', error);

@@ -8,8 +8,6 @@ export class Header {
       isAuthenticated: localStorage.getItem('isAuthenticated') === 'true',
     };
 
-    pageData.letter = pageData.nickname ? pageData.nickname[0] : '';
-
     const contentTemplate = Handlebars.templates['header.hbs'];
     const headerHTML = contentTemplate(pageData);
 
@@ -49,7 +47,12 @@ export class Header {
           console.error('Logout request failed:', error.message);
         } finally {
           localStorage.removeItem('isAuthenticated');
-          router.navigate('/login');
+          localStorage.removeItem('currentTrackId');
+          localStorage.removeItem('isPlaying');
+          localStorage.removeItem('playTime');
+          localStorage.removeItem('volume');
+          await player.destroy();
+          router.navigate('/');
         }
       });
     }
