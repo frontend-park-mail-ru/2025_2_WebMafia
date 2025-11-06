@@ -110,7 +110,7 @@ export class apiServises {
 
   async getProfilePageData() {
     try {
-      const [artists, top_tracks, profile] = await Promise.all([
+      const [artists, top_tracks] = await Promise.all([
         this.request('/artists?limit=10').catch(() => []),
         this.request(`/tracks?limit=5`).catch(() => []),
       ]);

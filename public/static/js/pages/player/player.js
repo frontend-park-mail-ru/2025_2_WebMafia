@@ -182,7 +182,6 @@ export class Player extends EventTarget {
   updateCurrentTimeAndSlider() {
     const currentTime = this.audio.currentTime;
     const duration_ms = this.currentTrack.duration_s;
-    console.log(currentTime);
 
     const minutes = Math.floor(currentTime / 60);
     const seconds = Math.floor(currentTime % 60);
