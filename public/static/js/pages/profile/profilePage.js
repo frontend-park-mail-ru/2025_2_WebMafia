@@ -5,7 +5,6 @@ import { initScrollbar } from '../../scrollbar.js';
 import { durationParser, getValidImage, playsParser } from '../../parsers.js';
 import { sidebar } from '../sidebar/sidebar.js';
 import { slider } from '../../slider.js';
-import { player } from '../player/player.js';
 import { header } from '../header/header.js';
 
 export class ProfilePage {
@@ -21,6 +20,7 @@ export class ProfilePage {
       top_artists: [],
       top_tracks: [],
       recent: [],
+      profile: {},
     };
 
     const contentTemplate = Handlebars.templates['profilePage.hbs'];
@@ -30,13 +30,14 @@ export class ProfilePage {
     try {
       const data = await apiServise.getProfilePageData();
       const profile = await apiServise.getProfileData();
-      pageData.avatar = profile.AvatarURL ? getValidImage(profile.AvatarURL) : profile.AvatarURL;
-      pageData.nickname = profile.Login;
-      pageData.letter = pageData.nickname ? pageData.nickname[0] : '';
-      pageData.email = profile.Email;
+      pageData.profile.avatar = profile.AvatarURL ? getValidImage(profile.AvatarURL) : profile.AvatarURL;
+      pageData.profile.nickname = profile.Login;
+      pageData.profile.letter = pageData.profile.nickname ? pageData.profile.nickname[0] : '';
+      pageData.profile.email = profile.Email;
       pageData.top_artists = (data.top_artists || []).map((artist) => ({
         id: artist.id,
         name: artist.name,
+        listeners: playsParser(artist.play_count) || 0,
         image: getValidImage('artists/' + artist.avatar_url, 'default-artist.png'),
       }));
       pageData.top_tracks = (data.top_tracks || []).map((track) => ({
@@ -67,12 +68,12 @@ export class ProfilePage {
     await Promise.all([header.render(), sidebar.render()]);
 
     slider.sliderFunction();
-    this.addEventListeners(pageData.letter);
+    this.addEventListeners(pageData.profile);
     initPasswordShowing();
     initScrollbar();
   }
 
-  addEventListeners(letter) {
+  addEventListeners(profile) {
     const editProfileButton = document.getElementById('editProfileBtn');
     const editProfileOverlay = document.getElementById('editProfileOverlay');
 
@@ -87,6 +88,17 @@ export class ProfilePage {
     if (closeEditButton && editProfileOverlay) {
       closeEditButton.addEventListener('click', (e) => {
         e.preventDefault();
+
+        document.getElementById('email').value = profile.email;
+        document.getElementById('login').value = profile.nickname;
+        document.getElementById('password').value = '';
+        document.getElementById('passwordConfirm').value = '';
+
+        updateAvatarContainer('avatarEditContainer', profile.avatar, profile.letter, 'profile-edit-avatar');
+
+        selectedAvatarFile = null;
+        deleteAvatar = false;
+
         editProfileOverlay.classList.remove('active');
       });
     }
@@ -100,9 +112,32 @@ export class ProfilePage {
       });
     }
 
+    function updateAvatarContainer(containerId, avatarUrl = null, letter = null, className = '') {
+      const container = document.getElementById(containerId);
+      if (!container) return;
+
+      container.textContent = '';
+
+      if (avatarUrl) {
+        const img = document.createElement('img');
+        img.src = avatarUrl;
+        img.alt = 'Ваш аватар';
+        img.className = 'profile-image';
+        img.style.objectFit = 'cover';
+        container.appendChild(img);
+      } else {
+        const avatarDiv = document.createElement('div');
+        avatarDiv.className = `default-avatar ${className}`;
+        avatarDiv.textContent = letter || '';
+        container.appendChild(avatarDiv);
+      }
+    }
+
+    let selectedAvatarFile = null;
+    let deleteAvatar = false;
     const editAvatarButtons = document.getElementById('editAvatarButtons');
     if (editAvatarButtons) {
-      editAvatarButtons.addEventListener('click', async (e) => {
+      editAvatarButtons.addEventListener('click', (e) => {
         const target = e.target;
 
         if (target.id === 'setAvatarButton') {
@@ -113,7 +148,7 @@ export class ProfilePage {
           input.accept = 'image/*';
           input.click();
 
-          input.addEventListener('change', async () => {
+          input.addEventListener('change', () => {
             const file = input.files[0];
             if (!file) return;
 
@@ -122,66 +157,70 @@ export class ProfilePage {
               return;
             }
 
-            try {
-              const response = await apiServise.uploadAvatar(file);
-              const newAvatarUrl = getValidImage(response.avatar_url);
+            selectedAvatarFile = file;
+            deleteAvatar = false;
 
-              const avatarContainers = document.querySelectorAll('.user-avatar');
-
-              avatarContainers.forEach((container) => {
-                let img = container.querySelector('img');
-                if (!img) {
-                  img = document.createElement('img');
-                  img.alt = 'Ваш аватар';
-                  img.className = 'profile-image';
-                  img.style.objectFit = 'cover';
-                  container.textContent = '';
-                  container.appendChild(img);
-                }
-                img.src = newAvatarUrl;
-              });
+            const reader = new FileReader();
+            reader.onload = (event) => {
+              updateAvatarContainer('avatarEditContainer', event.target.result);
 
               if (!document.getElementById('deleteAvatarButton')) {
-                editAvatarButtons.insertAdjacentHTML('beforeend', `<button id="deleteAvatarButton" class="secondary-button save-avatar-button-size">Удалить фото</button>`);
+                editAvatarButtons.insertAdjacentHTML(
+                  'beforeend',
+                  `<button id="deleteAvatarButton" class="secondary-button save-avatar-button-size">Удалить фото</button>`
+                );
               }
-            } catch (err) {
-              console.error('Ошибка загрузки аватара:', err);
-              alert('Не удалось загрузить аватар.');
-            }
+            };
+            reader.readAsDataURL(file);
           });
         }
 
         if (target.id === 'deleteAvatarButton') {
           e.preventDefault();
 
-          if (!confirm('Вы уверены, что хотите удалить аватар?')) return;
+          selectedAvatarFile = null;
+          deleteAvatar = true;
 
-          try {
+          updateAvatarContainer('avatarEditContainer', null, letter, 'profile-edit-avatar');
+
+          target.remove();
+        }
+      });
+    }
+
+    const saveButton = document.getElementById('saveProfileChangesButton');
+    if (saveButton) {
+      saveButton.addEventListener('click', async (e) => {
+        e.preventDefault();
+
+        //const formData = new FormData(document.getElementById('editProfileForm'));
+
+        try {
+          if (selectedAvatarFile) {
+            const response = await apiServise.uploadAvatar(selectedAvatarFile);
+            const newAvatarUrl = getValidImage(response.avatar_url);
+
+            updateAvatarContainer('avatarProfileContainer', newAvatarUrl);
+            updateAvatarContainer('avatarHeaderContainer', newAvatarUrl);
+
+            selectedAvatarFile = null;
+          }
+          else if (deleteAvatar) {
             await apiServise.deleteAvatar();
 
-            function updateAvatarContainer(containerId, letter, className) {
-              const container = document.getElementById(containerId);
-              if (!container) return;
+            updateAvatarContainer('avatarProfileContainer', null, letter, 'default-avatar-profile');
+            updateAvatarContainer('avatarHeaderContainer', null, letter, 'default-avatar-header');
 
-              container.textContent = '';
-
-              const avatarDiv = document.createElement('div');
-              avatarDiv.className = `default-avatar ${className}`;
-              avatarDiv.textContent = letter;
-
-              container.appendChild(avatarDiv);
-            }
-
-            updateAvatarContainer('avatarProfileContainer', letter, 'default-avatar-profile');
-            updateAvatarContainer('avatarEditContainer', letter, 'profile-edit-avatar');
-            updateAvatarContainer('avatarHeaderContainer', letter, 'default-avatar-header');
-
-            target.remove();
-          } catch (err) {
-            console.error('Ошибка при удалении аватара:', err);
-            alert('Не удалось удалить аватар.');
+            deleteAvatar = false;
           }
+
+          //await apiServise.saveProfile(formData);
+        } catch (err) {
+          console.error(err);
+          alert('Не удалось сохранить изменения');
         }
+
+        editProfileOverlay.classList.remove('active');
       });
     }
   }

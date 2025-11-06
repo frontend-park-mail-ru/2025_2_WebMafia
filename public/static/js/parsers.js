@@ -22,7 +22,10 @@ export function durationParser(duration) {
 }
 
 export function getValidImage(url, defaultImage) {
-  if (!url) return `static/img/${defaultImage}`;
+  if (!url) {
+    if (!defaultImage) return url;
+    return `static/img/${defaultImage}`;
+  }
   return `${API_AVATARS_URL}/${url}`;
 }
 
