@@ -88,7 +88,7 @@ export class MainPage {
     });
 
     let isAnimating = false;
-    const animationDuration = 500; // Должно совпадать с 'transition' в вашем CSS
+    const animationDuration = 500;
 
     function playerSliderDataSync({ prev, current, next }) {
       const prevCard = document.querySelector('.card-position-prev');
@@ -114,16 +114,11 @@ export class MainPage {
     }
 
     function playerData(track) {
-      // Если трека нет, возвращаем данные по умолчанию
       if (!track) {
         return { img: '/static/img/default_album_avatar.png', name: '', id: null };
       }
 
-      // 1. Безопасно получаем URL аватара, используя ?.
-      // Это предотвратит ошибку, если track.album не существует.
-      const imageUrl = track.album?.avatar_url ? `http://217.16.17.173:8099/avatars/albums/${track.album.avatar_url}` : '/static/img/default_album_avatar.png';
-
-      // 2. Корректно получаем имя артиста из массива artists
+      const imageUrl = getValidImage('albums/' + tracks.album?.avatar_url, 'default_album_avatar.png');
       const artistName = track.artists?.[0]?.name;
 
       return {
@@ -154,7 +149,6 @@ export class MainPage {
       playTrack();
     }
 
-    // Функция для управляет UI элементами на карточке.
     function updateCardUI(card, data = null) {
       const existingButton = card.querySelector('.current-card-btn.play');
       const existingName = card.querySelector('.current-card-name');
@@ -173,7 +167,6 @@ export class MainPage {
       }
     }
 
-    // Функция для первоначальной расстановки
     function initializeSlider() {
       cardElements.forEach((card, i) => {
         card.classList.remove('card-position-prev', 'card-position-current', 'card-position-next');
@@ -184,7 +177,6 @@ export class MainPage {
       updateAllCardsUI();
     }
 
-    // Функция сдвига карточек
     function shiftCards(direction) {
       if (isAnimating) return;
       isAnimating = true;
@@ -221,19 +213,19 @@ export class MainPage {
       }, animationDuration);
     }
 
-    nextBtn.addEventListener('click', () => {
+    nextBtn.addEventListener('click', async () => {
       if (isAnimating) return;
       shiftCards('next');
-      player.nextTrack();
+      await player.nextTrack();
     });
-    prevBtn.addEventListener('click', () => {
+    prevBtn.addEventListener('click', async () => {
       if (isAnimating) return;
       shiftCards('prev');
-      player.prevTrack();
+      await player.prevTrack();
     });
 
     if (player.currentTrack) {
-      player.getPrevAndNextTracks();
+      await player.getPrevAndNextTracks();
     }
     initializeSlider();
   }
