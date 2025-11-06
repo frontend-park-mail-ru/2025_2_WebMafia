@@ -44,11 +44,7 @@ export class apiServises {
 
   async getMainPageData() {
     try {
-      const [albums, tracks, artists] = await Promise.all([
-        this.request('/albums?limit=20').catch(() => []),
-        this.request('/tracks?limit=30').catch(() => []),
-        this.request('/artists?limit=20').catch(() => [])
-      ]);
+      const [albums, tracks, artists] = await Promise.all([this.request('/albums?limit=20').catch(() => []), this.request('/tracks?limit=30').catch(() => []), this.request('/artists?limit=20').catch(() => [])]);
 
       return {
         albums: albums || [],
@@ -64,7 +60,7 @@ export class apiServises {
   async getArtistPageData(id) {
     try {
       const [albums, popular_tracks, artist, similar_artists] = await Promise.all([
-        this.request(`/artists/${id}/albums?limit=10`).catch(() => []),
+        this.request(`/artists/${id}/albums`).catch(() => []),
         this.request(`/artists/${id}/tracks?limit=5`).catch(() => []),
         this.request(`/artists/${id}`).catch(() => []),
         this.request('/artists?limit=10').catch(() => []),
@@ -82,39 +78,9 @@ export class apiServises {
     }
   }
 
-  async getArtistAlbums(id) {
-    try {
-      const [albums, artist] = await Promise.all([
-        this.request(`/artists/${id}/albums`).catch(() => []),
-        this.request(`/artists/${id}`).catch(() => []),
-      ]);
-      return { albums: albums, artist: artist };
-    } catch (error) {
-      console.error('Failed to load artist albums page data:', error);
-      throw error;
-    }
-  }
-
-  async getArtistTracks(id) {
-    try {
-      const [tracks, artist] = await Promise.all([
-        this.request(`/artists/${id}/tracks`).catch(() => []),
-        this.request(`/artists/${id}`).catch(() => []),
-      ]);
-      return { tracks: tracks, artist: artist };
-    } catch (error) {
-      console.error('Failed to load artist albums page data:', error);
-      throw error;
-    }
-  }
-
   async getProfilePageData() {
     try {
-      const [artists, top_tracks, profile] = await Promise.all([
-        this.request('/artists?limit=10').catch(() => []),
-        this.request(`/tracks?limit=5`).catch(() => []),
-        this.request(`/me`)
-      ]);
+      const [artists, top_tracks, profile] = await Promise.all([this.request('/artists?limit=10').catch(() => []), this.request(`/tracks?limit=5`).catch(() => []), this.request(`/me`)]);
 
       return {
         top_artists: artists || [],
@@ -191,10 +157,7 @@ export class apiServises {
 
   async getAlbumPageData(id) {
     try {
-      const [album, tracks] = await Promise.all([
-        this.request(`/albums/${id}`).catch(() => []),
-        this.request(`/albums/${id}/tracks`).catch(() => [])
-      ]);
+      const [album, tracks] = await Promise.all([this.request(`/albums/${id}`).catch(() => []), this.request(`/albums/${id}/tracks`).catch(() => [])]);
       return { album: album || {}, tracks: tracks || [] };
     } catch (error) {
       console.error('Failed to load album page data:', error);

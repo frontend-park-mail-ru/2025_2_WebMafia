@@ -119,7 +119,7 @@ export class Player extends EventTarget {
   }
 
   async render() {
-    await this.renderWithoutData()
+    await this.renderWithoutData();
 
     this.audio.addEventListener('timeupdate', () => {
       this.updateCurrentTimeAndSlider();
@@ -128,10 +128,7 @@ export class Player extends EventTarget {
     const storedTrackId = localStorage.getItem('currentTrackId');
     let storedTrackData = await this.getDataTrackById(storedTrackId);
 
-    await Promise.all([
-      this.loadTrack(storedTrackData),
-      this.getPrevAndNextTracks(),
-    ]);
+    await Promise.all([this.loadTrack(storedTrackData), this.getPrevAndNextTracks()]);
 
     this.setInitialVolume();
     this.setInitialPLayTime();
@@ -149,10 +146,7 @@ export class Player extends EventTarget {
       return;
     }
 
-    await Promise.all([
-      this.loadTrack(trackData),
-      this.audio.play()
-    ]);
+    await Promise.all([this.loadTrack(trackData), this.audio.play()]);
 
     this.togglePlayPauseSwitch(true);
     localStorage.setItem('isPlaying', 'true');
@@ -170,7 +164,7 @@ export class Player extends EventTarget {
     document.querySelector('.track-time.total').textContent = durationFormatted;
 
     const filename = track.album.avatar_url;
-    const imageUrl = track.album && track.album.avatar_url ? `${API_AVATARS_URL}/albums/${track.album.avatar_url}` : 'static/img/default_album_avatar.png';
+    const imageUrl = track.album && track.album.avatar_url ? `http://217.16.17.173:8099/avatars/albums/${filename}` : 'static/img/default_album_avatar.png';
     document.querySelector('.track-cover-player').src = imageUrl;
 
     let file_url = track.file_url;
@@ -361,6 +355,7 @@ export class Player extends EventTarget {
     this.audio.currentTime = storedTime;
     const percent = (storedTime / duration_ms) * 100;
     timeRegulator.style.setProperty('--progress', percent + '%');
+    this.updateCurrentTimeAndSlider();
   }
 
   trackSwitching() {

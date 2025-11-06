@@ -6,7 +6,7 @@ import { header } from '../header/header.js';
 import { sidebar } from '../sidebar/sidebar.js';
 import { slider } from '../../slider.js';
 import { playTrack } from '../../playTrackBtn.js';
-
+import { setPlayButtonsOnAuth } from '../../setPlayButtonsOnAuth.js';
 
 export class ArtistPage {
   async render(id) {
@@ -45,7 +45,7 @@ export class ArtistPage {
         cover: getValidImage('albums/' + track.album.avatar_url, 'default-album.png'),
         artists: track.artists,
       }));
-      data.albums.forEach(album => {
+      data.albums.forEach((album) => {
         const item = {
           id: album.id,
           name: album.title,
@@ -81,35 +81,14 @@ export class ArtistPage {
     document.getElementById('app').innerHTML = contentTemplate(pageData);
     document.querySelector('head title').textContent = pageData.name;
 
-    await Promise.all([
-      header.render(),
-      sidebar.render(),
-    ]);
+    await Promise.all([header.render(), sidebar.render()]);
 
     slider.sliderFunction();
     initScrollbar();
     this.addEventListeners();
-    this.setPlayButtonsOnAuth();
+    setPlayButtonsOnAuth();
     playTrack();
   }
-
-  setPlayButtonsOnAuth() {
-    const playbtn = document.querySelectorAll('.play-button-track, .play-button, .current-card-btn.play, .play-popular-track');
-    playbtn.forEach((button) => {
-      button.addEventListener('click', (event) => {
-        const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
-        if (!isAuthenticated) {
-          event.preventDefault();
-          event.stopPropagation();
-          router.navigate('/login');
-        } else {
-          // this.nowPlayingCardSlider();
-          // playTrack();
-        }
-      });
-    });
-  }
-
 
   addEventListeners() {
     const showInfoBtn = document.getElementById('showArtistDescription');

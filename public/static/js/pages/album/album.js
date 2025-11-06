@@ -5,8 +5,9 @@ import { sidebar } from '../sidebar/sidebar.js';
 import { initScrollbar } from '../../scrollbar.js';
 import { slider } from '../../slider.js';
 import { player } from '../player/player.js';
-import { playsParser, durationParser, getValidImage, totalDurationParser, tracksNumParser } from "../../parsers.js";
+import { playsParser, durationParser, getValidImage, totalDurationParser, tracksNumParser } from '../../parsers.js';
 import { playTrack } from '../../playTrackBtn.js';
+import { setPlayButtonsOnAuth } from '../../setPlayButtonsOnAuth.js';
 
 export class AlbumPage {
   async render(id) {
@@ -44,7 +45,6 @@ export class AlbumPage {
       pageData.totalDuration = totalDurationParser(totalDuration);
       pageData.tracksNum = tracksNumParser(pageData.tracks.length);
       if (pageData.tracksNum) pageData.firstTrack = pageData.tracks[0].id;
-
     } catch (error) {
       console.error('Failed to load album page data:', error);
 
@@ -66,14 +66,12 @@ export class AlbumPage {
     document.getElementById('app').innerHTML = contentTemplate(pageData);
     document.querySelector('head title').textContent = pageData.title;
 
-    await Promise.all([
-      header.render(),
-      sidebar.render(),
-    ]);
+    await Promise.all([header.render(), sidebar.render()]);
 
     slider.sliderFunction();
     initScrollbar();
     this.addEventListeners();
+    setPlayButtonsOnAuth();
     playTrack();
   }
 

@@ -7,6 +7,7 @@ import { slider } from '../../slider.js';
 import { player } from '../player/player.js';
 import { playTrack } from '../../playTrackBtn.js';
 import { getValidImage, playsParser } from '../../parsers.js';
+import { setPlayButtonsOnAuth } from '../../setPlayButtonsOnAuth.js';
 
 export class MainPage {
   async render() {
@@ -62,33 +63,13 @@ export class MainPage {
 
     document.getElementById('app').innerHTML = contentTemplate(pageData);
 
-    await Promise.all([
-      header.render(),
-      sidebar.render(),
-    ]);
+    await Promise.all([header.render(), sidebar.render()]);
 
     slider.sliderFunction();
     this.nowPlayingCardSlider();
     initScrollbar();
-    this.setPlayButtonsOnAuth();
+    setPlayButtonsOnAuth();
     playTrack();
-  }
-
-  setPlayButtonsOnAuth() {
-    const playbtn = document.querySelectorAll('.play-button-track, .play-button, .current-card-btn.play, .play-popular-track');
-    playbtn.forEach((button) => {
-      button.addEventListener('click', (event) => {
-        const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
-        if (!isAuthenticated) {
-          event.preventDefault();
-          event.stopPropagation();
-          router.navigate('/login');
-        } else {
-          // this.nowPlayingCardSlider();
-          // playTrack();
-        }
-      });
-    });
   }
 
   nowPlayingCardSlider() {

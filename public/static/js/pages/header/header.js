@@ -1,6 +1,6 @@
 import { apiServise } from '../../data.js';
 import { router } from '../../routing.js';
-import { getValidImage } from "../../parsers.js";
+import { getValidImage } from '../../parsers.js';
 import { player } from '../player/player.js';
 
 export class Header {
