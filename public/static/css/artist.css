@@ -224,12 +224,11 @@
   transition: filter 0.3s ease;
 }
 
-.track-row:hover .track-cover {
+.track-row:hover .track-cover, .track-row.active .track-cover {
   filter: brightness(0.4);
 }
 
-.track-row.active{
-  /* filter: brightness(0.4); */
+.track-row.active {
   background-color: rgba(0, 0, 0, 0.2);
 }
 
@@ -271,7 +270,10 @@
 
 .track-row:hover .track-performer,
 .track-row:hover .track-plays-num,
-.track-row:hover .track-album-name {
+.track-row:hover .track-album-name,
+.track-row.active .track-performer,
+.track-row.active .track-plays-num,
+.track-row.active .track-album-name {
   color: black;
 }
 
