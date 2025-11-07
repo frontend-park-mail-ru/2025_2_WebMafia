@@ -68,7 +68,7 @@ export class MainPage {
     slider.sliderFunction();
     initScrollbar();
     setPlayButtonsOnAuth();
-    this.nowPlayingCardSlider()
+    this.nowPlayingCardSlider();
     playTrack();
   }
 
