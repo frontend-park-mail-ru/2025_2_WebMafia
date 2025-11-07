@@ -63,11 +63,12 @@ export class MainPage {
 
     document.getElementById('app').innerHTML = contentTemplate(pageData);
 
-    await Promise.all([header.render(), sidebar.render(), this.nowPlayingCardSlider()]);
+    await Promise.all([header.render(), sidebar.render()]);
 
     slider.sliderFunction();
     initScrollbar();
     setPlayButtonsOnAuth();
+    this.nowPlayingCardSlider()
     playTrack();
   }
 
