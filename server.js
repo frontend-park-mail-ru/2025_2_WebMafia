@@ -7,10 +7,9 @@ const app = express();
 app.use(express.static(`${__dirname}/public`));
 
 app.use(/(.*)/, (req, res) => {
-    res.sendFile(`${__dirname}/public/index.html`);
+  res.sendFile(`${__dirname}/public/index.html`);
 });
 
-
 app.listen(process.env.PORT || 8090, () => {
-    console.log(`Express server is listening on :${port}`);
+  console.log(`Express server is listening on http://localhost:${port}`);
 });

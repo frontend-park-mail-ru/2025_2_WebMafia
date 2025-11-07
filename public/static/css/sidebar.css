@@ -1,0 +1,129 @@
+/* Sidebar */
+.sidebar {
+  left: 0;
+  bottom: 0;
+  width: 252px;
+  background-color: rgba(4, 25, 109, 0.08);
+  backdrop-filter: blur(34px);
+  padding-left: 10px;
+  border-radius: 30px;
+  overflow: hidden;
+  margin-left: 10px;
+}
+
+.menu {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.menu-item {
+  justify-content: center;
+  align-items: center;
+  width: 190px;
+  font-size: 20px;
+  font-weight: 600;
+  color: rgb(0, 0, 0);
+  padding: 10px 15px;
+  cursor: pointer;
+}
+
+.menu-item.active {
+  border-radius: 14px;
+  background: linear-gradient(157deg, #7e4dff, #a766ff, #da96ff) right bottom;
+  background-size: 150% 150%;
+  transition:
+    background-position 0.5s ease,
+    background 0.5s ease;
+}
+
+.menu-item.active:hover {
+  background-position: left top;
+}
+
+.menu-item a {
+  text-decoration: none;
+  gap: 12px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  color: rgb(0, 0, 0);
+  transition: color 0.3s ease;
+}
+
+.home a svg {
+  fill: black;
+  stroke: black;
+  stroke-width: 150;
+  stroke-linejoin: round;
+}
+
+.home a.active svg {
+  fill: #fafafa;
+  stroke: #fafafa;
+  stroke-width: 150;
+  stroke-linejoin: round;
+}
+
+.library {
+  margin-top: 5px;
+}
+
+.menu-item a.active {
+  color: #fafafa;
+}
+
+.menu-item a.active:hover {
+  color: #fafafa;
+}
+
+.menu-item a:hover {
+  color: #a766ff;
+}
+
+.menu-item:hover {
+  color: #a766ff;
+}
+
+.library-items{
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin: 10px 0 10px 32px;
+}
+
+.library-item {
+  font-size: 16px;
+  font-weight: 200;
+}
+
+/* фолетовый кружочек на фоне */
+.purple-background-circle {
+  position: absolute;
+  width: 315px;
+  height: 315px;
+  border-radius: 50%;
+  background: rgba(149, 0, 255, 0.4);
+  filter: blur(80px);
+  z-index: 0;
+}
+
+.sidebar-purple-position {
+  top: 60%;
+  left: -160px;
+}
+
+.blue-background-circle {
+  position: absolute;
+  width: 190px;
+  height: 190px;
+  border-radius: 50%;
+  background: rgba(113, 255, 253, 0.8);
+  filter: blur(80px);
+  z-index: 0;
+}
+
+.sidebar-blue-position {
+  top: 80%;
+  left: 150px;
+}
