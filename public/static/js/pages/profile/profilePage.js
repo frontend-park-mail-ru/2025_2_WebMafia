@@ -55,6 +55,7 @@ export class ProfilePage {
       pageData.recent = (data.recent || []).map((artist) => ({
         id: artist.id,
         name: artist.name,
+        listeners: playsParser(artist.play_count) || 0,
         image: getValidImage('artists/' + artist.avatar_url, 'default-artist.png'),
       }));
     } catch (error) {
@@ -65,7 +66,7 @@ export class ProfilePage {
     }
 
     document.getElementById('app').innerHTML = contentTemplate(pageData);
-    document.querySelector('head title').textContent = pageData.nickname;
+    document.querySelector('head title').textContent = pageData.profile.nickname;
 
     await Promise.all([header.render(), sidebar.render()]);
 
@@ -213,7 +214,7 @@ export class ProfilePage {
           selectedAvatarFile = null;
           deleteAvatar = true;
 
-          updateAvatarContainer('avatarEditContainer', null, letter, 'profile-edit-avatar');
+          updateAvatarContainer('avatarEditContainer', null, profile.letter, 'profile-edit-avatar');
 
           target.remove();
         }

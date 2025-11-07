@@ -56,32 +56,42 @@
   stroke: black;
   stroke-width: 150;
   stroke-linejoin: round;
+  transition: fill 0.3s ease, stroke 0.3s ease;
 }
 
-.home a.active svg {
+.home a.active svg, .home a.active:hover svg {
   fill: #fafafa;
   stroke: #fafafa;
   stroke-width: 150;
   stroke-linejoin: round;
 }
 
+.home a:hover svg {
+  fill: #a766ff;
+  stroke: #a766ff;
+}
+
+.profile a svg {
+  transition: fill 0.3s ease;
+}
+
+.profile a.active svg, .profile a.active:hover svg {
+  fill: #fafafa;
+}
+
+.profile a:hover svg {
+  fill: #a766ff;
+}
+
 .library {
   margin-top: 5px;
 }
 
-.menu-item a.active {
+.menu-item a.active:hover, .menu-item a.active {
   color: #fafafa;
 }
 
-.menu-item a.active:hover {
-  color: #fafafa;
-}
-
-.menu-item a:hover {
-  color: #a766ff;
-}
-
-.menu-item:hover {
+.menu-item a:hover, .menu-item:hover {
   color: #a766ff;
 }
 
