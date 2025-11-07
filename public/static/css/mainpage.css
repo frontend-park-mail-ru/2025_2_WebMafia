@@ -20,6 +20,14 @@ body {
   flex: 1;
   min-height: 0;
   margin-bottom: 90px;
+  transition: margin-bottom 0.3s ease; 
+}
+
+.layout.whithout_player {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  margin-bottom: 0px;
 }
 
 /* Content */

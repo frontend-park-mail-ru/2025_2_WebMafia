@@ -15,6 +15,10 @@
   bottom: 0;
 }
 
+.player.none_playing {
+  display: none;
+} 
+
 /* Левая часть */
 .player-left {
   margin-left: 20px;
@@ -300,6 +304,7 @@
 .volume-icon {
   transition: color 0.3s ease;
   color: #fff;
+  cursor: pointer;
 }
 
 .volume-mute-cross {

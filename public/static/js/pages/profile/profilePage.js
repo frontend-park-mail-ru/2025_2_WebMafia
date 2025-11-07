@@ -7,7 +7,7 @@ import { sidebar } from '../sidebar/sidebar.js';
 import { slider } from '../../slider.js';
 import { header } from '../header/header.js';
 import { setPlayButtonsOnAuth } from '../../setPlayButtonsOnAuth.js';
-import { FormValidator } from "../../validation.js";
+import { FormValidator } from '../../validation.js';
 
 export class ProfilePage {
   async render() {
@@ -200,10 +200,7 @@ export class ProfilePage {
               updateAvatarContainer('avatarEditContainer', event.target.result);
 
               if (!document.getElementById('deleteAvatarButton')) {
-                editAvatarButtons.insertAdjacentHTML(
-                  'beforeend',
-                  `<button id="deleteAvatarButton" class="secondary-button save-avatar-button-size">Удалить фото</button>`
-                );
+                editAvatarButtons.insertAdjacentHTML('beforeend', `<button id="deleteAvatarButton" class="secondary-button save-avatar-button-size">Удалить фото</button>`);
               }
             };
             reader.readAsDataURL(file);
@@ -277,12 +274,7 @@ export class ProfilePage {
       },
     };
 
-    const editValidator = new FormValidator(
-      'editProfileForm',
-      editValidators,
-      editInformation,
-      '.primary-button'
-    );
+    const editValidator = new FormValidator('editProfileForm', editValidators, editInformation, '.primary-button');
 
     editValidator.init();
 
@@ -319,7 +311,7 @@ export class ProfilePage {
           const login = document.getElementById('login').value;
           let password = document.getElementById('password').value;
           if (email !== profile.email || login !== profile.nickname || password) {
-            if (!password) password = "";
+            if (!password) password = '';
             const data = await apiServise.editUser(login, email, password);
             console.log(data);
             const newLogin = data.Login;
@@ -335,7 +327,7 @@ export class ProfilePage {
             }
 
             const newLetter = newLogin[0] ? newLogin[0].toUpperCase() : '?';
-            document.querySelectorAll('.default-avatar').forEach(el => {
+            document.querySelectorAll('.default-avatar').forEach((el) => {
               el.textContent = newLetter;
             });
           }

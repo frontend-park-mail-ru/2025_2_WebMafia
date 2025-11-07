@@ -11,6 +11,12 @@ export function playTrack() {
     button.addEventListener('click', async (event) => {
       const trackId = event.currentTarget.dataset.trackId;
       const current = player.currentTrack;
+      const nowPlayingContainer = document.querySelector('.now-playing-container');
+      const playerContent = document.querySelector('.player');
+      const layout = document.querySelector('.layout');
+      if (layout) layout.classList.remove('whithout_player');
+      if (playerContent) playerContent.classList.remove('none_playing');
+      if (nowPlayingContainer) nowPlayingContainer.classList.remove('none_play');
 
       if (!current || current.id !== trackId) {
         currentTrackId = trackId;

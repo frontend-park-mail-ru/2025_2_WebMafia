@@ -10,6 +10,10 @@
   box-sizing: border-box;
 }
 
+.now-playing-container.none_play {
+  display: none;
+}
+
 .hidden {
   opacity: 0 !important; 
   pointer-events: none !important; 

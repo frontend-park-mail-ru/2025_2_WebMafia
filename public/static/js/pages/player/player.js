@@ -1,5 +1,5 @@
 import { apiServise, API_TRACKS_URL } from '../../data.js';
-import { getValidImage } from "../../parsers.js";
+import { getValidImage } from '../../parsers.js';
 
 export class Player extends EventTarget {
   constructor() {
@@ -13,15 +13,15 @@ export class Player extends EventTarget {
 
   async init() {
     // window.addEventListener('popstate', () => this.updateVisibility());
-    const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
-    if (!isAuthenticated) {
-      window.addEventListener('va-navigate', () => this.updateVisibility());
-    }
+    // const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+    // if (!isAuthenticated) {
+    //   window.addEventListener('va-navigate', () => this.updateVisibility());
+    // }
     await this.updateVisibility();
-    this.trackSwitching();
-    this.likeTrack();
-    this.soundChange();
-    this.playPauseSwitch();
+    // this.trackSwitching();
+    // this.likeTrack();
+    // this.soundChange();
+    // this.playPauseSwitch();
   }
 
   async updateVisibility() {
@@ -31,12 +31,7 @@ export class Player extends EventTarget {
 
     if (isAuthenticated && !isAuthPage) {
       if (!document.getElementById('player')) {
-        await this.render(); // только если плеера ещё нет
-      }
-    }
-    if (!isAuthPage) {
-      if (!document.getElementById('player')) {
-        await this.renderWithoutData();
+        await this.render();
       }
     } else {
       await this.destroy();
@@ -94,7 +89,9 @@ export class Player extends EventTarget {
     }
 
     try {
-      const allTracks = await apiServise.request('/tracks?limit=1000').catch(() => []); // Увеличим лимит
+      // const allTracks = await apiServise.request('/tracks?limit=1000').catch(() => []); // Увеличим лимит
+      const currentTrackArtistId = this.currentTrack.artists[0].id;
+      const allTracks = await apiServise.request(`/artists/${currentTrackArtistId}/tracks`).catch(() => []);
 
       const currentIndex = allTracks.findIndex((t) => t.id === this.currentTrack.id);
       if (currentIndex === -1) {
@@ -120,17 +117,28 @@ export class Player extends EventTarget {
   }
 
   async render() {
-    await this.renderWithoutData();
+    const contentTemplate = Handlebars.templates['player.hbs'];
+    const playerHTML = contentTemplate();
+    const playerContainer = document.getElementById('player-container');
+    if (playerContainer && !document.getElementById('player')) {
+      playerContainer.insertAdjacentHTML('afterbegin', playerHTML);
+    }
 
-    this.audio.addEventListener('timeupdate', () => {
-      this.updateCurrentTimeAndSlider();
-    });
+    // 2. И ТОЛЬКО ПОТОМ, когда HTML на месте, "оживляем" его
+    this.volumeRender();
+    this.playPauseSwitch();
+    this.sliderColorChange();
+    this.likeTrack();
+    this.soundChange();
+    this.trackSwitching(); // <-- Теперь эта функция здесь!
 
     const storedTrackId = localStorage.getItem('currentTrackId');
     let storedTrackData = await this.getDataTrackById(storedTrackId);
 
     await Promise.all([this.loadTrack(storedTrackData), this.getPrevAndNextTracks()]);
-
+    this.audio.addEventListener('timeupdate', () => {
+      this.updateCurrentTimeAndSlider();
+    });
     this.setInitialVolume();
     this.setInitialPLayTime();
 
@@ -164,8 +172,10 @@ export class Player extends EventTarget {
     const durationFormatted = `${minutes}:${seconds.toString().padStart(2, '0')}`;
     document.querySelector('.track-time.total').textContent = durationFormatted;
 
+    // let file_url = track.file_url.split('/').pop();
     document.querySelector('.track-cover-player').src = getValidImage('albums/' + track?.album?.avatar_url, 'default-album.png');
 
+    // let file_url = track.file_url.split('/').pop();
     let file_url = track.file_url;
     this.audio.src = file_url ? `${API_TRACKS_URL}/${file_url}` : `static/music/${file_url}`;
 
@@ -210,7 +220,7 @@ export class Player extends EventTarget {
     function updateVolumeSlider(volume) {
       volumeIcon.classList.remove('level-0', 'level-1', 'level-2', 'level-3');
 
-      if (volume === 0) {
+      if (volume == 0) {
         volumeIcon.classList.add('level-0');
       } else if (volume <= 35) {
         volumeIcon.classList.add('level-1');
@@ -240,6 +250,21 @@ export class Player extends EventTarget {
     updateVolumeSlider(volumeSlider.value);
     volumeSlider.addEventListener('input', function () {
       updateVolumeSlider(this.value);
+    });
+
+    volumeIcon.addEventListener('click', () => {
+      const preval = volumeSlider.value;
+      if (volumeSlider.value === 0) {
+        const volumeToRestore = preval > 0 ? preval : 20;
+        volumeSlider.value = volumeToRestore;
+        updateVolumeSlider(volumeToRestore);
+      } else {
+        volumeIcon.classList.add('level-0');
+        volumeSlider.value = 0;
+        updateVolumeSlider(0);
+      }
+      volumeSlider.dispatchEvent(new Event('input'));
+      volumeSlider.dispatchEvent(new Event('change'));
     });
   }
 

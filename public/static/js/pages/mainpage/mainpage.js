@@ -8,6 +8,7 @@ import { player } from '../player/player.js';
 import { playTrack } from '../../playTrackBtn.js';
 import { getValidImage, playsParser } from '../../parsers.js';
 import { setPlayButtonsOnAuth } from '../../setPlayButtonsOnAuth.js';
+import { playerOnlyOnPlay } from '../../playerOnlyOnplay.js';
 
 export class MainPage {
   async render() {
@@ -62,7 +63,7 @@ export class MainPage {
     }
 
     document.getElementById('app').innerHTML = contentTemplate(pageData);
-
+    playerOnlyOnPlay();
     await Promise.all([header.render(), sidebar.render()]);
 
     slider.sliderFunction();
@@ -93,20 +94,21 @@ export class MainPage {
     function playerSliderDataSync({ prev, current, next }) {
       const prevCard = document.querySelector('.card-position-prev');
       const nextCard = document.querySelector('.card-position-next');
+      const prevCardImage = document.querySelector('.card-position-prev img');
       if (next) {
         nextBtn.classList.remove('hidden');
-        nextCard.classList.remove('hidden');
+        if (nextCard) nextCard.classList.remove('hidden');
       } else {
         nextBtn.classList.add('hidden');
-        nextCard.classList.add('hidden');
+        if (nextCard) nextCard.classList.add('hidden');
       }
 
       if (prev) {
         prevBtn.classList.remove('hidden');
-        prevCard.classList.remove('hidden');
+        if (prevCard) prevCard.classList.remove('hidden');
       } else {
         prevBtn.classList.add('hidden');
-        prevCard.classList.add('hidden');
+        if (prevCard) prevCard.classList.add('hidden');
       }
 
       cardsData = [playerData(prev), playerData(current), playerData(next)];
@@ -119,7 +121,7 @@ export class MainPage {
       }
 
       const imageUrl = getValidImage('albums/' + track.album?.avatar_url, 'default-album.png');
-      const artistName = track.artists?.[0]?.name;
+      const artistName = track.title;
 
       return {
         title: track.title,
@@ -136,7 +138,7 @@ export class MainPage {
 
       if (prevCard) {
         prevCard.querySelector('img').src = cardsData[0].img;
-        updateCardUI(prevCard, cardsData[0]);
+        updateCardUI(prevCard, null);
       }
       if (currentCard) {
         currentCard.querySelector('img').src = cardsData[1].img;
@@ -144,7 +146,7 @@ export class MainPage {
       }
       if (nextCard) {
         nextCard.querySelector('img').src = cardsData[2].img;
-        updateCardUI(nextCard, cardsData[2]);
+        updateCardUI(nextCard, null);
       }
       playTrack();
     }

@@ -7,6 +7,7 @@ import { sidebar } from '../sidebar/sidebar.js';
 import { slider } from '../../slider.js';
 import { playTrack } from '../../playTrackBtn.js';
 import { setPlayButtonsOnAuth } from '../../setPlayButtonsOnAuth.js';
+import { playerOnlyOnPlay } from '../../playerOnlyOnplay.js';
 
 export class ArtistPage {
   async render(id) {
@@ -80,7 +81,7 @@ export class ArtistPage {
     const contentTemplate = Handlebars.templates['artistPage.hbs'];
     document.getElementById('app').innerHTML = contentTemplate(pageData);
     document.querySelector('head title').textContent = pageData.name;
-
+    playerOnlyOnPlay();
     await Promise.all([header.render(), sidebar.render()]);
 
     slider.sliderFunction();

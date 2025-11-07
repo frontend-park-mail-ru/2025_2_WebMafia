@@ -86,7 +86,8 @@
 }
 
 .library-items{
-  display: flex;
+  /* display: flex; */
+  display: none;
   flex-direction: column;
   gap: 14px;
   margin: 10px 0 10px 32px;

@@ -5,6 +5,8 @@ import { sidebar } from '../sidebar/sidebar.js';
 import { initScrollbar } from '../../scrollbar.js';
 import { durationParser, getValidImage, playsParser } from '../../parsers.js';
 import { playTrack } from '../../playTrackBtn.js';
+import { playerOnlyOnPlay } from '../../playerOnlyOnplay.js';
+import { setPlayButtonsOnAuth } from '../../setPlayButtonsOnAuth.js';
 
 export class ArtistTracksPage {
   async render(artistId) {
@@ -50,8 +52,9 @@ export class ArtistTracksPage {
     }
 
     document.getElementById('app').innerHTML = contentTemplate(pageData);
-
+    playerOnlyOnPlay();
     await Promise.all([header.render(), sidebar.render()]);
+    setPlayButtonsOnAuth();
     initScrollbar();
     playTrack();
   }

@@ -6,6 +6,7 @@ import { initScrollbar } from '../../scrollbar.js';
 import { getValidImage } from '../../parsers.js';
 import { playTrack } from '../../playTrackBtn.js';
 import { setPlayButtonsOnAuth } from '../../setPlayButtonsOnAuth.js';
+import { playerOnlyOnPlay } from '../../playerOnlyOnplay.js';
 
 export class ArtistAlbumsPage {
   async render(artistId) {
@@ -53,7 +54,7 @@ export class ArtistAlbumsPage {
     }
 
     document.getElementById('app').innerHTML = contentTemplate(pageData);
-
+    playerOnlyOnPlay();
     await Promise.all([header.render(), sidebar.render()]);
 
     initScrollbar();
