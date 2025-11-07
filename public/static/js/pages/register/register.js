@@ -19,22 +19,22 @@ export class RegistrationPage {
   initValidation() {
     const validators = {
       email: (value) => {
-        if (!value.trim()) return 'Поле обязательно для заполнения';
-        if (!/\S+@\S+\.\S+/.test(value)) return 'Некорректный формат email';
+        if (!value.trim()) return 'Обязательно для заполнения';
+        if (!/\S+@\S+\.\S+/.test(value)) return 'Некорректный формат';
         return null;
       },
       login: (value) => {
-        if (!value.trim()) return 'Поле обязательно для заполнения';
+        if (!value.trim()) return 'Обязательно для заполнения';
         if (value.length < 5) return 'Слишком короткое имя пользователя';
         return null;
       },
       password: (value) => {
-        if (!value) return 'Поле обязательно для заполнения';
+        if (!value) return 'Обязательно для заполнения';
         if (value.length < 8) return 'Слишком короткий пароль';
         return null;
       },
       passwordConfirm: (value) => {
-        if (!value) return 'Поле обязательно для заполнения';
+        if (!value) return 'Обязательно для заполнения';
         const passwordInput = document.getElementById('password');
         if (value !== passwordInput.value) {
           return 'Пароли не совпадают';
@@ -47,14 +47,17 @@ export class RegistrationPage {
       email: (value) => {
         const errors = [];
         if (!/\S+@\S+\.\S+/.test(value)) {
-          errors.push('Почта должна быть в формате address@domain.com');
+          errors.push('Формат: example@mail.com');
         }
         return errors.length ? errors : null;
       },
       login: (value) => {
         const errors = [];
         if (value.length < 5) {
-          errors.push('Логин должен содержать минимум 5 символов');
+          errors.push('Минимум 5 символов');
+        }
+        else if (value.length > 35) {
+          errors.push('Максимум 35 символов');
         }
         return errors.length ? errors : null;
       },
@@ -62,10 +65,10 @@ export class RegistrationPage {
         const errors = [];
         const passwordConfirm = document.getElementById('passwordConfirm');
         if (value.length < 8) {
-          errors.push('Пароль должен содержать минимум 8 символов');
+          errors.push('Минимум 8 символов');
         }
         if (value !== passwordConfirm.value) {
-          errors.push('Пароли должны совпадать');
+          errors.push('Пароли не совпадают');
         }
         return errors.length ? errors : null;
       },
@@ -73,10 +76,10 @@ export class RegistrationPage {
         const errors = [];
         const password = document.getElementById('password');
         if (value.length < 8) {
-          errors.push('Пароль должен содержать минимум 8 символов');
+          errors.push('Минимум 8 символов');
         }
         if (value !== password.value) {
-          errors.push('Пароли должны совпадать');
+          errors.push('Пароли не совпадают');
         }
         return errors.length ? errors : null;
       },
@@ -103,41 +106,13 @@ export class RegistrationPage {
         router.navigate('/');
         await player.init();
       } catch (error) {
-        console.error('Registration or auto-login failed:', error.message);
-
-        let errorMessage = 'Произошла неизвестная ошибка. Попробуйте снова.';
-
-        if (error.message === 'resource conflict') {
-          errorMessage = 'Пользователь с таким именем или email уже существует.';
-        } else if (error.message === 'bad request') {
-          errorMessage = 'Некорректные данные. Проверьте все поля.';
-        }
-
-        this.showMessage(errorMessage, false);
+        let msg = 'Ошибка регистрации.';
+        if (error.message === 'resource conflict') msg = 'Пользователь уже существует.';
+        else if (error.message === 'bad request') msg = 'Некорректный запрос. Проверьте введенные данные.';
+        validator.showMessage(msg);
       }
     };
 
     validator.init();
-    this.setupMessageElement();
-  }
-
-  showMessage(message, isSuccess = false) {
-    const messageElement = document.getElementById('generalError');
-    if (messageElement) {
-      messageElement.textContent = message;
-      messageElement.style.color = isSuccess ? '#27ae60' : '#e74c3c';
-      messageElement.style.backgroundColor = isSuccess ? 'rgba(39, 174, 96, 0.1)' : 'rgba(231, 76, 60, 0.1)';
-      messageElement.classList.add('show');
-    }
-  }
-
-  setupMessageElement() {
-    const messageElement = document.getElementById('generalError');
-    if (messageElement) {
-      messageElement.style.textAlign = 'center';
-      messageElement.style.marginBottom = '15px';
-      messageElement.style.padding = '10px';
-      messageElement.style.borderRadius = '5px';
-    }
   }
 }

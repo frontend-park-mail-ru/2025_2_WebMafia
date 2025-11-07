@@ -225,6 +225,13 @@ export class apiServises {
     });
   }
 
+  async editUser(login, email, password) {
+    return this.request('/profile', {
+      method: 'PUT',
+      body: { login, email, password },
+    });
+  }
+
   async logoutUser() {
     const csrfToken = await this.getCSRFToken();
     return this.request('/logout', {

@@ -9,8 +9,6 @@ export class Header {
       isAuthenticated: localStorage.getItem('isAuthenticated') === 'true',
     };
 
-    pageData.letter = pageData.nickname ? pageData.nickname[0] : '';
-
     const contentTemplate = Handlebars.templates['header.hbs'];
     const headerHTML = contentTemplate(pageData);
 
@@ -25,7 +23,7 @@ export class Header {
       const data = await apiServise.getProfileData();
       pageData.avatar = data.AvatarURL ? getValidImage(data.AvatarURL) : data.AvatarURL;
       pageData.nickname = data.Login;
-      pageData.letter = pageData.nickname ? pageData.nickname[0] : '';
+      pageData.letter = pageData.nickname ? pageData.nickname[0].toUpperCase() : '';
     } catch (error) {
       console.error('Failed to load user data:', error);
       localStorage.removeItem('isAuthenticated');

@@ -7,6 +7,7 @@ import { sidebar } from '../sidebar/sidebar.js';
 import { slider } from '../../slider.js';
 import { header } from '../header/header.js';
 import { setPlayButtonsOnAuth } from '../../setPlayButtonsOnAuth.js';
+import { FormValidator } from "../../validation.js";
 
 export class ProfilePage {
   async render() {
@@ -33,7 +34,7 @@ export class ProfilePage {
       const profile = await apiServise.getProfileData();
       pageData.profile.avatar = profile.AvatarURL ? getValidImage(profile.AvatarURL) : profile.AvatarURL;
       pageData.profile.nickname = profile.Login;
-      pageData.profile.letter = pageData.profile.nickname ? pageData.profile.nickname[0] : '';
+      pageData.profile.letter = pageData.profile.nickname ? pageData.profile.nickname[0].toUpperCase() : '';
       pageData.profile.email = profile.Email;
       pageData.top_artists = (data.top_artists || []).map((artist) => ({
         id: artist.id,
@@ -101,6 +102,28 @@ export class ProfilePage {
         selectedAvatarFile = null;
         deleteAvatar = false;
 
+        const errorElements = document.querySelectorAll('.error-message');
+        errorElements.forEach((el) => {
+          el.textContent = '';
+          el.classList.remove('show');
+        });
+
+        const infoElements = document.querySelectorAll('.validation-message');
+        infoElements.forEach((el) => {
+          el.textContent = '';
+          el.classList.remove('show');
+        });
+
+        const formGroups = document.querySelectorAll('.form-group.error');
+        formGroups.forEach((group) => group.classList.remove('error'));
+
+        const messageElement = document.getElementById('generalError');
+        if (messageElement) {
+          messageElement.textContent = '';
+          messageElement.classList.remove('show');
+          messageElement.style.backgroundColor = '';
+        }
+
         editProfileOverlay.classList.remove('active');
       });
     }
@@ -109,7 +132,17 @@ export class ProfilePage {
       editProfileOverlay.addEventListener('click', (e) => {
         e.preventDefault();
         if (e.target === editProfileOverlay) {
-          editProfileOverlay.classList.remove('active');
+          const modal = editProfileOverlay.querySelector('.edit-profile-window');
+          if (!modal) return;
+
+          modal.classList.remove('highlight');
+          void modal.offsetWidth;
+          modal.classList.add('highlight');
+
+          modal.addEventListener('animationend', function handler() {
+            modal.classList.remove('highlight');
+            modal.removeEventListener('animationend', handler);
+          });
         }
       });
     }
@@ -190,12 +223,79 @@ export class ProfilePage {
       });
     }
 
+    const editValidators = {
+      email: (value) => {
+        if (!value) return 'Поле обязательно для заполнения';
+        if (!/\S+@\S+\.\S+/.test(value)) return 'Некорректный email';
+        return null;
+      },
+      login: (value) => {
+        if (!value) return 'Поле обязательно для заполнения';
+        if (value.length < 5) return 'Минимум 5 символов';
+        else if (value.length > 35) return 'Максимум 35 символов';
+        return null;
+      },
+      password: (value) => {
+        if (value && value.length < 8) return 'Минимум 8 символов';
+        return null;
+      },
+      passwordConfirm: (value) => {
+        const password = document.getElementById('password')?.value;
+        if (value !== password) return 'Пароли не совпадают';
+        return null;
+      },
+    };
+
+    const editInformation = {
+      email: (value) => (!/\S+@\S+\.\S+/.test(value) ? 'Формат: example@mail.com' : null),
+      login: (value) => {
+        if (value.length < 5) return 'Минимум 5 символов';
+        else if (value.length > 35) return 'Максимум 35 символов';
+        return null;
+      },
+      password: (value) => {
+        const errors = [];
+        const passwordConfirm = document.getElementById('passwordConfirm');
+        if (value && value.length < 8) {
+          errors.push('Минимум 8 символов');
+        }
+        if (value !== passwordConfirm.value) {
+          errors.push('Пароли не совпадают');
+        }
+        return errors.length ? errors : null;
+      },
+      passwordConfirm: (value) => {
+        const errors = [];
+        const password = document.getElementById('password');
+        if (value && value.length < 8) {
+          errors.push('Минимум 8 символов');
+        }
+        if (value !== password.value) {
+          errors.push('Пароли не совпадают');
+        }
+        return errors.length ? errors : null;
+      },
+    };
+
+    const editValidator = new FormValidator(
+      'editProfileForm',
+      editValidators,
+      editInformation,
+      '.primary-button'
+    );
+
+    editValidator.init();
+
     const saveButton = document.getElementById('saveProfileChangesButton');
     if (saveButton) {
       saveButton.addEventListener('click', async (e) => {
         e.preventDefault();
 
-        //const formData = new FormData(document.getElementById('editProfileForm'));
+        const isValid = editValidator.validateForm();
+        if (!isValid) {
+          editValidator.showMessage('Исправьте ошибки в форме');
+          return;
+        }
 
         try {
           if (selectedAvatarFile) {
@@ -206,23 +306,59 @@ export class ProfilePage {
             updateAvatarContainer('avatarHeaderContainer', newAvatarUrl);
 
             selectedAvatarFile = null;
-          }
-          else if (deleteAvatar) {
+          } else if (deleteAvatar) {
             await apiServise.deleteAvatar();
 
-            updateAvatarContainer('avatarProfileContainer', null, letter, 'default-avatar-profile');
-            updateAvatarContainer('avatarHeaderContainer', null, letter, 'default-avatar-header');
+            updateAvatarContainer('avatarProfileContainer', null, profile.letter, 'default-avatar-profile');
+            updateAvatarContainer('avatarHeaderContainer', null, profile.letter, 'default-avatar-header');
 
             deleteAvatar = false;
           }
 
-          //await apiServise.saveProfile(formData);
-        } catch (err) {
-          console.error(err);
-          alert('Не удалось сохранить изменения');
-        }
+          const email = document.getElementById('email').value;
+          const login = document.getElementById('login').value;
+          let password = document.getElementById('password').value;
+          if (email !== profile.email || login !== profile.nickname || password) {
+            if (!password) password = "";
+            const data = await apiServise.editUser(login, email, password);
+            console.log(data);
+            const newLogin = data.Login;
 
-        editProfileOverlay.classList.remove('active');
+            const headerUsername = document.querySelector('.header-username');
+            if (headerUsername) {
+              headerUsername.textContent = newLogin;
+            }
+
+            const profileUsername = document.querySelector('.profile-username');
+            if (profileUsername) {
+              profileUsername.textContent = newLogin;
+            }
+
+            const newLetter = newLogin[0] ? newLogin[0].toUpperCase() : '?';
+            document.querySelectorAll('.default-avatar').forEach(el => {
+              el.textContent = newLetter;
+            });
+          }
+
+          editValidator.showMessage('Изменения успешно сохранены!', true);
+
+          setTimeout(() => {
+            const messageElement = document.getElementById('generalError');
+            if (messageElement) {
+              messageElement.textContent = '';
+              messageElement.classList.remove('show');
+              messageElement.style.backgroundColor = '';
+            }
+
+            editProfileOverlay.classList.remove('active');
+          }, 1000);
+        } catch (err) {
+          console.error('Ошибка при сохранении профиля:', err);
+          let msg = 'Ошибка при сохранения профиля.';
+          if (err.message === 'resource conflict') msg = 'Пользователь с такими данными уже существует.';
+          else if (err.message === 'bad request') msg = 'Некорректный запрос. Проверьте введенные данные.';
+          editValidator.showMessage(msg);
+        }
       });
     }
   }

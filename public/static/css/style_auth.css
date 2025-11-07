@@ -234,14 +234,15 @@
 
 .validation-message ul {
   margin: 0;
-  padding-left: 16px;
+  padding-left: 4px;
   list-style: none;
 }
 
 .validation-message li {
+  position: relative;
   margin-bottom: 6px;
   line-height: 1.4;
-  position: relative;
+  padding-left: 6px;
 }
 
 .validation-message li:last-child {
@@ -250,11 +251,12 @@
 
 .validation-message li::before {
   content: '•';
-  font-size: 40px;
+  font-size: 24px;
+  color: #444;
   position: absolute;
-  left: -12px;
-  top: 40%;
-  transform: translateY(-50%);
+  left: -5px;
+  top: 50%;
+  transform: translateY(-57%);
 }
 
 input[type='password'] {
