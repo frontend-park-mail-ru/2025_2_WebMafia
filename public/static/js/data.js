@@ -1,4 +1,6 @@
 const API_BASE_URL = 'http://localhost:8080/api/v1';
+export const API_AVATARS_URL = 'http://localhost:8099/avatars';
+export const API_TRACKS_URL = 'http://217.16.17.173:8099/music/tracks';
 
 export class apiServises {
   constructor() {
@@ -6,54 +8,22 @@ export class apiServises {
     this.csrfToken = null;
   }
 
-  async getCsrfToken() {
-    try {
-      const response = await this.request('/csrf-token');
-      const token = response.token || response.csrfToken;
-      this.csrfToken = token;
-      console.log('CSRF token fetched and stored:', this.csrfToken);
-      return this.csrfToken;
-    } catch (error) {
-      console.error('Failed to fetch CSRF token:', error);
-      this.csrfToken = null;
-      throw error;
-    }
-  }
-
-  async ensureCsrfToken() {
-    if (!this.csrfToken) {
-      await this.getCsrfToken();
-    }
-  }
-
   async request(endpoint, options = {}) {
-    const isCsrfRequest = endpoint === '/csrf-token';
     const url = `${this.baseURL}${endpoint}`;
-    const method = options.method || 'GET';
-
-    if (!['GET', 'HEAD', 'OPTIONS'].includes(method.toUpperCase()) && !isCsrfRequest) {
-      await this.ensureCsrfToken();
-
-      if (this.csrfToken) {
-        if (!options.headers) {
-          options.headers = {};
-        }
-        options.headers['X-CSRF-Token'] = this.csrfToken;
-      }
-    }
+    const isFormData = options.body instanceof FormData;
 
     const config = {
       method: options.method || 'GET',
       credentials: 'include',
       headers: {
-        'Content-Type': 'application/json',
+        ...(!isFormData ? { 'Content-Type': 'application/json' } : {}),
         ...options.headers,
       },
       ...options,
     };
 
     if (options.body) {
-      config.body = JSON.stringify(options.body);
+      config.body = isFormData ? options.body : JSON.stringify(options.body);
     }
 
     const response = await fetch(url, config);
@@ -74,7 +44,11 @@ export class apiServises {
 
   async getMainPageData() {
     try {
-      const [albums, tracks, artists] = await Promise.all([this.request('/albums?limit=20').catch(() => []), this.request('/tracks?limit=30').catch(() => []), this.request('/artists?limit=20').catch(() => [])]);
+      const [albums, tracks, artists] = await Promise.all([
+        this.request('/albums?limit=20').catch(() => []),
+        this.request('/tracks?limit=30').catch(() => []),
+        this.request('/artists?limit=20').catch(() => [])
+      ]);
 
       return {
         albums: albums || [],
@@ -90,7 +64,7 @@ export class apiServises {
   async getArtistPageData(id) {
     try {
       const [albums, popular_tracks, artist, similar_artists] = await Promise.all([
-        this.request(`/artists/${id}/albums`).catch(() => []),
+        this.request(`/artists/${id}/albums?limit=10`).catch(() => []),
         this.request(`/artists/${id}/tracks?limit=5`).catch(() => []),
         this.request(`/artists/${id}`).catch(() => []),
         this.request('/artists?limit=10').catch(() => []),
@@ -108,8 +82,133 @@ export class apiServises {
     }
   }
 
+  async getArtistAlbums(id) {
+    try {
+      const [albums, artist] = await Promise.all([
+        this.request(`/artists/${id}/albums`).catch(() => []),
+        this.request(`/artists/${id}`).catch(() => []),
+      ]);
+      return { albums: albums, artist: artist };
+    } catch (error) {
+      console.error('Failed to load artist albums page data:', error);
+      throw error;
+    }
+  }
+
+  async getArtistTracks(id) {
+    try {
+      const [tracks, artist] = await Promise.all([
+        this.request(`/artists/${id}/tracks`).catch(() => []),
+        this.request(`/artists/${id}`).catch(() => []),
+      ]);
+      return { tracks: tracks, artist: artist };
+    } catch (error) {
+      console.error('Failed to load artist albums page data:', error);
+      throw error;
+    }
+  }
+
   async getProfilePageData() {
-    return this.request('/profile');
+    try {
+      const [artists, top_tracks] = await Promise.all([
+        this.request('/artists?limit=10').catch(() => []),
+        this.request(`/tracks?limit=5`).catch(() => []),
+      ]);
+
+      return {
+        top_artists: artists || [],
+        top_tracks: top_tracks || [],
+        recent: artists || [],
+      };
+    } catch (error) {
+      console.error('Failed to load profile page data:', error);
+      throw error;
+    }
+  }
+
+  async getProfileData() {
+    try {
+      const profile = await this.request('/me');
+      return profile;
+    } catch (error) {
+      console.error('Failed to load profile data:', error);
+      throw error;
+    }
+  }
+
+  async getCSRFToken() {
+    if (this.csrfToken) return this.csrfToken;
+
+    const data = await this.request('/csrf-token');
+    this.csrfToken = data.csrf_token;
+    return this.csrfToken;
+  }
+
+  async loadTrackById(id) {
+    if (!id) return null;
+    try {
+      const track = this.request(`/tracks/${id}`).catch(() => []);
+      return track;
+    } catch (error) {
+      console.error('Failed to load artist page data:', error);
+      throw error;
+    }
+  }
+
+  async uploadAvatar(file) {
+    const csrfToken = await this.getCSRFToken();
+
+    const profile = await this.request(`/me`);
+
+    if (profile.AvatarURL) {
+      await this.request('/avatar', {
+        method: 'DELETE',
+        headers: {
+          'X-CSRF-Token': csrfToken,
+        },
+      });
+    }
+
+    const formData = new FormData();
+    formData.append('avatar', file);
+
+    const data = await this.request('/avatar', {
+      method: 'POST',
+      headers: {
+        'X-CSRF-Token': csrfToken,
+      },
+      body: formData,
+    });
+
+    return data;
+  }
+
+  async deleteAvatar() {
+    try {
+      const csrfToken = await this.getCSRFToken();
+      return await this.request('/avatar', {
+        method: 'DELETE',
+        headers: {
+          'X-CSRF-Token': csrfToken,
+        },
+      });
+    } catch (error) {
+      console.error('Ошибка при удалении аватара:', error);
+      throw error;
+    }
+  }
+
+  async getAlbumPageData(id) {
+    try {
+      const [album, tracks] = await Promise.all([
+        this.request(`/albums/${id}`).catch(() => []),
+        this.request(`/albums/${id}/tracks`).catch(() => [])
+      ]);
+      return { album: album || {}, tracks: tracks || [] };
+    } catch (error) {
+      console.error('Failed to load album page data:', error);
+      throw error;
+    }
   }
 
   async loginUser(login, password) {
@@ -127,8 +226,12 @@ export class apiServises {
   }
 
   async logoutUser() {
+    const csrfToken = await this.getCSRFToken();
     return this.request('/logout', {
       method: 'POST',
+      headers: {
+        'X-CSRF-Token': csrfToken,
+      },
     });
   }
 }

@@ -7,29 +7,20 @@ import { slider } from '../../slider.js';
 import { player } from '../player/player.js';
 import { playTrack } from '../../playTrackBtn.js';
 import { getValidImage, playsParser } from '../../parsers.js';
+import { setPlayButtonsOnAuth } from '../../setPlayButtonsOnAuth.js';
 
 export class MainPage {
   async render() {
-    const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
-    // if (!isAuthenticated) {
-    //   router.navigate('/login');
-    //   return;
-    // }
-
     let pageData = {
-      isAuthenticated: isAuthenticated,
+      isAuthenticated: localStorage.getItem('isAuthenticated') === 'true',
       artists: [],
       albums: [],
       tracks: [],
-      nickname: 'Александр Константинов',
-      letter: '',
     };
 
-    const contentTemplateWithoutData = Handlebars.templates['MainPage.hbs'];
-    document.getElementById('app').innerHTML = contentTemplateWithoutData(pageData);
-
-    pageData.isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
-    pageData.letter = pageData.nickname ? pageData.nickname[0] : '';
+    const contentTemplate = Handlebars.templates['MainPage.hbs'];
+    document.getElementById('app').innerHTML = contentTemplate(pageData);
+    document.querySelector('head title').textContent = 'Wave Music';
 
     try {
       const data = await apiServise.getMainPageData();
@@ -37,20 +28,21 @@ export class MainPage {
         id: artist.id,
         name: artist.name,
         listeners: playsParser(artist.listeners || 0),
-        image: getValidImage(artist.avatar_url, 'default_artist_avatar.png'),
+        image: getValidImage('artists/' + artist.avatar_url, 'default-artist.png'),
       }));
       pageData.albums = (data.albums || []).map((album) => ({
         id: album.id,
         name: album.title,
-        image: getValidImage(album.avatar_url, 'default_album_avatar.png'),
+        image: getValidImage('albums/' + album.avatar_url, 'default-album.png'),
         artist: album.artists ? album.artists[0].name : 'Unknown Artist',
         type: album.type,
       }));
       pageData.tracks = (data.tracks || []).map((track) => ({
         id: track.id,
         name: track.title,
-        image: getValidImage(track.album.avatar_url, 'default_album_avatar.png'),
+        image: getValidImage('albums/' + track.album.avatar_url, 'default-album.png'),
         artists: track.artists,
+        album_id: track.album.id,
       }));
     } catch (error) {
       console.error('Failed to load main page data:', error);
@@ -69,45 +61,25 @@ export class MainPage {
       return;
     }
 
-    const contentTemplate = Handlebars.templates['MainPage.hbs'];
     document.getElementById('app').innerHTML = contentTemplate(pageData);
 
-    header.render();
-    sidebar.render();
+    await Promise.all([header.render(), sidebar.render(), this.nowPlayingCardSlider()]);
 
     slider.sliderFunction();
-    this.nowPlayingCardSlider();
     initScrollbar();
-    this.setPlayButtonsOnAuth();
+    setPlayButtonsOnAuth();
     playTrack();
   }
 
-  setPlayButtonsOnAuth() {
-    const playbtn = document.querySelectorAll('.play-button-track, .play-button, .current-card-btn.play');
-    playbtn.forEach((button) => {
-      button.addEventListener('click', (event) => {
-        const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
-        if (!isAuthenticated) {
-          event.preventDefault();
-          event.stopPropagation();
-          router.navigate('/login');
-        } else {
-          // this.nowPlayingCardSlider();
-          // playTrack();
-        }
-      });
-    });
-  }
-
-  nowPlayingCardSlider() {
+  async nowPlayingCardSlider() {
     const prevBtn = document.querySelector('.current-card-btn.prev');
     const nextBtn = document.querySelector('.current-card-btn.next');
     const cardElements = document.querySelectorAll('.now-playing-container-card');
 
     let cardsData = [
-      { img: '/static/img/default_album_avatar.png', name: '', id: null },
-      { img: '/static/img/default_album_avatar.png', name: '', id: null },
-      { img: '/static/img/default_album_avatar.png', name: '', id: null },
+      { img: '/static/img/default-album.png', name: '', id: null },
+      { img: '/static/img/default-album.png', name: '', id: null },
+      { img: '/static/img/default-album.png', name: '', id: null },
     ];
 
     player.addEventListener('trackchange', (event) => {
@@ -115,7 +87,7 @@ export class MainPage {
     });
 
     let isAnimating = false;
-    const animationDuration = 500; // Должно совпадать с 'transition' в вашем CSS
+    const animationDuration = 500;
 
     function playerSliderDataSync({ prev, current, next }) {
       const prevCard = document.querySelector('.card-position-prev');
@@ -142,13 +114,17 @@ export class MainPage {
 
     function playerData(track) {
       if (!track) {
-        return { img: '/static/img/default_album_avatar.png', name: '' };
+        return { img: '/static/img/default-album.png', name: '', id: null };
       }
+
+      const imageUrl = getValidImage('albums/' + tracks.album?.avatar_url, 'default-album.png');
+      const artistName = track.artists?.[0]?.name;
+
       return {
         title: track.title,
         id: track.id,
-        img: `static/img/${track.imageUrl}`,
-        name: track.artist,
+        img: imageUrl,
+        name: artistName,
       };
     }
 
@@ -159,7 +135,7 @@ export class MainPage {
 
       if (prevCard) {
         prevCard.querySelector('img').src = cardsData[0].img;
-        updateCardUI(prevCard, null);
+        updateCardUI(prevCard, cardsData[0]);
       }
       if (currentCard) {
         currentCard.querySelector('img').src = cardsData[1].img;
@@ -167,19 +143,18 @@ export class MainPage {
       }
       if (nextCard) {
         nextCard.querySelector('img').src = cardsData[2].img;
-        updateCardUI(nextCard, null);
+        updateCardUI(nextCard, cardsData[2]);
       }
       playTrack();
     }
 
-    // Функция для управляет UI элементами на карточке.
     function updateCardUI(card, data = null) {
       const existingButton = card.querySelector('.current-card-btn.play');
       const existingName = card.querySelector('.current-card-name');
       if (existingButton) existingButton.remove();
       if (existingName) existingName.remove();
 
-      if (data && data.name) {
+      if (data && data.name && data.id) {
         const playButton = document.createElement('button');
         playButton.className = 'current-card-btn play';
         playButton.dataset.trackId = data.id;
@@ -191,7 +166,6 @@ export class MainPage {
       }
     }
 
-    // Функция для первоначальной расстановки
     function initializeSlider() {
       cardElements.forEach((card, i) => {
         card.classList.remove('card-position-prev', 'card-position-current', 'card-position-next');
@@ -202,7 +176,6 @@ export class MainPage {
       updateAllCardsUI();
     }
 
-    // Функция сдвига карточек
     function shiftCards(direction) {
       if (isAnimating) return;
       isAnimating = true;
@@ -239,19 +212,19 @@ export class MainPage {
       }, animationDuration);
     }
 
-    nextBtn.addEventListener('click', () => {
+    nextBtn.addEventListener('click', async () => {
       if (isAnimating) return;
       shiftCards('next');
-      player.nextTrack();
+      await player.nextTrack();
     });
-    prevBtn.addEventListener('click', () => {
+    prevBtn.addEventListener('click', async () => {
       if (isAnimating) return;
       shiftCards('prev');
-      player.prevTrack();
+      await player.prevTrack();
     });
 
     if (player.currentTrack) {
-      player.getPrevAndNextTracks();
+      await player.getPrevAndNextTracks();
     }
     initializeSlider();
   }

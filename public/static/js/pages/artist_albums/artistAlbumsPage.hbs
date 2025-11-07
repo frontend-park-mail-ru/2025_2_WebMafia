@@ -1,0 +1,25 @@
+<div class="section" id="section">
+  {{> header}}
+  <div class="layout">
+    {{> sidebar}}
+    <div class="page" id="scrollContent">
+      <div class="title">
+        <div class="title-name-track-by-artist">Альбомы {{ artistName }}</div>
+      </div>
+      <div class="grid-layout">
+        {{#each albums}}
+        <div class="card">
+          <a href="/album/{{ id }}">
+            <img src="{{ cover }}" alt="{{ name }}" />
+            <div class="card-bottom-info">
+              <p class="card-name">{{ name }}</p>
+              <p class="card-sub">{{ year }}</p>
+            </div>
+          </a>
+          <button class="play-button play-button-placement"></button>
+        </div>
+        {{/each}}
+      </div>
+    </div>
+  </div>
+</div>

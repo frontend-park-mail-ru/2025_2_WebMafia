@@ -35,40 +35,46 @@
   margin-right: 20px;
 }
 
-.nav-link.main {
-  font-size: 36px;
-  font-weight: 700;
+.nav-link {
+  justify-content: center;
+  align-items: center;
+  width: 190px;
+  font-size: 20px;
+  font-weight: 600;
+  color: rgb(0, 0, 0);
+  padding: 10px 15px;
+  cursor: pointer;
 }
 
 .nav-link.login {
   color: #0a0a0a;
   text-decoration: none;
-  font-size: 24px;
-  border-radius: 14px;
-  padding: 10px 15px;
+  font-size: 20px;
   font-weight: 600;
+  transition: color 0.3s ease;
 }
 
 .nav-link.register {
-  color: #0a0a0a;
+  color: #fafafa;
   text-decoration: none;
   padding: 10px 15px;
-  font-size: 24px;
   border-radius: 14px;
-  margin-left: 20px;
+  margin: 0 20px;
+  font-size: 20px;
   font-weight: 600;
+  background: linear-gradient(157deg, #7e4dff, #a766ff, #da96ff) right bottom;
+  background-size: 150% 150%;
+  transition:
+    background-position 0.5s ease,
+    background 0.5s ease;
 }
 
 .nav-link.login:hover {
-  background: linear-gradient(157deg, #7e4dff, #a766ff, #da96ff) right bottom;
-  font-weight: 600;
-  color: #fff;
+  color: #a766ff;
 }
 
 .nav-link.register:hover {
-  background: linear-gradient(157deg, #7e4dff, #a766ff, #da96ff) right bottom;
-  font-weight: 600;
-  color: #fff;
+  background-position: left top;
 }
 
 .profile-dropdown {
@@ -87,6 +93,7 @@
   width: 48px;
   height: 48px;
   border: 3px solid #fff;
+  overflow: hidden;
   border-radius: 50%;
 }
 

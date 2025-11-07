@@ -47,7 +47,7 @@
 }
 
 .page-wrapper {
-  margin: 0 15px 0 10px;
+  margin: 0 20px;
   clip-path: inset(0 round 30px);
   display: flex;
   flex-direction: column;
@@ -142,6 +142,18 @@
   margin-bottom: 30px;
 }
 
+.show-all {
+  margin-right: 20px;
+  font-size: 20px;
+  font-weight: 600;
+  text-decoration: none;
+  color: #393939;
+}
+
+.show-all:hover {
+  text-decoration: underline;
+}
+
 .tracks-table {
   display: flex;
   flex-direction: column;
@@ -192,9 +204,15 @@
 
 .play-popular-track svg {
   fill: #fafafa;
+  height: 18px;
+  width: 18px;
 }
 
 .track-row:hover .play-popular-track {
+  opacity: 1;
+}
+
+.play-popular-track.is-active  {
   opacity: 1;
 }
 
@@ -208,6 +226,11 @@
 
 .track-row:hover .track-cover {
   filter: brightness(0.4);
+}
+
+.track-row.active{
+  /* filter: brightness(0.4); */
+  background-color: rgba(0, 0, 0, 0.2);
 }
 
 .track-name {

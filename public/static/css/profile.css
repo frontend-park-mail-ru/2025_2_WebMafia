@@ -35,7 +35,15 @@
   border: 5px solid #fff;
   border-radius: 50%;
   box-shadow: 0 15px 4px 0 rgba(0, 0, 0, 0.15);
+  overflow: hidden;
   margin: 37px 0 0 60px;
+}
+
+.profile-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
 }
 
 .default-avatar {
@@ -51,7 +59,7 @@
 }
 
 .default-avatar-profile {
-  font-size: 64px;
+  font-size: 100px;
 }
 
 .profile-username {
@@ -114,6 +122,10 @@
 .profile-purple-position {
   top: -55px;
   right: -55px;
+}
+
+.tracks-table-placement {
+  margin: 20px 0 24px 0;
 }
 
 .edit-profile-overlay {

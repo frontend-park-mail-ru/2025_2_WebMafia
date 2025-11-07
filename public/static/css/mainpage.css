@@ -50,14 +50,6 @@ body {
   color: rgb(0, 0, 0);
 }
 
-.show-all a {
-  margin-right: 20px;
-  font-size: 20px;
-  font-weight: 600;
-  text-decoration: none;
-  color: #393939;
-}
-
 /* Slider */
 .slider {
   position: relative;
@@ -169,7 +161,6 @@ body {
 
 .play-button {
   cursor: pointer;
-  position: absolute;
   width: 56px;
   height: 56px;
   color: white;
@@ -186,6 +177,7 @@ body {
 }
 
 .play-button-placement {
+  position: absolute;
   opacity: 0;
   top: 50%;
   left: 60%;
@@ -197,7 +189,7 @@ body {
   height: 0;
   border-style: solid;
   border-width: 10px 0 10px 16px;
-  border-color: transparent transparent transparent #ffffff;
+  border-color: transparent transparent transparent #fafafa;
   margin-left: 2px;
 }
 
@@ -215,8 +207,7 @@ body {
   margin: 0;
 }
 
-
-.play-button-placement:hover {
+.play-button:hover {
   transform: scale(1.03);
   background-position: left top;
 }
@@ -267,11 +258,11 @@ body {
   margin-top: 3px;
 }
 
-.card-sub .dot {
+.dot {
   display: inline-block;
   width: 4px;
   height: 4px;
-  background: #393939;
+  background: #636363;
   border-radius: 50%;
 }
 
@@ -282,7 +273,7 @@ body {
   grid-template-rows: repeat(2, auto);
   max-height: 200px;
   width: 100%;
-  overflow: hidden;
+  overflow: auto;
   scroll-behavior: smooth;
   margin-left: -23px;
   padding-left: 43px;
@@ -357,6 +348,7 @@ body {
 }
 
 .play-button-track {
+  position: absolute;
   left: 24px;
   opacity: 0;
 }
@@ -366,16 +358,13 @@ body {
   background-position: left top;
 }
 
-/* Новые стили для состояния паузы */
 .play-button-track.paused::before {
   border-style: solid;
   border-width: 0;
-  background-color: transparent; /* Убираем фон от треугольника */
-  height: 20px; /* Высота полос */
-  width: 16px; /* Общая ширина значка */
+  background-color: transparent;
+  height: 20px;
+  width: 16px;
   opacity: 1;
-
-  /* Создаем две полосы с помощью box-shadow */
   box-shadow: inset 5px 0 0 0 white, inset -5px 0 0 0 white;
   margin: 0;
 }

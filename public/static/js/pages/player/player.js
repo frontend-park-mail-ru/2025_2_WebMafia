@@ -1,4 +1,5 @@
-// import { apiServise } from '../../data';
+import { apiServise, API_TRACKS_URL } from '../../data.js';
+import { getValidImage } from "../../parsers.js";
 
 export class Player extends EventTarget {
   constructor() {
@@ -8,94 +9,47 @@ export class Player extends EventTarget {
     this.canSaveTime = true;
     this.nextTrackId = null;
     this.prevTrackId = null;
-    this.allData = [
-      {
-        title: 'Японский сэмпл',
-        id: '66666666-6666-6666-6666-666666666666',
-        imageUrl: 'image1.jpg',
-        file_url: 'японский сэмпл 128 бпм.mp3',
-        artist: 'Артём Голубев',
-        duration_ms: 185000,
-        durationFormatted: '3:05',
-      },
-      {
-        title: 'HAZARD DUTY PAY!',
-        id: '77777777-7777-7777-7777-777777777777',
-        imageUrl: 'image2.jpg',
-        file_url: 'JPEGMAFIA - HAZARD DUTY PAY! (Instrumental).mp3',
-        artist: 'JPEGMAFIA',
-        duration_ms: 157000,
-        durationFormatted: '2:37',
-      },
-      {
-        title: 'Take on Me',
-        id: '88888888-8888-8888-8888-888888888888',
-        imageUrl: 'image3.jpg',
-        file_url: 'Take on Me.mp3',
-        artist: 'a-ha',
-        duration_ms: 227000,
-        durationFormatted: '3:47',
-      },
-      {
-        title: 'Everything I am (Official Instrumental HQ)',
-        id: 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbc',
-        imageUrl: 'image4.jpg',
-        file_url: 'Kanye West - Everything I am (Official Instrumental HQ).mp3',
-        artist: 'Kanye West ',
-        duration_ms: 227000,
-        durationFormatted: '3:47',
-      },
-      {
-        title: 'HEAVEN-TO-ME',
-        id: 'dddddddd-dddd-dddd-dddd-ddddddddddde',
-        imageUrl: 'image5.jpg',
-        file_url: 'Tyler-The-Creator-HEAVEN-TO-ME-Instrumental-Prod.-By-John-Legend-Kanye-West (1).mp3',
-        artist: 'Tyler, The Creator',
-        duration_ms: 230000,
-        durationFormatted: '3:50',
-      },
-    ];
   }
 
   async init() {
-    // this.checkAuth();
-    // Мы подписываемся на события, которые генерирует ваш роутер,
-    // чтобы знать, когда URL меняется.
     // window.addEventListener('popstate', () => this.updateVisibility());
-    // Также нам нужен способ "подслушать" вызовы `router.navigate()`.
     const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
-    // Создадим кастомное событие для этого.
     if (!isAuthenticated) {
       window.addEventListener('va-navigate', () => this.updateVisibility());
     }
-    // Запускаем проверку один раз при первоначальной загрузке
-    this.updateVisibility();
+    await this.updateVisibility();
     this.trackSwitching();
     this.likeTrack();
+    this.soundChange();
+    this.playPauseSwitch();
   }
 
-  updateVisibility() {
+  async updateVisibility() {
     const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
     const path = window.location.pathname;
     const isAuthPage = path === '/login' || path === '/register';
 
     if (isAuthenticated && !isAuthPage) {
-      this.render();
+      if (!document.getElementById('player')) {
+        await this.render(); // только если плеера ещё нет
+      }
     }
     if (!isAuthPage) {
-      this.renderWhithoutData();
+      if (!document.getElementById('player')) {
+        await this.renderWithoutData();
+      }
     } else {
-      this.destroy();
+      await this.destroy();
     }
   }
 
-  async renderWhithoutData() {
+  async renderWithoutData() {
     const contentTemplate = Handlebars.templates['player.hbs'];
     const playerHTML = contentTemplate();
 
-    const playerСontainer = document.getElementById('player-container');
-    if (playerСontainer && !document.getElementById('player')) {
-      playerСontainer.insertAdjacentHTML('afterbegin', playerHTML);
+    const playerContainer = document.getElementById('player-container');
+    if (playerContainer && !document.getElementById('player')) {
+      playerContainer.insertAdjacentHTML('afterbegin', playerHTML);
     }
 
     this.volumeRender();
@@ -119,54 +73,54 @@ export class Player extends EventTarget {
   }
 
   async getDataTrackById(track_id) {
-    // const trackData = await apiServise.loadTrackById(track_id);
-    // return trackData;
     if (!track_id) return null;
-    const trackData = this.allData.find((track) => track.id === track_id);
+    const trackData = await apiServise.loadTrackById(track_id);
     return trackData;
   }
 
   async loadTrack(trackData) {
     if (!trackData) return;
     this.currentTrack = trackData;
+    console.log('curtrack', this.currentTrack.id);
     this.loadTrackInfo(this.currentTrack);
     localStorage.setItem('currentTrackId', this.currentTrack.id);
-    this.getPrevAndNextTracks();
+    await this.getPrevAndNextTracks();
   }
 
   async getPrevAndNextTracks() {
-    const currentIndex = this.allData.findIndex((track) => track.id === this.currentTrack.id);
-    const nextTrackObject = this.allData[currentIndex + 1];
-    this.nextTrackId = nextTrackObject ? nextTrackObject.id : null;
-    const prevTrackObject = this.allData[currentIndex - 1];
-    this.prevTrackId = prevTrackObject ? prevTrackObject.id : null;
+    if (!this.currentTrack || !this.currentTrack.id) {
+      console.warn('Невозможно определить соседей: текущий трек не установлен.');
+      return;
+    }
 
-    const [nextTrackData, prevTrackData] = await Promise.all([this.getDataTrackById(this.nextTrackId), this.getDataTrackById(this.prevTrackId)]);
+    try {
+      const allTracks = await apiServise.request('/tracks?limit=1000').catch(() => []); // Увеличим лимит
 
-    const event = new CustomEvent('trackchange', {
-      detail: {
-        prev: prevTrackData,
-        current: this.currentTrack,
-        next: nextTrackData,
-      },
-    });
-    this.dispatchEvent(event);
+      const currentIndex = allTracks.findIndex((t) => t.id === this.currentTrack.id);
+      if (currentIndex === -1) {
+        console.warn('Текущий трек не найден в общем списке треков.');
+        this.nextTrackId = null;
+        this.prevTrackId = null;
+      } else {
+        const nextTrackObject = allTracks[currentIndex + 1];
+        const prevTrackObject = allTracks[currentIndex - 1];
+
+        this.nextTrackId = nextTrackObject ? nextTrackObject.id : null;
+        this.prevTrackId = prevTrackObject ? prevTrackObject.id : null;
+      }
+
+      const [nextTrackData, prevTrackData] = await Promise.all([this.getDataTrackById(this.nextTrackId), this.getDataTrackById(this.prevTrackId)]);
+      const event = new CustomEvent('trackchange', {
+        detail: { prev: prevTrackData ? prevTrackData : null, current: this.currentTrack, next: nextTrackData ? nextTrackData : null },
+      });
+      this.dispatchEvent(event);
+    } catch (error) {
+      console.error('Ошибка при получении предыдущего/следующего треков:', error);
+    }
   }
 
   async render() {
-    const contentTemplate = Handlebars.templates['player.hbs'];
-    const playerHTML = contentTemplate();
-
-    const playerСontainer = document.getElementById('player-container');
-    if (playerСontainer && !document.getElementById('player')) {
-      playerСontainer.insertAdjacentHTML('afterbegin', playerHTML);
-    }
-
-    this.volumeRender();
-    this.playPauseSwitch();
-    this.sliderColorChange();
-    this.likeTrack();
-    this.soundChange();
+    await this.renderWithoutData();
 
     this.audio.addEventListener('timeupdate', () => {
       this.updateCurrentTimeAndSlider();
@@ -175,8 +129,8 @@ export class Player extends EventTarget {
     const storedTrackId = localStorage.getItem('currentTrackId');
     let storedTrackData = await this.getDataTrackById(storedTrackId);
 
-    this.loadTrack(storedTrackData);
-    this.getPrevAndNextTracks();
+    await Promise.all([this.loadTrack(storedTrackData), this.getPrevAndNextTracks()]);
+
     this.setInitialVolume();
     this.setInitialPLayTime();
 
@@ -193,35 +147,34 @@ export class Player extends EventTarget {
       return;
     }
 
-    this.loadTrack(trackData);
-    this.audio.play();
+    await Promise.all([this.loadTrack(trackData), this.audio.play()]);
+
     this.togglePlayPauseSwitch(true);
     localStorage.setItem('isPlaying', 'true');
   }
 
   loadTrackInfo(track) {
     document.querySelector('.track-title').textContent = track.title;
-    document.querySelector('.track-artist').textContent = track.artist;
-    // document.querySelector('.track-time.total').textContent = track.durationFormatted;
-    const durationInSeconds = Math.round(track.duration_ms / 1000);
+    const artistName = track.artists?.[0]?.name;
+    document.querySelector('.track-artist').textContent = artistName;
+
+    const durationInSeconds = track.duration_s;
     const minutes = Math.floor(durationInSeconds / 60);
     const seconds = durationInSeconds % 60;
     const durationFormatted = `${minutes}:${seconds.toString().padStart(2, '0')}`;
     document.querySelector('.track-time.total').textContent = durationFormatted;
 
-    document.querySelector('.track-cover-player').src = `static/img/${track.imageUrl}`;
+    document.querySelector('.track-cover-player').src = getValidImage(track?.album?.avatar_url, 'default-album.png');
 
-    this.audio.src = `static/music/${track.file_url}`;
-    // let file_url = track.file_url;
-    // this.audio.src = file_url ? `http://localhost:8099/music/tracks/${file_url}.webm` : `static/music/${file_url}`;
+    let file_url = track.file_url;
+    this.audio.src = file_url ? `${API_TRACKS_URL}/${file_url}` : `static/music/${file_url}`;
 
     this.audio.load();
   }
 
   updateCurrentTimeAndSlider() {
     const currentTime = this.audio.currentTime;
-    const duration_ms = Math.round(this.currentTrack.duration_ms / 1000);
-    const duration_s = duration_ms / 1000;
+    const duration_ms = this.currentTrack.duration_s;
 
     const minutes = Math.floor(currentTime / 60);
     const seconds = Math.floor(currentTime % 60);
@@ -257,7 +210,7 @@ export class Player extends EventTarget {
     function updateVolumeSlider(volume) {
       volumeIcon.classList.remove('level-0', 'level-1', 'level-2', 'level-3');
 
-      if (volume == 0) {
+      if (volume === 0) {
         volumeIcon.classList.add('level-0');
       } else if (volume <= 35) {
         volumeIcon.classList.add('level-1');
@@ -313,8 +266,8 @@ export class Player extends EventTarget {
     const pauseBtn = document.querySelector('.control-btn.pause');
     playBtn.classList.add('active');
     pauseBtn.classList.add('disactive');
-    playBtn.addEventListener('click', () => {
-      this.audio.play();
+    playBtn.addEventListener('click', async () => {
+      await this.audio.play();
       localStorage.setItem('isPlaying', 'true');
       localStorage.setItem('currentTrackId', this.currentTrack.id);
       this.togglePlayPauseSwitch(true);
@@ -326,10 +279,10 @@ export class Player extends EventTarget {
     });
   }
 
-  togglePlayPause() {
+  async togglePlayPause() {
     if (this.audio.paused) {
       // Если стоит на паузе, запускаем
-      this.audio.play();
+      await this.audio.play();
       localStorage.setItem('isPlaying', 'true');
       this.togglePlayPauseSwitch(true);
     } else {
@@ -348,7 +301,7 @@ export class Player extends EventTarget {
         const sliderElement = timeRegulator;
         const value = sliderElement.value;
         sliderElement.style.setProperty('--progress', value + '%');
-        const duration_ms = Math.round(this.currentTrack.duration_ms / 1000);
+        const duration_ms = this.currentTrack.duration_s;
         const newTime = (value / 100) * duration_ms;
         this.audio.currentTime = newTime;
       }.bind(this)
@@ -393,35 +346,35 @@ export class Player extends EventTarget {
   }
 
   setInitialPLayTime() {
-    const duration_ms = Math.round(this.currentTrack.duration_ms / 1000);
-    const duration_s = duration_ms / 1000;
+    const duration_ms = this.currentTrack.duration_s;
     const timeRegulator = document.querySelector('.remote-slider');
     const storedTime = parseFloat(localStorage.getItem('playTime'));
     timeRegulator.value = storedTime;
     this.audio.currentTime = storedTime;
     const percent = (storedTime / duration_ms) * 100;
     timeRegulator.style.setProperty('--progress', percent + '%');
+    this.updateCurrentTimeAndSlider();
   }
 
   trackSwitching() {
     const nextBtn = document.querySelector('.control-btn.next');
     const prevBtn = document.querySelector('.control-btn.prev');
 
-    nextBtn.addEventListener('click', () => {
-      this.nextTrack();
+    nextBtn.addEventListener('click', async () => {
+      await this.nextTrack();
     });
 
-    prevBtn.addEventListener('click', () => {
-      this.prevTrack();
+    prevBtn.addEventListener('click', async () => {
+      await this.prevTrack();
     });
   }
 
-  nextTrack() {
-    this.loadAndPlayTrackById(this.nextTrackId);
+  async nextTrack() {
+    await this.loadAndPlayTrackById(this.nextTrackId);
   }
 
-  prevTrack() {
-    this.loadAndPlayTrackById(this.prevTrackId);
+  async prevTrack() {
+    await this.loadAndPlayTrackById(this.prevTrackId);
   }
 }
 
