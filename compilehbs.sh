@@ -56,3 +56,5 @@ handlebars public/static/js/partials/likeBtn.hbs -f public/static/js/partials/li
 
 handlebars public/static/js/partials/close.hbs -f public/static/js/partials/close.tmpl.js
 
+handlebars public/static/js/partials/profile.hbs -f public/static/js/partials/profile.tmpl.js
+

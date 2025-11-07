@@ -178,7 +178,7 @@
   opacity: 0;
 }
 
-.album-row:hover .play-album-track {
+.album-row:hover .play-album-track, .album-row.active .play-album-track {
   opacity: 1;
 }
 
@@ -188,7 +188,7 @@
   width: 25px;
 }
 
-.album-row:hover .album-track-number {
+.album-row:hover .album-track-number, .album-row.active .album-track-number {
   opacity: 0;
 }
 
