@@ -67,7 +67,7 @@ export class MainPage {
 
     slider.sliderFunction();
     initScrollbar();
-    setPlayButtonsOnAuth();
+    // setPlayButtonsOnAuth();
     playTrack();
   }
 
@@ -117,7 +117,7 @@ export class MainPage {
         return { img: '/static/img/default-album.png', name: '', id: null };
       }
 
-      const imageUrl = getValidImage('albums/' + tracks.album?.avatar_url, 'default-album.png');
+      const imageUrl = getValidImage('albums/' + track.album?.avatar_url, 'default-album.png');
       const artistName = track.artists?.[0]?.name;
 
       return {
