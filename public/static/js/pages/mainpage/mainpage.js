@@ -28,7 +28,7 @@ export class MainPage {
       pageData.artists = (data.artists || []).map((artist) => ({
         id: artist.id,
         name: artist.name,
-        listeners: playsParser(artist.listeners || 0),
+        listeners: playsParser(artist.play_count || 0),
         image: getValidImage('artists/' + artist.avatar_url, 'default-artist.png'),
       }));
       pageData.albums = (data.albums || []).map((album) => ({
@@ -45,6 +45,7 @@ export class MainPage {
         artists: track.artists,
         album_id: track.album.id,
       }));
+      console.log(pageData);
     } catch (error) {
       console.error('Failed to load main page data:', error);
 
@@ -61,7 +62,6 @@ export class MainPage {
       alert('Не удалось загрузить главную страницу.');
       return;
     }
-
     document.getElementById('app').innerHTML = contentTemplate(pageData);
     playerOnlyOnPlay();
     await Promise.all([header.render(), sidebar.render()]);

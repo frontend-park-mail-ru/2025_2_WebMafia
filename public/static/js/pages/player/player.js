@@ -9,6 +9,8 @@ export class Player extends EventTarget {
     this.canSaveTime = true;
     this.nextTrackId = null;
     this.prevTrackId = null;
+
+    this.listenIncrementTimeout = null;
   }
 
   async init() {
@@ -58,6 +60,9 @@ export class Player extends EventTarget {
       playerElement.querySelector('.remote-slider')?.removeEventListener('input', this.handleSliderInput);
       playerElement.remove();
     }
+    if (this.listenIncrementTimeout) {
+      clearTimeout(this.listenIncrementTimeout);
+    }
     this.audio.pause();
     this.audio.src = '';
     this.currentTrack = null;
@@ -74,10 +79,17 @@ export class Player extends EventTarget {
 
   async loadTrack(trackData) {
     if (!trackData) return;
+    if (this.listenIncrementTimeout) {
+      clearTimeout(this.listenIncrementTimeout);
+    }
     this.currentTrack = trackData;
-    console.log('curtrack', this.currentTrack.id);
     this.loadTrackInfo(this.currentTrack);
     localStorage.setItem('currentTrackId', this.currentTrack.id);
+    const LISTEN_DELAY = 15000;
+    this.listenIncrementTimeout = setTimeout(() => {
+      console.log(`Трек ${this.currentTrack.id} прослушан достаточно долго. Отправляем запрос.`);
+      apiServise.incrementTrackListenCount(this.currentTrack.id);
+    }, LISTEN_DELAY);
     await this.getPrevAndNextTracks();
   }
 
@@ -305,12 +317,10 @@ export class Player extends EventTarget {
 
   async togglePlayPause() {
     if (this.audio.paused) {
-      // Если стоит на паузе, запускаем
       await this.audio.play();
       localStorage.setItem('isPlaying', 'true');
       this.togglePlayPauseSwitch(true);
     } else {
-      // Если играет, ставим на паузу
       this.audio.pause();
       localStorage.setItem('isPlaying', 'false');
       this.togglePlayPauseSwitch(false);

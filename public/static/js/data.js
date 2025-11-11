@@ -38,7 +38,7 @@ export class apiServises {
     }
 
     const data = await response.json();
-    console.log(`Success: ${endpoint}`, data);
+    // console.log(`Success: ${endpoint}`, data);
     return data;
   }
 
@@ -224,6 +224,21 @@ export class apiServises {
         'X-CSRF-Token': csrfToken,
       },
     });
+  }
+
+  async incrementTrackListenCount(trackId) {
+    if (!trackId) return;
+    const csrfToken = await this.getCSRFToken();
+    try {
+      await this.request(`/tracks/${trackId}/listen`, {
+        method: 'POST',
+        headers: {
+          'X-CSRF-Token': csrfToken,
+        },
+      });
+    } catch (error) {
+      console.error(`Failed to increment listen count for track ${trackId}:`, error);
+    }
   }
 }
 
