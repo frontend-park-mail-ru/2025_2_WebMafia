@@ -170,12 +170,12 @@ export class Player extends EventTarget {
     const durationFormatted = `${minutes}:${seconds.toString().padStart(2, '0')}`;
     document.querySelector('.track-time.total').textContent = durationFormatted;
 
-    document.querySelector('.track-cover-player').src = getValidImage('albums/' + track?.album?.avatar_url.split('/').pop(), 'default-album.png');
+    // document.querySelector('.track-cover-player').src = getValidImage('albums/' + track?.album?.avatar_url.split('/').pop(), 'default-album.png');
 
-    // document.querySelector('.track-cover-player').src = getValidImage('albums/' + track?.album?.avatar_url, 'default-album.png');
+    document.querySelector('.track-cover-player').src = getValidImage('albums/' + track?.album?.avatar_url, 'default-album.png');
 
-    let file_url = track.file_url.split('/').pop();
-    // let file_url = track.file_url;
+    // let file_url = track.file_url.split('/').pop();
+    let file_url = track.file_url;
     this.audio.src = file_url ? `${API_TRACKS_URL}/${file_url}` : `static/music/${file_url}`;
 
     this.audio.load();
