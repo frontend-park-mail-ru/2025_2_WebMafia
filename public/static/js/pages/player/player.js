@@ -12,16 +12,7 @@ export class Player extends EventTarget {
   }
 
   async init() {
-    // window.addEventListener('popstate', () => this.updateVisibility());
-    // const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
-    // if (!isAuthenticated) {
-    //   window.addEventListener('va-navigate', () => this.updateVisibility());
-    // }
     await this.updateVisibility();
-    // this.trackSwitching();
-    // this.likeTrack();
-    // this.soundChange();
-    // this.playPauseSwitch();
   }
 
   async updateVisibility() {
@@ -57,6 +48,14 @@ export class Player extends EventTarget {
   async destroy() {
     const playerElement = document.querySelector('.player');
     if (playerElement) {
+      this.audio.removeEventListener('timeupdate', this.handleTimeUpdate);
+      this.audio.removeEventListener('ended', this.handleTrackEnd);
+      playerElement.querySelector('.control-btn.play')?.removeEventListener('click', this.handlePlayClick);
+      playerElement.querySelector('.control-btn.pause')?.removeEventListener('click', this.handlePauseClick);
+      playerElement.querySelector('.control-btn.next')?.removeEventListener('click', this.handleNextClick);
+      playerElement.querySelector('.control-btn.prev')?.removeEventListener('click', this.handlePrevClick);
+      playerElement.querySelector('.like-btn')?.removeEventListener('click', this.handleLikeClick);
+      playerElement.querySelector('.remote-slider')?.removeEventListener('input', this.handleSliderInput);
       playerElement.remove();
     }
     this.audio.pause();
@@ -124,13 +123,12 @@ export class Player extends EventTarget {
       playerContainer.insertAdjacentHTML('afterbegin', playerHTML);
     }
 
-    // 2. И ТОЛЬКО ПОТОМ, когда HTML на месте, "оживляем" его
     this.volumeRender();
     this.playPauseSwitch();
     this.sliderColorChange();
     this.likeTrack();
     this.soundChange();
-    this.trackSwitching(); // <-- Теперь эта функция здесь!
+    this.trackSwitching();
 
     const storedTrackId = localStorage.getItem('currentTrackId');
     let storedTrackData = await this.getDataTrackById(storedTrackId);
@@ -172,11 +170,12 @@ export class Player extends EventTarget {
     const durationFormatted = `${minutes}:${seconds.toString().padStart(2, '0')}`;
     document.querySelector('.track-time.total').textContent = durationFormatted;
 
-    // let file_url = track.file_url.split('/').pop();
-    document.querySelector('.track-cover-player').src = getValidImage('albums/' + track?.album?.avatar_url, 'default-album.png');
+    document.querySelector('.track-cover-player').src = getValidImage('albums/' + track?.album?.avatar_url.split('/').pop(), 'default-album.png');
 
-    // let file_url = track.file_url.split('/').pop();
-    let file_url = track.file_url;
+    // document.querySelector('.track-cover-player').src = getValidImage('albums/' + track?.album?.avatar_url, 'default-album.png');
+
+    let file_url = track.file_url.split('/').pop();
+    // let file_url = track.file_url;
     this.audio.src = file_url ? `${API_TRACKS_URL}/${file_url}` : `static/music/${file_url}`;
 
     this.audio.load();

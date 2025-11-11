@@ -3,9 +3,12 @@ import { router } from './static/js/routing.js';
 import { persistence } from './static/js/utils/persistence.js';
 import { spaceToggle } from './static/js/utils/playerSpace.js';
 
-document.addEventListener('DOMContentLoaded', function () {
+function startApp() {
+  document.removeEventListener('DOMContentLoaded', startApp);
   initializePage();
-});
+}
+
+document.addEventListener('DOMContentLoaded', startApp);
 
 function registerPartials() {
   Handlebars.registerPartial('eyeOpen', Handlebars.templates['eyeOpen.hbs']);
