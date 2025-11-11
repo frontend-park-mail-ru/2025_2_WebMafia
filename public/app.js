@@ -3,6 +3,40 @@ import { router } from './static/js/routing.js';
 import { persistence } from './static/js/utils/persistence.js';
 import { spaceToggle } from './static/js/utils/playerSpace.js';
 
+// Страницы
+import './static/js/pages/mainpage/MainPage.tmpl.js';
+import './static/js/pages/notfoundpage/notFoundPage.tmpl.js';
+import './static/js/pages/login/login.tmpl.js';
+import './static/js/pages/register/register.tmpl.js';
+import './static/js/pages/profile/profilePage.tmpl.js';
+import './static/js/pages/artist_albums/artistAlbumsPage.tmpl.js';
+import './static/js/pages/artist_tracks/artistTracksPage.tmpl.js';
+import './static/js/pages/artist_singles/artistSinglesPage.tmpl.js';
+import './static/js/pages/artist/artistPage.tmpl.js';
+import  './static/js/pages/album/album.tmpl.js';
+import './static/js/pages/player/player.tmpl.js';
+
+// Иконки
+import './static/js/partials/eyeOpen.tmpl.js';
+import'./static/js/partials/eyeClosed.tmpl.js';
+import './static/js/partials/pencil.tmpl.js';
+import './static/js/pages/header/header.tmpl.js';
+import './static/js/pages/sidebar/sidebar.tmpl.js';
+import './static/js/partials/homeIcon.tmpl.js';
+import './static/js/partials/libraryIcon.tmpl.js';
+import './static/js/partials/angleDown.tmpl.js';
+import './static/js/partials/play.tmpl.js';
+import './static/js/partials/playBtn.tmpl.js';
+import './static/js/partials/nextTrack.tmpl.js';
+import './static/js/partials/prevTrack.tmpl.js';
+import './static/js/partials/shuffleBtn.tmpl.js';
+import './static/js/partials/repeatBtn.tmpl.js';
+import './static/js/partials/pauseBtn.tmpl.js';
+import './static/js/partials/volumeBar.tmpl.js';
+import './static/js/partials/likeBtn.tmpl.js';
+import './static/js/partials/close.tmpl.js';
+import './static/js/partials/profile.tmpl.js';
+
 document.addEventListener('DOMContentLoaded', function () {
   initializePage();
 });
