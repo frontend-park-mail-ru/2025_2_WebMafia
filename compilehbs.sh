@@ -58,3 +58,5 @@ handlebars public/static/js/partials/close.hbs -f public/static/js/partials/clos
 
 handlebars public/static/js/partials/profile.hbs -f public/static/js/partials/profile.tmpl.js
 
+handlebars public/static/js/partials/searchIcon.hbs -f public/static/js/partials/searchIcon.tmpl.js
+

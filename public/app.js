@@ -31,6 +31,8 @@ function registerPartials() {
   Handlebars.registerHelper('numeration', function (value) {
     return parseInt(value) + 1;
   });
+  Handlebars.registerPartial('searchIcon', Handlebars.templates['searchIcon.hbs']);
+
 }
 
 function initializePage() {
