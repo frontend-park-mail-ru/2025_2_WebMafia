@@ -1,5 +1,5 @@
 import { apiServise, API_TRACKS_URL } from '../../data.js';
-import { getValidImage } from "../../parsers.js";
+import { getValidImage } from '../../parsers.js';
 
 export class Player extends EventTarget {
   constructor() {
