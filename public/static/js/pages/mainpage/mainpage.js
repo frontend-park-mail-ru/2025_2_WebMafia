@@ -45,7 +45,6 @@ export class MainPage {
         artists: track.artists,
         album_id: track.album.id,
       }));
-      console.log(pageData);
     } catch (error) {
       console.error('Failed to load main page data:', error);
 

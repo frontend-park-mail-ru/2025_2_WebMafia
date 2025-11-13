@@ -202,6 +202,29 @@
   transition: opacity 0.3s ease;
 }
 
+
+.play-popular-track .pause-icon {
+  display: none;
+}
+
+/* Когда трек АКТИВЕН (is-active) и ИГРАЕТ (не paused)... */
+.play-popular-track.is-active:not(.paused) .pause-icon {
+  display: none; /* ...скрываем иконку Play... */
+}
+
+.play-popular-track.is-active:not(.paused) .play-icon {
+  display: block; /* ...и показываем иконку Pause. */
+}
+
+/* Когда трек АКТИВЕН (is-active) и НА ПАУЗЕ (paused)... */
+.play-popular-track.is-active.paused .pause-icon {
+  display: block; /* ...показываем иконку Play... */
+}
+
+.play-popular-track.is-active.paused .play-icon {
+  display: none; /* ...и скрываем иконку Pause. */
+}
+
 .play-popular-track svg {
   fill: #fafafa;
   height: 18px;

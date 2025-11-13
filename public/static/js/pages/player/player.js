@@ -11,6 +11,9 @@ export class Player extends EventTarget {
     this.prevTrackId = null;
 
     this.listenIncrementTimeout = null;
+
+    this.playQueue = [];
+    this.currentContext = null;
   }
 
   async init() {
@@ -77,7 +80,7 @@ export class Player extends EventTarget {
     return trackData;
   }
 
-  async loadTrack(trackData) {
+  async loadTrack(trackData, context) {
     if (!trackData) return;
     if (this.listenIncrementTimeout) {
       clearTimeout(this.listenIncrementTimeout);
@@ -87,31 +90,51 @@ export class Player extends EventTarget {
     localStorage.setItem('currentTrackId', this.currentTrack.id);
     const LISTEN_DELAY = 15000;
     this.listenIncrementTimeout = setTimeout(() => {
-      console.log(`Трек ${this.currentTrack.id} прослушан достаточно долго. Отправляем запрос.`);
       apiServise.incrementTrackListenCount(this.currentTrack.id);
     }, LISTEN_DELAY);
-    await this.getPrevAndNextTracks();
+    await this.getPrevAndNextTracks(context);
   }
 
-  async getPrevAndNextTracks() {
+  async getPrevAndNextTracks(context) {
     if (!this.currentTrack || !this.currentTrack.id) {
       console.warn('Невозможно определить соседей: текущий трек не установлен.');
       return;
     }
+    const isNewContext = context && JSON.stringify(context) !== JSON.stringify(this.currentContext);
 
     try {
-      // const allTracks = await apiServise.request('/tracks?limit=1000').catch(() => []); // Увеличим лимит
       const currentTrackArtistId = this.currentTrack.artists[0].id;
-      const allTracks = await apiServise.request(`/artists/${currentTrackArtistId}/tracks`).catch(() => []);
+      // const allTracks = await apiServise.request(`/artists/${currentTrackArtistId}/tracks`).catch(() => []);
+      if (isNewContext) {
+        this.currentContext = context;
+        localStorage.setItem('playerContext', JSON.stringify(context));
+        let tracks = [];
+        try {
+          switch (context.type) {
+            case 'artist-popular':
+              tracks = await apiServise.request(`/artists/${context.id}/tracks?limit=5`);
+              break;
+            case 'album-tracks':
+              tracks = await apiServise.request(`/albums/${context.id}/tracks`);
+              break;
+            case 'all-tracks':
+            default:
+              tracks = await apiServise.request('/tracks?limit=30');
+              break;
+          }
+          this.playQueue = tracks;
+        } catch (error) {
+          this.playQueue = [];
+        }
+      }
 
-      const currentIndex = allTracks.findIndex((t) => t.id === this.currentTrack.id);
+      const currentIndex = this.playQueue.findIndex((t) => t.id === this.currentTrack.id);
       if (currentIndex === -1) {
-        console.warn('Текущий трек не найден в общем списке треков.');
         this.nextTrackId = null;
         this.prevTrackId = null;
       } else {
-        const nextTrackObject = allTracks[currentIndex + 1];
-        const prevTrackObject = allTracks[currentIndex - 1];
+        const nextTrackObject = this.playQueue[currentIndex + 1];
+        const prevTrackObject = this.playQueue[currentIndex - 1];
 
         this.nextTrackId = nextTrackObject ? nextTrackObject.id : null;
         this.prevTrackId = prevTrackObject ? prevTrackObject.id : null;
@@ -144,8 +167,10 @@ export class Player extends EventTarget {
 
     const storedTrackId = localStorage.getItem('currentTrackId');
     let storedTrackData = await this.getDataTrackById(storedTrackId);
+    const storedContextString = localStorage.getItem('playerContext');
+    const storedContext = storedContextString ? JSON.parse(storedContextString) : null;
 
-    await Promise.all([this.loadTrack(storedTrackData), this.getPrevAndNextTracks()]);
+    await Promise.all([this.loadTrack(storedTrackData, storedContext), this.getPrevAndNextTracks()]);
     this.audio.addEventListener('timeupdate', () => {
       this.updateCurrentTimeAndSlider();
     });
@@ -157,7 +182,7 @@ export class Player extends EventTarget {
     });
   }
 
-  async loadAndPlayTrackById(trackId) {
+  async loadAndPlayTrackById(trackId, context) {
     const trackData = await this.getDataTrackById(trackId);
 
     if (!trackData) {
@@ -165,7 +190,7 @@ export class Player extends EventTarget {
       return;
     }
 
-    await Promise.all([this.loadTrack(trackData), this.audio.play()]);
+    await Promise.all([this.loadTrack(trackData, context), this.audio.play()]);
 
     this.togglePlayPauseSwitch(true);
     localStorage.setItem('isPlaying', 'true');

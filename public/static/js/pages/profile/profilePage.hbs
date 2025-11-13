@@ -51,7 +51,10 @@
               <div class="track-number">{{numeration @index}}</div>
               <div class="track-cover-wrapper">
                 <img class="track-cover" src="{{ cover }}" alt="{{ name }}" />
-                <button class="play-popular-track">{{> play }}</button>
+                <button class="play-popular-track" data-track-id="{{ id }}" data-context="artist-popular" data-artist-id="{{../id}}">
+                  <span class="play-icon">{{> play }}</span>
+                  <span class="pause-icon">{{> pause }}</span>
+                </button>
               </div>
               <div class="right-row-content">
                 <div class="track-name">{{ name }}</div>

@@ -34,6 +34,7 @@ function registerPartials() {
   Handlebars.registerHelper('numeration', function (value) {
     return parseInt(value) + 1;
   });
+  Handlebars.registerPartial('pause', Handlebars.templates['pause.hbs']);
 }
 
 function initializePage() {

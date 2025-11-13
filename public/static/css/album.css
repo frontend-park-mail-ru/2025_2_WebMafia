@@ -178,6 +178,28 @@
   opacity: 0;
 }
 
+.play-album-track .pause-icon {
+  display: none;
+}
+
+/* Когда трек АКТИВЕН (is-active) и ИГРАЕТ (не paused)... */
+.play-album-track.is-active:not(.paused) .pause-icon {
+  display: none; /* ...скрываем иконку Play... */
+}
+
+.play-album-track.is-active:not(.paused) .play-icon {
+  display: block; /* ...и показываем иконку Pause. */
+}
+
+/* Когда трек АКТИВЕН (is-active) и НА ПАУЗЕ (paused)... */
+.play-album-track.is-active.paused .pause-icon {
+  display: block; /* ...показываем иконку Play... */
+}
+
+.play-album-track.is-active.paused .play-icon {
+  display: none; /* ...и скрываем иконку Pause. */
+}
+
 .album-row:hover .play-album-track, .album-row.active .play-album-track {
   opacity: 1;
 }

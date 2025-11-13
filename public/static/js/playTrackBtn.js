@@ -18,9 +18,13 @@ export function playTrack() {
       if (playerContent) playerContent.classList.remove('none_playing');
       if (nowPlayingContainer) nowPlayingContainer.classList.remove('none_play');
 
+      const context = {
+        type: button.dataset.context || 'all-tracks', // 'all-tracks' по умолчанию
+        id: button.dataset.artistId || button.dataset.albumId || null,
+      };
       if (!current || current.id !== trackId) {
         currentTrackId = trackId;
-        await player.loadAndPlayTrackById(trackId);
+        await player.loadAndPlayTrackById(trackId, context);
       } else {
         await player.togglePlayPause();
       }

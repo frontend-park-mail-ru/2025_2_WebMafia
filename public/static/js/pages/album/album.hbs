@@ -30,7 +30,10 @@
             <div class="album-row">
               <div class="album-play-wrapper">
                 <div class="album-track-number">{{numeration @index}}</div>
-                <button class="play-album-track" data-track-id="{{ id }}">{{> play }}</button>
+                <button class="play-album-track" data-track-id="{{ id }}" data-context="album-tracks" data-album-id="{{../id}}">
+                  <span class="play-icon">{{> play }}</span>
+                  <span class="pause-icon">{{> pause }}</span>
+                </button>
               </div>
               <div class="tracks-duration-wrapper">
                 <div class="album-track-info">

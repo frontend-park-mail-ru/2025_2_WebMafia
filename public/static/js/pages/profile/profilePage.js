@@ -9,6 +9,7 @@ import { header } from '../header/header.js';
 import { setPlayButtonsOnAuth } from '../../setPlayButtonsOnAuth.js';
 import { FormValidator } from '../../validation.js';
 import { playerOnlyOnPlay } from '../../playerOnlyOnplay.js';
+import { playTrack } from '../../playTrackBtn.js';
 
 export class ProfilePage {
   async render() {
@@ -76,6 +77,7 @@ export class ProfilePage {
     initPasswordShowing();
     initScrollbar();
     setPlayButtonsOnAuth();
+    playTrack();
   }
 
   addEventListeners(profile) {
