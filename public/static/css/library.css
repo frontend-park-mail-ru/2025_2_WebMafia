@@ -1,0 +1,37 @@
+.library-header {
+  display: flex;
+  margin-top: 25px;
+  padding: 0 27px;
+  justify-content: space-between;
+}
+
+.left-content {
+  align-items: flex-start;
+  padding-top: 12px;
+}
+
+.sort-buttons {
+  display: flex;
+  margin-top: 18px;
+  font-size: 18px;
+  gap: 15px;
+}
+
+.right-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.library-search-container {
+  margin-top: 15px;
+  position: relative;
+  display: inline-block;
+}
+
+.library-search-container svg {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}

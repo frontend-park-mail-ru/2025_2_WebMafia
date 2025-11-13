@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://217.16.17.173:8080/api/v1';
+const API_BASE_URL = 'http://localhost:8080/api/v1';
 export const API_AVATARS_URL = 'http://217.16.17.173:8099/avatars';
 export const API_TRACKS_URL = 'http://217.16.17.173:8099/music/tracks';
 
@@ -207,6 +207,129 @@ export class apiServises {
       return { album: album || {}, tracks: tracks || [] };
     } catch (error) {
       console.error('Failed to load album page data:', error);
+      throw error;
+    }
+  }
+
+  async getLibraryPageData() {
+    try {
+      const [albums, playlists, artists] = [
+        // === ALBUMS ===
+        [
+          {
+            id: 1,
+            title: 'Город Огней',
+            avatar_url: 'city-lights.jpg',
+            created_at: '2024-12-01T14:20:00Z',
+            type: 'Альбом',
+            artists: [{ id: 1, name: 'Александр Волков' }],
+          },
+          {
+            id: 2,
+            title: 'Мелодии Севера',
+            avatar_url: 'northern-melodies.png',
+            created_at: '2025-01-15T10:00:00Z',
+            type: 'EP',
+            artists: [{ id: 2, name: 'ArcticSound' }],
+          },
+          {
+            id: 3,
+            title: 'Вечерние волны',
+            avatar_url: 'evening-waves.jpg',
+            created_at: '2025-03-20T19:30:00Z',
+            type: 'Сингл',
+            artists: [{ id: 3, name: 'Luna Waves' }],
+          },
+        ],
+
+        // === PLAYLISTS ===
+        [
+          {
+            id: 101,
+            title: 'Лучшее 2025',
+            avatar_url: 'best-2025.jpg',
+            created_at: '2025-02-10T08:00:00Z',
+            tracks: [
+              { id: 1, title: 'Трек 1' },
+              { id: 2, title: 'Трек 2' },
+              { id: 3, title: 'Трек 3' },
+            ],
+          },
+          {
+            id: 102,
+            title: 'Утренний Чилл',
+            avatar_url: 'morning-chill.jpg',
+            created_at: '2025-04-01T11:00:00Z',
+            tracks: [
+              { id: 4, title: 'Пробуждение' },
+              { id: 5, title: 'Солнечный свет' },
+            ],
+          },
+          {
+            id: 103,
+            title: 'Workout Energy',
+            avatar_url: 'workout-energy.png',
+            created_at: '2025-05-25T18:45:00Z',
+            tracks: [
+              { id: 6, title: 'Пульс' },
+              { id: 7, title: 'Скорость' },
+              { id: 8, title: 'Финиш' },
+              { id: 9, title: 'Отдых' },
+            ],
+          },
+          {
+            id: 104,
+            title: 'Понравившиеся треки',
+            avatar_url: '',
+            created_at: '2025-06-25T18:45:00Z',
+            tracks: [
+              { id: 10, title: 'Класс' },
+              { id: 11, title: 'Круто' },
+              { id: 12, title: 'Замечательно' },
+              { id: 13, title: 'Потрясающе' },
+            ],
+          },
+        ],
+
+        // === ARTISTS ===
+        [
+          {
+            id: 1,
+            name: 'Александр Волков',
+            avatar_url: 'alex-volkov.jpg',
+            created_at: '2024-11-15T12:00:00Z',
+            play_count: 12800,
+          },
+          {
+            id: 2,
+            name: 'ArcticSound',
+            avatar_url: 'arctic-sound.png',
+            created_at: '2024-10-05T09:30:00Z',
+            play_count: 5400,
+          },
+          {
+            id: 3,
+            name: 'Luna Waves',
+            avatar_url: 'luna-waves.jpg',
+            created_at: '2025-02-20T17:15:00Z',
+            play_count: 9600,
+          },
+        ],
+      ];
+
+      /*await Promise.all([
+        this.request(`/library/albums`).catch(() => []),
+        this.request(`/library/playlists`).catch(() => []),
+        this.request('/library/artists').catch(() => []),
+      ]);*/
+
+      return {
+        albums: albums || [],
+        playlists: playlists || [],
+        artists: artists || [],
+      };
+    } catch (error) {
+      console.error('Failed to load artist page data:', error);
       throw error;
     }
   }

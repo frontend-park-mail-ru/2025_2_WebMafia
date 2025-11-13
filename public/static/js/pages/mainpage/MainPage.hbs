@@ -36,7 +36,7 @@
             <a href="/artist/{{ id }}">
               <img src="{{ image }}" alt="{{ name }}" />
               <p class="card-name">{{ name }}</p>
-              <p class="card-sub">{{ listeners }} слушателей</p>
+              <p class="card-sub">{{ listeners }}</p>
             </a>
             <!--<button class="play-button play-button-placement" data-artist-id="{{ artist_id }}"></button>-->
           </div>
@@ -57,11 +57,10 @@
             <a href="/album/{{ id }}">
               <img src="{{ image }}" alt="{{ name }}" />
               <p class="card-name">{{ name }}</p>
-              <p class="card-sub">{{ artist }}
-                {{#if type}}
-                  <span class="dot"></span>
-                  {{ type }}
-                {{/if}}
+              <p class="card-sub">
+                {{ type }}
+                <span class="dot"></span>
+                <span class="text">{{ artist }}</span>
               </p>
             </a>
             <!--<button class="play-button play-button-placement" data-album-id="{{ album_id }}"></button>-->

@@ -28,6 +28,8 @@ function registerPartials() {
   Handlebars.registerPartial('likeBtn', Handlebars.templates['likeBtn.hbs']);
   Handlebars.registerPartial('close', Handlebars.templates['close.hbs']);
   Handlebars.registerPartial('profile', Handlebars.templates['profile.hbs']);
+  Handlebars.registerPartial('plus', Handlebars.templates['plus.hbs']);
+  Handlebars.registerPartial('searchIcon', Handlebars.templates['searchIcon.hbs']);
   Handlebars.registerHelper('numeration', function (value) {
     return parseInt(value) + 1;
   });

@@ -1,0 +1,63 @@
+<div class="section" id="section">
+  {{> header}}
+  <div class="layout">
+    {{> sidebar}}
+    <div class="page" id="scrollContent">
+      <div class="library-header">
+        <div class="left-content">
+          <div class="title-name">Библиотека</div>
+          <div class="sort-buttons">
+            <button class="secondary-button">Плейлисты</button>
+            {{#if artists}}
+              <button class="secondary-button">Артисты</button>
+            {{/if}}
+            {{#if albums}}
+              <button class="secondary-button">Альбомы</button>
+            {{/if}}
+            {{#if tracks}}
+              <button class="secondary-button">Треки</button>
+            {{/if}}
+          </div>
+        </div>
+        <div class="right-content">
+          <button class="primary-button edit-button-size">
+            {{> plus}}
+            Создать плейлист
+          </button>
+          <div class="library-search-container">
+            {{> searchIcon }}
+            <input type="text" class="search-input" id="searchInput" placeholder="Что хочешь включить?">
+          </div>
+        </div>
+      </div>
+      <div class="grid-layout">
+        <div class="card">
+          <a href="/{{ liked_tracks.href }}">
+            <img src="static/img/liked_tracks.png" alt="Понравившиеся треки" />
+            <div class="card-bottom-info">
+              <p class="card-name">Понравившиеся треки</p>
+              <p class="card-sub">Плейлист<span class="dot"></span>{{ liked_tracks.sub }}</p>
+            </div>
+          </a>
+          <button class="play-button play-button-placement"></button>
+        </div>
+        {{#each library}}
+        <div class="card">
+          <a href="/{{ href }}">
+            <img src="{{ image }}" alt="{{ name }}" onerror="this.onerror=null; this.src='static/img/{{ default_avatar }}';"/>
+            <div class="card-bottom-info">
+              <p class="card-name">{{ name }}</p>
+              <p class="card-sub">
+                {{ type }}
+                <span class="dot"></span>
+                <span class="text">{{ sub }}</span>
+              </p>
+            </div>
+          </a>
+          <button class="play-button play-button-placement"></button>
+        </div>
+        {{/each}}
+      </div>
+    </div>
+  </div>
+</div>
