@@ -210,11 +210,18 @@
   color: #888;
 }
 
-.search-icon {
+.header-search-container svg {
+  width: 22px;
+  height: 22px;
   position: absolute; 
   left: 15px;
   top: 50%;
   transform: translateY(-50%); 
   fill: #888;
   pointer-events: none; 
+  transition: 0.3s ease;
+}
+
+.header-search-container:has(.search-input:focus) svg {
+  fill:#2d2c2c;
 }
