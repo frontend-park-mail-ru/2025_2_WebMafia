@@ -49,16 +49,17 @@
         <i class="slide-btn left"></i>
         <div class="cards" id="slidebar">
           {{#each albums}}
-          <div data-href="/album/{{ id }}" class="card">
+          <a href="/album/{{ id }}" class="card">
             <img src="{{ image }}" alt="{{ name }}" />
             <p class="card-name">{{ name }}</p>
             <p class="card-sub card-sub-limiter">
               {{ type }}
               <span class="dot"></span>
-              <a class="text" href="/artist/{{ artist_id }}">{{ artist }}</a>
+              {{ artist }}
+              {{!-- <a class="text" href="/artist/{{ artist_id }}">{{ artist }}</a> --}}
             </p>
             <!--<button class="play-button play-button-placement" data-album-id="{{ album_id }}"></button>-->
-          </div>
+          </a>
           {{/each}}
         </div>
         <i class="slide-btn right"></i>

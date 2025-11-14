@@ -72,6 +72,7 @@ export class Player extends EventTarget {
     this.canSaveTime = true;
     this.nextTrackId = null;
     this.prevTrackId = null;
+    this.currentContext = null;
   }
 
   async getDataTrackById(track_id) {

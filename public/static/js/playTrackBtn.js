@@ -58,7 +58,13 @@ export function playTrack() {
       }
     });
     document.querySelectorAll('.card-tracks, .track-row, .album-row').forEach((card) => {
-      const buttons = card.querySelector('.play-button-track') || card.querySelector('.play-button') || card.querySelector('.play-popular-track') || card.querySelector('.play-album-track') || card.querySelector('.play-all-artist-tracks') || card.querySelector('.play-button-album');
+      const buttons =
+        card.querySelector('.play-button-track') ||
+        card.querySelector('.play-button') ||
+        card.querySelector('.play-popular-track') ||
+        card.querySelector('.play-album-track') ||
+        card.querySelector('.play-all-artist-tracks') ||
+        card.querySelector('.play-button-album');
       const trackId = buttons ? buttons.dataset.trackId : null;
       card.classList.toggle('active', trackId === playerTrackId);
     });
