@@ -19,6 +19,9 @@ export class MainPage {
       albums: [],
       tracks: [],
     };
+    if (!pageData.isAuthenticated) {
+      localStorage.clear();
+    }
 
     const contentTemplate = Handlebars.templates['MainPage.hbs'];
     document.getElementById('app').innerHTML = contentTemplate(pageData);
