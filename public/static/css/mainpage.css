@@ -271,7 +271,7 @@ body {
   cursor: pointer;
 }
 
-.card-sub a:hover {
+.card-sub a:hover, .card-sub-track:hover {
   text-decoration: underline;
 }
 
@@ -366,9 +366,10 @@ body {
 }
 
 .card-sub-track {
-  color: #000000;
-  font-size: 12px;
-  font-weight: 500;
+  text-decoration: none;
+  color: #000;
+  font-size: 14px;
+  font-weight: 400;
   overflow: hidden;
   text-overflow: ellipsis;
 }

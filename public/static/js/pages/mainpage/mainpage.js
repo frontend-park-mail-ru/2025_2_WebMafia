@@ -9,6 +9,7 @@ import { playTrack } from '../../playTrackBtn.js';
 import { getValidImage, playsParser } from '../../parsers.js';
 import { setPlayButtonsOnAuth } from '../../setPlayButtonsOnAuth.js';
 import { playerOnlyOnPlay } from '../../playerOnlyOnplay.js';
+import { Router } from '../../routing.js';
 
 export class MainPage {
   async render() {
@@ -36,6 +37,7 @@ export class MainPage {
         name: album.title,
         image: getValidImage('albums/' + album.avatar_url, 'default-album.png'),
         artist: album.artists ? album.artists[0].name : 'Unknown Artist',
+        artist_id: album.artists?.[0].id,
         type: album.type,
       }));
       pageData.tracks = (data.tracks || []).map((track) => ({
@@ -67,21 +69,22 @@ export class MainPage {
 
     slider.sliderFunction();
     initScrollbar();
-    // this.addEventListeners();
+    this.addEventListeners();
     setPlayButtonsOnAuth();
     this.nowPlayingCardSlider();
     playTrack();
   }
 
-  // addEventListeners() {
-  //   document.querySelectorAll('.card').forEach((card) => {
-  //     card.addEventListener('click', (e) => {
-  //       if (!e.target.closest('.text')) {
-  //         window.location.href = card.dataset.href;
-  //       }
-  //     });
-  //   });
-  // }
+  addEventListeners() {
+    document.querySelectorAll('.click-event-card').forEach((card) => {
+      card.addEventListener('click', (e) => {
+        if (!e.target.closest('a')) {
+          const router = new Router();
+          router.navigate(card.dataset.href);
+        }
+      });
+    });
+  }
 
   async nowPlayingCardSlider() {
     const cardElements = document.querySelectorAll('.now-playing-container-card');

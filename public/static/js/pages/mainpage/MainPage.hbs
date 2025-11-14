@@ -49,17 +49,16 @@
         <i class="slide-btn left"></i>
         <div class="cards" id="slidebar">
           {{#each albums}}
-          <a href="/album/{{ id }}" class="card">
+          <div data-href="/album/{{ id }}" class="card click-event-card">
             <img src="{{ image }}" alt="{{ name }}" />
             <p class="card-name">{{ name }}</p>
             <p class="card-sub card-sub-limiter">
               {{ type }}
               <span class="dot"></span>
-              {{ artist }}
-              {{!-- <a class="text" href="/artist/{{ artist_id }}">{{ artist }}</a> --}}
+              <a class="text" href="/artist/{{ artist_id }}">{{ artist }}</a>
             </p>
             <!--<button class="play-button play-button-placement" data-album-id="{{ album_id }}"></button>-->
-          </a>
+          </div>
           {{/each}}
         </div>
         <i class="slide-btn right"></i>
@@ -74,15 +73,15 @@
         <div class="cards tracks" id="slidebar">
           {{#each tracks}}
           <div class="card-tracks">
-            <a class="card-track-content" href="/album/{{ album_id }}">
+            <div class="card-track-content click-event-card" data-href="/album/{{ album_id }}">
               <img src="{{ image }}" alt="{{ name }}" />
               <div class="track-content">
                 <p class="card-name-track">{{ name }}</p>
                 {{#each artists}}
-                <p class="card-sub-track">{{ name }}</p>
+                <a class="card-sub-track" href="/artist/{{ id }}">{{ name }}</a>
                 {{/each}}
               </div>
-            </a>
+            </div>
 
             <button class="play-button play-button-track" data-track-id="{{ id }}"></button>
           </div>
