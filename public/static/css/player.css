@@ -78,22 +78,31 @@
 }
 
 .track-title {
+  all: unset;
   font-size: 16px;
   font-weight: 600;
-  max-width: 142px;
+  max-width: 30vh;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  cursor: pointer;
 }
 
 .track-artist {
+  all: unset;
   font-size: 12px;
-  color: #fff;
+  color: #ccc;
   font-weight: 100;
-  max-width: 142px;
+  max-width: 30vh;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+.track-artist:hover, .track-title:hover {
+  color: #fff;
+  text-decoration: underline;
 }
 
 /* Центр */

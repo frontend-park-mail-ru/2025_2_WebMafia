@@ -197,9 +197,14 @@ export class Player extends EventTarget {
   }
 
   loadTrackInfo(track) {
-    document.querySelector('.track-title').textContent = track.title;
-    const artistName = track.artists?.[0]?.name;
-    document.querySelector('.track-artist').textContent = artistName;
+    const titlePlacement = document.querySelector('.track-title');
+    titlePlacement.textContent = track.title;
+    console.log(track);
+    titlePlacement.href = `/album/${track.album?.id}`;
+    const artist = track.artists?.[0];
+    const artistPlacement = document.querySelector('.track-artist');
+    artistPlacement.textContent = artist?.name;
+    artistPlacement.href = `/artist/${artist?.id}`;
 
     const durationInSeconds = track.duration_s;
     const minutes = Math.floor(durationInSeconds / 60);

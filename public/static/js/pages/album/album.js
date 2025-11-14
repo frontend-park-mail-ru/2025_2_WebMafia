@@ -45,6 +45,7 @@ export class AlbumPage {
       pageData.totalDuration = totalDurationParser(totalDuration);
       pageData.tracksNum = tracksNumParser(pageData.tracks.length);
       if (pageData.tracksNum) pageData.firstTrack = pageData.tracks[0].id;
+      console.log(pageData.description);
     } catch (error) {
       console.error('Failed to load album page data:', error);
 

@@ -8,16 +8,14 @@
       </div>
       <div class="grid-layout">
         {{#each albums}}
-        <div class="card">
-          <a href="/album/{{ id }}">
-            <img src="{{ cover }}" alt="{{ name }}" />
-            <div class="card-bottom-info">
-              <p class="card-name">{{ name }}</p>
-              <p class="card-sub">{{ year }}</p>
-            </div>
-          </a>
+        <a href="/album/{{ id }}" class="card">
+          <img src="{{ cover }}" alt="{{ name }}" />
+          <div class="card-bottom-info">
+            <p class="card-name">{{ name }}</p>
+            <p class="card-sub">{{ year }}</p>
+          </div>
           <!--<button class="play-button play-button-placement"></button>-->
-        </div>
+        </a>
         {{/each}}
       </div>
     </div>

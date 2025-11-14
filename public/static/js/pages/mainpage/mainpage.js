@@ -36,6 +36,7 @@ export class MainPage {
         name: album.title,
         image: getValidImage('albums/' + album.avatar_url, 'default-album.png'),
         artist: album.artists ? album.artists[0].name : 'Unknown Artist',
+        artist_id: album.artists ? album.artists[0].id : '',
         type: album.type,
       }));
       pageData.tracks = (data.tracks || []).map((track) => ({
@@ -65,6 +66,7 @@ export class MainPage {
     playerOnlyOnPlay();
     await Promise.all([header.render(), sidebar.render()]);
 
+    this.addEventListeners();
     slider.sliderFunction();
     initScrollbar();
     setPlayButtonsOnAuth();
@@ -72,12 +74,22 @@ export class MainPage {
     playTrack();
   }
 
+  addEventListeners() {
+    document.querySelectorAll('.card').forEach(card => {
+      card.addEventListener('click', e => {
+        if (!e.target.closest('.text')) {
+          window.location.href = card.dataset.href;
+        }
+      });
+    });
+  }
+
   async nowPlayingCardSlider() {
     const cardElements = document.querySelectorAll('.now-playing-container-card');
     if (!cardElements) return;
     const prevBtn = document.querySelector('.current-card-btn.prev');
     const nextBtn = document.querySelector('.current-card-btn.next');
-    
+
     let cardsData = [
       { img: '/static/img/default-album.png', name: '', id: null },
       { img: '/static/img/default-album.png', name: '', id: null },

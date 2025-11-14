@@ -30,14 +30,12 @@
         <p><i class="slide-btn left"></i></p>
         <div class="cards" id="slidebar">
           {{#each artists}}
-          <div class="card">
-            <a href="/artist/{{ id }}">
-              <img src="{{ image }}" alt="{{ name }}" />
-              <p class="card-name">{{ name }}</p>
-              <p class="card-sub">{{ listeners }}</p>
-            </a>
+          <a href="/artist/{{ id }}" class="card">
+            <img src="{{ image }}" alt="{{ name }}" />
+            <p class="card-name">{{ name }}</p>
+            <p class="card-sub">{{ listeners }}</p>
             <!--<button class="play-button play-button-placement" data-artist-id="{{ artist_id }}"></button>-->
-          </div>
+          </a>
           {{/each}}
         </div>
         <p><i class="slide-btn right"></i></p>
@@ -51,16 +49,14 @@
         <i class="slide-btn left"></i>
         <div class="cards" id="slidebar">
           {{#each albums}}
-          <div class="card">
-            <a href="/album/{{ id }}">
-              <img src="{{ image }}" alt="{{ name }}" />
-              <p class="card-name">{{ name }}</p>
-              <p class="card-sub card-sub-limiter">
-                {{ type }}
-                <span class="dot"></span>
-                <span class="text">{{ artist }}</span>
-              </p>
-            </a>
+          <div data-href="/album/{{ id }}" class="card">
+            <img src="{{ image }}" alt="{{ name }}" />
+            <p class="card-name">{{ name }}</p>
+            <p class="card-sub card-sub-limiter">
+              {{ type }}
+              <span class="dot"></span>
+              <a class="text" href="/artist/{{ artist_id }}">{{ artist }}</a>
+            </p>
             <!--<button class="play-button play-button-placement" data-album-id="{{ album_id }}"></button>-->
           </div>
           {{/each}}
