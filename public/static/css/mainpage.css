@@ -27,7 +27,7 @@ body {
   display: flex;
   flex: 1;
   min-height: 0;
-  margin-bottom: 0px;
+  margin-bottom: 0;
 }
 
 /* Content */
@@ -143,11 +143,12 @@ body {
 }
 
 .card {
+  text-decoration: none;
   flex: 0 0 180px;
   min-height: 230px;
   text-align: center;
   max-width: 30vh;
-  color: rgb(0, 0, 0);
+  color: black;
   background-color: #f3f5fa;
   transition-duration: 0.3s;
   border-radius: 30px;
@@ -155,6 +156,7 @@ body {
   transition: transform 0.3s ease;
   padding: 10px;
   margin-right: 10px;
+  cursor: pointer;
 }
 
 .card:hover {
@@ -238,11 +240,6 @@ body {
   filter: brightness(70%);
 }
 
-.card a {
-  text-decoration: none;
-  color: inherit;
-}
-
 .card-name {
   font-size: 16px;
   font-weight: 600;
@@ -268,6 +265,16 @@ body {
   max-width: 170px;
 }
 
+.card-sub a {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.card-sub a:hover {
+  text-decoration: underline;
+}
+
 .card-sub .text {
   white-space: nowrap;
   overflow: hidden;
@@ -289,7 +296,7 @@ body {
   grid-template-rows: repeat(2, auto);
   max-height: 200px;
   width: 100%;
-  overflow: auto;
+  overflow: hidden;
   scroll-behavior: smooth;
   margin-left: -23px;
   padding: 15px 0 30px 43px;

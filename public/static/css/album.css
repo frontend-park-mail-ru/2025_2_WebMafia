@@ -104,6 +104,7 @@
   text-overflow: ellipsis;
   margin-top: 10px;
   cursor: pointer;
+  text-align: center;
 }
 
 .album-buttons {
@@ -220,6 +221,7 @@
 
 .all-description {
   max-width: 50vh;
+  white-space: pre-line;
 }
 
 .close-button {
