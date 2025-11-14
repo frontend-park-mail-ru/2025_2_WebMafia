@@ -117,6 +117,9 @@ export class Player extends EventTarget {
             case 'album-tracks':
               tracks = await apiServise.request(`/albums/${context.id}/tracks`);
               break;
+            case 'artist_tracks':
+              tracks = await apiServise.request(`/artists/${context.id}/tracks`);
+              break;
             case 'all-tracks':
             default:
               tracks = await apiServise.request('/tracks?limit=30');

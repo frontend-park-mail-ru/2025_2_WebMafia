@@ -94,7 +94,6 @@ export class MainPage {
     function playerSliderDataSync({ prev, current, next }) {
       const prevCard = document.querySelector('.card-position-prev');
       const nextCard = document.querySelector('.card-position-next');
-      const prevCardImage = document.querySelector('.card-position-prev img');
       if (next) {
         nextBtn.classList.remove('hidden');
         if (nextCard) nextCard.classList.remove('hidden');
@@ -117,7 +116,7 @@ export class MainPage {
 
     function playerData(track) {
       if (!track) {
-        return { img: '/static/img/default-album.png', name: '', id: null };
+        return { img: 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7', name: '', id: null };
       }
 
       const imageUrl = getValidImage('albums/' + track.album?.avatar_url, 'default-album.png');

@@ -18,3 +18,49 @@
 .tracks-table-track-by-artist{
  padding-right: 10px;
 }
+
+
+.play-all-artist-tracks {
+  all: unset;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  height: 18px;
+  transition: opacity 0.3s ease;
+}
+
+.play-all-artist-tracks .pause-icon {
+  display: none;
+}
+
+.play-all-artist-tracks.is-active:not(.paused) .pause-icon {
+  display: none;
+}
+
+.play-all-artist-tracks.is-active:not(.paused) .play-icon {
+  display: block;
+}
+
+.play-all-artist-tracks.is-active.paused .pause-icon {
+  display: block;
+}
+
+.play-all-artist-tracks.is-active.paused .play-icon {
+  display: none;
+}
+
+.play-all-artist-tracks svg {
+  fill: #fafafa;
+  height: 18px;
+  width: 18px;
+}
+
+.track-row:hover .play-all-artist-tracks {
+  opacity: 1;
+}
+
+.play-all-artist-tracks.is-active  {
+  opacity: 1;
+}

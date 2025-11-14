@@ -14,6 +14,7 @@ export class ArtistTracksPage {
       isAuthenticated: localStorage.getItem('isAuthenticated') === 'true',
       tracks: [],
       artistName: '',
+      artistId: '',
     };
 
     const contentTemplate = Handlebars.templates['artistTracksPage.hbs'];
@@ -23,6 +24,7 @@ export class ArtistTracksPage {
       const data = await apiServise.getArtistTracks(artistId);
       if (data) {
         pageData.artistName = data.artist.name;
+        pageData.artistId = data.artist.id;
         pageData.tracks = data.tracks.map((track) => ({
           id: track.id,
           name: track.title,

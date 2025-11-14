@@ -18,7 +18,9 @@
   opacity: 0 !important; 
   pointer-events: none !important; 
   transform: scale(0.8) !important;
+  visibility: hidden !important;
   transition: opacity 0.5s ease, transform 0.5s ease;
+  box-shadow: none !important;
 }
 
 .card-fade-out {
