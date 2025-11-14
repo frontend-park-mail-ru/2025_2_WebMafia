@@ -1,5 +1,5 @@
-const API_BASE_URL = 'http://localhost:8080/api/v1';
-export const API_AVATARS_URL = 'http://localhost:8099/avatars';
+const API_BASE_URL = 'http://217.16.17.173:8080/api/v1';
+export const API_AVATARS_URL = 'http://217.16.17.173:8099/avatars';
 export const API_TRACKS_URL = 'http://217.16.17.173:8099/music/tracks';
 
 export class apiServises {
