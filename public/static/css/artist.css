@@ -170,8 +170,8 @@
   transition: background-color 0.3s ease;
 }
 
-.track-row:hover {
-  background-color: rgba(0, 0, 0, 0.2);
+.track-row:hover, .track-row.active {
+  background-color: #E6E9F5;
 }
 
 .right-row-content {
@@ -202,27 +202,24 @@
   transition: opacity 0.3s ease;
 }
 
-
 .play-popular-track .pause-icon {
   display: none;
 }
 
-/* Когда трек АКТИВЕН (is-active) и ИГРАЕТ (не paused)... */
 .play-popular-track.is-active:not(.paused) .pause-icon {
-  display: none; /* ...скрываем иконку Play... */
+  display: none;
 }
 
 .play-popular-track.is-active:not(.paused) .play-icon {
-  display: block; /* ...и показываем иконку Pause. */
+  display: block;
 }
 
-/* Когда трек АКТИВЕН (is-active) и НА ПАУЗЕ (paused)... */
 .play-popular-track.is-active.paused .pause-icon {
-  display: block; /* ...показываем иконку Play... */
+  display: block;
 }
 
 .play-popular-track.is-active.paused .play-icon {
-  display: none; /* ...и скрываем иконку Pause. */
+  display: none;
 }
 
 .play-popular-track svg {
@@ -248,11 +245,7 @@
 }
 
 .track-row:hover .track-cover, .track-row.active .track-cover {
-  filter: brightness(0.4);
-}
-
-.track-row.active {
-  background-color: rgba(0, 0, 0, 0.2);
+  filter: brightness(0.6);
 }
 
 .track-name {

@@ -126,6 +126,7 @@
   flex-grow: 1;
   z-index: 1;
   background-color: #fafafa;
+  padding: 10px;
 }
 
 .album-table {
@@ -136,19 +137,15 @@
 
 .album-row {
   display: flex;
-  padding: 10px 40px 10px 25px;
+  padding: 10px 25px 10px 10px;
   align-items: center;
   border-radius: 30px;
   transition: background-color 0.3s ease;
   height: 75px;
 }
 
-.album-row.active {
-  background-color: rgba(0, 0, 0, 0.2);
-}
-
-.album-row:hover {
-  background-color: rgba(0, 0, 0, 0.2);
+.album-row.active, .album-row:hover {
+  background-color: #E6E9F5;
 }
 
 .album-play-wrapper {
@@ -178,26 +175,12 @@
   opacity: 0;
 }
 
-.play-album-track .pause-icon {
+.play-album-track.is-active:not(.paused) .pause-icon, .play-album-track.is-active.paused .play-icon, .play-album-track .pause-icon {
   display: none;
 }
 
-/* Когда трек АКТИВЕН (is-active) и ИГРАЕТ (не paused)... */
-.play-album-track.is-active:not(.paused) .pause-icon {
-  display: none; /* ...скрываем иконку Play... */
-}
-
-.play-album-track.is-active:not(.paused) .play-icon {
-  display: block; /* ...и показываем иконку Pause. */
-}
-
-/* Когда трек АКТИВЕН (is-active) и НА ПАУЗЕ (paused)... */
-.play-album-track.is-active.paused .pause-icon {
-  display: block; /* ...показываем иконку Play... */
-}
-
-.play-album-track.is-active.paused .play-icon {
-  display: none; /* ...и скрываем иконку Pause. */
+.play-album-track.is-active:not(.paused) .play-icon, .play-album-track.is-active.paused .pause-icon {
+  display: block;
 }
 
 .album-row:hover .play-album-track, .album-row.active .play-album-track {
