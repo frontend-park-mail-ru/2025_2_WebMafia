@@ -4,7 +4,7 @@
     {{> sidebar}}
     <div class="page" id="scrollContent">
       <div class="title">
-        <div class="title-name-track-by-artist">Треки {{ artistName }}</div>
+        <div class="title-name-track-by-artist">Треки <a class="href-decoration" href="artist/{{ artistId }}">{{ artistName }}</a></div>
       </div>
       <div class="tracks-table-track-by-artist">
         {{#each tracks}}

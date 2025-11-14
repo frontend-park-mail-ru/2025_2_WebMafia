@@ -13,7 +13,7 @@
         >
           <div class="artist-name">{{ name }}</div>
           <div class="artist-interaction">
-            <div class="listeners-num">{{ listeners }}</div>
+            <div class="listeners-num">{{ listeners }} в месяц</div>
             <button class="primary-outline-button artist-subscription">Подписаться</button>
           </div>
           {{#if description}}
@@ -43,13 +43,13 @@
                   <div class="track-name">{{ name }}</div>
                   <div class="track-performers">
                     {{#each artists}}
-                    <a href="artist/{{id}}" class="track-performer">
+                    <a href="artist/{{id}}" class="track-performer href-decoration">
                       {{name}}{{#unless @last}}, {{/unless}}
                     </a>
                     {{/each}}
                   </div>
-                  <div class="track-plays-num">{{ plays }} в месяц</div>
-                  <a href="album/{{ album_id }}" class="track-album-name">
+                  <div class="track-plays-num">{{ plays }}</div>
+                  <a href="album/{{ album_id }}" class="track-album-name href-decoration">
                     {{ album }}
                   </a>
                   <div class="track-duration">{{ duration }}</div>

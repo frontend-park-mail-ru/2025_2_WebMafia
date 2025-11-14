@@ -265,13 +265,13 @@ body {
   max-width: 170px;
 }
 
-.card-sub a {
+.href-decoration {
   text-decoration: none;
   color: inherit;
   cursor: pointer;
 }
 
-.card-sub a:hover, .card-sub-track:hover {
+.href-decoration:hover {
   text-decoration: underline;
 }
 
@@ -347,10 +347,6 @@ body {
 
 .card-tracks:hover img {
   filter: brightness(70%);
-}
-
-.card-tracks a {
-  text-decoration: none;
 }
 
 .card-name-track {

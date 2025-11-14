@@ -55,7 +55,7 @@
             <p class="card-sub card-sub-limiter">
               {{ type }}
               <span class="dot"></span>
-              <a class="text" href="/artist/{{ artist_id }}">{{ artist }}</a>
+              <a class="text href-decoration" href="/artist/{{ artist_id }}">{{ artist }}</a>
             </p>
             <!--<button class="play-button play-button-placement" data-album-id="{{ album_id }}"></button>-->
           </div>
@@ -78,7 +78,7 @@
               <div class="track-content">
                 <p class="card-name-track">{{ name }}</p>
                 {{#each artists}}
-                <a class="card-sub-track" href="/artist/{{ id }}">{{ name }}</a>
+                <a class="card-sub-track href-decoration" href="/artist/{{ id }}">{{ name }}</a>
                 {{/each}}
               </div>
             </div>

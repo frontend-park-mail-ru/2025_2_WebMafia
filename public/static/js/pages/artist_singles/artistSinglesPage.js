@@ -20,6 +20,7 @@ export class ArtistSinglesPage {
     try {
       const data = await apiServise.getArtistAlbums(artistId);
       pageData.artistName = data.artist ? data.artist.name : 'Unknown Artist';
+      pageData.artistId = data.artist.id;
       if (data) {
         data.albums.forEach((album) => {
           const item = {

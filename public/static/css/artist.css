@@ -293,10 +293,6 @@
   color: black;
 }
 
-.track-performer:hover, .track-album-name:hover {
-  text-decoration: underline;
-}
-
 .secondary-button {
   all: unset;
   border-radius: 14px;
