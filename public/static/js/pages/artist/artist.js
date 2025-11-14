@@ -29,7 +29,7 @@ export class ArtistPage {
       pageData.name = data.artist ? data.artist.name : 'Unknown Artist';
       pageData.artist_header = getValidImage('artists/' + data.artist.header_url, 'default-artist.png');
       pageData.description = data.artist.description;
-      pageData.listeners = data.artist.play_count || 0;
+      pageData.listeners = playsParser(data.artist.play_count) || 0;
       pageData.similar_artists = (data.similar_artists || []).map((artist) => ({
         id: artist.id,
         name: artist.name,

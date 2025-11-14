@@ -13,7 +13,11 @@
             <img src="{{ cover }}" alt="{{ name }}" />
             <div class="card-bottom-info">
               <p class="card-name">{{ name }}</p>
-              <p class="card-sub">{{ year }}</p>
+              <p class="card-sub">
+                {{ type }}
+                <span class="dot"></span>
+                {{ year }}
+              </p>
             </div>
           </a>
           <!--<button class="play-button play-button-placement"></button>-->

@@ -73,10 +73,11 @@ export class MainPage {
   }
 
   async nowPlayingCardSlider() {
+    const cardElements = document.querySelectorAll('.now-playing-container-card');
+    if (!cardElements) return;
     const prevBtn = document.querySelector('.current-card-btn.prev');
     const nextBtn = document.querySelector('.current-card-btn.next');
-    const cardElements = document.querySelectorAll('.now-playing-container-card');
-
+    
     let cardsData = [
       { img: '/static/img/default-album.png', name: '', id: null },
       { img: '/static/img/default-album.png', name: '', id: null },
