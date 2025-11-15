@@ -32,12 +32,37 @@ export class Header {
     }
 
     document.getElementById('header').outerHTML = contentTemplate(pageData);
+    const contentTemplateProblem = Handlebars.templates['create_problem.hbs'];
+    const iframeContent = document.getElementById('iframeContent');
+    const htmlContentCreate = contentTemplateProblem(pageData);
+
+    const contentTemplateProblemEdit = Handlebars.templates['edit_problem.hbs'];
+    const htmlContentEdit = contentTemplateProblemEdit(pageData);
+
+    iframeContent.srcdoc = htmlContentEdit;
 
     this.addEventListeners();
     this.profileDropdown();
   }
 
   addEventListeners() {
+    const supportOverlay = document.getElementById('supportOverlay');
+    const supportButton = document.getElementById('supportBtn');
+    if (supportButton && supportOverlay) {
+      supportButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        supportOverlay.classList.add('active');
+      });
+    }
+    if (supportOverlay) {
+      supportOverlay.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (e.target === supportOverlay) {
+          supportOverlay.classList.remove('active');
+        }
+      });
+    }
+
     const logoutButton = document.getElementById('logoutBtn');
     if (logoutButton) {
       logoutButton.addEventListener('click', async (e) => {

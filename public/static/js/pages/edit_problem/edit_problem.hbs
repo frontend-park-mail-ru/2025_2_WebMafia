@@ -8,33 +8,22 @@
     </div>
 
     <div class="support-content">
-      <h2 class="support-title">Расскажите о вашей проблеме</h2>
+      <h2 class="support-title">Ваше обращение</h2>
       
       <form id="supportRequestForm" class="support-form">
         
         <div class="support-form-group">
           <label for="support-subject">С чем связана ваша проблема</label>
-          <input type="text" id="support-subject" name="subject" required>
+          <input type="text" id="support-subject" name="subject" placeholder="название проблема" value="Не работает музыку" required>
         </div>
         
         <div class="support-form-group">
           <label for="support-description">Опишите вашу проблему как можно подробнее</label>
-          <textarea id="support-description" name="description" rows="6" required></textarea>
-        </div>
-
-        <div class="support-form-group">
-          <label for="support-type">Выберите тип проблемы</label>
-          <div class="support-select-wrapper">
-            <select id="support-type" name="type">
-              <option value="bug">Баг</option>
-              <option value="suggestion">Предложение</option>
-              <option value="payment">Неисправность</option>
-              <option value="other">Другое...</option>
-            </select>
-          </div>
+          <textarea id="support-description" name="description" rows="6" placeholder="описание проблемы" value="описание проблемы" required></textarea>
         </div>
 
         <button type="submit" class="support-submit-btn">Создать обращение</button>
+        <button class="support-close-uplication-btn">Закрыть обращение</button>
 
       </form>
     </div>

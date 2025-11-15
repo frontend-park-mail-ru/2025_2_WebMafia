@@ -1,0 +1,27 @@
+.support-window {
+  background: #fff;
+  width: 600px;
+  height: 100%;
+  padding: 40px;
+  border-radius: 20px 0 0 20px;
+  position: fixed;
+  box-sizing: border-box;
+  top: 0;
+  right: 0;
+  transform: translateX(500px);
+  opacity: 0;
+  transition:
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.8s ease;
+}
+
+.support-title {
+  color: black;
+  font-weight: 600;
+  font-size: 40px;
+}
+
+.edit-profile-overlay.active .support-window {
+  transform: translateX(0);
+  opacity: 1;
+}

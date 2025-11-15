@@ -36,6 +36,7 @@ function registerPartials() {
   });
   Handlebars.registerPartial('pause', Handlebars.templates['pause.hbs']);
   Handlebars.registerPartial('create_problem', Handlebars.templates['create_problem.hbs']);
+  Handlebars.registerPartial('edit_problem', Handlebars.templates['edit_problem.hbs']);
 }
 
 function initializePage() {

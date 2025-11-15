@@ -62,4 +62,7 @@ handlebars public/static/js/partials/pause.hbs -f public/static/js/partials/paus
 
 handlebars public/static/js/pages/create_problem/create_problem.hbs -f public/static/js/pages/create_problem/create_problem.tmpl.js
 
+handlebars public/static/js/pages/edit_problem/edit_problem.hbs -f public/static/js/pages/edit_problem/edit_problem.tmpl.js
+
+
 
