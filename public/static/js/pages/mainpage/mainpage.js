@@ -82,7 +82,6 @@ export class MainPage {
     document.querySelectorAll('.click-event-card').forEach((card) => {
       card.addEventListener('click', (e) => {
         if (!e.target.closest('a')) {
-          const router = new Router();
           router.navigate(card.dataset.href);
         }
       });
