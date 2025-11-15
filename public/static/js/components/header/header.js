@@ -2,6 +2,7 @@ import { apiServise } from '../../data.js';
 import { router } from '../../routing.js';
 import { getValidImage } from '../../parsers.js';
 import { player } from '../player/player.js';
+import { support } from "../tech_support/supporPage.js";
 
 export class Header {
   async render() {
@@ -32,6 +33,7 @@ export class Header {
     }
 
     document.getElementById('header').outerHTML = contentTemplate(pageData);
+    document.getElementById('iframeSupport').srcdoc = await support.render();
 
     this.addEventListeners();
     this.profileDropdown();
