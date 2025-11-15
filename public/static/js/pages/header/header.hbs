@@ -20,7 +20,8 @@
       </button>
       <div class="dropdown-menu">
         <a class="dropdown-hrefs" href="/profile">Профиль</a>
-        <a class="dropdown-hrefs" id="logoutBtn" href="#">Выйти</a>
+        <a class="dropdown-hrefs" id="supportBtn">Поддержка</a>
+        <a class="dropdown-hrefs" id="logoutBtn">Выйти</a>
       </div>
     </div>
     {{else}}
@@ -29,3 +30,8 @@
     {{/if}}
   </div>
 </header>
+<div class="edit-profile-overlay" id="supportOverlay">
+  <div class="support-window">
+    <iframe></iframe>
+  </div>
+</div>
