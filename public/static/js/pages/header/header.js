@@ -38,6 +38,23 @@ export class Header {
   }
 
   addEventListeners() {
+    const supportOverlay = document.getElementById('supportOverlay');
+    const supportButton = document.getElementById('supportBtn');
+    if (supportButton && supportOverlay) {
+      supportButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        supportOverlay.classList.add('active');
+      });
+    }
+    if (supportOverlay) {
+      supportOverlay.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (e.target === supportOverlay) {
+          supportOverlay.classList.remove('active');
+        }
+      });
+    }
+
     const logoutButton = document.getElementById('logoutBtn');
     if (logoutButton) {
       logoutButton.addEventListener('click', async (e) => {

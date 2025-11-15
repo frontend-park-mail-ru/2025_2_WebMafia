@@ -125,16 +125,17 @@
   pointer-events: auto;
 }
 
-.dropdown-menu a {
+.dropdown-hrefs {
   display: block;
   padding: 5px;
   text-decoration: none;
   color: #fff;
   font-size: 20px;
   font-weight: 600;
+  cursor: pointer;
 }
 
-.dropdown-menu a:hover {
+.dropdown-hrefs:hover {
   color: #dfd7e7;
   text-decoration: underline;
 }
