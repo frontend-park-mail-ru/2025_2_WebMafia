@@ -2,9 +2,8 @@ import { support } from '../../components/tech_support/supporPage.js';
 import { apiServise } from '../../data.js';
 import { router } from '../../routing.js';
 import { initScrollbar } from '../../scrollbar.js';
-import { editProblem } from '../edit_problem/edit_problem.js';
 
-export class CreateProblem {
+export class EditProblem {
   async render() {
     let pageData = {
       isAuthenticated: localStorage.getItem('isAuthenticated') === 'true',
@@ -55,4 +54,4 @@ export class CreateProblem {
   }
 }
 
-export const createProblem = new CreateProblem();
+export const editProblem = new EditProblem();

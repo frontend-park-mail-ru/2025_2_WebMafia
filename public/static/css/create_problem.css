@@ -27,10 +27,6 @@
     min-height: calc(100vh - 160px); /* Примерная высота, чтобы кнопка ушла вниз. Отрегулируйте значение под вашу страницу. */
 }
 
-.support-content {
-  padding: 0 20px 20px;
-}
-
 .support-form-group {
   margin-bottom: 20px;
 }

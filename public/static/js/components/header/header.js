@@ -4,6 +4,7 @@ import { getValidImage } from '../../parsers.js';
 import { player } from '../player/player.js';
 import { support } from '../tech_support/supporPage.js';
 import { createProblem } from '../../pages/create_problem/create_problem.js';
+import { editProblem } from '../../pages/edit_problem/edit_problem.js';
 
 export class Header {
   async render() {
@@ -34,19 +35,23 @@ export class Header {
     }
 
     document.getElementById('header').outerHTML = contentTemplate(pageData);
-    // const iframeContent = document.getElementById('iframeContent');
-    // const contentTemplateProblem = Handlebars.templates['create_problem.hbs'];
-    // const htmlContentCreate = contentTemplateProblem(pageData);
-
-    // const contentTemplateProblemEdit = Handlebars.templates['edit_problem.hbs'];
-    // const htmlContentEdit = contentTemplateProblemEdit(pageData);
-
-    // iframeContent.srcdoc = htmlContentCreate;
-
-    // document.getElementById('iframeSupport').srcdoc = await support.render();
-    document.getElementById('iframeSupport').srcdoc = await createProblem.render();
-    // document.getElementById('iframeSupport').srcdoc = await support.render();
-
+    document.getElementById('iframeSupport').srcdoc = await support.render();
+    const iframeContent = document.getElementById('iframeSupport');
+    iframeContent.onload = async function () {
+      try {
+        const iframeDoc = iframeContent.contentWindow.document;
+        const createTicketButton = iframeDoc.getElementById('createTicket');
+        const updateTicketButton = iframeDoc.getElementById('supportCards');
+        createTicketButton.addEventListener('click', async function () {
+          document.getElementById('iframeSupport').srcdoc = await createProblem.render();
+        });
+        updateTicketButton.addEventListener('click', async function () {
+          document.getElementById('iframeSupport').srcdoc = await editProblem.render();
+        });
+      } catch (e) {
+        console.error('Ошибка доступа к iframe:', e);
+      }
+    };
     this.addEventListeners();
     this.profileDropdown();
   }

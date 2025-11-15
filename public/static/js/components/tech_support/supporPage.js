@@ -17,7 +17,6 @@ export class Support {
 
     const tpl = Handlebars.templates['supportPage.hbs'];
     this.addEventListeners();
-    initScrollbar();
 
     return tpl(pageData);
   }
@@ -29,7 +28,6 @@ export class Support {
       const closeBtn = iframe.contentWindow.document.getElementById('closeSupportButton');
       if (closeBtn && overlay) {
         closeBtn.addEventListener('click', () => {
-          console.log(1);
           overlay.classList.remove('active');
         });
       }
