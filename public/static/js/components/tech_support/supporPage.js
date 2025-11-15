@@ -1,9 +1,6 @@
 import { router } from '../../routing.js';
-<<<<<<< HEAD
 import { initScrollbar } from '../../scrollbar.js';
-=======
 import { apiServise } from "../../data.js";
->>>>>>> hackaton
 
 export class Support {
   async render() {
@@ -15,13 +12,8 @@ export class Support {
 
     let pageData = {
       isAuthenticated: true,
-<<<<<<< HEAD
-      name: 'Музыка не работает',
-      date: '15.11.2025',
-=======
       open_tickets: [],
       closed_tickets: [],
->>>>>>> hackaton
     };
 
     try {
