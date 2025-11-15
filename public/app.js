@@ -35,6 +35,7 @@ function registerPartials() {
     return parseInt(value) + 1;
   });
   Handlebars.registerPartial('pause', Handlebars.templates['pause.hbs']);
+  Handlebars.registerPartial('create_problem', Handlebars.templates['create_problem.hbs']);
 }
 
 function initializePage() {

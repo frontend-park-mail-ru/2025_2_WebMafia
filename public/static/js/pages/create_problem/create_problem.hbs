@@ -1,0 +1,46 @@
+<div class="support-overlay" id="supportOverlay">
+  <div class="support-window">
+    
+    <div class="support-header">
+      <button id="backSupportBtn" class="support-back-btn">
+        <svg viewBox="0 0 24 24" width="24" height="24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"></path></svg>
+        Назад
+      </button>
+      <button id="closeSupportBtn" class="support-close-btn" aria-label="Закрыть">
+        <svg viewBox="0 0 24 24" width="24" height="24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+      </button>
+    </div>
+
+    <div class="support-content">
+      <h2 class="support-title">Расскажите о вашей проблеме</h2>
+      
+      <form id="supportRequestForm" class="support-form">
+        
+        <div class="support-form-group">
+          <label for="support-subject">С чем связана ваша проблема</label>
+          <input type="text" id="support-subject" name="subject" required>
+        </div>
+        
+        <div class="support-form-group">
+          <label for="support-description">Опишите вашу проблему как можно подробнее</label>
+          <textarea id="support-description" name="description" rows="6" required></textarea>
+        </div>
+
+        <div class="support-form-group">
+          <label for="support-type">Выберите тип проблемы</label>
+          <div class="support-select-wrapper">
+            <select id="support-type" name="type">
+              <option value="bug">Баг</option>
+              <option value="suggestion">Предложение</option>
+              <option value="payment">Вопрос по оплате</option>
+              <option value="other">Другое</option>
+            </select>
+          </div>
+        </div>
+
+        <button type="submit" class="support-submit-btn">Создать обращение</button>
+
+      </form>
+    </div>
+  </div>
+</div>

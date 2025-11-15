@@ -60,4 +60,6 @@ handlebars public/static/js/partials/profile.hbs -f public/static/js/partials/pr
 
 handlebars public/static/js/partials/pause.hbs -f public/static/js/partials/pause.tmpl.js
 
+handlebars public/static/js/pages/create_problem/create_problem.hbs -f public/static/js/pages/create_problem/create_problem.tmpl.js
+
 
