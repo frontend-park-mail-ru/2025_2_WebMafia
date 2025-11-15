@@ -14,18 +14,18 @@
         
         <div class="support-form-group">
           <label for="support-subject">С чем связана ваша проблема</label>
-          <input type="text" id="support-subject" name="subject" placeholder="название проблема" value="Не работает музыку" required>
+          <input type="text" id="support-subject" name="subject" placeholder="название проблема" value="{{ title }}" required>
         </div>
         
         <div class="support-form-group">
           <label for="support-description">Опишите вашу проблему как можно подробнее</label>
-          <textarea id="support-description" name="description" rows="6" placeholder="описание проблемы" value="описание проблемы" required></textarea>
+          <textarea id="support-description" name="description" rows="6" placeholder="описание проблемы" value="{{ description }}" required></textarea>
         </div>
 
         
 
       </form>
     </div>
-    <button type="submit" class="support-submit-btn">Изменить обращение</button>
+    <button type="submit" class="support-submit-btn" id="edit-submit-btn">Изменить обращение</button>
     <button class="support-close-uplication-btn">Закрыть обращение</button>
     <script type="module" src="app.js"></script>

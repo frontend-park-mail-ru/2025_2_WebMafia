@@ -1,6 +1,6 @@
 import { router } from '../../routing.js';
 import { initScrollbar } from '../../scrollbar.js';
-import { apiServise } from "../../data.js";
+import { apiServise } from '../../data.js';
 
 export class Support {
   async render() {
@@ -20,6 +20,7 @@ export class Support {
       const data = await apiServise.getUserTickets();
       data.tickets.forEach((ticket) => {
         const item = {
+          id: ticket.id,
           name: ticket.title,
           date: ticket.updated_at,
           type: ticket.status,

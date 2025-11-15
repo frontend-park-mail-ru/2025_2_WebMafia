@@ -39,11 +39,12 @@ export class CreateProblem {
         const title = iframeDoc.getElementById('support-subject');
         const description = iframeDoc.getElementById('support-description');
         const type = iframeDoc.getElementById('support-type');
-        buttonInIframe.addEventListener('click', () => {
+        buttonInIframe.addEventListener('click', async function () {
           const titleVal = title.value;
           const descriptionVal = description.value;
           const typeVal = type.value;
-          const response = apiServise.sendProblem(titleVal, descriptionVal, typeVal);
+          const response = await apiServise.sendProblem(titleVal, descriptionVal, typeVal);
+          document.getElementById('iframeSupport').srcdoc = await support.render();
         });
         backSupportBtn.addEventListener('click', async function () {
           document.getElementById('iframeSupport').srcdoc = await support.render();
