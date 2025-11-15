@@ -15,12 +15,17 @@ export class Support {
       closed_tickets: [],
     };
 
+    function timestampParser(timestamp) {
+      const date = new Date(timestamp * 1000);
+      return `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`
+    }
+
     try {
       const data = await apiServise.getUserTickets();
       data.tickets.forEach((ticket) => {
         const item = {
           name: ticket.title,
-          date: ticket.updated_at,
+          date: timestampParser(ticket.updated_at),
           type: ticket.status,
         };
 
