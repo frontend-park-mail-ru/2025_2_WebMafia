@@ -238,7 +238,7 @@ export class apiServises {
   }
 
   async getUserTickets() {
-    return this.request('/support/tickets');
+    return this.request('/support/tickets/all');
   }
 
   async PullProblem(id, title, description) {

@@ -16,17 +16,30 @@ export class Support {
       closed_tickets: [],
     };
 
+    function timestampParser(timestamp) {
+      const normalized = timestamp.replace(' ', 'T');
+
+      const date = new Date(normalized);
+      if (isNaN(date.getTime())) return '';
+
+      const day = String(date.getDate()).padStart(2, '0');
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const year = date.getFullYear();
+
+      return `${day}.${month}.${year}`;
+    }
+
     try {
       const data = await apiServise.getUserTickets();
-      data.tickets.forEach((ticket) => {
+      data.forEach((ticket) => {
         const item = {
           id: ticket.id,
           name: ticket.title,
-          date: ticket.updated_at,
+          date: timestampParser(ticket.updated_at),
           type: ticket.status,
         };
 
-        if (item.type) {
+        if (item.type === 'Открыто') {
           pageData.open_tickets.push(item);
         } else {
           pageData.closed_tickets.push(item);
