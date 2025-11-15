@@ -2,6 +2,7 @@ import { apiServise } from '../../data.js';
 import { router } from '../../routing.js';
 import { getValidImage } from '../../parsers.js';
 import { player } from '../player/player.js';
+import { support } from '../tech_support/supporPage.js';
 
 export class Header {
   async render() {
@@ -32,14 +33,19 @@ export class Header {
     }
 
     document.getElementById('header').outerHTML = contentTemplate(pageData);
-    const iframeContent = document.getElementById('iframeContent');
-    const contentTemplateProblem = Handlebars.templates['create_problem.hbs'];
-    const htmlContentCreate = contentTemplateProblem(pageData);
+    // const iframeContent = document.getElementById('iframeContent');
+    // const contentTemplateProblem = Handlebars.templates['create_problem.hbs'];
+    // const htmlContentCreate = contentTemplateProblem(pageData);
 
-    const contentTemplateProblemEdit = Handlebars.templates['edit_problem.hbs'];
-    const htmlContentEdit = contentTemplateProblemEdit(pageData);
+    // const contentTemplateProblemEdit = Handlebars.templates['edit_problem.hbs'];
+    // const htmlContentEdit = contentTemplateProblemEdit(pageData);
 
-    iframeContent.srcdoc = htmlContentCreate;
+    // iframeContent.srcdoc = htmlContentCreate;
+
+    document.getElementById('iframeSupport').srcdoc = await support.render();
+    document.getElementById('iframeSupport').srcdoc = await support.render();
+    document.getElementById('iframeSupport').srcdoc = await support.render();
+
 
     this.addEventListeners();
     this.profileDropdown();
