@@ -1,6 +1,6 @@
-const API_BASE_URL = 'http://localhost:8080/api/v1';
-export const API_AVATARS_URL = 'http://localhost:8099/avatars';
-export const API_TRACKS_URL = 'http://localhost:8099/music/tracks';
+const API_BASE_URL = 'http://217.16.17.173:8080/api/v1';
+export const API_AVATARS_URL = 'http://217.16.17.173:8099/avatars';
+export const API_TRACKS_URL = 'http://217.16.17.173:8099/music/tracks';
 
 export class apiServises {
   constructor() {
@@ -236,15 +236,9 @@ export class apiServises {
       },
     });
   }
-
-  async getProblems() {
-    try {
-      const tickets = this.request('/support/tickets?limit=10').catch(() => []);
-      return tickets;
-    } catch (error) {
-      console.error('Failed to load album page data:', error);
-      throw error;
-    }
+  
+  async getUserTickets() {
+    return this.request('/support/tickets');
   }
 }
 

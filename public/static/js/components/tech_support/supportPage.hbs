@@ -6,37 +6,21 @@
 <div class="support-content">
   <h3 class="waiting-title">Ожидают вашего ответа</h3>
   <div class="support-cards">
-    <div class="support-card" id="supportCards">
+    {{#each open_tickets}}
+    <div class="support-card">
       <div class="support-card-title">{{ name }}</div>
       <div class="support-card-date">Обновлено: {{ date }}</div>
     </div>
+    {{/each}}
   </div>
   <h3 class="closed-title">Решены</h3>
   <div class="support-cards">
-    <div class="support-card" id="supportCards">
-      <div class="support-card-title">{{ name }}</div>
-      <div class="support-card-date">Закрыто: {{ date }}</div>
-    </div>
+    {{#each open_tickets}}
     <div class="support-card">
       <div class="support-card-title">{{ name }}</div>
       <div class="support-card-date">Закрыто: {{ date }}</div>
     </div>
-    <div class="support-card">
-      <div class="support-card-title">{{ name }}</div>
-      <div class="support-card-date">Закрыто: {{ date }}</div>
-    </div>
-    <div class="support-card">
-      <div class="support-card-title">{{ name }}</div>
-      <div class="support-card-date">Закрыто: {{ date }}</div>
-    </div>
-    <div class="support-card">
-      <div class="support-card-title">{{ name }}</div>
-      <div class="support-card-date">Закрыто: {{ date }}</div>
-    </div>
-    <div class="support-card">
-      <div class="support-card-title">{{ name }}</div>
-      <div class="support-card-date">Закрыто: {{ date }}</div>
-    </div>
+    {{/each}}
   </div>
 </div>
 <div class="primary-button support-button-placement" id="createTicket">Создать обращение</div>
