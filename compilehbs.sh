@@ -1,3 +1,11 @@
+handlebars public/static/js/components/header/header.hbs -f public/static/js/components/header/header.tmpl.js
+
+handlebars public/static/js/components/sidebar/sidebar.hbs -f public/static/js/components/sidebar/sidebar.tmpl.js
+
+handlebars public/static/js/components/tech_support/supportPage.hbs -f public/static/js/components/tech_support/supportPage.tmpl.js
+
+handlebars public/static/js/components/player/player.hbs -f public/static/js/components/player/player.tmpl.js
+
 handlebars public/static/js/pages/mainpage/MainPage.hbs -f public/static/js/pages/mainpage/MainPage.tmpl.js
 
 handlebars public/static/js/pages/notfoundpage/404.hbs -f public/static/js/pages/notfoundpage/notFoundPage.tmpl.js
@@ -15,12 +23,6 @@ handlebars public/static/js/pages/artist_albums/artistAlbumsPage.hbs -f public/s
 handlebars public/static/js/pages/artist_tracks/artistTracksPage.hbs -f public/static/js/pages/artist_tracks/artistTracksPage.tmpl.js
 
 handlebars public/static/js/pages/artist_singles/artistSinglesPage.hbs -f public/static/js/pages/artist_singles/artistSinglesPage.tmpl.js
-
-handlebars public/static/js/pages/header/header.hbs -f public/static/js/pages/header/header.tmpl.js
-
-handlebars public/static/js/pages/sidebar/sidebar.hbs -f public/static/js/pages/sidebar/sidebar.tmpl.js
-
-handlebars public/static/js/pages/player/player.hbs -f public/static/js/pages/player/player.tmpl.js
 
 handlebars public/static/js/pages/album/album.hbs -f public/static/js/pages/album/album.tmpl.js
 

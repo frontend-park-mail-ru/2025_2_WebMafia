@@ -1,0 +1,22 @@
+<link rel="stylesheet" href="/static/css/import.css">
+<div class="support-header">
+  <h2 class="support-title">Техническая поддержка</h2>
+  <button id="closeSupportButton" class="close-button" aria-label="Закрыть">{{> close }}</button>
+</div>
+<div id="scrollContent">
+  <h3 class="waiting-title">Ожидают вашего ответа</h3>
+  <div class="support-cards">
+    <div class="support-card">
+      <div class="support-card-title">{{ name }}</div>
+      <div class="support-card-date">Обновлено: {{ date }}</div>
+    </div>
+  </div>
+  <h3 class="closed-title">Решены</h3>
+  <div class="support-cards">
+    <div class="support-card">
+      <div class="support-card-title">{{ name }}</div>
+      <div class="support-card-date">Закрыто: {{ date }}</div>
+    </div>
+  </div>
+</div>
+<script type="module" src="app.js"></script>

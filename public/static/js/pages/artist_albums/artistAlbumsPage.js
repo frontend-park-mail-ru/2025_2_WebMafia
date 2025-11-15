@@ -1,7 +1,7 @@
 import { apiServise } from '../../data.js';
 import { router } from '../../routing.js';
-import { header } from '../header/header.js';
-import { sidebar } from '../sidebar/sidebar.js';
+import { header } from '../../components/header/header.js';
+import { sidebar } from '../../components/sidebar/sidebar.js';
 import { initScrollbar } from '../../scrollbar.js';
 import { getValidImage } from '../../parsers.js';
 import { playTrack } from '../../playTrackBtn.js';
