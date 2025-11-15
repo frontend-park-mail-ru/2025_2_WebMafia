@@ -4,7 +4,9 @@
   <button id="closeSupportButton" class="close-button" aria-label="Закрыть">{{> close }}</button>
 </div>
 <div class="support-content">
+  {{#if open_tickets}}
   <h3 class="waiting-title">Ожидают вашего ответа</h3>
+  {{/if}}
   <div class="support-cards">
     {{#each open_tickets}}
     <div class="support-card">
@@ -13,7 +15,9 @@
     </div>
     {{/each}}
   </div>
+  {{#if closed_tickets}}
   <h3 class="closed-title">Решены</h3>
+  {{/if}}
   <div class="support-cards">
     {{#each open_tickets}}
     <div class="support-card">
