@@ -58,3 +58,6 @@ handlebars public/static/js/partials/close.hbs -f public/static/js/partials/clos
 
 handlebars public/static/js/partials/profile.hbs -f public/static/js/partials/profile.tmpl.js
 
+handlebars public/static/js/partials/pause.hbs -f public/static/js/partials/pause.tmpl.js
+
+

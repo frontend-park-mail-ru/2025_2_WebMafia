@@ -4,20 +4,18 @@
     {{> sidebar}}
     <div class="page" id="scrollContent">
       <div class="title">
-        <div class="title-name-track-by-artist">Альбомы {{ artistName }}</div>
+        <div class="title-name-track-by-artist">Альбомы <a class="href-decoration" href="artist/{{ artistId }}">{{ artistName }}</a></div>
       </div>
       <div class="grid-layout">
         {{#each albums}}
-        <div class="card">
-          <a href="/album/{{ id }}">
-            <img src="{{ cover }}" alt="{{ name }}" />
-            <div class="card-bottom-info">
-              <p class="card-name">{{ name }}</p>
-              <p class="card-sub">{{ year }}</p>
-            </div>
-          </a>
+        <a href="/album/{{ id }}" class="card">
+          <img src="{{ cover }}" alt="{{ name }}" />
+          <div class="card-bottom-info">
+            <p class="card-name">{{ name }}</p>
+            <p class="card-sub">{{ year }}</p>
+          </div>
           <!--<button class="play-button play-button-placement"></button>-->
-        </div>
+        </a>
         {{/each}}
       </div>
     </div>

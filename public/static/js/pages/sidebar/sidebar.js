@@ -12,15 +12,9 @@ export class Sidebar {
   }
 
   activePath() {
-    document.querySelectorAll('.menu-item a').forEach((link) => {
-      const menuItem = link.closest('.menu-item');
-      if (link.getAttribute('href') === window.location.pathname) {
-        link.classList.add('active');
-        menuItem.classList.add('active');
-      } else {
-        link.classList.remove('active');
-        menuItem.classList.remove('active');
-      }
+    document.querySelectorAll('.menu-item').forEach((link) => {
+      if (link.getAttribute('href') === window.location.pathname) link.classList.add('active');
+      else link.classList.remove('active');
     });
   }
 }

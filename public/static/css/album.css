@@ -104,6 +104,7 @@
   text-overflow: ellipsis;
   margin-top: 10px;
   cursor: pointer;
+  text-align: center;
 }
 
 .album-buttons {
@@ -126,6 +127,7 @@
   flex-grow: 1;
   z-index: 1;
   background-color: #fafafa;
+  padding: 10px;
 }
 
 .album-table {
@@ -136,19 +138,15 @@
 
 .album-row {
   display: flex;
-  padding: 10px 40px 10px 25px;
+  padding: 10px 25px 10px 10px;
   align-items: center;
   border-radius: 30px;
   transition: background-color 0.3s ease;
   height: 75px;
 }
 
-.album-row.active {
-  background-color: rgba(0, 0, 0, 0.2);
-}
-
-.album-row:hover {
-  background-color: rgba(0, 0, 0, 0.2);
+.album-row.active, .album-row:hover {
+  background-color: #E6E9F5;
 }
 
 .album-play-wrapper {
@@ -176,6 +174,14 @@
   left: 50%;
   transform: translate(-50%, -50%);
   opacity: 0;
+}
+
+.play-album-track.is-active:not(.paused) .pause-icon, .play-album-track.is-active.paused .play-icon, .play-album-track .pause-icon {
+  display: none;
+}
+
+.play-album-track.is-active:not(.paused) .play-icon, .play-album-track.is-active.paused .pause-icon {
+  display: block;
 }
 
 .album-row:hover .play-album-track, .album-row.active .play-album-track {
@@ -215,6 +221,7 @@
 
 .all-description {
   max-width: 50vh;
+  white-space: pre-line;
 }
 
 .close-button {

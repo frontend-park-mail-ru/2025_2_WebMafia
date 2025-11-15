@@ -29,14 +29,12 @@
           <p><i class="slide-btn left"></i></p>
           <div class="cards" id="slidebar">
             {{#each top_artists}}
-            <div class="card">
-              <a href="/artist/{{ id }}">
-                <img src="{{ image }}" alt="{{ name }}" />
-                <p class="card-name">{{ name }}</p>
-                <p class="card-sub">{{ listeners }} слушателей</p>
-              </a>
+            <a href="/artist/{{ id }}" class="card">
+              <img src="{{ image }}" alt="{{ name }}" />
+              <p class="card-name">{{ name }}</p>
+              <p class="card-sub">{{ listeners }}</p>
               <!--<button class="play-button play-button-placement"></button>-->
-            </div>
+            </a>
             {{/each}}
           </div>
           <p><i class="slide-btn right"></i></p>
@@ -51,7 +49,10 @@
               <div class="track-number">{{numeration @index}}</div>
               <div class="track-cover-wrapper">
                 <img class="track-cover" src="{{ cover }}" alt="{{ name }}" />
-                <button class="play-popular-track">{{> play }}</button>
+                <button class="play-popular-track" data-track-id="{{ id }}" data-context="artist-popular" data-artist-id="{{../id}}">
+                  <span class="play-icon">{{> play }}</span>
+                  <span class="pause-icon">{{> pause }}</span>
+                </button>
               </div>
               <div class="right-row-content">
                 <div class="track-name">{{ name }}</div>
@@ -62,7 +63,7 @@
                     </a>
                   {{/each}}
                 </div>
-                <div class="track-plays-num">{{ plays }} прослушиваний</div>
+                <div class="track-plays-num">{{ plays }}</div>
                 <a href="album/{{ album_id }}" class="track-album-name">
                   {{ album }}
                 </a>
@@ -79,14 +80,12 @@
           <p><i class="slide-btn left"></i></p>
           <div class="cards" id="slidebar">
             {{#each recent}}
-            <div class="card">
-              <a href="/artist/{{ id }}">
-                <img src="{{ image }}" alt="{{ name }}" />
-                <p class="card-name">{{ name }}</p>
-                <p class="card-sub">{{ listeners }} слушателей</p>
-              </a>
+            <a href="/artist/{{ id }}" class="card">
+              <img src="{{ image }}" alt="{{ name }}" />
+              <p class="card-name">{{ name }}</p>
+              <p class="card-sub">{{ listeners }}</p>
               <!--<button class="play-button play-button-placement"></button>-->
-            </div>
+            </a>
             {{/each}}
           </div>
           <p><i class="slide-btn right"></i></p>
