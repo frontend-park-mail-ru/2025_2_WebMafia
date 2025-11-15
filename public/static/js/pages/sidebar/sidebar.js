@@ -13,10 +13,8 @@ export class Sidebar {
 
   activePath() {
     document.querySelectorAll('.menu-item').forEach((link) => {
-      if (link.getAttribute('href') === window.location.pathname)
-        link.classList.add('active');
-      else
-        link.classList.remove('active');
+      if (link.getAttribute('href') === window.location.pathname) link.classList.add('active');
+      else link.classList.remove('active');
     });
   }
 }

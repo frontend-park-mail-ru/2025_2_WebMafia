@@ -13,7 +13,7 @@
         >
           <div class="artist-name">{{ name }}</div>
           <div class="artist-interaction">
-            <div class="listeners-num">{{ listeners }}</div>
+            <div class="listeners-num">{{ listeners }} в месяц</div>
             <button class="primary-outline-button artist-subscription">Подписаться</button>
           </div>
           {{#if description}}
@@ -34,19 +34,22 @@
                 <div class="track-number">{{numeration @index}}</div>
                 <div class="track-cover-wrapper">
                   <img class="track-cover" src="{{ cover }}" alt="{{ name }}" />
-                  <button class="play-popular-track" data-track-id="{{ id }}">{{> play }}</button>
+                  <button class="play-popular-track" data-track-id="{{ id }}" data-context="artist-popular" data-artist-id="{{../id}}">
+                    <span class="play-icon">{{> play }}</span>
+                    <span class="pause-icon">{{> pause }}</span>
+                  </button>
                 </div>
                 <div class="right-row-content">
                   <div class="track-name">{{ name }}</div>
                   <div class="track-performers">
                     {{#each artists}}
-                    <a href="artist/{{id}}" class="track-performer">
+                    <a href="artist/{{id}}" class="track-performer href-decoration">
                       {{name}}{{#unless @last}}, {{/unless}}
                     </a>
                     {{/each}}
                   </div>
                   <div class="track-plays-num">{{ plays }}</div>
-                  <a href="album/{{ album_id }}" class="track-album-name">
+                  <a href="album/{{ album_id }}" class="track-album-name href-decoration">
                     {{ album }}
                   </a>
                   <div class="track-duration">{{ duration }}</div>
@@ -66,16 +69,14 @@
             <div class="cards" id="slidebar">
               <p><i class="slide-btn left"></i></p>
               {{#each albums}}
-              <div class="card">
-                <a href="/album/{{ id }}">
-                  <img src="{{ cover }}" alt="{{ name }}" />
-                  <div class="card-bottom-info">
-                    <p class="card-name">{{ name }}</p>
-                    <p class="card-sub">{{ year }}</p>
-                  </div>
-                </a>
+              <a href="/album/{{ id }}" class="card">
+                <img src="{{ cover }}" alt="{{ name }}" />
+                <div class="card-bottom-info">
+                  <p class="card-name">{{ name }}</p>
+                  <p class="card-sub">{{ year }}</p>
+                </div>
                 <!--<button class="play-button play-button-placement"></button>-->
-              </div>
+              </a>
               {{/each}}
               <p><i class="slide-btn right"></i></p>
             </div>
@@ -91,21 +92,18 @@
             <p><i class="slide-btn left"></i></p>
             <div class="cards" id="slidebar">
               {{#each singls}}
-              <div class="card">
-                <a href="/album/{{ id }}"
-                  ><img src="{{ cover }}" alt="{{ name }}" />
-                  <div class="card-bottom-info">
-                    <p class="card-name">{{ name }}</p>
-                    <p class="card-sub">{{ year }}
-                      {{#if type}}
-                        <span class="dot"></span>
-                        {{ type }}
-                      {{/if}}
-                    </p>
-                  </div>
-                </a>
+              <a href="/album/{{ id }}" class="card">
+                <img src="{{ cover }}" alt="{{ name }}" />
+                <div class="card-bottom-info">
+                  <p class="card-name">{{ name }}</p>
+                  <p class="card-sub">
+                    {{ type }}
+                    <span class="dot"></span>
+                    {{ year }}
+                  </p>
+                </div>
                 <!--<button class="play-button play-button-placement"></button>-->
-              </div>
+              </a>
               {{/each}}
             <p><i class="slide-btn right"></i></p>
             </div>
@@ -119,15 +117,13 @@
             <p><i class="slide-btn left"></i></p>
             <div class="cards" id="slidebar">
               {{#each similar_artists}}
-              <div class="card">
-                <a href="artist/{{ id }}">
-                  <img src="{{ image }}" alt="{{ name }}" />
-                  <div class="card-bottom-info">
-                    <p class="card-name">{{ name }}</p>
-                    <p class="card-sub">{{ listeners }}</p>
-                  </div>
-                </a>
-              </div>
+              <a href="artist/{{ id }}" class="card">
+                <img src="{{ image }}" alt="{{ name }}" />
+                <div class="card-bottom-info">
+                  <p class="card-name">{{ name }}</p>
+                  <p class="card-sub">{{ listeners }}</p>
+                </div>
+              </a>
               {{/each}}
             </div>
             <p><i class="slide-btn right"></i></p>

@@ -7,6 +7,7 @@ import { slider } from '../../slider.js';
 import { playsParser, durationParser, getValidImage, totalDurationParser, tracksNumParser } from '../../parsers.js';
 import { playTrack } from '../../playTrackBtn.js';
 import { setPlayButtonsOnAuth } from '../../setPlayButtonsOnAuth.js';
+import { playerOnlyOnPlay } from '../../playerOnlyOnplay.js';
 
 export class AlbumPage {
   async render(id) {
@@ -64,7 +65,7 @@ export class AlbumPage {
     const contentTemplate = Handlebars.templates['album.hbs'];
     document.getElementById('app').innerHTML = contentTemplate(pageData);
     document.querySelector('head title').textContent = pageData.title;
-
+    playerOnlyOnPlay();
     await Promise.all([header.render(), sidebar.render()]);
 
     slider.sliderFunction();
