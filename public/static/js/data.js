@@ -236,6 +236,16 @@ export class apiServises {
       },
     });
   }
+
+  async getProblems() {
+    try {
+      const tickets = this.request('/support/tickets?limit=10').catch(() => []);
+      return tickets;
+    } catch (error) {
+      console.error('Failed to load album page data:', error);
+      throw error;
+    }
+  }
 }
 
 export const apiServise = new apiServises();

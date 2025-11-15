@@ -1,7 +1,8 @@
 import { apiServise } from '../../data.js';
-import { initScrollbar } from '../../scrollbar';
+import { router } from '../../routing.js';
+import { initScrollbar } from '../../scrollbar.js';
 
-export class createProblem {
+export class CreateProblem {
   async render() {
     let pageData = {
       isAuthenticated: localStorage.getItem('isAuthenticated') === 'true',
@@ -19,24 +20,35 @@ export class createProblem {
     }
     const contentTemplateProblem = Handlebars.templates['create_problem.hbs'];
 
-    const iframeContent = document.getElementById('iframeContent');
+    this.addEventListeners();
+    initScrollbar();
 
-    const htmlContentCreate = contentTemplateProblem(pageData);
+    return contentTemplateProblem(pageData);
+  }
 
-    iframeContent.srcdoc = htmlContentCreate;
-
+  addEventListeners() {
+    const iframeContent = document.getElementById('iframeSupport');
     iframeContent.onload = function () {
       try {
         const iframeDoc = iframeContent.contentWindow.document;
+        const responseAll = apiServise.getProblems();
+        console.log(responseAll);
         const buttonInIframe = iframeDoc.getElementById('specialButton');
-        console.log('Кнопка найдена!', buttonInIframe);
+        const title = iframeDoc.getElementById('support-subject');
+        const description = iframeDoc.getElementById('support-description');
+        const type = iframeDoc.getElementById('support-type');
         buttonInIframe.addEventListener('click', () => {
-          console.log('ashdjkdaskjahads');
+          const titleVal = title.value;
+          const descriptionVal = description.value;
+          const typeVal = type.value;
+          const response = apiServise.sendProblem(titleVal, descriptionVal);
+
         });
       } catch (e) {
         console.error('Ошибка доступа к iframe:', e);
       }
     };
-    initScrollbar();
   }
 }
+
+export const createProblem = new CreateProblem();

@@ -3,6 +3,7 @@ import { router } from '../../routing.js';
 import { getValidImage } from '../../parsers.js';
 import { player } from '../player/player.js';
 import { support } from '../tech_support/supporPage.js';
+import { createProblem } from '../../pages/create_problem/create_problem.js';
 
 export class Header {
   async render() {
@@ -42,10 +43,9 @@ export class Header {
 
     // iframeContent.srcdoc = htmlContentCreate;
 
-    document.getElementById('iframeSupport').srcdoc = await support.render();
-    document.getElementById('iframeSupport').srcdoc = await support.render();
-    document.getElementById('iframeSupport').srcdoc = await support.render();
-
+    // document.getElementById('iframeSupport').srcdoc = await support.render();
+    document.getElementById('iframeSupport').srcdoc = await createProblem.render();
+    // document.getElementById('iframeSupport').srcdoc = await support.render();
 
     this.addEventListeners();
     this.profileDropdown();
