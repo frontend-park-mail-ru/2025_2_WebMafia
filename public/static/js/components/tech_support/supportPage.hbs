@@ -19,7 +19,7 @@
   <h3 class="closed-title">Решены</h3>
   {{/if}}
   <div class="support-cards">
-    {{#each open_tickets}}
+    {{#each closed_tickets}}
     <div class="support-card" id="supportCards" data-ticket-id="{{ id }}">
       <div class="support-card-title">{{ name }}</div>
       <div class="support-card-date">Закрыто: {{ date }}</div>

@@ -26,7 +26,7 @@ export class EditProblem {
 
           // 4. Находим нужный тикет с помощью более удобного метода .find()
           // Приводим оба значения к строке для надежного сравнения
-          const foundTicket = data.tickets.find(ticket => String(ticket.id) === String(neededId));
+          const foundTicket = data.tickets.find((ticket) => String(ticket.id) === String(neededId));
 
           // 5. Проверяем, был ли тикет найден
           if (!foundTicket) {
