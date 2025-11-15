@@ -213,7 +213,7 @@ export class apiServises {
 
   async getLibraryPageData() {
     try {
-      const [albums, playlists, artists] = [
+      const [albums, playlists, artists, tracks] = [
         // === ALBUMS ===
         [
           {
@@ -277,18 +277,6 @@ export class apiServises {
               { id: 9, title: 'Отдых' },
             ],
           },
-          {
-            id: 104,
-            title: 'Понравившиеся треки',
-            avatar_url: '',
-            created_at: '2025-06-25T18:45:00Z',
-            tracks: [
-              { id: 10, title: 'Класс' },
-              { id: 11, title: 'Круто' },
-              { id: 12, title: 'Замечательно' },
-              { id: 13, title: 'Потрясающе' },
-            ],
-          },
         ],
 
         // === ARTISTS ===
@@ -315,18 +303,30 @@ export class apiServises {
             play_count: 9600,
           },
         ],
+        // === TRACKS ===
+        {
+          id: 104,
+          tracks: [
+            { id: 10, title: 'Класс' },
+            { id: 11, title: 'Круто' },
+            { id: 12, title: 'Замечательно' },
+            { id: 13, title: 'Потрясающе' },
+          ],
+        },
       ];
 
       /*await Promise.all([
         this.request(`/library/albums`).catch(() => []),
         this.request(`/library/playlists`).catch(() => []),
         this.request('/library/artists').catch(() => []),
+        this.request('/library/tracks').catch(() => []),
       ]);*/
 
       return {
         albums: albums || [],
         playlists: playlists || [],
         artists: artists || [],
+        tracks: tracks || {},
       };
     } catch (error) {
       console.error('Failed to load artist page data:', error);

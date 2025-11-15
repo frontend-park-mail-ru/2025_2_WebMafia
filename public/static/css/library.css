@@ -35,3 +35,14 @@
   transform: translateY(-50%);
   pointer-events: none;
 }
+
+.second-cross-icon {
+  display: none;
+  border-radius: 50%;
+  align-items: center;
+  padding: 10px 13px 10px 13px;
+}
+
+.second-cross-icon svg {
+  transform: rotate(45deg);
+}

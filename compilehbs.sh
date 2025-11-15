@@ -10,6 +10,8 @@ handlebars public/static/js/pages/artist/artistPage.hbs -f public/static/js/page
 
 handlebars public/static/js/pages/profile/profilePage.hbs -f public/static/js/pages/profile/profilePage.tmpl.js
 
+handlebars public/static/js/pages/library_grid/libraryGrid.hbs -f public/static/js/pages/library_grid/libraryGrid.tmpl.js
+
 handlebars public/static/js/pages/artist_albums/artistAlbumsPage.hbs -f public/static/js/pages/artist_albums/artistAlbumsPage.tmpl.js
 
 handlebars public/static/js/pages/artist_tracks/artistTracksPage.hbs -f public/static/js/pages/artist_tracks/artistTracksPage.tmpl.js

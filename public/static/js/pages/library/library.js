@@ -18,24 +18,33 @@ export class LibraryPage {
     let pageData = {
       isAuthenticated: true,
       library: [],
+      playlists: [],
+      artists: [],
+      albums: [],
+      showType: true,
     };
 
     const contentTemplate = Handlebars.templates['library.hbs'];
     document.getElementById('app').innerHTML = contentTemplate();
+    const gridTemplate = Handlebars.templates['libraryGrid.hbs'];
+    document.querySelector('.grid-layout').innerHTML = gridTemplate();
     document.querySelector('head title').textContent = 'Библиотека';
 
     try {
       const data = await apiServise.getLibraryPageData();
-      pageData.artists = data.artists;
-      pageData.albums = data.albums;
-      pageData.playlists = data.playlists.slice(0, -1);
-      const liked_tracks = data.playlists[data.playlists.length - 1];
-      pageData.liked_tracks = {
-        sub: tracksNumParser(liked_tracks.tracks.length),
-        href: 'playlist/' + liked_tracks.id,
+      const tracks = data.tracks;
+      const item = {
+        name: 'Понравившиеся треки',
+        image: 'static/img/liked_tracks.png',
+        created_at: new Date(),
+        sub: tracksNumParser(tracks.tracks.length),
+        href: 'playlist/' + tracks.id,
+        type: 'Плейлист',
       };
-      pageData.artists.forEach((artist) => {
-        pageData.library.push({
+      pageData.library.push(item);
+      pageData.playlists.push(item);
+      data.artists.forEach((artist) => {
+        const item = {
           name: artist.name,
           default_avatar: 'default-artist.png',
           image: getValidImage('artists/' + artist.avatar_url, 'default-artist.png'),
@@ -43,10 +52,12 @@ export class LibraryPage {
           type: 'Артист',
           sub: playsParser(artist.play_count),
           href: 'artist/' + artist.id,
-        });
+        }
+        pageData.library.push(item);
+        pageData.artists.push(item);
       });
-      pageData.albums.forEach((album) => {
-        pageData.library.push({
+      data.albums.forEach((album) => {
+        const item = {
           name: album.title,
           default_avatar: 'default-album.png',
           image: getValidImage('albums/' + album.avatar_url, 'default-album.png'),
@@ -54,10 +65,12 @@ export class LibraryPage {
           created_at: new Date(album.created_at),
           type: album.type,
           href: 'album/' + album.id,
-        });
+        }
+        pageData.library.push(item);
+        pageData.albums.push(item);
       });
-      pageData.playlists.forEach((playlist) => {
-        pageData.library.push({
+      data.playlists.forEach((playlist) => {
+        const item = {
           name: playlist.title,
           default_avatar: 'default-album.png',
           image: getValidImage('playlists/' + playlist.avatar_url, 'default-album.png'),
@@ -65,7 +78,9 @@ export class LibraryPage {
           sub: tracksNumParser(playlist.tracks.length),
           type: 'Плейлист',
           href: 'playlist/' + playlist.id,
-        });
+        }
+        pageData.library.push(item);
+        pageData.playlists.push(item);
       });
       pageData.library.sort((a, b) => b.created_at - a.created_at);
     } catch (error) {
@@ -86,11 +101,69 @@ export class LibraryPage {
     }
 
     document.getElementById('app').innerHTML = contentTemplate(pageData);
+    document.querySelector('.grid-layout').innerHTML = gridTemplate(pageData);
 
     await Promise.all([header.render(), sidebar.render()]);
 
     initScrollbar();
     playTrack();
     setPlayButtonsOnAuth();
+    this.addEventListeners(pageData);
+  }
+
+  addEventListeners(data) {
+    const container = document.querySelector('.sort-buttons');
+    const buttons = container.querySelectorAll('button');
+    const disableSort = document.getElementById('disableSort');
+    const gridTemplate = Handlebars.templates['libraryGrid.hbs'];
+
+    buttons.forEach((button) => {
+      button.addEventListener('click', (e) => {
+        e.preventDefault();
+
+        const isActivating = button.classList.contains('secondary-button');
+
+        if (button.id === 'disableSort') {
+          buttons.forEach((b) => {
+            b.style.display = '';
+            b.classList.remove('primary-button');
+            b.classList.add('secondary-button');
+          });
+
+          button.style.display = 'none';
+
+          document.querySelector('.grid-layout').innerHTML = gridTemplate(data);
+
+        } else if (isActivating) {
+          button.classList.remove('secondary-button');
+          button.classList.add('primary-button');
+
+          disableSort.style.display = 'flex';
+
+          buttons.forEach((b) => {
+            if (b !== button && b.id !== 'disableSort') b.style.display = 'none';
+          });
+
+          const dataName = button.dataset.name;
+          const pageData = {
+            library: data[dataName] || [],
+            showType: false,
+          };
+
+          document.querySelector('.grid-layout').innerHTML = gridTemplate(pageData);
+
+        } else {
+          buttons.forEach((b) => {
+            b.style.display = '';
+            b.classList.remove('primary-button');
+            b.classList.add('secondary-button');
+          });
+
+          disableSort.style.display = 'none';
+
+          document.querySelector('.grid-layout').innerHTML = gridTemplate(data);
+        }
+      });
+    });
   }
 }
