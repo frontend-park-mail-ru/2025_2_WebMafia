@@ -32,14 +32,14 @@ export class Header {
     }
 
     document.getElementById('header').outerHTML = contentTemplate(pageData);
-    const contentTemplateProblem = Handlebars.templates['create_problem.hbs'];
     const iframeContent = document.getElementById('iframeContent');
+    const contentTemplateProblem = Handlebars.templates['create_problem.hbs'];
     const htmlContentCreate = contentTemplateProblem(pageData);
 
     const contentTemplateProblemEdit = Handlebars.templates['edit_problem.hbs'];
     const htmlContentEdit = contentTemplateProblemEdit(pageData);
 
-    iframeContent.srcdoc = htmlContentEdit;
+    iframeContent.srcdoc = htmlContentCreate;
 
     this.addEventListeners();
     this.profileDropdown();

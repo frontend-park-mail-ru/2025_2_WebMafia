@@ -225,6 +225,17 @@ export class apiServises {
       },
     });
   }
+
+  async sendProblem(title, description, category) {
+    const csrfToken = await this.getCSRFToken();
+    return this.request('/support/tickets', {
+      method: 'POST',
+      body: { title, description, category },
+      headers: {
+        'X-CSRF-Token': csrfToken,
+      },
+    });
+  }
 }
 
 export const apiServise = new apiServises();
