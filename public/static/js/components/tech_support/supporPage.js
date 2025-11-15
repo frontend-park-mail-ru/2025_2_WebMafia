@@ -16,8 +16,16 @@ export class Support {
     };
 
     function timestampParser(timestamp) {
-      const date = new Date(timestamp * 1000);
-      return `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`
+      const normalized = timestamp.replace(' ', 'T');
+
+      const date = new Date(normalized);
+      if (isNaN(date.getTime())) return '';
+
+      const day = String(date.getDate()).padStart(2, '0');
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const year = date.getFullYear();
+
+      return `${day}.${month}.${year}`;
     }
 
     try {
@@ -29,7 +37,7 @@ export class Support {
           type: ticket.status,
         };
 
-        if (item.type) {
+        if (item.type === 'Открыто') {
           pageData.open_tickets.push(item);
         } else {
           pageData.closed_tickets.push(item);
