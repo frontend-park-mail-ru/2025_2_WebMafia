@@ -22,7 +22,7 @@ export class Support {
 
     try {
       const data = await apiServise.getUserTickets();
-      data.tickets.forEach((ticket) => {
+      data.forEach((ticket) => {
         const item = {
           name: ticket.title,
           date: timestampParser(ticket.updated_at),
