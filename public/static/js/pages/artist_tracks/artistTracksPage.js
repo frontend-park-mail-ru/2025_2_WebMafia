@@ -5,6 +5,8 @@ import { sidebar } from '../sidebar/sidebar.js';
 import { initScrollbar } from '../../scrollbar.js';
 import { durationParser, getValidImage, playsParser } from '../../parsers.js';
 import { playTrack } from '../../playTrackBtn.js';
+import { playerOnlyOnPlay } from '../../playerOnlyOnplay.js';
+import { setPlayButtonsOnAuth } from '../../setPlayButtonsOnAuth.js';
 
 export class ArtistTracksPage {
   async render(artistId) {
@@ -12,6 +14,7 @@ export class ArtistTracksPage {
       isAuthenticated: localStorage.getItem('isAuthenticated') === 'true',
       tracks: [],
       artistName: '',
+      artistId: '',
     };
 
     const contentTemplate = Handlebars.templates['artistTracksPage.hbs'];
@@ -21,6 +24,7 @@ export class ArtistTracksPage {
       const data = await apiServise.getArtistTracks(artistId);
       if (data) {
         pageData.artistName = data.artist.name;
+        pageData.artistId = data.artist.id;
         pageData.tracks = data.tracks.map((track) => ({
           id: track.id,
           name: track.title,
@@ -50,8 +54,9 @@ export class ArtistTracksPage {
     }
 
     document.getElementById('app').innerHTML = contentTemplate(pageData);
-
+    playerOnlyOnPlay();
     await Promise.all([header.render(), sidebar.render()]);
+    setPlayButtonsOnAuth();
     initScrollbar();
     playTrack();
   }

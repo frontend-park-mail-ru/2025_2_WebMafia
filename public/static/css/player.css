@@ -15,6 +15,10 @@
   bottom: 0;
 }
 
+.player.none_playing {
+  display: none;
+} 
+
 /* Левая часть */
 .player-left {
   margin-left: 20px;
@@ -45,8 +49,8 @@
 }
 
 .like-btn.active svg {
-  fill: #a866eb;
-  stroke: #a866eb;
+  fill: #a766ff;
+  stroke: #a766ff;
 }
 
 .white svg {
@@ -55,7 +59,7 @@
 }
 
 .like-btn:hover svg{
-  stroke: #a866eb;
+  stroke: #a766ff;
   cursor: pointer;
   transform: scale(1.03);
 }
@@ -74,22 +78,31 @@
 }
 
 .track-title {
+  all: unset;
   font-size: 16px;
   font-weight: 600;
-  max-width: 142px;
+  max-width: 30vh;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  cursor: pointer;
 }
 
 .track-artist {
+  all: unset;
   font-size: 12px;
-  color: #fff;
+  color: #ccc;
   font-weight: 100;
-  max-width: 142px;
+  max-width: 30vh;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+.track-artist:hover, .track-title:hover {
+  color: #fff;
+  text-decoration: underline;
 }
 
 /* Центр */
@@ -168,18 +181,18 @@
 
 .control-btn:hover svg {
   transform: scale(1.01);
-  color: #a866eb;
-  stroke: #a866eb;
+  color: #a766ff;
+  stroke: #a766ff;
 }
 
 .control-btn.prev:hover {
   transform: scale(1.01) rotate(180deg);
-  color: #a866eb;
+  color: #a766ff;
 }
 
 .control-btn.prev g:hover,
 .control-btn.next g:hover{
-  fill: #a866eb;
+  fill: #a766ff;
 }
 
 .progress-remote {
@@ -189,6 +202,9 @@
 }
 
 .remote-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
   width: 600px;
   flex: 1;
   cursor: pointer;
@@ -201,47 +217,30 @@
   border-radius: 30px;
 }
 
-.remote-slider::-webkit-slider-runnable-track{
+.remote-slider::-webkit-slider-runnable-track, .volume-slider::-webkit-slider-runnable-track {
   height: 6px;
   border-radius: 30px;
-  background: linear-gradient(90deg, #7fd8e6 0%, #a866eb var(--progress), #e0e0e0 var(--progress), #e0e0e0 100%);
+  background: linear-gradient(90deg, #7fd8e6 0%, #F048FF var(--progress), #e0e0e0 var(--progress), #e0e0e0 100%);
 }
 
-.remote-container:hover .remote-slider::-webkit-slider-runnable-track{
-  height: 6px;
-  border-radius: 30px;
-  background: linear-gradient(90deg,
-    #a866eb 0%,
-    #a866eb var(--progress),
-    #e0e0e0 var(--progress),
-    #e0e0e0 100%
-  );
-}
-
-.remote-slider::-webkit-slider-thumb {
+.remote-slider::-webkit-slider-thumb, .volume-slider::-webkit-slider-thumb {
   opacity: 0;
   appearance: none;
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
   border-radius: 50%;
-  background: #a866eb;
-  border: 2px solid #7fd8e6;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  margin-top: -5px;
+  background: #F048FF;
+  margin-top: -4px;
   transition: all 0.2s ease;
-
 }
 
 .remote-slider::-webkit-slider-thumb:hover{
   transform: scale(1.1);
-  border-color: #a866eb;
 }
 
 .remote-container:hover .remote-slider::-webkit-slider-thumb{
   opacity: 1;
 }
-
-
 
 /* Правая часть */
 .player-right {
@@ -251,41 +250,13 @@
 }
 
 .volume-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
   width: 120px;
   cursor: pointer;
 
   --progress: 50%;
-}
-
-.volume-slider::-webkit-slider-runnable-track{
-  height: 6px;
-  border-radius: 30px;
-  background: linear-gradient(90deg, #7fd8e6 0%, #a866eb var(--progress), #7fd8e6 var(--progress), #7fd8e6 100%);
-}
-
-.player-right:hover .volume-slider::-webkit-slider-runnable-track{
-  height: 6px;
-  border-radius: 30px;
-  background: linear-gradient(90deg,
-    #a866eb 0%,
-    #a866eb var(--progress),
-    #e0e0e0 var(--progress),
-    #e0e0e0 100%
-  );
-}
-
-.volume-slider::-webkit-slider-thumb {
-  opacity: 0;
-  appearance: none;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background: #a866eb;
-  border: 2px solid #7fd8e6;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  margin-top: -5px;
-  transition: all 0.2s ease;
-
 }
 
 .volume-slider::-webkit-slider-thumb:hover{
@@ -300,6 +271,7 @@
 .volume-icon {
   transition: color 0.3s ease;
   color: #fff;
+  cursor: pointer;
 }
 
 .volume-mute-cross {

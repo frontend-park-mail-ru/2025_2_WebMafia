@@ -4,7 +4,7 @@
     {{> sidebar}}
     <div class="page" id="scrollContent">
       <div class="title">
-        <div class="title-name-track-by-artist">Треки {{ artistName }}</div>
+        <div class="title-name-track-by-artist">Треки <a class="href-decoration" href="artist/{{ artistId }}">{{ artistName }}</a></div>
       </div>
       <div class="tracks-table-track-by-artist">
         {{#each tracks}}
@@ -12,7 +12,10 @@
             <div class="track-number">{{numeration @index}}</div>
             <div class="track-cover-wrapper">
               <img class="track-cover" src="{{ cover }}" alt="{{ name }}" />
-              <button class="play-popular-track"  data-track-id="{{ id }}">{{> play }}</button>
+              <button class="play-all-artist-tracks"  data-track-id="{{ id }}" data-context="artist_tracks" data-artist-id="{{ ../artistId }}">
+                <span class="play-icon">{{> play }}</span>
+                <span class="pause-icon">{{> pause }}</span>
+              </button>
             </div>
             <div class="right-row-content">
               <div class="track-name">{{ name }}</div>
@@ -23,7 +26,7 @@
                   </a>
                 {{/each}}
               </div>
-              <div class="track-plays-num">{{ plays }} прослушиваний</div>
+              <div class="track-plays-num">{{ plays }}</div>
               <a href="album/{{ album_id }}" class="track-album-name">
                 {{ album }}
               </a>

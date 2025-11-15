@@ -69,6 +69,7 @@ export class Header {
           localStorage.removeItem('isPlaying');
           localStorage.removeItem('playTime');
           localStorage.removeItem('volume');
+          localStorage.removeItem('playerContext');
           player.destroy();
           router.navigate('/');
         }
