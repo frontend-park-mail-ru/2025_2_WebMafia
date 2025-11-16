@@ -69,7 +69,9 @@ export class Header {
       searchWindow.addEventListener('keydown', async (e) => {
         if (e.code === 'Enter' || e.key === 'Enter') {
           e.preventDefault();
-          router.navigate('/');
+          const searchVal = searchWindow.value;
+          if (searchVal === '') return;
+          router.navigate(`/search/${searchVal}`);
         }
       });
     }

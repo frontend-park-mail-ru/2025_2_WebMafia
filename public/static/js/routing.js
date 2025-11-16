@@ -8,6 +8,7 @@ import { ArtistAlbumsPage } from './pages/artist_albums/artistAlbumsPage.js';
 import { ArtistTracksPage } from './pages/artist_tracks/artistTracksPage.js';
 import { AlbumPage } from './pages/album/album.js';
 import { ArtistSinglesPage } from './pages/artist_singles/artistSinglesPage.js';
+import { SearchPage } from './pages/search_page/search_page.js';
 
 export class Router {
   constructor() {
@@ -21,6 +22,7 @@ export class Router {
       { pattern: /^\/artist\/([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})$/, component: new ArtistPage() },
       { pattern: /^\/profile$/, component: new ProfilePage() },
       { pattern: /^\/album\/([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})$/, component: new AlbumPage() },
+      { pattern: /^\/search\/((.+))$/, component: new SearchPage() },
     ];
     this.handleLocation = this.handleLocation.bind(this);
   }

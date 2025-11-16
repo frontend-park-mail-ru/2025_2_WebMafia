@@ -16,6 +16,8 @@ handlebars public/static/js/pages/artist_tracks/artistTracksPage.hbs -f public/s
 
 handlebars public/static/js/pages/artist_singles/artistSinglesPage.hbs -f public/static/js/pages/artist_singles/artistSinglesPage.tmpl.js
 
+handlebars public/static/js/pages/search_page/search_page.hbs -f public/static/js/pages/search_page/search_page.tmpl.js
+
 handlebars public/static/js/pages/header/header.hbs -f public/static/js/pages/header/header.tmpl.js
 
 handlebars public/static/js/pages/sidebar/sidebar.hbs -f public/static/js/pages/sidebar/sidebar.tmpl.js
