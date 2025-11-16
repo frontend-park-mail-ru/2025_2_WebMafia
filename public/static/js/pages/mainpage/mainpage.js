@@ -93,7 +93,7 @@ export class MainPage {
     if (!cardElements) return;
     const prevBtn = document.querySelector('.current-card-btn.prev');
     const nextBtn = document.querySelector('.current-card-btn.next');
-    
+
     let cardsData = [
       { img: '/static/img/default-album.png', name: '', id: null },
       { img: '/static/img/default-album.png', name: '', id: null },

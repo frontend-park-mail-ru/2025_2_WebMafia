@@ -1,0 +1,106 @@
+<div class="section" id="section">
+  {{> header}}
+
+  <div class="layout">
+    {{> sidebar}}
+    <div class="page" id="scrollContent">
+
+        <div class="seach-pagre-layout">
+            <!-- Лучшее совпадение -->
+            <div class="best-result-container">
+                <div class="best-result-title">
+                    <div class="title-name">Лучшее совпадение</div>
+                </div>
+                <div data-href="/album/{{ id }}" class="best-result-card click-event-card">
+                    <img src="{{ image }}" alt="{{ name }}" />
+                    <p class="best-result-card-name">{{ name }}</p>
+                    <p class="best-result-card-sub card-sub-limiter">
+                    {{ type }}
+                    <span class="dot"></span>
+                    <a class="best-result-text href-decoration" href="/artist/{{ artist_id }}">{{ artist }}</a>
+                    </p>
+                </div>
+            </div>
+            
+
+            <!-- Треки -->
+            <div class="popular-tracks">
+            <div class="title">
+              <div class="title-name">Найденные треки</div>
+            </div>
+            <div class="tracks-table">
+              {{#each popular_tracks}}
+              <div class="track-row">
+                <div class="track-number">{{numeration @index}}</div>
+                <div class="track-cover-wrapper">
+                  <img class="track-cover" src="{{ cover }}" alt="{{ name }}" />
+                  <button class="play-popular-track" data-track-id="{{ id }}" data-context="artist-popular" data-artist-id="{{../id}}">
+                    <span class="play-icon">{{> play }}</span>
+                    <span class="pause-icon">{{> pause }}</span>
+                  </button>
+                </div>
+                <div class="right-row-content">
+                  <div class="track-name">{{ name }}</div>
+                  <div class="track-performers">
+                    {{#each artists}}
+                    <a href="artist/{{id}}" class="track-performer href-decoration">
+                      {{name}}{{#unless @last}}, {{/unless}}
+                    </a>
+                    {{/each}}
+                  </div>
+                  <div class="track-plays-num">{{ plays }}</div>
+                  <a href="album/{{ album_id }}" class="track-album-name href-decoration">
+                    {{ album }}
+                  </a>
+                  <div class="track-duration">{{ duration }}</div>
+                </div>
+              </div>
+              {{/each}}
+            </div>
+            <a class="secondary-button show-tracks-button" href="/artist/{{id}}/tracks">Показать все</a>
+          </div>
+        </div>
+
+
+      <!-- Альбомы -->
+        <div class="title">
+        <div class="title-name">Альбомы</div>
+      </div>
+      <div class="slider">
+        <i class="slide-btn left"></i>
+        <div class="cards" id="slidebar">
+          {{#each albums}}
+          <div data-href="/album/{{ id }}" class="card click-event-card">
+            <img src="{{ image }}" alt="{{ name }}" />
+            <p class="card-name">{{ name }}</p>
+            <p class="card-sub card-sub-limiter">
+              {{ type }}
+              <span class="dot"></span>
+              <a class="text href-decoration" href="/artist/{{ artist_id }}">{{ artist }}</a>
+            </p>
+          </div>
+          {{/each}}
+        </div>
+        <i class="slide-btn right"></i>
+      </div>
+
+      <!-- Артисты -->
+    <div class="title">
+        <div class="title-name">Артисты</div>
+      </div>
+      <div class="slider">
+        <p><i class="slide-btn left"></i></p>
+        <div class="cards" id="slidebar">
+          {{#each artists}}
+          <a href="/artist/{{ id }}" class="card">
+            <img src="{{ image }}" alt="{{ name }}" />
+            <p class="card-name">{{ name }}</p>
+            <p class="card-sub">{{ listeners }}</p>
+          </a>
+          {{/each}}
+        </div>
+        <p><i class="slide-btn right"></i></p>
+      </div>
+    </div>
+  </div>
+</div>
