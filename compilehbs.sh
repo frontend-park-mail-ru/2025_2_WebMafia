@@ -44,9 +44,9 @@ handlebars public/static/js/partials/nextTrack.hbs -f public/static/js/partials/
 
 handlebars public/static/js/partials/prevTrack.hbs -f public/static/js/partials/prevTrack.tmpl.js
 
-handlebars public/static/js/partials/shuffleBtn.hbs -f public/static/js/partials/shuffleBtn.tmpl.js
+handlebars public/static/js/partials/shuffle.hbs -f public/static/js/partials/shuffle.tmpl.js
 
-handlebars public/static/js/partials/repeatBtn.hbs -f public/static/js/partials/repeatBtn.tmpl.js
+handlebars public/static/js/partials/repeat.hbs -f public/static/js/partials/repeat.tmpl.js
 
 handlebars public/static/js/partials/pauseBtn.hbs -f public/static/js/partials/pauseBtn.tmpl.js
 

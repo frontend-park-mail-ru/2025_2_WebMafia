@@ -1,4 +1,4 @@
-import { API_AVATARS_URL } from './data.js';
+import { API_AVATARS_URL } from '@/data.js';
 
 export function playsParser(plays) {
   if (plays > 1_000_000_000) {

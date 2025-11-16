@@ -1,13 +1,13 @@
-import { router } from '../../routing.js';
-import { apiServise } from '../../data.js';
-import { initPasswordShowing } from '../../eye.js';
-import { initScrollbar } from '../../scrollbar.js';
-import { durationParser, getValidImage, playsParser } from '../../parsers.js';
-import { sidebar } from '../sidebar/sidebar.js';
-import { slider } from '../../slider.js';
-import { header } from '../header/header.js';
-import { setPlayButtonsOnAuth } from '../../setPlayButtonsOnAuth.js';
-import { FormValidator } from "../../validation.js";
+import { router } from '@/routing.js';
+import { apiServise } from '@/data.js';
+import { initPasswordShowing } from '@/eye.js';
+import { initScrollbar } from '@/scrollbar.js';
+import { durationParser, getValidImage, playsParser } from '@/parsers.js';
+import { sidebar } from '@/components/sidebar/sidebar.js';
+import { slider } from '@/slider.js';
+import { header } from '@/components/header/header.js';
+import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
+import { FormValidator } from "@/validation.js";
 
 export class ProfilePage {
   async render() {

@@ -1,4 +1,4 @@
-import { player } from './pages/player/player.js';
+import { player } from '@/components/player/player.js';
 
 export function playTrack() {
   const playBtn = document.querySelectorAll('.play-button-track, .play-button, .current-card-btn.play, .play-popular-track, .play-album-track');

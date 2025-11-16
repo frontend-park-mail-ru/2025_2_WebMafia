@@ -1,10 +1,10 @@
-import { apiServise } from '../../data.js';
-import { router } from '../../routing.js';
-import { header } from '../header/header.js';
-import { sidebar } from '../sidebar/sidebar.js';
-import { initScrollbar } from '../../scrollbar.js';
-import { durationParser, getValidImage, playsParser } from '../../parsers.js';
-import { playTrack } from '../../playTrackBtn.js';
+import { apiServise } from '@/data.js';
+import { router } from '@/routing.js';
+import { header } from '@/components/header/header.js';
+import { sidebar } from '@/components/sidebar/sidebar.js';
+import { initScrollbar } from '@/scrollbar.js';
+import { durationParser, getValidImage, playsParser } from '@/parsers.js';
+import { playTrack } from '@/playTrackBtn.js';
 
 export class ArtistTracksPage {
   async render(artistId) {
