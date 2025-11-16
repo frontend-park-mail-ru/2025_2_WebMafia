@@ -8,6 +8,8 @@ import { slider } from '../../slider.js';
 import { header } from '../header/header.js';
 import { setPlayButtonsOnAuth } from '../../setPlayButtonsOnAuth.js';
 import { FormValidator } from '../../validation.js';
+import { playerOnlyOnPlay } from '../../playerOnlyOnplay.js';
+import { playTrack } from '../../playTrackBtn.js';
 
 export class ProfilePage {
   async render() {
@@ -67,7 +69,7 @@ export class ProfilePage {
 
     document.getElementById('app').innerHTML = contentTemplate(pageData);
     document.querySelector('head title').textContent = pageData.profile.nickname;
-
+    playerOnlyOnPlay();
     await Promise.all([header.render(), sidebar.render()]);
 
     slider.sliderFunction();
@@ -75,6 +77,7 @@ export class ProfilePage {
     initPasswordShowing();
     initScrollbar();
     setPlayButtonsOnAuth();
+    playTrack();
   }
 
   addEventListeners(profile) {
@@ -223,12 +226,12 @@ export class ProfilePage {
 
     const editValidators = {
       email: (value) => {
-        if (!value) return 'Поле обязательно для заполнения';
+        if (!value) return 'Пожалуйста, заполните это поле';
         if (!/\S+@\S+\.\S+/.test(value)) return 'Некорректный email';
         return null;
       },
       login: (value) => {
-        if (!value) return 'Поле обязательно для заполнения';
+        if (!value) return 'Пожалуйста, заполните это поле';
         if (value.length < 5) return 'Минимум 5 символов';
         else if (value.length > 35) return 'Максимум 35 символов';
         return null;
@@ -239,7 +242,7 @@ export class ProfilePage {
       },
       passwordConfirm: (value) => {
         const password = document.getElementById('password')?.value;
-        if (value !== password) return 'Пароли не совпадают';
+        if (value !== password) return 'Пароли не совпадают. Пожалуйста, проверьте.';
         return null;
       },
     };
@@ -286,7 +289,7 @@ export class ProfilePage {
 
         const isValid = editValidator.validateForm();
         if (!isValid) {
-          editValidator.showMessage('Исправьте ошибки в форме');
+          editValidator.showMessage('Пожалуйста, проверьте подсвеченные поля.');
           return;
         }
 
@@ -347,9 +350,9 @@ export class ProfilePage {
           }, 1000);
         } catch (err) {
           console.error('Ошибка при сохранении профиля:', err);
-          let msg = 'Ошибка при сохранения профиля.';
+          let msg = 'Не удалось сохранить изменения. Попробуйте еще раз чуть позже.';
           if (err.message === 'resource conflict') msg = 'Пользователь с такими данными уже существует.';
-          else if (err.message === 'bad request') msg = 'Некорректный запрос. Проверьте введенные данные.';
+          else if (err.message === 'bad request') msg = 'Что-то пошло не так. Пожалуйста, проверьте правильность введенных данных.';
           editValidator.showMessage(msg);
         }
       });
