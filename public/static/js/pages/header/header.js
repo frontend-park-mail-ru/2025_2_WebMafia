@@ -9,29 +9,35 @@ export class Header {
       isAuthenticated: localStorage.getItem('isAuthenticated') === 'true',
     };
 
+    // if (!pageData.isAuthenticated) return;
+    if (pageData.isAuthenticated) {
+      try {
+        const data = await apiServise.getProfileData();
+        pageData.avatar = data.AvatarURL ? getValidImage(data.AvatarURL) : data.AvatarURL;
+        pageData.nickname = data.Login;
+        pageData.letter = pageData.nickname ? pageData.nickname[0].toUpperCase() : '';
+      } catch (error) {
+        console.error('Failed to load user data:', error);
+        localStorage.removeItem('isAuthenticated');
+        router.navigate('/');
+        return;
+      }
+    }
+
     const contentTemplate = Handlebars.templates['header.hbs'];
     const headerHTML = contentTemplate(pageData);
 
     const section = document.getElementById('section');
-    if (section && !document.getElementById('header')) {
-      section.insertAdjacentHTML('afterbegin', headerHTML);
+    const headerElement = document.getElementById('header');
+    if (headerElement) {
+      headerElement.outerHTML = contentTemplate(pageData);
+    } else {
+      if (section && !document.getElementById('header')) {
+        section.insertAdjacentHTML('afterbegin', headerHTML);
+      }
     }
 
-    if (!pageData.isAuthenticated) return;
-
-    try {
-      const data = await apiServise.getProfileData();
-      pageData.avatar = data.AvatarURL ? getValidImage(data.AvatarURL) : data.AvatarURL;
-      pageData.nickname = data.Login;
-      pageData.letter = pageData.nickname ? pageData.nickname[0].toUpperCase() : '';
-    } catch (error) {
-      console.error('Failed to load user data:', error);
-      localStorage.removeItem('isAuthenticated');
-      router.navigate('/');
-      return;
-    }
-
-    document.getElementById('header').outerHTML = contentTemplate(pageData);
+    // document.getElementById('header').outerHTML = contentTemplate(pageData);
 
     this.addEventListeners();
     this.profileDropdown();
@@ -54,6 +60,15 @@ export class Header {
           localStorage.removeItem('volume');
           localStorage.removeItem('playerContext');
           player.destroy();
+          router.navigate('/');
+        }
+      });
+    }
+    const searchWindow = document.getElementById('searchInput');
+    if (searchWindow) {
+      searchWindow.addEventListener('keydown', async (e) => {
+        if (e.code === 'Enter' || e.key === 'Enter') {
+          e.preventDefault();
           router.navigate('/');
         }
       });

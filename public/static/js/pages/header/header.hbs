@@ -5,7 +5,13 @@
       <h1 class="icon-name">Wave</h1>
     </a>
   </div>
+
+
   <div class="head-right">
+    <div class="header-search-container" id="header-search-container">
+      {{> searchIcon }}
+      <input type="text" class="search-input" id="searchInput" placeholder="Что хочешь включить?">
+    </div>
     {{#if isAuthenticated}}
     <div class="profile-dropdown">
       <div class="header-username">{{ nickname }}</div>
@@ -24,8 +30,10 @@
       </div>
     </div>
     {{else}}
-    <a class="nav-link login" href="/login">Войти</a>
-    <a class="nav-link register" href="/register">Зарегистрироваться</a>
+    <div class="unauth-login-reg-container">
+      <a class="nav-link login" href="/login">Войти</a>
+      <a class="nav-link register" href="/register">Зарегистрироваться</a>
+    </div>
     {{/if}}
   </div>
 </header>
