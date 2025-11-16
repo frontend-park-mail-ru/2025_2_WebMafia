@@ -34,10 +34,11 @@ function registerPartials() {
   Handlebars.registerPartial('profile', Handlebars.templates['profile.hbs']);
   Handlebars.registerPartial('plus', Handlebars.templates['plus.hbs']);
   Handlebars.registerPartial('searchIcon', Handlebars.templates['searchIcon.hbs']);
+  Handlebars.registerPartial('searchIcon', Handlebars.templates['searchIcon.hbs']);
+  Handlebars.registerPartial('pause', Handlebars.templates['pause.hbs']);
   Handlebars.registerHelper('numeration', function (value) {
     return parseInt(value) + 1;
   });
-  Handlebars.registerPartial('pause', Handlebars.templates['pause.hbs']);
 }
 
 function initializePage() {

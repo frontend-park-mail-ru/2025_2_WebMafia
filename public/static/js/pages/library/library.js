@@ -6,6 +6,7 @@ import { initScrollbar } from '../../scrollbar.js';
 import {getValidImage, playsParser, tracksNumParser} from '../../parsers.js';
 import { playTrack } from '../../playTrackBtn.js';
 import { setPlayButtonsOnAuth } from '../../setPlayButtonsOnAuth.js';
+import { playerOnlyOnPlay } from '../../playerOnlyOnplay.js';
 
 export class LibraryPage {
   async render() {
@@ -102,6 +103,7 @@ export class LibraryPage {
 
     document.getElementById('app').innerHTML = contentTemplate(pageData);
     document.querySelector('.grid-layout').innerHTML = gridTemplate(pageData);
+    playerOnlyOnPlay();
 
     await Promise.all([header.render(), sidebar.render()]);
 
