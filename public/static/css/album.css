@@ -205,7 +205,7 @@
   width: 100%;
 }
 
-.album-header {
+.overlay-header {
   display: flex;
   align-items: center;
   justify-content: space-between;

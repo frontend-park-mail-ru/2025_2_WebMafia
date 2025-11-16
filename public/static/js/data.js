@@ -1,5 +1,5 @@
 const API_BASE_URL = 'http://localhost:8080/api/v1';
-export const API_AVATARS_URL = 'http://217.16.17.173:8099/avatars';
+export const API_AVATARS_URL = 'http://localhost:8099/avatars';
 export const API_TRACKS_URL = 'http://217.16.17.173:8099/music/tracks';
 
 export class apiServises {
@@ -168,6 +168,46 @@ export class apiServises {
     });
 
     return data;
+  }
+
+  async uploadPlaylistAvatar(file, id) {
+    /*const csrfToken = await this.getCSRFToken();
+
+    const playlist = await this.request(`/playlist/${id}`);
+
+    if (playlist.AvatarURL) {
+      await this.request(`/playlist/${id}/avatar`, {
+        method: 'DELETE',
+        headers: {
+          'X-CSRF-Token': csrfToken,
+        },
+      });
+    }
+
+    const formData = new FormData();
+    formData.append('avatar', file);
+
+    const data = await this.request(`/playlist/${id}/avatar`, {
+      method: 'POST',
+      headers: {
+        'X-CSRF-Token': csrfToken,
+      },
+      body: formData,
+    });
+
+    return data;*/
+  }
+
+  async createPlaylist(title, description) {
+    /*const csrfToken = await this.getCSRFToken();
+
+    return this.request('/create_playlist', {
+      method: 'POST',
+      headers: {
+        'X-CSRF-Token': csrfToken,
+      },
+      body: { title, description },
+    });*/
   }
 
   async deleteAvatar() {

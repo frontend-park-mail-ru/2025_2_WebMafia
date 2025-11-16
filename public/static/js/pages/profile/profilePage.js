@@ -91,9 +91,9 @@ export class ProfilePage {
       });
     }
 
-    const closeEditButton = document.getElementById('closeEditButton');
-    if (closeEditButton && editProfileOverlay) {
-      closeEditButton.addEventListener('click', (e) => {
+    const closeOverlayButton = document.getElementById('closeOverlayButton');
+    if (closeOverlayButton && editProfileOverlay) {
+      closeOverlayButton.addEventListener('click', (e) => {
         e.preventDefault();
 
         document.getElementById('email').value = profile.email;
@@ -101,7 +101,7 @@ export class ProfilePage {
         document.getElementById('password').value = '';
         document.getElementById('passwordConfirm').value = '';
 
-        updateAvatarContainer('avatarEditContainer', profile.avatar, profile.letter, 'profile-edit-avatar');
+        updateAvatarContainer('avatarEditContainer', profile.avatar, profile.letter, 'edit-avatar');
 
         selectedAvatarFile = null;
         deleteAvatar = false;
@@ -289,7 +289,7 @@ export class ProfilePage {
 
         const isValid = editValidator.validateForm();
         if (!isValid) {
-          editValidator.showMessage('Пожалуйста, проверьте подсвеченные поля.');
+          editValidator.showMessage('Пожалуйста, проверьте подсвеченные поля');
           return;
         }
 
@@ -317,7 +317,6 @@ export class ProfilePage {
           if (email !== profile.email || login !== profile.nickname || password) {
             if (!password) password = '';
             const data = await apiServise.editUser(login, email, password);
-            console.log(data);
             const newLogin = data.Login;
 
             const headerUsername = document.querySelector('.header-username');

@@ -46,3 +46,38 @@
 .second-cross-icon svg {
   transform: rotate(45deg);
 }
+
+#savePlaylistButton {
+  width: 110px;
+}
+
+.form-group textarea {
+  font-family: 'Montserrat', sans-serif;
+  width: 450px;
+  height: 16.5vh;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #d0bbbb;
+  font-size: 20px;
+  box-sizing: border-box;
+  resize: none;
+}
+
+.form-group textarea::-webkit-scrollbar {
+  width: 10px;
+}
+
+.form-group textarea::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 10px;
+}
+
+.form-group textarea::-webkit-scrollbar-thumb {
+  background: #707070;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.form-group textarea::-webkit-scrollbar-thumb:hover {
+  background: #4e4e4e;
+}
