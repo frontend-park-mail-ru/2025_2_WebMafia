@@ -1,0 +1,66 @@
+<div class="section" id="section">
+  <div class="layout">
+    {{> sidebar}}
+    <div class="album-page" id="scrollContent">
+      <div class="blue-background-circle album-blue-position"></div>
+      <div class="purple-background-circle album-purple-position"></div>
+      <div class="album-card">
+        <img class="album-cover" src="{{ cover }}" alt="{{ title }}" />
+        <div class="album-card-title">{{ title }}</div>
+        <div class="album-card-info">
+          <div class="card-sub">Плейлист<span class="dot"></span>{{ date }}</div>
+          <div class="card-sub">{{ tracksNum }}<span class="dot"></span>{{ totalDuration }}</div>
+        </div>
+        {{#if description}}
+          <div class="card-sub album-description" id="getDescription">{{ description }}</div>
+        {{/if}}
+        <div class="album-buttons">
+          <button class="pencil">{{> pencil }}</button>
+          <button class="play-button play-button-playlist" data-playlist-id="{{ id }}" data-context="playlist-tracks"></button>
+          <button class="dots">{{> dots}}</button>
+        </div>
+      </div>
+      <div class="tracks-card">
+        <div class="album-table">
+          {{#each tracks}}
+            <div class="album-row">
+              <div class="album-play-wrapper">
+                <div class="album-track-number">{{numeration @index}}</div>
+                <button class="play-album-track" data-track-id="{{ id }}" data-context="album-tracks" data-album-id="{{../id}}">
+                  <span class="play-icon">{{> play }}</span>
+                  <span class="pause-icon">{{> pause }}</span>
+                </button>
+              </div>
+              <div class="tracks-duration-wrapper">
+                <div class="album-track-info">
+                  <div class="track-name">{{ name }}</div>
+                  <p class="card-sub">
+                    <a class="text href-decoration" href="/album/{{ album_id }}">{{ album }}</a>
+                    <span class="dot"></span>
+                    {{#each artists}}
+                    <a href="artist/{{ id }}" class="text href-decoration">
+                      {{name}}{{#unless @last}}, {{/unless}}
+                    </a>
+                    {{/each}}
+                  </p>
+                </div>
+                <div class="track-duration">{{ duration }}</div>
+              </div>
+            </div>
+          {{/each}}
+        </div>
+      </div>
+    </div>
+    <div class="turquoise-oval"></div>
+    <div class="edit-profile-overlay" id="descriptionOverlay">
+      <div class="edit-profile-window">
+        <div class="album-header">
+          <span class="album-title">{{ title }}</span>
+          <button id="closeDescriptionButton" class="close-button" aria-label="Закрыть">{{> close }}</button>
+        </div>
+        <div class="header-divider"></div>
+        <div class="card-sub all-description">{{ description }}</div>
+      </div>
+    </div>
+  </div>
+</div>

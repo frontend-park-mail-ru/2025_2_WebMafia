@@ -26,6 +26,8 @@ handlebars public/static/js/pages/player/player.hbs -f public/static/js/pages/pl
 
 handlebars public/static/js/pages/album/album.hbs -f public/static/js/pages/album/album.tmpl.js
 
+handlebars public/static/js/pages/playlist/playlist.hbs -f public/static/js/pages/playlist/playlist.tmpl.js
+
 handlebars public/static/js/partials/eyeOpen.hbs -f public/static/js/partials/eyeOpen.tmpl.js
 
 handlebars public/static/js/partials/eyeClosed.hbs -f public/static/js/partials/eyeClosed.tmpl.js
@@ -64,4 +66,4 @@ handlebars public/static/js/partials/searchIcon.hbs -f public/static/js/partials
 
 handlebars public/static/js/partials/pause.hbs -f public/static/js/partials/pause.tmpl.js
 
-
+handlebars public/static/js/partials/dots.hbs -f public/static/js/partials/dots.tmpl.js
