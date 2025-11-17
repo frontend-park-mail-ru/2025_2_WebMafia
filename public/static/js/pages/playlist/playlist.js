@@ -97,5 +97,28 @@ export class PlaylistPage {
         }
       });
     }
+
+    const dotsBtn = document.getElementById('playlistActions');
+    const menu = document.getElementById('playlistMenu');
+
+    dotsBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      menu.classList.toggle('hidden');
+
+      const rect = dotsBtn.getBoundingClientRect();
+      const parentRect = dotsBtn.parentElement.getBoundingClientRect();
+
+      const top = rect.top - parentRect.top - menu.offsetHeight - 6;
+      const left = rect.left - parentRect.left - 10;
+
+      menu.style.top = `${top}px`;
+      menu.style.left = `${left}px`;
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!menu.contains(e.target) && !dotsBtn.contains(e.target)) {
+        menu.classList.add('hidden');
+      }
+    });
   }
 }

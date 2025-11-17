@@ -67,3 +67,5 @@ handlebars public/static/js/partials/searchIcon.hbs -f public/static/js/partials
 handlebars public/static/js/partials/pause.hbs -f public/static/js/partials/pause.tmpl.js
 
 handlebars public/static/js/partials/dots.hbs -f public/static/js/partials/dots.tmpl.js
+
+handlebars public/static/js/partials/trash.hbs -f public/static/js/partials/trash.tmpl.js

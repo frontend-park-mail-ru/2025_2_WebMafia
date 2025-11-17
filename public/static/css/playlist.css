@@ -1,0 +1,63 @@
+.dots, .pencil {
+  all: unset;
+  cursor: pointer;
+}
+
+.dots svg, .pencil svg {
+  transition: all 0.3s ease;
+}
+
+.dots svg {
+  width: 26px;
+  height: 26px;
+}
+
+.pencil svg {
+  width: 22px;
+  height: 22px;
+}
+
+.dots:hover svg, .pencil:hover svg {
+  fill: #a766ff;
+}
+
+.play-button-playlist {
+  margin: 0 20px;
+}
+
+.actions-menu {
+  position: absolute;
+  background: #E6E9F5;
+  color: black;
+  border: #D0BBBB solid 2px;
+  padding: 10px;
+  border-radius: 20px;
+  z-index: 1000;
+}
+
+.actions-menu.hidden {
+  display: none;
+}
+
+.actions-item {
+  all: unset;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  padding: 8px 10px;
+  transition: color 0.3s ease;
+  font-size: 18px;
+  font-weight: 500;
+  box-sizing: border-box;
+}
+
+.trash-svg {
+  margin-right: 4px;
+}
+
+.actions-item:hover {
+  color: #9c58e0;
+}

@@ -15,9 +15,13 @@
           <div class="card-sub album-description" id="getDescription">{{ description }}</div>
         {{/if}}
         <div class="album-buttons">
-          <button class="pencil">{{> pencil }}</button>
+          <button class="control-btn">{{> shuffle }}</button>
           <button class="play-button play-button-playlist" data-playlist-id="{{ id }}" data-context="playlist-tracks"></button>
-          <button class="dots">{{> dots}}</button>
+          <button class="dots" id="playlistActions">{{> dots}}</button>
+          <div id="playlistMenu" class="actions-menu hidden">
+            <button class="actions-item">{{> pencil }}Редактировать</button>
+            <button class="actions-item"><span class="trash-svg">{{> trash}}</span>Удалить</button>
+          </div>
         </div>
       </div>
       <div class="tracks-card">

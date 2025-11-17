@@ -37,6 +37,7 @@ function registerPartials() {
   Handlebars.registerPartial('searchIcon', Handlebars.templates['searchIcon.hbs']);
   Handlebars.registerPartial('pause', Handlebars.templates['pause.hbs']);
   Handlebars.registerPartial('dots', Handlebars.templates['dots.hbs']);
+  Handlebars.registerPartial('trash', Handlebars.templates['trash.hbs']);
 }
 
 function initializePage() {

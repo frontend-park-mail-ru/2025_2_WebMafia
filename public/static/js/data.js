@@ -196,11 +196,10 @@ export class apiServises {
 
   async getPlaylistPageData(id) {
     try {
-      const [/*playlist, tracks, */profile] = await Promise.all([
-        /*this.request(`/playlist/${id}`).catch(() => []),
-        this.request(`/playlist/${id}/tracks`).catch(() => []),*/
-        this.request('/me'),
-      ]);
+      /*const [playlist, tracks] = await Promise.all([
+        this.request(`/library/playlists/${id}`).catch(() => []),
+        this.request(`/library/playlists/${id}/tracks`).catch(() => []),
+      ]);*/
       const playlist = {
         "id": 42,
         "title": "Midnight Chill Vibes",
@@ -262,7 +261,7 @@ export class apiServises {
           ]
         }
       ]
-      return { playlist: playlist || {}, tracks: tracks || [], profile: profile || {} };
+      return { playlist: playlist || {}, tracks: tracks || [] };
     } catch (error) {
       console.error('Failed to load playlist page data:', error);
       throw error;
