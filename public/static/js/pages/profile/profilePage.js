@@ -10,6 +10,7 @@ import { setPlayButtonsOnAuth } from '../../setPlayButtonsOnAuth.js';
 import { FormValidator } from '../../validation.js';
 import { playerOnlyOnPlay } from '../../playerOnlyOnplay.js';
 import { playTrack } from '../../playTrackBtn.js';
+import { likeTrackBtn } from '../../utils/likeTrack.js';
 
 export class ProfilePage {
   async render() {
@@ -77,6 +78,7 @@ export class ProfilePage {
     initPasswordShowing();
     initScrollbar();
     setPlayButtonsOnAuth();
+    likeTrackBtn();
     playTrack();
   }
 
