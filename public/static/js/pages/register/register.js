@@ -105,9 +105,9 @@ export class RegistrationPage {
         router.navigate('/');
         await player.init();
       } catch (error) {
-        let msg = 'Ошибка регистрации.';
-        if (error.message === 'resource conflict') msg = 'Пользователь уже существует.';
-        else if (error.message === 'bad request') msg = 'Некорректный запрос. Проверьте введенные данные.';
+        let msg = 'Ошибка регистрации';
+        if (error.message === 'resource conflict') msg = 'Пользователь уже существует';
+        else if (error.message === 'bad request') msg = 'Некорректный запрос. Проверьте введенные данные';
         validator.showMessage(msg);
       }
     };
