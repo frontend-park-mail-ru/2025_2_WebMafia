@@ -1,16 +1,18 @@
 <header class="head" id="header">
   <div class="head-left">
     <a href="/" class="logo">
-      <span><img src="static/img/logo.png" class="wave-icon" /></span>
+      <img src="static/img/logo.png" class="wave-icon" alt="Логотип" />
       <h1 class="icon-name">Wave</h1>
     </a>
   </div>
-
-
   <div class="head-right">
-    <div class="header-search-container" id="header-search-container">
+    <button class="search-toggle" id="searchToggle">
       {{> searchIcon }}
+    </button>
+    <div class="header-search-container" id="header-search-container">
+      <div class="search-icon">{{> searchIcon }}</div>
       <input type="text" class="search-input" id="searchInput" placeholder="Что хочешь включить?">
+      <div class="input-close-button">{{> close}}</div>
     </div>
     {{#if isAuthenticated}}
     <div class="profile-dropdown">

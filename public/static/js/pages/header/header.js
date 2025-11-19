@@ -75,6 +75,30 @@ export class Header {
         }
       });
     }
+
+    const searchToggle = document.getElementById('searchToggle');
+    const searchContainer = document.getElementById('header-search-container');
+    const searchInput = document.getElementById('searchInput');
+    const inputCloseButton = document.querySelector('.input-close-button');
+    const headLeft = document.querySelector('.head-left');
+
+    searchToggle.addEventListener('click', (e) => {
+      e.preventDefault();
+
+      searchToggle.classList.add('hidden');
+      headLeft.style.visibility = 'hidden';
+      searchContainer.classList.add('active');
+
+      setTimeout(() => searchInput.focus(), 200);
+    });
+
+    inputCloseButton.addEventListener('click', (e) => {
+      e.preventDefault();
+
+      searchContainer.classList.remove('active');
+      searchToggle.classList.remove('hidden');
+      headLeft.style.visibility = 'visible';
+    });
   }
 
   profileDropdown() {

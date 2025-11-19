@@ -106,7 +106,7 @@ export class RegistrationPage {
         await player.init();
       } catch (error) {
         let msg = 'Ошибка регистрации';
-        if (error.message === 'resource conflict') msg = 'Пользователь уже существует';
+        if (error.message === 'resource conflict') msg = 'Пользователь с такими данными уже существует';
         else if (error.message === 'bad request') msg = 'Некорректный запрос. Проверьте введенные данные';
         validator.showMessage(msg);
       }

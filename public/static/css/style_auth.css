@@ -76,12 +76,12 @@
 }
 
 .general-error {
-  max-width: 428px;
+  max-width: 100%;
   margin: 0 auto 15px;
   padding: 10px;
-  border-radius: 5px;
+  border-radius: 8px;
   text-align: center;
-  color: white;
+  color: #fafafa;
   overflow-wrap: break-word;
   display: none;
 }
@@ -266,11 +266,21 @@ input[type='password']::placeholder {
   transform: translateY(-4px);
 }
 
-@media (max-width: 560px) or (max-height: 800px) {
-  .layout-auth {
-    background-size: 300% 150%;
+@media (max-height: 800px) {
+  .container {
+    width: 90%;
+    max-width: 450px;
+    padding: 20px;
+    max-height: none;
   }
 
+  .logo-auth {
+    max-width: 130px;
+    margin-bottom: 16px;
+  }
+}
+
+@media (max-width: 560px) {
   .container {
     width: 90%;
     max-width: 350px;
@@ -283,13 +293,16 @@ input[type='password']::placeholder {
     margin-bottom: 16px;
   }
 
+  .layout-auth {
+    background-size: 300% 150%;
+  }
+
   .form-title {
     font-size: 26px;
     margin-bottom: 20px;
   }
 
   .form-group label {
-    font-size: 20px;
     margin-bottom: 6px;
   }
 
@@ -298,9 +311,7 @@ input[type='password']::placeholder {
   }
 
   .form-group input {
-    width: 100%;
     height: 55px;
-    font-size: 20px;
   }
 
   .password-wrapper input {
@@ -312,9 +323,8 @@ input[type='password']::placeholder {
   }
 
   .error-message {
-    font-size: 14px;
-    bottom: -17px;
-    left: 0;
+    font-size: 13px;
+    bottom: -16px;
   }
 
   .validation-message {
@@ -329,11 +339,8 @@ input[type='password']::placeholder {
   }
 
   .validation-message::after {
-    content: '';
-    position: absolute;
     top: 100%;
     left: 15px;
-    border-width: 6px;
     border-style: solid;
     border-color: #d4d9d9 transparent transparent transparent;
     right: auto;
@@ -341,14 +348,7 @@ input[type='password']::placeholder {
     bottom: auto;
   }
 
-  .validation-message li::before {
-    font-size: 22px;
-    transform: translateY(-52%);
-    left: -4px;
-  }
-
   .general-error {
-    max-width: 100%;
     margin: 0 auto 12px;
     padding: 8px;
     font-size: 16px;
@@ -358,32 +358,32 @@ input[type='password']::placeholder {
     width: 100%;
     height: 55px;
     font-size: 24px;
+    transition: transform 0.3s ease,
+      background-color 0.5s ease;
+  }
+
+  .login-button:active {
+    background-position: right center;
+    transform: scale(0.9);
+  }
+
+  .login-button:focus {
+    background-position: right center;
+    outline: none;
   }
 
   .below-question {
-    font-size: 16px;
     margin-top: 12px;
-  }
-
-  input[type='password'] {
-    font-size: 26px !important;
-  }
-
-  input[type='password']::placeholder {
-    font-size: 20px !important;
-    transform: translateY(-2px);
-  }
-
-  .eye svg {
-    width: 24px;
-    height: 24px;
   }
 }
 
-@media (max-width: 390px) or (max-height: 620px) {
+@media (max-width: 400px) {
+  .layout-auth {
+    background-size: 300% 150%;
+  }
+
   .container {
     max-width: 300px;
-    padding: 15px;
     width: 95%;
   }
 
@@ -391,18 +391,28 @@ input[type='password']::placeholder {
     max-width: 100px;
     margin-bottom: 12px;
   }
+}
 
+@media (max-width: 400px) or (max-height: 800px) {
   .form-title {
-    font-size: 22px;
+    font-size: 23px;
+  }
+
+  .form-group {
+    margin-bottom: 16px;
+  }
+
+  .form-group label {
+    font-size: 16px;
   }
 
   .form-group input {
-    height: 50px;
+    height: 47px;
     font-size: 18px;
   }
 
   .login-button {
-    height: 50px;
+    height: 47px;
     font-size: 20px;
   }
 
@@ -416,8 +426,8 @@ input[type='password']::placeholder {
   }
 
   .error-message {
-    bottom: -15px;
-    font-size: 12px;
+    bottom: -14px;
+    font-size: 11px;
   }
 
   .general-error {
@@ -434,5 +444,19 @@ input[type='password']::placeholder {
   .eye svg {
     width: 20px;
     height: 20px;
+  }
+
+  input[type='password'] {
+    font-size: 24px;
+  }
+
+  input[type='password']::placeholder {
+    font-size: 18px;
+    transform: translateY(-2px);
+  }
+
+  .below-question {
+    margin-top: 10px;
+    font-size: 14px;
   }
 }
