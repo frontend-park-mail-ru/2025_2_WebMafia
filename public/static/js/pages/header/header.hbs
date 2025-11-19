@@ -5,11 +5,9 @@
       <h1 class="icon-name">Wave</h1>
     </a>
   </div>
-
-
   <div class="head-right">
     <div class="header-search-container" id="header-search-container">
-      {{> searchIcon }}
+      <div class="search-icon">{{> searchIcon }}</div>
       <input type="text" class="search-input" id="searchInput" placeholder="Что хочешь включить?">
     </div>
     {{#if isAuthenticated}}
