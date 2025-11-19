@@ -240,6 +240,21 @@ export class apiServises {
       console.error(`Failed to increment listen count for track ${trackId}:`, error);
     }
   }
+
+  async searchTrack(name) {
+    const track = this.request(`/tracks/search?q=${name}&limit=5`).catch(() => []);
+    return track;
+  }
+
+  async searchAlbum(name) {
+    const album = this.request(`/albums/search?q=${name}&limit=5`).catch(() => []);
+    return album;
+  }
+
+  async searchArtist(name) {
+    const artist = this.request(`/artists/search?q=${name}&limit=5`).catch(() => []);
+    return artist;
+  }
 }
 
 export const apiServise = new apiServises();

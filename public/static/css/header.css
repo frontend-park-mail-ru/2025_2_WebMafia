@@ -205,7 +205,14 @@
 
 .search-input:focus {
   background-color: #fff;
-  border: 1px solid #888;
+  border: 2px solid #888;
+  color: #000000;
+  font-weight: 500;
+}
+
+.search-input.is-highlighted {
+  font-weight: 500;
+  color: rgb(0, 0, 0);
 }
 
 .search-input::placeholder {

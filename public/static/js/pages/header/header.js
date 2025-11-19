@@ -4,9 +4,10 @@ import { getValidImage } from '../../parsers.js';
 import { player } from '../player/player.js';
 
 export class Header {
-  async render() {
+  async render(searchValue) {
     let pageData = {
       isAuthenticated: localStorage.getItem('isAuthenticated') === 'true',
+      searchValue: searchValue,
     };
 
     // if (!pageData.isAuthenticated) return;
@@ -71,6 +72,7 @@ export class Header {
           e.preventDefault();
           const searchVal = searchWindow.value;
           if (searchVal === '') return;
+          searchWindow.value = searchVal;
           router.navigate(`/search/${searchVal}`);
         }
       });

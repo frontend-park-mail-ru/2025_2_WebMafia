@@ -10,7 +10,7 @@
   <div class="head-right">
     <div class="header-search-container" id="header-search-container">
       {{> searchIcon }}
-      <input type="text" class="search-input" id="searchInput" placeholder="Что хочешь включить?">
+      <input type="text" class="search-input" id="searchInput" placeholder="Что хочешь включить?" value="{{searchValue}}">
     </div>
     {{#if isAuthenticated}}
     <div class="profile-dropdown">
