@@ -8,6 +8,7 @@ import { playsParser, durationParser, getValidImage, totalDurationParser, tracks
 import { playTrack } from '../../playTrackBtn.js';
 import { setPlayButtonsOnAuth } from '../../setPlayButtonsOnAuth.js';
 import { playerOnlyOnPlay } from '../../playerOnlyOnplay.js';
+import { likeTrackBtn } from '../../utils/likeTrack.js';
 
 export class AlbumPage {
   async render(id) {
@@ -70,6 +71,7 @@ export class AlbumPage {
     initScrollbar();
     this.addEventListeners();
     setPlayButtonsOnAuth();
+    likeTrackBtn();
     playTrack();
   }
 

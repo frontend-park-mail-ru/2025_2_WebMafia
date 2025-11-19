@@ -19,6 +19,7 @@ function registerPartials() {
   Handlebars.registerPartial('libraryIcon', Handlebars.templates['libraryIcon.hbs']);
   Handlebars.registerPartial('header', Handlebars.templates['header.hbs']);
   Handlebars.registerPartial('sidebar', Handlebars.templates['sidebar.hbs']);
+  Handlebars.registerPartial('libraryGrid', Handlebars.templates['libraryGrid.hbs']);
   Handlebars.registerPartial('play', Handlebars.templates['play.hbs']);
   Handlebars.registerPartial('player', Handlebars.templates['player.hbs']);
   Handlebars.registerPartial('playBtn', Handlebars.templates['playBtn.hbs']);
@@ -31,6 +32,7 @@ function registerPartials() {
   Handlebars.registerPartial('likeBtn', Handlebars.templates['likeBtn.hbs']);
   Handlebars.registerPartial('close', Handlebars.templates['close.hbs']);
   Handlebars.registerPartial('profile', Handlebars.templates['profile.hbs']);
+  Handlebars.registerPartial('plus', Handlebars.templates['plus.hbs']);
   Handlebars.registerHelper('numeration', function (value) {
     return parseInt(value) + 1;
   });

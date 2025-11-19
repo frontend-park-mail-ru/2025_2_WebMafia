@@ -8,6 +8,7 @@ import { slider } from '../../slider.js';
 import { playTrack } from '../../playTrackBtn.js';
 import { setPlayButtonsOnAuth } from '../../setPlayButtonsOnAuth.js';
 import { playerOnlyOnPlay } from '../../playerOnlyOnplay.js';
+import { likeTrackBtn } from '../../utils/likeTrack.js';
 
 export class ArtistPage {
   async render(id) {
@@ -88,6 +89,7 @@ export class ArtistPage {
     initScrollbar();
     this.addEventListeners();
     setPlayButtonsOnAuth();
+    likeTrackBtn();
     playTrack();
   }
 

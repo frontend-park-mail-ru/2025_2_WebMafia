@@ -153,7 +153,7 @@ export class FormValidator {
     // обработка каждого поля
     // При вводе или переключении проверяем и выводим сообщения валидации только у трогаемых полей
     // Также всегда используем validateForm() чтоб активировать или дезактивировать кнопку submit
-    this.form.querySelectorAll('input').forEach((input) => {
+    this.form.querySelectorAll('input, textarea').forEach((input) => {
       this.touchedFields[input.name] = false;
 
       ['input', 'click'].forEach((event) =>

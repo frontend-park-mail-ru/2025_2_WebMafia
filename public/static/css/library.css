@@ -1,0 +1,83 @@
+.library-header {
+  display: flex;
+  margin-top: 25px;
+  padding: 0 27px;
+  justify-content: space-between;
+}
+
+.left-content {
+  align-items: flex-start;
+  padding-top: 12px;
+}
+
+.sort-buttons {
+  display: flex;
+  margin-top: 18px;
+  font-size: 18px;
+  gap: 15px;
+}
+
+.right-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.library-search-container {
+  margin-top: 15px;
+  position: relative;
+  display: inline-block;
+}
+
+.search-icon svg {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.second-cross-icon {
+  display: none;
+  border-radius: 50%;
+  align-items: center;
+  padding: 10px 13px 10px 13px;
+}
+
+.second-cross-icon svg {
+  transform: rotate(45deg);
+}
+
+#savePlaylistButton {
+  width: 110px;
+}
+
+.form-group textarea {
+  font-family: 'Montserrat', sans-serif;
+  width: 450px;
+  height: 16.5vh;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #d0bbbb;
+  font-size: 20px;
+  box-sizing: border-box;
+  resize: none;
+}
+
+.form-group textarea::-webkit-scrollbar {
+  width: 10px;
+}
+
+.form-group textarea::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 10px;
+}
+
+.form-group textarea::-webkit-scrollbar-thumb {
+  background: #707070;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.form-group textarea::-webkit-scrollbar-thumb:hover {
+  background: #4e4e4e;
+}

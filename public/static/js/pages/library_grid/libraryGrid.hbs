@@ -1,0 +1,16 @@
+{{#each library}}
+  <a class="card" href="/{{ href }}">
+    <img src="{{ image }}" alt="{{ name }}" onerror="this.onerror=null; this.src='static/img/{{ default_avatar }}';"/>
+    <div class="card-bottom-info">
+      <p class="card-name">{{ name }}</p>
+      <p class="card-sub">
+        {{#if ../showType}}
+          {{ type }}
+          <span class="dot"></span>
+        {{/if}}
+        <span class="text">{{ sub }}</span>
+      </p>
+    </div>
+    <!--<button class="play-button play-button-placement"></button>-->
+  </a>
+{{/each}}
