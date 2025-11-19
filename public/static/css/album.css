@@ -143,6 +143,15 @@
   border-radius: 30px;
   transition: background-color 0.3s ease;
   height: 75px;
+
+  /* flex: 1;
+  display: grid;
+  grid-template-columns: 5% 95%;
+  padding: 10px 25px 10px 10px;
+  align-items: center;
+  border-radius: 30px;
+  transition: background-color 0.3s ease;
+  height: 75px; */
 }
 
 .album-row.active, .album-row:hover {
@@ -199,7 +208,9 @@
 }
 
 .tracks-duration-wrapper {
-  display: flex;
+  flex: 1;
+  display: grid;
+  grid-template-columns: 89% 7% 4%;
   align-items: center;
   justify-content: space-between;
   width: 100%;
@@ -243,4 +254,10 @@
   height: 1px;
   background-color: #ccc;
   margin: 8px 0;
+}
+
+.album-row:hover .like-btn-track,
+.album-row.active .like-btn-track,
+.like-btn-track.active  {
+  opacity: 1;
 }

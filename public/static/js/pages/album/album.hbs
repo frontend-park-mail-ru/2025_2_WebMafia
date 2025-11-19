@@ -40,6 +40,9 @@
                   <div class="track-name">{{ name }}</div>
                   <div class="track-plays-num">{{ plays }}</div>
                 </div>
+                <div class="track-like-container">
+                    <button class="like-btn-track" data-track-id="{{id}}">{{> likeBtn }}</button>
+                </div>
                 <div class="track-duration">{{ duration }}</div>
               </div>
             </div>
