@@ -1,3 +1,12 @@
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker
+      .register('/sw.js')
+      .then((reg) => console.log('Service Worker зарегистрирован!', reg))
+      .catch((err) => console.error('Ошибка регистрации Service Worker:', err));
+  });
+}
+
 import { player } from './static/js/pages/player/player.js';
 import { router } from './static/js/routing.js';
 import { persistence } from './static/js/utils/persistence.js';
