@@ -82,7 +82,7 @@ export class Header {
   profileDropdown() {
     const profileBtn = document.querySelector('.profile-btn');
     const dropDownMenu = document.querySelector('.dropdown-menu');
-    if (profileBtn && dropDownMenu){
+    if (profileBtn && dropDownMenu) {
       profileBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         dropDownMenu.classList.toggle('show');
@@ -96,7 +96,6 @@ export class Header {
         }
       });
     }
-
   }
 }
 

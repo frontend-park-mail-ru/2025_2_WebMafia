@@ -29,7 +29,6 @@ export class SearchPage {
 
     try {
       const [searchTracktData, searchAlbumData, searchArtistData] = await Promise.all([apiServise.searchTrack(name), apiServise.searchAlbum(name), apiServise.searchArtist(name)]);
-      console.log(searchTracktData, searchAlbumData, searchArtistData);
       pageData.artists = (searchArtistData || []).map((artist) => ({
         id: artist.id,
         name: artist.name,
@@ -55,7 +54,6 @@ export class SearchPage {
         artist_id: track.album.artists?.[0].id,
         type: 'Трэк',
       }));
-      console.log(pageData, 'pagedata');
 
       if (pageData.artists.length > 0) {
         pageData.best_result = pageData.artists[0];
@@ -64,9 +62,6 @@ export class SearchPage {
       } else if (pageData.tracks.length > 0) {
         pageData.best_result = pageData.tracks[0];
       }
-      console.log(pageData.best_result, 'best_result');
-
-      // pageData.titleName = pageData.best_result[0].name;
     } catch (error) {
       console.error('Failed to load search page data:', error);
     }
