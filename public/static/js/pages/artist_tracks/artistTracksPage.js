@@ -7,6 +7,7 @@ import { durationParser, getValidImage, playsParser } from '../../parsers.js';
 import { playTrack } from '../../playTrackBtn.js';
 import { playerOnlyOnPlay } from '../../playerOnlyOnplay.js';
 import { setPlayButtonsOnAuth } from '../../setPlayButtonsOnAuth.js';
+import { likeTrackBtn } from '../../utils/likeTrack.js';
 
 export class ArtistTracksPage {
   async render(artistId) {
@@ -58,6 +59,7 @@ export class ArtistTracksPage {
     await Promise.all([header.render(), sidebar.render()]);
     setPlayButtonsOnAuth();
     initScrollbar();
+    likeTrackBtn();
     playTrack();
   }
 }

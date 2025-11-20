@@ -19,15 +19,8 @@ body {
   display: flex;
   flex: 1;
   min-height: 0;
-  margin-bottom: 90px;
-  transition: margin-bottom 0.3s ease; 
-}
-
-.layout.whithout_player {
-  display: flex;
-  flex: 1;
-  min-height: 0;
   margin-bottom: 0;
+  transition: margin-bottom 0.3s ease;
 }
 
 /* Content */
@@ -258,6 +251,14 @@ body {
   font-weight: 400;
   opacity: 0.8;
   margin-top: 3px;
+  overflow: hidden;
+  max-width: 170px;
+}
+
+.card-sub .text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .card-sub-limiter {

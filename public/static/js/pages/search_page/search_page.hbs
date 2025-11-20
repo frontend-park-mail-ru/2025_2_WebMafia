@@ -11,7 +11,7 @@
                 <div class="best-result-title">
                     <div class="title-name">Лучшее совпадение</div>
                 </div>
-                {{#each best_result}}
+                {{#with best_result}}
                 <div data-href="{{#if duration}} /album/{{ album_id }} {{else}} {{#if artist_id}}/album/{{ id }}{{else}}/artist/{{ id }} {{/if}}
                                 {{/if}} " class="best-result-card click-event-card">
                     <img src="{{ image }}" alt="{{ name }}" />
@@ -27,7 +27,7 @@
                     </div>
                    
                 </div>
-                {{/each}}
+                {{/with}}
             </div>
             
 

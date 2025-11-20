@@ -58,12 +58,13 @@ export class SearchPage {
       console.log(pageData, 'pagedata');
 
       if (pageData.artists.length > 0) {
-        pageData.best_result = pageData.artists;
+        pageData.best_result = pageData.artists[0];
       } else if (pageData.albums.length > 0) {
-        pageData.best_result = pageData.albums;
+        pageData.best_result = pageData.albums[0];
       } else if (pageData.tracks.length > 0) {
-        pageData.best_result = pageData.tracks;
+        pageData.best_result = pageData.tracks[0];
       }
+      console.log(pageData.best_result, 'best_result');
 
       // pageData.titleName = pageData.best_result[0].name;
     } catch (error) {

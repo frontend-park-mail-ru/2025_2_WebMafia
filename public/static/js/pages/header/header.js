@@ -82,19 +82,21 @@ export class Header {
   profileDropdown() {
     const profileBtn = document.querySelector('.profile-btn');
     const dropDownMenu = document.querySelector('.dropdown-menu');
+    if (profileBtn && dropDownMenu){
+      profileBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        dropDownMenu.classList.toggle('show');
+      });
 
-    profileBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      dropDownMenu.classList.toggle('show');
-    });
+      document.addEventListener('click', (e) => {
+        const isClickInside = profileBtn.contains(e.target) || dropDownMenu.contains(e.target);
 
-    document.addEventListener('click', (e) => {
-      const isClickInside = profileBtn.contains(e.target) || dropDownMenu.contains(e.target);
+        if (!isClickInside) {
+          dropDownMenu.classList.remove('show');
+        }
+      });
+    }
 
-      if (!isClickInside) {
-        dropDownMenu.classList.remove('show');
-      }
-    });
   }
 }
 
