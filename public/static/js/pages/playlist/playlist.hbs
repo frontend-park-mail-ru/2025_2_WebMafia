@@ -19,7 +19,7 @@
           <button class="play-button play-button-playlist" data-playlist-id="{{ id }}" data-context="playlist-tracks"></button>
           <button class="dots" id="playlistActions">{{> dots}}</button>
           <div id="playlistMenu" class="actions-menu hidden">
-            <button class="actions-item">{{> pencil }}Редактировать</button>
+            <button class="actions-item"><span class="pencil-svg">{{> pencil }}Редактировать</span></button>
             <button class="actions-item"><span class="trash-svg">{{> trash}}</span>Удалить</button>
           </div>
         </div>
@@ -28,9 +28,10 @@
         <div class="album-table">
           {{#each tracks}}
             <div class="album-row">
+              <div class="playlist-track-number">{{numeration @index}}</div>
               <div class="album-play-wrapper">
-                <div class="album-track-number">{{numeration @index}}</div>
-                <button class="play-album-track" data-track-id="{{ id }}" data-context="album-tracks" data-album-id="{{../id}}">
+                <img class="playlist-track-cover" src="{{ cover }}" alt="{{ name }}" onerror="this.onerror=null; this.src='static/img/default-album.png';"/>
+                <button class="play-playlist-track" data-track-id="{{ id }}" data-context="album-tracks" data-album-id="{{../id}}">
                   <span class="play-icon">{{> play }}</span>
                   <span class="pause-icon">{{> pause }}</span>
                 </button>
@@ -38,7 +39,7 @@
               <div class="tracks-duration-wrapper">
                 <div class="album-track-info">
                   <div class="track-name">{{ name }}</div>
-                  <p class="card-sub">
+                  <p class="playlist-sub">
                     <a class="text href-decoration" href="/album/{{ album_id }}">{{ album }}</a>
                     <span class="dot"></span>
                     {{#each artists}}
@@ -47,6 +48,9 @@
                     </a>
                     {{/each}}
                   </p>
+                </div>
+                <div class="track-like-container">
+                    <button class="like-btn-track album-like-size" data-track-id="{{id}}">{{> likeBtn }}</button>
                 </div>
                 <div class="track-duration">{{ duration }}</div>
               </div>

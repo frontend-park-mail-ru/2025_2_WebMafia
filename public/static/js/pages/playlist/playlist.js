@@ -34,6 +34,7 @@ export class PlaylistPage {
           name: track.title,
           album: track.album.title,
           album_id: track.album.id,
+          cover: getValidImage('albums/' + track.album.avatar_url, 'default-album.png'),
           artists: track.artists,
           plays: playsParser(track.play_count),
           duration: durationParser(track.duration_s),
