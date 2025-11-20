@@ -5,32 +5,33 @@
       <div class="blue-background-circle album-blue-position"></div>
       <div class="purple-background-circle album-purple-position"></div>
       <div class="album-card">
-        <div class="album-artist">
-          <img class="album-artist-avatar" src="{{ artist.avatar }}" alt="{{ artist.name }}" />
-          <a href="artist/{{ artist.id }}" title="{{ artist.name }}" class="album-artist-name">{{ artist.name }}</a>
-        </div>
         <img class="album-cover" src="{{ cover }}" alt="{{ title }}" />
         <div class="album-card-title">{{ title }}</div>
         <div class="album-card-info">
-          <div class="card-sub">{{ type }}<span class="dot"></span>{{ year }}</div>
+          <div class="card-sub">Плейлист<span class="dot"></span>{{ date }}</div>
           <div class="card-sub">{{ tracksNum }}<span class="dot"></span>{{ totalDuration }}</div>
         </div>
         {{#if description}}
           <div class="card-sub album-description" id="getDescription">{{ description }}</div>
         {{/if}}
         <div class="album-buttons">
-          <button class="like-btn black">{{> likeBtn }}</button>
-          <button class="play-button play-button-album" data-album-id="{{ id }}" data-context="album-tracks"></button>
-          <button class="control-btn">{{> shuffle}}</button>
+          <button class="control-btn">{{> shuffle }}</button>
+          <button class="play-button play-button-playlist" data-playlist-id="{{ id }}" data-context="playlist-tracks"></button>
+          <button class="dots" id="playlistActions">{{> dots}}</button>
+          <div id="playlistMenu" class="actions-menu hidden">
+            <button class="actions-item"><span class="pencil-svg">{{> pencil }}Редактировать</span></button>
+            <button class="actions-item"><span class="trash-svg">{{> trash}}</span>Удалить</button>
+          </div>
         </div>
       </div>
       <div class="tracks-card">
         <div class="album-table">
           {{#each tracks}}
             <div class="album-row">
+              <div class="playlist-track-number">{{numeration @index}}</div>
               <div class="album-play-wrapper">
-                <div class="album-track-number">{{numeration @index}}</div>
-                <button class="play-album-track" data-track-id="{{ id }}" data-context="album-tracks" data-album-id="{{../id}}">
+                <img class="playlist-track-cover" src="{{ cover }}" alt="{{ name }}" onerror="this.onerror=null; this.src='static/img/default-album.png';"/>
+                <button class="play-playlist-track" data-track-id="{{ id }}" data-context="album-tracks" data-album-id="{{../id}}">
                   <span class="play-icon">{{> play }}</span>
                   <span class="pause-icon">{{> pause }}</span>
                 </button>
@@ -38,7 +39,15 @@
               <div class="tracks-duration-wrapper">
                 <div class="album-track-info">
                   <div class="track-name">{{ name }}</div>
-                  <div class="track-plays-num">{{ plays }}</div>
+                  <p class="playlist-sub">
+                    <a class="text href-decoration" href="/album/{{ album_id }}">{{ album }}</a>
+                    <span class="dot"></span>
+                    {{#each artists}}
+                    <a href="artist/{{ id }}" class="text href-decoration">
+                      {{name}}{{#unless @last}}, {{/unless}}
+                    </a>
+                    {{/each}}
+                  </p>
                 </div>
                 <div class="track-like-container">
                     <button class="like-btn-track album-like-size" data-track-id="{{id}}">{{> likeBtn }}</button>
@@ -51,7 +60,7 @@
       </div>
     </div>
     <div class="turquoise-oval"></div>
-    <div class="overlay" id="albumDescriptionOverlay">
+    <div class="overlay" id="descriptionOverlay">
       <div class="window">
         <div class="overlay-header">
           <span class="album-title">{{ title }}</span>

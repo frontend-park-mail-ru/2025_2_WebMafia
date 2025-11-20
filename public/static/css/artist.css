@@ -318,11 +318,10 @@
 
 .track-like-container {
   display: flex;
-  justify-content: center; /* Центрируем кнопку в ячейке грида */
+  justify-content: center;
   align-items: center;
 }
 
-/* Используем тот же класс .like-btn, что и в плеере */
 .like-btn-track {
   opacity: 0;
   background-color: transparent;
@@ -335,24 +334,25 @@
 }
 
 .like-btn-track svg {
-  width: 22px; /* Немного уменьшим для списка */
-  height: 22px;
   fill: none;
-  stroke: #555; /* Серый цвет для неактивного лайка */
+  stroke: #555;
   stroke-width: 2px;
   transition: all 0.2s ease;
 }
 
-/* Стиль при наведении */
+.artist-like-size svg {
+  width: 22px;
+  height: 22px;
+}
+
 .like-btn-track:hover svg {
-  stroke: #a866eb; /* Фиолетовый при наведении */
+  stroke: #a866eb;
   transform: scale(1.1);
 }
 
-/* Стиль для активного (нажатого) лайка */
 .like-btn-track.active svg {
-  fill: #a866eb;   /* Заливка */
-  stroke: #a866eb; /* И обводка */
+  fill: #a866eb;
+  stroke: #a866eb;
 }
 
 .track-row:hover .like-btn-track,

@@ -251,14 +251,6 @@ body {
   font-weight: 400;
   opacity: 0.8;
   margin-top: 3px;
-  overflow: hidden;
-  max-width: 170px;
-}
-
-.card-sub .text {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .card-sub-limiter {

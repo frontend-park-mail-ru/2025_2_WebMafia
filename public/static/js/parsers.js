@@ -60,9 +60,16 @@ export function tracksNumParser(count) {
 }
 
 export function getValidImage(url, defaultImage) {
-  if (!url) {
+  if (!url || url === '') {
     if (!defaultImage) return url;
     return `static/img/${defaultImage}`;
   }
   return `${API_AVATARS_URL}/${url}`;
+}
+
+export function dateParser(dateStr) {
+  if (!dateStr) return '';
+
+  const [year, month, day] = dateStr.slice(0, 10).split('-');
+  return `${day}.${month}.${year}`;
 }

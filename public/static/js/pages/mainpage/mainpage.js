@@ -9,7 +9,6 @@ import { playTrack } from '../../playTrackBtn.js';
 import { getValidImage, playsParser } from '../../parsers.js';
 import { setPlayButtonsOnAuth } from '../../setPlayButtonsOnAuth.js';
 import { playerOnlyOnPlay } from '../../playerOnlyOnplay.js';
-import { Router } from '../../routing.js';
 
 export class MainPage {
   async render() {
