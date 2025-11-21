@@ -2,7 +2,7 @@ body {
   font-family: 'Montserrat', sans-serif;
   margin: 0;
   padding: 0;
-  overflow-y: hidden;
+  overflow: hidden;
 }
 
 .section {
@@ -19,15 +19,12 @@ body {
   display: flex;
   flex: 1;
   min-height: 0;
-  margin-bottom: 90px;
+  margin-bottom: 0;
   transition: margin-bottom 0.3s ease; 
 }
 
-.layout.whithout_player {
-  display: flex;
-  flex: 1;
-  min-height: 0;
-  margin-bottom: 0;
+.layout.with_player {
+  margin-bottom: 90px;
 }
 
 /* Content */
@@ -399,4 +396,50 @@ body {
 
 .card-tracks:hover .play-button-track {
   opacity: 1;
+}
+
+@media (max-width: 560px) {
+  .layout {
+    margin-bottom: 80px;
+  }
+
+  .with_player {
+    margin-bottom: 160px;
+  }
+
+  .page {
+    margin: 0;
+    padding: 0;
+  }
+
+  .title {
+    margin-left: 23px;
+  }
+
+  .cards {
+    padding: 16px 0 0 18px;
+    margin: 0 0 12px 0;
+  }
+
+  .card {
+    flex: 0 0 155px;
+    min-height: 170px;
+  }
+
+  .card img {
+    margin-top: 5px;
+    width: 135px;
+    height: 135px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+
+  .card-name {
+    margin-top: 5px;
+  }
+
+  .href-decoration {
+    text-decoration: underline;
+  }
 }
