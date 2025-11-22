@@ -23,6 +23,7 @@ export class Player extends EventTarget {
   async updateVisibility() {
     const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
     const path = window.location.pathname;
+    const currentTrack = localStorage.getItem('currentTrackId');
     const isAuthPage = path === '/login' || path === '/register';
 
     if (isAuthenticated && !isAuthPage) {

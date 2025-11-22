@@ -7,7 +7,7 @@ import { getValidImage, playsParser, tracksNumParser } from '../../parsers.js';
 import { playTrack } from '../../playTrackBtn.js';
 import { setPlayButtonsOnAuth } from '../../setPlayButtonsOnAuth.js';
 import { playerOnlyOnPlay } from '../../playerOnlyOnplay.js';
-import { FormValidator } from "../../validation.js";
+import { FormValidator } from '../../validation.js';
 
 export class LibraryPage {
   async render() {
@@ -54,7 +54,7 @@ export class LibraryPage {
           type: 'Артист',
           sub: playsParser(artist.play_count),
           href: 'artist/' + artist.id,
-        }
+        };
         pageData.library.push(item);
         pageData.artists.push(item);
       });
@@ -67,7 +67,7 @@ export class LibraryPage {
           created_at: new Date(album.created_at),
           type: album.type,
           href: 'album/' + album.id,
-        }
+        };
         pageData.library.push(item);
         pageData.albums.push(item);
       });
@@ -80,7 +80,7 @@ export class LibraryPage {
           sub: tracksNumParser(playlist.tracks.length),
           type: 'Плейлист',
           href: 'playlist/' + playlist.id,
-        }
+        };
         pageData.library.push(item);
         pageData.playlists.push(item);
       });
@@ -112,6 +112,81 @@ export class LibraryPage {
     playTrack();
     setPlayButtonsOnAuth();
     this.addEventListeners(pageData);
+    this.setupContextMenu();
+  }
+
+  setupContextMenu() {
+    const contextMenu = document.querySelector('.context-menu');
+    const contextMenuPlaylists = document.querySelector('.context-menu.playlist');
+    const contextMenuArtists = document.querySelector('.context-menu.artist');
+
+    document.querySelectorAll('.card').forEach((card) => {
+      card.addEventListener('contextmenu', (event) => {
+        event.preventDefault();
+        const id = card.dataset.id;
+        const type = card.dataset.type;
+        if (type === 'Плейлист') {
+          contextMenuPlaylists.dataset.id = id;
+          contextMenuPlaylists.dataset.type = type;
+          contextMenuPlaylists.style.display = 'block';
+          contextMenuPosition(contextMenuPlaylists, event.pageX, event.pageY);
+          // contextMenuPlaylists.style.left = event.pageX + 'px';
+          // contextMenuPlaylists.style.top = event.pageY + 'px';
+        } else {
+          contextMenuArtists.dataset.id = id;
+          contextMenuArtists.dataset.type = type;
+          contextMenuArtists.style.display = 'block';
+          contextMenuPosition(contextMenuArtists, event.pageX, event.pageY);
+          // contextMenuArtists.style.left = event.pageX + 'px';
+          // contextMenuArtists.style.top = event.pageY + 'px';
+        }
+      });
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!contextMenuPlaylists.contains(e.target) && !contextMenuArtists.contains(e.target)) {
+        contextMenuPlaylists.style.display = 'none';
+        contextMenuArtists.style.display = 'none';
+      }
+    });
+
+    contextMenu.addEventListener('click', async (e) => {
+      const action = e.target.dataset.action;
+      const id = contextMenu.dataset.id;
+      const type = contextMenu.dataset.type;
+
+      if (action === 'delete' && type === 'Плейлист') {
+        await apiServise.deletePlaylist(id);
+        router.navigate('/library');
+      }
+
+      if (action === 'move') {
+        console.log('Перемешать плейлист', id);
+      }
+
+      if (action === 'pin') {
+        await apiServise.pinItem(id, type);
+      }
+
+      contextMenu.style.display = 'none';
+    });
+
+    function contextMenuPosition(menu, x, y) {
+      const menuWidth = menu.offsetWidth;
+      const menuHeight = menu.offsetHeight;
+      const screenWidth = window.innerWidth;
+      const screenHeight = window.innerHeight;
+
+      if (menuWidth + x > screenWidth) {
+        x = screenWidth - menuWidth - 10;
+      }
+
+      if (menuHeight + y > screenHeight) {
+        y = screenHeight - menuHeight - 10;
+      }
+      menu.style.left = x + 'px';
+      menu.style.top = y + 'px';
+    }
   }
 
   addEventListeners(data) {
@@ -136,7 +211,7 @@ export class LibraryPage {
           button.style.display = 'none';
 
           document.querySelector('.grid-layout').innerHTML = gridTemplate(data);
-
+          this.setupContextMenu();
         } else if (isActivating) {
           button.classList.remove('secondary-button');
           button.classList.add('primary-button');
@@ -154,7 +229,7 @@ export class LibraryPage {
           };
 
           document.querySelector('.grid-layout').innerHTML = gridTemplate(pageData);
-
+          this.setupContextMenu();
         } else {
           buttons.forEach((b) => {
             b.style.display = '';
@@ -165,6 +240,7 @@ export class LibraryPage {
           disableSort.style.display = 'none';
 
           document.querySelector('.grid-layout').innerHTML = gridTemplate(data);
+          this.setupContextMenu();
         }
       });
     });
@@ -213,7 +289,7 @@ export class LibraryPage {
       const img = document.getElementById('playlistAvatar');
 
       if (src) img.src = src;
-      else img.src = "static/img/default-playlist.png";
+      else img.src = 'static/img/default-playlist.png';
     }
 
     const editAvatarButtons = document.getElementById('editAvatarButtons');

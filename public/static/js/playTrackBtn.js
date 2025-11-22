@@ -13,8 +13,10 @@ export function playTrack() {
       const current = player.currentTrack;
       const nowPlayingContainer = document.querySelector('.now-playing-container');
       const playerContent = document.querySelector('.player');
+      const layout = document.querySelector('.layout');
       if (playerContent) playerContent.classList.remove('none_playing');
       if (nowPlayingContainer) nowPlayingContainer.classList.remove('none_play');
+      if (layout) layout.style.marginBottom = '90px';
 
       const context = {
         type: button.dataset.context || 'all-tracks',
@@ -22,6 +24,7 @@ export function playTrack() {
       };
       if (!current || current.id !== trackId) {
         currentTrackId = trackId;
+        await player.init();
         await player.loadAndPlayTrackById(trackId, context);
       } else {
         await player.togglePlayPause();
