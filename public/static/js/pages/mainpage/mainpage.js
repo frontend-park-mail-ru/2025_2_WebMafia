@@ -230,6 +230,36 @@ export class MainPage {
       }, animationDuration);
     }
 
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    function handleGesture() {
+      if (touchEndX - touchStartX > 50) {
+        if (!isAnimating) {
+          shiftCards('prev');
+          player.prevTrack();
+        }
+      }
+
+      if (touchStartX - touchEndX > 50) {
+        if (!isAnimating) {
+          shiftCards('next');
+          player.nextTrack();
+        }
+      }
+    }
+
+    const slider = document.querySelector('.card-slider');
+
+    slider.addEventListener('touchstart', e => {
+      touchStartX = e.changedTouches[0].clientX;
+    });
+
+    slider.addEventListener('touchend', e => {
+      touchEndX = e.changedTouches[0].clientX;
+      handleGesture();
+    });
+
     nextBtn.addEventListener('click', async () => {
       if (isAnimating) return;
       shiftCards('next');

@@ -26,7 +26,6 @@ function registerPartials() {
   Handlebars.registerPartial('repeat', Handlebars.templates['repeatBtn.hbs']);
   Handlebars.registerPartial('pauseBtn', Handlebars.templates['pauseBtn.hbs']);
   Handlebars.registerPartial('nextTrack', Handlebars.templates['nextTrack.hbs']);
-  Handlebars.registerPartial('prevTrack', Handlebars.templates['prevTrack.hbs']);
   Handlebars.registerPartial('volumeBar', Handlebars.templates['volumeBar.hbs']);
   Handlebars.registerPartial('likeBtn', Handlebars.templates['likeBtn.hbs']);
   Handlebars.registerPartial('close', Handlebars.templates['close.hbs']);

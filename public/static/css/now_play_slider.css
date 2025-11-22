@@ -15,31 +15,29 @@
 }
 
 .hidden {
-  opacity: 0 !important; 
-  pointer-events: none !important; 
-  transform: scale(0.8) !important;
-  visibility: hidden !important;
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.8);
+  visibility: hidden;
   transition: opacity 0.5s ease, transform 0.5s ease;
-  box-shadow: none !important;
+  box-shadow: none;
 }
 
 .card-fade-out {
-  opacity: 0 !important;
-  transform: scale(0.8) !important; 
+  opacity: 0;
+  transform: scale(0.8);
 }
 
 .card-reset {
-  transition: none !important; 
+  transition: none;
 }
 
-/* Обёртка для слайдера */
 .card-slider {
   position: relative;
   width: 300px;
   height: 150px;
 }
 
-/* Общий стиль для ВСЕХ карточек */
 .now-playing-container-card {
   position: absolute;
   top: 0;
@@ -61,12 +59,9 @@
   border-radius: 20px;
 }
 
-/* Классы позиций */
 .card-position-current {
   z-index: 10;
   transform: translateX(0) scale(1.1);
-
-  /* filter: brightness(70%); */
   opacity: 1;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
@@ -89,7 +84,6 @@
   opacity: 1;
 }
 
-/* Стили для контента на карточке */
 .current-card-btn.play, .current-card-btn.play.pause,
 .current-card-name {
   position: absolute;
@@ -103,13 +97,10 @@
   opacity: 1;
 }
 
-/* кнопка Play/Pause поверх */
 .current-card-btn.play {
   position: absolute;
   top: 30%;
   left: 40%;
-
-  /* transform: translate(-50%, -50%); */
   width: 56px;
   height: 56px;
   border-radius: 50%;
@@ -143,7 +134,6 @@
   background-position: left top;
 }
 
-/* Новые стили для состояния паузы */
 .current-card-btn.play.paused::before {
   border-style: solid;
   border-width: 0;
@@ -151,8 +141,6 @@
   height: 20px; 
   width: 16px; 
   opacity: 1;
-
-  /* Создаем две полосы с помощью box-shadow */
   box-shadow: inset 5px 0 0 0 white, inset -5px 0 0 0 white;
   margin: 0;
 }
@@ -172,7 +160,6 @@
   text-align: center;
 }
 
-/* Стили стрелок */
 .current-card-btn.prev,
 .current-card-btn.next {
   background: none;
@@ -199,4 +186,49 @@
   border-width: 0 4px 4px 0;
   transform: rotate(-45deg);
   display: inline-block;
+}
+
+@media (max-width: 560px) {
+  .card-slider {
+    width: 180px;
+    height: 120px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .current-card-btn {
+    display: none;
+  }
+
+  .now-playing-container {
+    justify-content: center;
+  }
+
+  .now-playing-container-card {
+    width: 180px;
+    height: 110px;
+  }
+
+  .card-position-prev {
+    transform: translateX(-55%) scale(1);
+  }
+
+  .card-position-current {
+    transform: translateX(0) scale(1.2);
+  }
+
+  .card-position-next {
+    transform: translateX(55%) scale(1);
+  }
+
+  .current-card-btn.play {
+    width: 44px;
+    height: 44px;
+    font-size: 16px;
+  }
+
+  .current-card-name {
+    font-size: 18px;
+    bottom: 10px;
+  }
 }

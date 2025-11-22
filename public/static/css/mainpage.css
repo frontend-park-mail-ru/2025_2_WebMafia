@@ -293,7 +293,8 @@ body {
   grid-template-rows: repeat(2, auto);
   max-height: 200px;
   width: 100%;
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
   scroll-behavior: smooth;
   margin-left: -23px;
   padding: 15px 0 30px 43px;
@@ -400,11 +401,11 @@ body {
 
 @media (max-width: 560px) {
   .layout {
-    margin-bottom: 80px;
+    margin-bottom: 78px;
   }
 
-  .with_player {
-    margin-bottom: 160px;
+  .layout.with_player {
+    margin-bottom: 156px;
   }
 
   .page {
@@ -439,7 +440,11 @@ body {
     margin-top: 5px;
   }
 
-  .href-decoration {
-    text-decoration: underline;
+  .card-sub-limiter {
+    max-width: 145px;
+  }
+
+  .slide-btn {
+    display: none;
   }
 }

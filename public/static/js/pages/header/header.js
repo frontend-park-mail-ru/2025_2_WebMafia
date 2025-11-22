@@ -85,9 +85,11 @@ export class Header {
     searchToggle.addEventListener('click', (e) => {
       e.preventDefault();
 
-      searchToggle.classList.add('hidden');
-      headLeft.style.visibility = 'hidden';
-      searchContainer.classList.add('active');
+      setTimeout(() => {
+        searchToggle.classList.add('hidden');
+        headLeft.style.visibility = 'hidden';
+        searchContainer.classList.add('active');
+      }, 100)
 
       setTimeout(() => searchInput.focus(), 200);
     });
