@@ -16,9 +16,7 @@ export class FormValidator {
 
     this.messageElement.textContent = message;
     this.messageElement.style.color = isSuccess ? '#27ae60' : '#e74c3c';
-    this.messageElement.style.backgroundColor = isSuccess
-      ? 'rgba(39, 174, 96, 0.1)'
-      : 'rgba(231, 76, 60, 0.1)';
+    this.messageElement.style.backgroundColor = isSuccess ? 'rgba(39, 174, 96, 0.1)' : 'rgba(231, 76, 60, 0.1)';
     this.messageElement.classList.add('show');
   }
 
@@ -155,7 +153,7 @@ export class FormValidator {
     // обработка каждого поля
     // При вводе или переключении проверяем и выводим сообщения валидации только у трогаемых полей
     // Также всегда используем validateForm() чтоб активировать или дезактивировать кнопку submit
-    this.form.querySelectorAll('input').forEach((input) => {
+    this.form.querySelectorAll('input, textarea').forEach((input) => {
       this.touchedFields[input.name] = false;
 
       ['input', 'click'].forEach((event) =>

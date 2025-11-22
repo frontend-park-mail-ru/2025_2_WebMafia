@@ -8,6 +8,9 @@ import { slider } from '@/slider.js';
 import { header } from '@/components/header/header.js';
 import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
 import { FormValidator } from "@/validation.js";
+import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
+import { playTrack } from '@/playTrackBtn.js';
+import { likeTrackBtn } from '@/utils/likeTrack.js';
 
 export class ProfilePage {
   async render() {
@@ -67,7 +70,7 @@ export class ProfilePage {
 
     document.getElementById('app').innerHTML = contentTemplate(pageData);
     document.querySelector('head title').textContent = pageData.profile.nickname;
-
+    playerOnlyOnPlay();
     await Promise.all([header.render(), sidebar.render()]);
 
     slider.sliderFunction();
@@ -75,6 +78,8 @@ export class ProfilePage {
     initPasswordShowing();
     initScrollbar();
     setPlayButtonsOnAuth();
+    likeTrackBtn();
+    playTrack();
   }
 
   addEventListeners(profile) {
@@ -88,9 +93,9 @@ export class ProfilePage {
       });
     }
 
-    const closeEditButton = document.getElementById('closeEditButton');
-    if (closeEditButton && editProfileOverlay) {
-      closeEditButton.addEventListener('click', (e) => {
+    const closeOverlayButton = document.getElementById('closeOverlayButton');
+    if (closeOverlayButton && editProfileOverlay) {
+      closeOverlayButton.addEventListener('click', (e) => {
         e.preventDefault();
 
         document.getElementById('email').value = profile.email;
@@ -98,7 +103,7 @@ export class ProfilePage {
         document.getElementById('password').value = '';
         document.getElementById('passwordConfirm').value = '';
 
-        updateAvatarContainer('avatarEditContainer', profile.avatar, profile.letter, 'profile-edit-avatar');
+        updateAvatarContainer('avatarEditContainer', profile.avatar, profile.letter, 'edit-avatar');
 
         selectedAvatarFile = null;
         deleteAvatar = false;
@@ -201,10 +206,7 @@ export class ProfilePage {
               updateAvatarContainer('avatarEditContainer', event.target.result);
 
               if (!document.getElementById('deleteAvatarButton')) {
-                editAvatarButtons.insertAdjacentHTML(
-                  'beforeend',
-                  `<button id="deleteAvatarButton" class="secondary-button save-avatar-button-size">Удалить фото</button>`
-                );
+                editAvatarButtons.insertAdjacentHTML('beforeend', `<button id="deleteAvatarButton" class="secondary-button save-avatar-button-size">Удалить фото</button>`);
               }
             };
             reader.readAsDataURL(file);
@@ -226,12 +228,12 @@ export class ProfilePage {
 
     const editValidators = {
       email: (value) => {
-        if (!value) return 'Поле обязательно для заполнения';
+        if (!value) return 'Пожалуйста, заполните это поле';
         if (!/\S+@\S+\.\S+/.test(value)) return 'Некорректный email';
         return null;
       },
       login: (value) => {
-        if (!value) return 'Поле обязательно для заполнения';
+        if (!value) return 'Пожалуйста, заполните это поле';
         if (value.length < 5) return 'Минимум 5 символов';
         else if (value.length > 35) return 'Максимум 35 символов';
         return null;
@@ -242,7 +244,7 @@ export class ProfilePage {
       },
       passwordConfirm: (value) => {
         const password = document.getElementById('password')?.value;
-        if (value !== password) return 'Пароли не совпадают';
+        if (value !== password) return 'Пароли не совпадают. Пожалуйста, проверьте.';
         return null;
       },
     };
@@ -278,12 +280,7 @@ export class ProfilePage {
       },
     };
 
-    const editValidator = new FormValidator(
-      'editProfileForm',
-      editValidators,
-      editInformation,
-      '.primary-button'
-    );
+    const editValidator = new FormValidator('editProfileForm', editValidators, editInformation, '.primary-button');
 
     editValidator.init();
 
@@ -294,7 +291,7 @@ export class ProfilePage {
 
         const isValid = editValidator.validateForm();
         if (!isValid) {
-          editValidator.showMessage('Исправьте ошибки в форме');
+          editValidator.showMessage('Пожалуйста, проверьте подсвеченные поля');
           return;
         }
 
@@ -320,9 +317,8 @@ export class ProfilePage {
           const login = document.getElementById('login').value;
           let password = document.getElementById('password').value;
           if (email !== profile.email || login !== profile.nickname || password) {
-            if (!password) password = "";
+            if (!password) password = '';
             const data = await apiServise.editUser(login, email, password);
-            console.log(data);
             const newLogin = data.Login;
 
             const headerUsername = document.querySelector('.header-username');
@@ -336,7 +332,7 @@ export class ProfilePage {
             }
 
             const newLetter = newLogin[0] ? newLogin[0].toUpperCase() : '?';
-            document.querySelectorAll('.default-avatar').forEach(el => {
+            document.querySelectorAll('.default-avatar').forEach((el) => {
               el.textContent = newLetter;
             });
           }
@@ -355,9 +351,9 @@ export class ProfilePage {
           }, 1000);
         } catch (err) {
           console.error('Ошибка при сохранении профиля:', err);
-          let msg = 'Ошибка при сохранения профиля.';
+          let msg = 'Не удалось сохранить изменения. Попробуйте еще раз чуть позже.';
           if (err.message === 'resource conflict') msg = 'Пользователь с такими данными уже существует.';
-          else if (err.message === 'bad request') msg = 'Некорректный запрос. Проверьте введенные данные.';
+          else if (err.message === 'bad request') msg = 'Что-то пошло не так. Пожалуйста, проверьте правильность введенных данных.';
           editValidator.showMessage(msg);
         }
       });

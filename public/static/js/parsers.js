@@ -1,45 +1,43 @@
 import { API_AVATARS_URL } from '@/data.js';
 
+export function pluralize(number, one, few, many) {
+  const n = Math.floor(number);
+  const lastDigit = n % 10;
+  const lastTwoDigits = n % 100;
+
+  if (lastTwoDigits >= 11 && lastTwoDigits <= 14) return many;
+  if (lastDigit === 1) return one;
+  if (lastDigit >= 2 && lastDigit <= 4) return few;
+  return many;
+}
+
 export function playsParser(plays) {
-  if (plays > 1_000_000_000) {
+  let display = plays;
+
+  if (plays >= 1_000_000_000) {
     const value = plays / 1_000_000_000;
-    plays = (value < 10 ? value.toFixed(1) : value.toFixed(0)).replace('.', ',') + ' млрд';
-  } else if (plays > 1_000_000) {
+    display = (value < 10 ? value.toFixed(1) : value.toFixed(0)).replace('.', ',') + ' млрд.';
+  } else if (plays >= 1_000_000) {
     const value = plays / 1_000_000;
-    plays = (value < 10 ? value.toFixed(1) : value.toFixed(0)).replace('.', ',') + ' млн';
-  } else if (plays > 1_000) {
+    display = (value < 10 ? value.toFixed(1) : value.toFixed(0)).replace('.', ',') + ' млн.';
+  } else if (plays >= 1_000) {
     const value = plays / 1_000;
-    plays = (value < 10 ? value.toFixed(1) : value.toFixed(0)).replace('.', ',') + ' тыс';
+    display = (value < 10 ? value.toFixed(1) : value.toFixed(0)).replace('.', ',') + ' тыс.';
   }
 
-  return plays;
+  return `${display} ${pluralize(plays, 'прослушивание', 'прослушивания', 'прослушиваний')}`;
 }
 
 export function durationParser(duration) {
-  const duration_m = Math.floor(duration / 60);
-  const duration_s = duration - duration_m * 60;
-  return duration_s < 10 ? `${duration_m}:0${duration_s}` : `${duration_m}:${duration_s}`;
-}
-
-export function getValidImage(url, defaultImage) {
-  if (!url) {
-    if (!defaultImage) return url;
-    return `static/img/${defaultImage}`;
-  }
-  return `${API_AVATARS_URL}/${url}`;
+  const durationM = Math.floor(duration / 60);
+  const durationS = duration % 60;
+  return durationS < 10 ? `${durationM}:0${durationS}` : `${durationM}:${durationS}`;
 }
 
 export function totalDurationParser(duration) {
   let duration_h = Math.floor(duration / 3600);
   let duration_m = Math.floor((duration % 3600) / 60);
   let duration_s = duration % 60;
-
-  const pluralize = (value, one, few, many) => {
-    const mod10 = value % 10;
-    if (mod10 === 1) return one;
-    if (mod10 >= 2 && mod10 <= 4) return few;
-    return many;
-  };
 
   let parts = [];
 
@@ -57,15 +55,21 @@ export function totalDurationParser(duration) {
 }
 
 export function tracksNumParser(count) {
-  if (!count || count <= 0) return '';
-
-  const pluralize = (value, one, few, many) => {
-    const mod10 = value % 10;
-    const mod100 = value % 100;
-    if (mod10 === 1 && mod100 !== 11) return one;
-    if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20)) return few;
-    return many;
-  };
-
+  if (!count || count < 0) return '';
   return `${count} ${pluralize(count, 'трек', 'трека', 'треков')}`;
+}
+
+export function getValidImage(url, defaultImage) {
+  if (!url || url === '') {
+    if (!defaultImage) return url;
+    return `static/img/${defaultImage}`;
+  }
+  return `${API_AVATARS_URL}/${url}`;
+}
+
+export function dateParser(dateStr) {
+  if (!dateStr) return '';
+
+  const [year, month, day] = dateStr.slice(0, 10).split('-');
+  return `${day}.${month}.${year}`;
 }

@@ -55,8 +55,7 @@ export class RegistrationPage {
         const errors = [];
         if (value.length < 5) {
           errors.push('Минимум 5 символов');
-        }
-        else if (value.length > 35) {
+        } else if (value.length > 35) {
           errors.push('Максимум 35 символов');
         }
         return errors.length ? errors : null;

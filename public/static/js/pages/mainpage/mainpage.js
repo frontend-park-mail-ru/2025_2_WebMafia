@@ -8,6 +8,7 @@ import { player } from '@/components/player/player.js';
 import { playTrack } from '@/playTrackBtn.js';
 import { getValidImage, playsParser } from '@/parsers.js';
 import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
+import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
 
 export class MainPage {
   async render() {
@@ -17,6 +18,9 @@ export class MainPage {
       albums: [],
       tracks: [],
     };
+    if (!pageData.isAuthenticated) {
+      localStorage.clear();
+    }
 
     const contentTemplate = Handlebars.templates['MainPage.hbs'];
     document.getElementById('app').innerHTML = contentTemplate(pageData);
@@ -27,7 +31,7 @@ export class MainPage {
       pageData.artists = (data.artists || []).map((artist) => ({
         id: artist.id,
         name: artist.name,
-        listeners: playsParser(artist.listeners || 0),
+        listeners: playsParser(artist.play_count || 0),
         image: getValidImage('artists/' + artist.avatar_url, 'default-artist.png'),
       }));
       pageData.albums = (data.albums || []).map((album) => ({
@@ -35,6 +39,7 @@ export class MainPage {
         name: album.title,
         image: getValidImage('albums/' + album.avatar_url, 'default-album.png'),
         artist: album.artists ? album.artists[0].name : 'Unknown Artist',
+        artist_id: album.artists?.[0].id,
         type: album.type,
       }));
       pageData.tracks = (data.tracks || []).map((track) => ({
@@ -60,22 +65,33 @@ export class MainPage {
       alert('Не удалось загрузить главную страницу.');
       return;
     }
-
     document.getElementById('app').innerHTML = contentTemplate(pageData);
-
+    playerOnlyOnPlay();
     await Promise.all([header.render(), sidebar.render()]);
 
     slider.sliderFunction();
     initScrollbar();
+    this.addEventListeners();
     setPlayButtonsOnAuth();
     this.nowPlayingCardSlider();
     playTrack();
   }
 
+  addEventListeners() {
+    document.querySelectorAll('.click-event-card').forEach((card) => {
+      card.addEventListener('click', (e) => {
+        if (!e.target.closest('a')) {
+          router.navigate(card.dataset.href);
+        }
+      });
+    });
+  }
+
   async nowPlayingCardSlider() {
+    const cardElements = document.querySelectorAll('.now-playing-container-card');
+    if (!cardElements) return;
     const prevBtn = document.querySelector('.current-card-btn.prev');
     const nextBtn = document.querySelector('.current-card-btn.next');
-    const cardElements = document.querySelectorAll('.now-playing-container-card');
 
     let cardsData = [
       { img: '/static/img/default-album.png', name: '', id: null },
@@ -95,18 +111,18 @@ export class MainPage {
       const nextCard = document.querySelector('.card-position-next');
       if (next) {
         nextBtn.classList.remove('hidden');
-        nextCard.classList.remove('hidden');
+        if (nextCard) nextCard.classList.remove('hidden');
       } else {
         nextBtn.classList.add('hidden');
-        nextCard.classList.add('hidden');
+        if (nextCard) nextCard.classList.add('hidden');
       }
 
       if (prev) {
         prevBtn.classList.remove('hidden');
-        prevCard.classList.remove('hidden');
+        if (prevCard) prevCard.classList.remove('hidden');
       } else {
         prevBtn.classList.add('hidden');
-        prevCard.classList.add('hidden');
+        if (prevCard) prevCard.classList.add('hidden');
       }
 
       cardsData = [playerData(prev), playerData(current), playerData(next)];
@@ -115,11 +131,11 @@ export class MainPage {
 
     function playerData(track) {
       if (!track) {
-        return { img: '/static/img/default-album.png', name: '', id: null };
+        return { img: 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7', name: '', id: null };
       }
 
       const imageUrl = getValidImage('albums/' + track.album?.avatar_url, 'default-album.png');
-      const artistName = track.artists?.[0]?.name;
+      const artistName = track.title;
 
       return {
         title: track.title,
@@ -136,7 +152,7 @@ export class MainPage {
 
       if (prevCard) {
         prevCard.querySelector('img').src = cardsData[0].img;
-        updateCardUI(prevCard, cardsData[0]);
+        updateCardUI(prevCard, null);
       }
       if (currentCard) {
         currentCard.querySelector('img').src = cardsData[1].img;
@@ -144,7 +160,7 @@ export class MainPage {
       }
       if (nextCard) {
         nextCard.querySelector('img').src = cardsData[2].img;
-        updateCardUI(nextCard, cardsData[2]);
+        updateCardUI(nextCard, null);
       }
       playTrack();
     }

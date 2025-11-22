@@ -7,13 +7,15 @@ import { slider } from '@/slider.js';
 import { playsParser, durationParser, getValidImage, totalDurationParser, tracksNumParser } from '@/parsers.js';
 import { playTrack } from '@/playTrackBtn.js';
 import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
+import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
+import { likeTrackBtn } from '@/utils/likeTrack.js';
 
 export class AlbumPage {
   async render(id) {
     let pageData = {};
 
-    const contentTemplateWithoutData = Handlebars.templates['album.hbs'];
-    document.getElementById('app').innerHTML = contentTemplateWithoutData(pageData);
+    const contentTemplate = Handlebars.templates['album.hbs'];
+    document.getElementById('app').innerHTML = contentTemplate(pageData);
     document.querySelector('head title').textContent = 'Wave Music';
 
     try {
@@ -43,7 +45,6 @@ export class AlbumPage {
       });
       pageData.totalDuration = totalDurationParser(totalDuration);
       pageData.tracksNum = tracksNumParser(pageData.tracks.length);
-      if (pageData.tracksNum) pageData.firstTrack = pageData.tracks[0].id;
     } catch (error) {
       console.error('Failed to load album page data:', error);
 
@@ -61,16 +62,16 @@ export class AlbumPage {
       return;
     }
 
-    const contentTemplate = Handlebars.templates['album.hbs'];
     document.getElementById('app').innerHTML = contentTemplate(pageData);
     document.querySelector('head title').textContent = pageData.title;
-
+    playerOnlyOnPlay();
     await Promise.all([header.render(), sidebar.render()]);
 
     slider.sliderFunction();
     initScrollbar();
     this.addEventListeners();
     setPlayButtonsOnAuth();
+    likeTrackBtn();
     playTrack();
   }
 

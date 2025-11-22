@@ -7,6 +7,8 @@ import { sidebar } from '@/components/sidebar/sidebar.js';
 import { slider } from '@/slider.js';
 import { playTrack } from '@/playTrackBtn.js';
 import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
+import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
+import { likeTrackBtn } from '@/utils/likeTrack.js';
 
 export class ArtistPage {
   async render(id) {
@@ -28,7 +30,7 @@ export class ArtistPage {
       pageData.name = data.artist ? data.artist.name : 'Unknown Artist';
       pageData.artist_header = getValidImage('artists/' + data.artist.header_url, 'default-artist.png');
       pageData.description = data.artist.description;
-      pageData.listeners = data.artist.play_count || 0;
+      pageData.listeners = playsParser(data.artist.play_count) || 0;
       pageData.similar_artists = (data.similar_artists || []).map((artist) => ({
         id: artist.id,
         name: artist.name,
@@ -80,13 +82,14 @@ export class ArtistPage {
     const contentTemplate = Handlebars.templates['artistPage.hbs'];
     document.getElementById('app').innerHTML = contentTemplate(pageData);
     document.querySelector('head title').textContent = pageData.name;
-
+    playerOnlyOnPlay();
     await Promise.all([header.render(), sidebar.render()]);
 
     slider.sliderFunction();
     initScrollbar();
     this.addEventListeners();
     setPlayButtonsOnAuth();
+    likeTrackBtn();
     playTrack();
   }
 

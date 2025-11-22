@@ -5,27 +5,32 @@
   width: 252px;
   background-color: rgba(4, 25, 109, 0.08);
   backdrop-filter: blur(34px);
-  padding-left: 10px;
+  padding-left: 15px;
   border-radius: 30px;
   overflow: hidden;
   margin-left: 10px;
 }
 
 .menu {
-  margin-top: 20px;
+  margin-top: 15px;
   display: flex;
   flex-direction: column;
 }
 
 .menu-item {
-  justify-content: center;
-  align-items: center;
+  all: unset;
+  justify-content: flex-start;
+  align-items: flex-start;
   width: 190px;
   font-size: 20px;
   font-weight: 600;
   color: rgb(0, 0, 0);
   padding: 10px 15px;
   cursor: pointer;
+  text-decoration: none;
+  gap: 12px;
+  display: flex;
+  transition: color 0.3s ease;
 }
 
 .menu-item.active {
@@ -41,57 +46,24 @@
   background-position: left top;
 }
 
-.menu-item a {
-  text-decoration: none;
-  gap: 12px;
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
-  color: rgb(0, 0, 0);
-  transition: color 0.3s ease;
-}
-
-.home a svg {
+.menu-item svg {
   fill: black;
-  stroke: black;
-  stroke-width: 150;
-  stroke-linejoin: round;
   transition: fill 0.3s ease, stroke 0.3s ease;
 }
 
-.home a.active svg, .home a.active:hover svg {
-  fill: #fafafa;
-  stroke: #fafafa;
-  stroke-width: 150;
-  stroke-linejoin: round;
-}
-
-.home a:hover svg {
-  fill: #a766ff;
-  stroke: #a766ff;
-}
-
-.profile a svg {
-  transition: fill 0.3s ease;
-}
-
-.profile a.active svg, .profile a.active:hover svg {
+.menu-item.active svg, .menu-item.active:hover svg {
   fill: #fafafa;
 }
 
-.profile a:hover svg {
+.menu-item:hover svg {
   fill: #a766ff;
 }
 
-.library {
-  margin-top: 5px;
-}
-
-.menu-item a.active:hover, .menu-item a.active {
+.menu-item.active:hover, .menu-item.active {
   color: #fafafa;
 }
 
-.menu-item a:hover, .menu-item:hover {
+.menu-item:hover {
   color: #a766ff;
 }
 

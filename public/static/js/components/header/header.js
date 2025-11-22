@@ -52,8 +52,20 @@ export class Header {
           localStorage.removeItem('isPlaying');
           localStorage.removeItem('playTime');
           localStorage.removeItem('volume');
+          localStorage.removeItem('playerContext');
           player.destroy();
           router.navigate('/');
+        }
+      });
+    }
+    const searchWindow = document.getElementById('searchInput');
+    if (searchWindow) {
+      searchWindow.addEventListener('keydown', async (e) => {
+        if (e.code === 'Enter' || e.key === 'Enter') {
+          e.preventDefault();
+          const searchVal = searchWindow.value;
+          if (searchVal === '') return;
+          router.navigate(`/search/${searchVal}`);
         }
       });
     }

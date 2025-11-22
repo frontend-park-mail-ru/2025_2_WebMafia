@@ -1,7 +1,7 @@
 import { player } from '@/components/player/player.js';
 
 export function playTrack() {
-  const playBtn = document.querySelectorAll('.play-button-track, .play-button, .current-card-btn.play, .play-popular-track, .play-album-track');
+  const playBtn = document.querySelectorAll('.play-button-track, .play-button, .current-card-btn.play, .play-popular-track, .play-album-track, .play-all-artist-tracks, .play-button-album');
   let currentTrackId = player.currentTrack ? player.currentTrack.id : null;
 
   playBtn.forEach((button) => {
@@ -11,10 +11,18 @@ export function playTrack() {
     button.addEventListener('click', async (event) => {
       const trackId = event.currentTarget.dataset.trackId;
       const current = player.currentTrack;
+      const nowPlayingContainer = document.querySelector('.now-playing-container');
+      const playerContent = document.querySelector('.player');
+      if (playerContent) playerContent.classList.remove('none_playing');
+      if (nowPlayingContainer) nowPlayingContainer.classList.remove('none_play');
 
+      const context = {
+        type: button.dataset.context || 'all-tracks',
+        id: button.dataset.artistId || button.dataset.albumId || null,
+      };
       if (!current || current.id !== trackId) {
         currentTrackId = trackId;
-        await player.loadAndPlayTrackById(trackId);
+        await player.loadAndPlayTrackById(trackId, context);
       } else {
         await player.togglePlayPause();
       }
@@ -36,7 +44,7 @@ export function playTrack() {
   function updateButtons() {
     const playerTrackId = player.currentTrack ? player.currentTrack.id : null;
 
-    document.querySelectorAll('.play-button-track, .play-button, .current-card-btn.play, .play-popular-track, .play-album-track').forEach((button) => {
+    document.querySelectorAll('.play-button-track, .play-button, .current-card-btn.play, .play-popular-track, .play-album-track, .play-all-artist-tracks, .play-button-album').forEach((button) => {
       const buttonTrackId = button.dataset.trackId;
       const isCurrent = playerTrackId && buttonTrackId === playerTrackId;
 
@@ -48,7 +56,13 @@ export function playTrack() {
       }
     });
     document.querySelectorAll('.card-tracks, .track-row, .album-row').forEach((card) => {
-      const buttons = card.querySelector('.play-button-track') || card.querySelector('.play-button') || card.querySelector('.play-popular-track') || card.querySelector('.play-album-track');
+      const buttons =
+        card.querySelector('.play-button-track') ||
+        card.querySelector('.play-button') ||
+        card.querySelector('.play-popular-track') ||
+        card.querySelector('.play-album-track') ||
+        card.querySelector('.play-all-artist-tracks') ||
+        card.querySelector('.play-button-album');
       const trackId = buttons ? buttons.dataset.trackId : null;
       card.classList.toggle('active', trackId === playerTrackId);
     });

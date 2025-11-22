@@ -7,9 +7,12 @@ import.meta.glob('@/pages/**/*.tmpl.js', { eager: true });
 import.meta.glob('@/partials/**/*.tmpl.js', { eager: true });
 import.meta.glob('@/components/**/*.tmpl.js', { eager: true });
 
-document.addEventListener('DOMContentLoaded', function () {
+function startApp() {
+  document.removeEventListener('DOMContentLoaded', startApp);
   initializePage();
-});
+}
+
+document.addEventListener('DOMContentLoaded', startApp);
 
 function registerPartials() {
   const hbsFiles = import.meta.glob(

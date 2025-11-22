@@ -9,19 +9,15 @@ export class Player extends EventTarget {
     this.canSaveTime = true;
     this.nextTrackId = null;
     this.prevTrackId = null;
+
+    this.listenIncrementTimeout = null;
+
+    this.playQueue = [];
+    this.currentContext = null;
   }
 
   async init() {
-    // window.addEventListener('popstate', () => this.updateVisibility());
-    const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
-    if (!isAuthenticated) {
-      window.addEventListener('va-navigate', () => this.updateVisibility());
-    }
     await this.updateVisibility();
-    this.trackSwitching();
-    this.likeTrack();
-    this.soundChange();
-    this.playPauseSwitch();
   }
 
   async updateVisibility() {
@@ -31,12 +27,7 @@ export class Player extends EventTarget {
 
     if (isAuthenticated && !isAuthPage) {
       if (!document.getElementById('player')) {
-        await this.render(); // только если плеера ещё нет
-      }
-    }
-    if (!isAuthPage) {
-      if (!document.getElementById('player')) {
-        await this.renderWithoutData();
+        await this.render();
       }
     } else {
       await this.destroy();
@@ -62,7 +53,18 @@ export class Player extends EventTarget {
   async destroy() {
     const playerElement = document.querySelector('.player');
     if (playerElement) {
+      this.audio.removeEventListener('timeupdate', this.handleTimeUpdate);
+      this.audio.removeEventListener('ended', this.handleTrackEnd);
+      playerElement.querySelector('.control-btn.play')?.removeEventListener('click', this.handlePlayClick);
+      playerElement.querySelector('.control-btn.pause')?.removeEventListener('click', this.handlePauseClick);
+      playerElement.querySelector('.control-btn.next')?.removeEventListener('click', this.handleNextClick);
+      playerElement.querySelector('.control-btn.prev')?.removeEventListener('click', this.handlePrevClick);
+      playerElement.querySelector('.like-btn')?.removeEventListener('click', this.handleLikeClick);
+      playerElement.querySelector('.remote-slider')?.removeEventListener('input', this.handleSliderInput);
       playerElement.remove();
+    }
+    if (this.listenIncrementTimeout) {
+      clearTimeout(this.listenIncrementTimeout);
     }
     this.audio.pause();
     this.audio.src = '';
@@ -70,6 +72,7 @@ export class Player extends EventTarget {
     this.canSaveTime = true;
     this.nextTrackId = null;
     this.prevTrackId = null;
+    this.currentContext = null;
   }
 
   async getDataTrackById(track_id) {
@@ -78,32 +81,64 @@ export class Player extends EventTarget {
     return trackData;
   }
 
-  async loadTrack(trackData) {
+  async loadTrack(trackData, context) {
     if (!trackData) return;
+    if (this.listenIncrementTimeout) {
+      clearTimeout(this.listenIncrementTimeout);
+    }
     this.currentTrack = trackData;
-    console.log('curtrack', this.currentTrack.id);
     this.loadTrackInfo(this.currentTrack);
     localStorage.setItem('currentTrackId', this.currentTrack.id);
-    await this.getPrevAndNextTracks();
+    const LISTEN_DELAY = 15000;
+    this.listenIncrementTimeout = setTimeout(() => {
+      apiServise.incrementTrackListenCount(this.currentTrack.id);
+    }, LISTEN_DELAY);
+    await this.getPrevAndNextTracks(context);
   }
 
-  async getPrevAndNextTracks() {
+  async getPrevAndNextTracks(context) {
     if (!this.currentTrack || !this.currentTrack.id) {
       console.warn('Невозможно определить соседей: текущий трек не установлен.');
       return;
     }
+    const isNewContext = context && JSON.stringify(context) !== JSON.stringify(this.currentContext);
 
     try {
-      const allTracks = await apiServise.request('/tracks?limit=1000').catch(() => []); // Увеличим лимит
+      const currentTrackArtistId = this.currentTrack.artists[0].id;
+      // const allTracks = await apiServise.request(`/artists/${currentTrackArtistId}/tracks`).catch(() => []);
+      if (isNewContext) {
+        this.currentContext = context;
+        localStorage.setItem('playerContext', JSON.stringify(context));
+        let tracks = [];
+        try {
+          switch (context.type) {
+            case 'artist-popular':
+              tracks = await apiServise.request(`/artists/${context.id}/tracks?limit=5`);
+              break;
+            case 'album-tracks':
+              tracks = await apiServise.request(`/albums/${context.id}/tracks`);
+              break;
+            case 'artist_tracks':
+              tracks = await apiServise.request(`/artists/${context.id}/tracks`);
+              break;
+            case 'all-tracks':
+            default:
+              tracks = await apiServise.request('/tracks?limit=30');
+              break;
+          }
+          this.playQueue = tracks;
+        } catch (error) {
+          this.playQueue = [];
+        }
+      }
 
-      const currentIndex = allTracks.findIndex((t) => t.id === this.currentTrack.id);
+      const currentIndex = this.playQueue.findIndex((t) => t.id === this.currentTrack.id);
       if (currentIndex === -1) {
-        console.warn('Текущий трек не найден в общем списке треков.');
         this.nextTrackId = null;
         this.prevTrackId = null;
       } else {
-        const nextTrackObject = allTracks[currentIndex + 1];
-        const prevTrackObject = allTracks[currentIndex - 1];
+        const nextTrackObject = this.playQueue[currentIndex + 1];
+        const prevTrackObject = this.playQueue[currentIndex - 1];
 
         this.nextTrackId = nextTrackObject ? nextTrackObject.id : null;
         this.prevTrackId = prevTrackObject ? prevTrackObject.id : null;
@@ -120,17 +155,29 @@ export class Player extends EventTarget {
   }
 
   async render() {
-    await this.renderWithoutData();
+    const contentTemplate = Handlebars.templates['player.hbs'];
+    const playerHTML = contentTemplate();
+    const playerContainer = document.getElementById('player-container');
+    if (playerContainer && !document.getElementById('player')) {
+      playerContainer.insertAdjacentHTML('afterbegin', playerHTML);
+    }
 
-    this.audio.addEventListener('timeupdate', () => {
-      this.updateCurrentTimeAndSlider();
-    });
+    this.volumeRender();
+    this.playPauseSwitch();
+    this.sliderColorChange();
+    this.likeTrack();
+    this.soundChange();
+    this.trackSwitching();
 
     const storedTrackId = localStorage.getItem('currentTrackId');
     let storedTrackData = await this.getDataTrackById(storedTrackId);
+    const storedContextString = localStorage.getItem('playerContext');
+    const storedContext = storedContextString ? JSON.parse(storedContextString) : null;
 
-    await Promise.all([this.loadTrack(storedTrackData), this.getPrevAndNextTracks()]);
-
+    await Promise.all([this.loadTrack(storedTrackData, storedContext), this.getPrevAndNextTracks()]);
+    this.audio.addEventListener('timeupdate', () => {
+      this.updateCurrentTimeAndSlider();
+    });
     this.setInitialVolume();
     this.setInitialPLayTime();
 
@@ -139,7 +186,7 @@ export class Player extends EventTarget {
     });
   }
 
-  async loadAndPlayTrackById(trackId) {
+  async loadAndPlayTrackById(trackId, context) {
     const trackData = await this.getDataTrackById(trackId);
 
     if (!trackData) {
@@ -147,16 +194,21 @@ export class Player extends EventTarget {
       return;
     }
 
-    await Promise.all([this.loadTrack(trackData), this.audio.play()]);
+    await Promise.all([this.loadTrack(trackData, context), this.audio.play()]);
 
     this.togglePlayPauseSwitch(true);
     localStorage.setItem('isPlaying', 'true');
   }
 
   loadTrackInfo(track) {
-    document.querySelector('.track-title').textContent = track.title;
-    const artistName = track.artists?.[0]?.name;
-    document.querySelector('.track-artist').textContent = artistName;
+    const titlePlacement = document.querySelector('.track-title');
+    titlePlacement.textContent = track.title;
+    console.log(track);
+    titlePlacement.href = `/album/${track.album?.id}`;
+    const artist = track.artists?.[0];
+    const artistPlacement = document.querySelector('.track-artist');
+    artistPlacement.textContent = artist?.name;
+    artistPlacement.href = `/artist/${artist?.id}`;
 
     const durationInSeconds = track.duration_s;
     const minutes = Math.floor(durationInSeconds / 60);
@@ -164,8 +216,11 @@ export class Player extends EventTarget {
     const durationFormatted = `${minutes}:${seconds.toString().padStart(2, '0')}`;
     document.querySelector('.track-time.total').textContent = durationFormatted;
 
+    // document.querySelector('.track-cover-player').src = getValidImage('albums/' + track?.album?.avatar_url.split('/').pop(), 'default-album.png');
+
     document.querySelector('.track-cover-player').src = getValidImage('albums/' + track?.album?.avatar_url, 'default-album.png');
 
+    // let file_url = track.file_url.split('/').pop();
     let file_url = track.file_url;
     this.audio.src = file_url ? `${API_TRACKS_URL}/${file_url}` : `static/music/${file_url}`;
 
@@ -210,7 +265,7 @@ export class Player extends EventTarget {
     function updateVolumeSlider(volume) {
       volumeIcon.classList.remove('level-0', 'level-1', 'level-2', 'level-3');
 
-      if (volume === 0) {
+      if (volume == 0) {
         volumeIcon.classList.add('level-0');
       } else if (volume <= 35) {
         volumeIcon.classList.add('level-1');
@@ -240,6 +295,21 @@ export class Player extends EventTarget {
     updateVolumeSlider(volumeSlider.value);
     volumeSlider.addEventListener('input', function () {
       updateVolumeSlider(this.value);
+    });
+
+    volumeIcon.addEventListener('click', () => {
+      const preval = volumeSlider.value;
+      if (volumeSlider.value === 0) {
+        const volumeToRestore = preval > 0 ? preval : 20;
+        volumeSlider.value = volumeToRestore;
+        updateVolumeSlider(volumeToRestore);
+      } else {
+        volumeIcon.classList.add('level-0');
+        volumeSlider.value = 0;
+        updateVolumeSlider(0);
+      }
+      volumeSlider.dispatchEvent(new Event('input'));
+      volumeSlider.dispatchEvent(new Event('change'));
     });
   }
 
@@ -281,12 +351,10 @@ export class Player extends EventTarget {
 
   async togglePlayPause() {
     if (this.audio.paused) {
-      // Если стоит на паузе, запускаем
       await this.audio.play();
       localStorage.setItem('isPlaying', 'true');
       this.togglePlayPauseSwitch(true);
     } else {
-      // Если играет, ставим на паузу
       this.audio.pause();
       localStorage.setItem('isPlaying', 'false');
       this.togglePlayPauseSwitch(false);
