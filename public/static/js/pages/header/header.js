@@ -10,35 +10,29 @@ export class Header {
       searchValue: searchValue,
     };
 
-    // if (!pageData.isAuthenticated) return;
-    if (pageData.isAuthenticated) {
-      try {
-        const data = await apiServise.getProfileData();
-        pageData.avatar = data.AvatarURL ? getValidImage(data.AvatarURL) : data.AvatarURL;
-        pageData.nickname = data.Login;
-        pageData.letter = pageData.nickname ? pageData.nickname[0].toUpperCase() : '';
-      } catch (error) {
-        console.error('Failed to load user data:', error);
-        localStorage.removeItem('isAuthenticated');
-        router.navigate('/');
-        return;
-      }
-    }
-
     const contentTemplate = Handlebars.templates['header.hbs'];
     const headerHTML = contentTemplate(pageData);
 
     const section = document.getElementById('section');
-    const headerElement = document.getElementById('header');
-    if (headerElement) {
-      headerElement.outerHTML = contentTemplate(pageData);
-    } else {
-      if (section && !document.getElementById('header')) {
-        section.insertAdjacentHTML('afterbegin', headerHTML);
-      }
+    if (section && !document.getElementById('header')) {
+      section.insertAdjacentHTML('afterbegin', headerHTML);
     }
 
-    // document.getElementById('header').outerHTML = contentTemplate(pageData);
+    if (!pageData.isAuthenticated) return;
+
+    try {
+      const data = await apiServise.getProfileData();
+      pageData.avatar = data.AvatarURL ? getValidImage(data.AvatarURL) : data.AvatarURL;
+      pageData.nickname = data.Login;
+      pageData.letter = pageData.nickname ? pageData.nickname[0].toUpperCase() : '';
+    } catch (error) {
+      console.error('Failed to load user data:', error);
+      localStorage.removeItem('isAuthenticated');
+      router.navigate('/');
+      return;
+    }
+
+    document.getElementById('header').outerHTML = contentTemplate(pageData);
 
     this.addEventListeners();
     this.profileDropdown();

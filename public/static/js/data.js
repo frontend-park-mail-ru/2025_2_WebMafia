@@ -38,7 +38,6 @@ export class apiServises {
     }
 
     const data = await response.json();
-    // console.log(`Success: ${endpoint}`, data);
     return data;
   }
 
@@ -231,6 +230,80 @@ export class apiServises {
       return { album: album || {}, tracks: tracks || [] };
     } catch (error) {
       console.error('Failed to load album page data:', error);
+      throw error;
+    }
+  }
+
+  async getPlaylistPageData(id) {
+    try {
+      /*const [playlist, tracks] = await Promise.all([
+        this.request(`/library/playlists/${id}`).catch(() => []),
+        this.request(`/library/playlists/${id}/tracks`).catch(() => []),
+      ]);*/
+      const playlist = {
+        "id": 42,
+        "title": "Midnight Chill Vibes",
+        "created_at": "2024-03-15T12:00:00.000Z",
+        "avatar_url": "",
+        "description": "Коллекция атмосферных треков для позднего вечера."
+      };
+      const tracks = [
+        {
+          "id": 101,
+          "title": "Night Breeze",
+          "play_count": 1234,
+          "duration_s": 204,
+          "album": {
+            "id": 3,
+            "title": "Night Compilation"
+          },
+          "artists": [
+            {
+              "id": 7,
+              "name": "Luma Drift"
+            }
+          ]
+        },
+        {
+          "id": 102,
+          "title": "Soft Neon Lights",
+          "play_count": 842,
+          "duration_s": 250,
+          "album": {
+            "id": 3,
+            "title": "Night Compilation"
+          },
+          "artists": [
+            {
+              "id": 7,
+              "name": "Luma Drift"
+            },
+            {
+              "id": 9,
+              "name": "Synthia Waves"
+            }
+          ]
+        },
+        {
+          "id": 103,
+          "title": "Moonflow",
+          "play_count": 2100,
+          "duration_s": 178,
+          "album": {
+            "id": 8,
+            "title": "Moon Echoes"
+          },
+          "artists": [
+            {
+              "id": 12,
+              "name": "Echo Pulse"
+            }
+          ]
+        }
+      ]
+      return { playlist: playlist || {}, tracks: tracks || [] };
+    } catch (error) {
+      console.error('Failed to load playlist page data:', error);
       throw error;
     }
   }

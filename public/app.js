@@ -33,12 +33,13 @@ function registerPartials() {
   Handlebars.registerPartial('close', Handlebars.templates['close.hbs']);
   Handlebars.registerPartial('profile', Handlebars.templates['profile.hbs']);
   Handlebars.registerPartial('plus', Handlebars.templates['plus.hbs']);
-  Handlebars.registerPartial('searchIcon', Handlebars.templates['searchIcon.hbs']);
-  Handlebars.registerPartial('searchIcon', Handlebars.templates['searchIcon.hbs']);
-  Handlebars.registerPartial('pause', Handlebars.templates['pause.hbs']);
   Handlebars.registerHelper('numeration', function (value) {
     return parseInt(value) + 1;
   });
+  Handlebars.registerPartial('searchIcon', Handlebars.templates['searchIcon.hbs']);
+  Handlebars.registerPartial('pause', Handlebars.templates['pause.hbs']);
+  Handlebars.registerPartial('dots', Handlebars.templates['dots.hbs']);
+  Handlebars.registerPartial('trash', Handlebars.templates['trash.hbs']);
 }
 
 function initializePage() {
