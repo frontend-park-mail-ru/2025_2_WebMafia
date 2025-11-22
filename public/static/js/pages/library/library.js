@@ -130,15 +130,11 @@ export class LibraryPage {
           contextMenuPlaylists.dataset.type = type;
           contextMenuPlaylists.style.display = 'block';
           contextMenuPosition(contextMenuPlaylists, event.pageX, event.pageY);
-          // contextMenuPlaylists.style.left = event.pageX + 'px';
-          // contextMenuPlaylists.style.top = event.pageY + 'px';
         } else {
           contextMenuArtists.dataset.id = id;
           contextMenuArtists.dataset.type = type;
           contextMenuArtists.style.display = 'block';
           contextMenuPosition(contextMenuArtists, event.pageX, event.pageY);
-          // contextMenuArtists.style.left = event.pageX + 'px';
-          // contextMenuArtists.style.top = event.pageY + 'px';
         }
       });
     });
@@ -150,7 +146,7 @@ export class LibraryPage {
       }
     });
 
-    contextMenu.addEventListener('click', async (e) => {
+    contextMenuPlaylists.addEventListener('click', async (e) => {
       const action = e.target.dataset.action;
       const id = contextMenu.dataset.id;
       const type = contextMenu.dataset.type;
@@ -162,6 +158,23 @@ export class LibraryPage {
 
       if (action === 'move') {
         console.log('Перемешать плейлист', id);
+      }
+
+      if (action === 'pin') {
+        await apiServise.pinItem(id, type);
+      }
+
+      contextMenu.style.display = 'none';
+    });
+
+    contextMenuArtists.addEventListener('click', async (e) => {
+      const action = e.target.dataset.action;
+      const id = contextMenu.dataset.id;
+      const type = contextMenu.dataset.type;
+
+      if (action === 'unfollow') {
+        await apiServise.deleteArtist(id);
+        router.navigate('/library');
       }
 
       if (action === 'pin') {
