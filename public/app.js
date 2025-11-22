@@ -40,6 +40,7 @@ function registerPartials() {
   Handlebars.registerPartial('pause', Handlebars.templates['pause.hbs']);
   Handlebars.registerPartial('dots', Handlebars.templates['dots.hbs']);
   Handlebars.registerPartial('trash', Handlebars.templates['trash.hbs']);
+  Handlebars.registerPartial('pin', Handlebars.templates['pin.hbs']);
 }
 
 function initializePage() {
