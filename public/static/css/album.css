@@ -151,8 +151,9 @@
   height: 75px;
 }
 
-.album-row.active, .album-row:hover {
-  background-color: #E6E9F5;
+.album-row.active,
+.album-row:hover {
+  background-color: #e6e9f5;
 }
 
 .album-play-wrapper {
@@ -173,7 +174,8 @@
   margin: 15px 0;
 }
 
-.play-icon, .pause-icon {
+.play-icon,
+.pause-icon {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -188,15 +190,19 @@
   opacity: 0;
 }
 
-.play-album-track.is-active:not(.paused) .pause-icon, .play-album-track.is-active.paused .play-icon, .play-album-track .pause-icon {
+.play-album-track.is-active:not(.paused) .pause-icon,
+.play-album-track.is-active.paused .play-icon,
+.play-album-track .pause-icon {
   display: none;
 }
 
-.play-album-track.is-active:not(.paused) .play-icon, .play-album-track.is-active.paused .pause-icon {
+.play-album-track.is-active:not(.paused) .play-icon,
+.play-album-track.is-active.paused .pause-icon {
   display: block;
 }
 
-.album-row:hover .play-album-track, .album-row.active .play-album-track {
+.album-row:hover .play-album-track,
+.album-row.active .play-album-track {
   opacity: 1;
 }
 
@@ -206,7 +212,8 @@
   width: 25px;
 }
 
-.album-row:hover .album-track-number, .album-row.active .album-track-number {
+.album-row:hover .album-track-number,
+.album-row.active .album-track-number {
   opacity: 0;
 }
 
@@ -261,6 +268,6 @@
 
 .album-row:hover .like-btn-track,
 .album-row.active .like-btn-track,
-.like-btn-track.active  {
+.like-btn-track.active {
   opacity: 1;
 }

@@ -1,11 +1,11 @@
-import { defineConfig } from "vite";
-import string from "vite-plugin-string";
-import { fileURLToPath, URL } from "node:url";
+import { defineConfig } from 'vite';
+import string from 'vite-plugin-string';
+import { fileURLToPath, URL } from 'node:url';
 
 export default defineConfig({
-  root: "public",
+  root: 'public',
   build: {
-    outDir: "../dist",
+    outDir: '../dist',
     emptyOutDir: true,
     manifest: true,
   },
@@ -15,12 +15,12 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      "@": fileURLToPath(new URL("./public/static/js", import.meta.url)),
+      '@': fileURLToPath(new URL('./public/static/js', import.meta.url)),
     },
   },
   plugins: [
     string({
-      include: "**/*.hbs",
-    })
+      include: '**/*.hbs',
+    }),
   ],
 });

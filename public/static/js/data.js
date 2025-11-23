@@ -43,7 +43,11 @@ export class apiServises {
 
   async getMainPageData() {
     try {
-      const [albums, tracks, artists] = await Promise.all([this.request('/albums?limit=20').catch(() => []), this.request('/tracks?limit=30').catch(() => []), this.request('/artists?limit=20').catch(() => [])]);
+      const [albums, tracks, artists] = await Promise.all([
+        this.request('/albums?limit=20').catch(() => []),
+        this.request('/tracks?limit=30').catch(() => []),
+        this.request('/artists?limit=20').catch(() => []),
+      ]);
 
       return {
         albums: albums || [],
@@ -79,7 +83,10 @@ export class apiServises {
 
   async getArtistAlbums(id) {
     try {
-      const [albums, artist] = await Promise.all([this.request(`/artists/${id}/albums`).catch(() => []), this.request(`/artists/${id}`).catch(() => [])]);
+      const [albums, artist] = await Promise.all([
+        this.request(`/artists/${id}/albums`).catch(() => []),
+        this.request(`/artists/${id}`).catch(() => []),
+      ]);
       return { albums: albums, artist: artist };
     } catch (error) {
       console.error('Failed to load artist albums page data:', error);
@@ -89,7 +96,10 @@ export class apiServises {
 
   async getArtistTracks(id) {
     try {
-      const [tracks, artist] = await Promise.all([this.request(`/artists/${id}/tracks`).catch(() => []), this.request(`/artists/${id}`).catch(() => [])]);
+      const [tracks, artist] = await Promise.all([
+        this.request(`/artists/${id}/tracks`).catch(() => []),
+        this.request(`/artists/${id}`).catch(() => []),
+      ]);
       return { tracks: tracks, artist: artist };
     } catch (error) {
       console.error('Failed to load artist albums page data:', error);
@@ -99,7 +109,10 @@ export class apiServises {
 
   async getProfilePageData() {
     try {
-      const [artists, top_tracks] = await Promise.all([this.request('/artists?limit=10').catch(() => []), this.request(`/tracks?limit=5`).catch(() => [])]);
+      const [artists, top_tracks] = await Promise.all([
+        this.request('/artists?limit=10').catch(() => []),
+        this.request(`/tracks?limit=5`).catch(() => []),
+      ]);
 
       return {
         top_artists: artists || [],
@@ -226,7 +239,10 @@ export class apiServises {
 
   async getAlbumPageData(id) {
     try {
-      const [album, tracks] = await Promise.all([this.request(`/albums/${id}`).catch(() => []), this.request(`/albums/${id}/tracks`).catch(() => [])]);
+      const [album, tracks] = await Promise.all([
+        this.request(`/albums/${id}`).catch(() => []),
+        this.request(`/albums/${id}/tracks`).catch(() => []),
+      ]);
       return { album: album || {}, tracks: tracks || [] };
     } catch (error) {
       console.error('Failed to load album page data:', error);
@@ -241,66 +257,66 @@ export class apiServises {
         this.request(`/library/playlists/${id}/tracks`).catch(() => []),
       ]);*/
       const playlist = {
-        "id": 42,
-        "title": "Midnight Chill Vibes",
-        "created_at": "2024-03-15T12:00:00.000Z",
-        "avatar_url": "",
-        "description": "Коллекция атмосферных треков для позднего вечера."
+        id: 42,
+        title: 'Midnight Chill Vibes',
+        created_at: '2024-03-15T12:00:00.000Z',
+        avatar_url: '',
+        description: 'Коллекция атмосферных треков для позднего вечера.',
       };
       const tracks = [
         {
-          "id": 101,
-          "title": "Night Breeze",
-          "play_count": 1234,
-          "duration_s": 204,
-          "album": {
-            "id": 3,
-            "title": "Night Compilation"
+          id: 101,
+          title: 'Night Breeze',
+          play_count: 1234,
+          duration_s: 204,
+          album: {
+            id: 3,
+            title: 'Night Compilation',
           },
-          "artists": [
+          artists: [
             {
-              "id": 7,
-              "name": "Luma Drift"
-            }
-          ]
+              id: 7,
+              name: 'Luma Drift',
+            },
+          ],
         },
         {
-          "id": 102,
-          "title": "Soft Neon Lights",
-          "play_count": 842,
-          "duration_s": 250,
-          "album": {
-            "id": 3,
-            "title": "Night Compilation"
+          id: 102,
+          title: 'Soft Neon Lights',
+          play_count: 842,
+          duration_s: 250,
+          album: {
+            id: 3,
+            title: 'Night Compilation',
           },
-          "artists": [
+          artists: [
             {
-              "id": 7,
-              "name": "Luma Drift"
+              id: 7,
+              name: 'Luma Drift',
             },
             {
-              "id": 9,
-              "name": "Synthia Waves"
-            }
-          ]
+              id: 9,
+              name: 'Synthia Waves',
+            },
+          ],
         },
         {
-          "id": 103,
-          "title": "Moonflow",
-          "play_count": 2100,
-          "duration_s": 178,
-          "album": {
-            "id": 8,
-            "title": "Moon Echoes"
+          id: 103,
+          title: 'Moonflow',
+          play_count: 2100,
+          duration_s: 178,
+          album: {
+            id: 8,
+            title: 'Moon Echoes',
           },
-          "artists": [
+          artists: [
             {
-              "id": 12,
-              "name": "Echo Pulse"
-            }
-          ]
-        }
-      ]
+              id: 12,
+              name: 'Echo Pulse',
+            },
+          ],
+        },
+      ];
       return { playlist: playlist || {}, tracks: tracks || [] };
     } catch (error) {
       console.error('Failed to load playlist page data:', error);
@@ -475,6 +491,21 @@ export class apiServises {
     } catch (error) {
       console.error(`Failed to increment listen count for track ${trackId}:`, error);
     }
+  }
+
+  async searchTrack(name) {
+    const track = this.request(`/tracks/search?q=${name}&limit=5`).catch(() => []);
+    return track;
+  }
+
+  async searchAlbum(name) {
+    const album = this.request(`/albums/search?q=${name}&limit=5`).catch(() => []);
+    return album;
+  }
+
+  async searchArtist(name) {
+    const artist = this.request(`/artists/search?q=${name}&limit=5`).catch(() => []);
+    return artist;
   }
 }
 

@@ -170,8 +170,9 @@
   transition: background-color 0.3s ease;
 }
 
-.track-row:hover, .track-row.active {
-  background-color: #E6E9F5;
+.track-row:hover,
+.track-row.active {
+  background-color: #e6e9f5;
 }
 
 .right-row-content {
@@ -232,7 +233,7 @@
   opacity: 1;
 }
 
-.play-popular-track.is-active  {
+.play-popular-track.is-active {
   opacity: 1;
 }
 
@@ -244,7 +245,8 @@
   transition: filter 0.3s ease;
 }
 
-.track-row:hover .track-cover, .track-row.active .track-cover {
+.track-row:hover .track-cover,
+.track-row.active .track-cover {
   filter: brightness(0.6);
 }
 
@@ -357,6 +359,6 @@
 
 .track-row:hover .like-btn-track,
 .track-row.active .like-btn-track,
-.like-btn-track.active  {
+.like-btn-track.active {
   opacity: 1;
 }

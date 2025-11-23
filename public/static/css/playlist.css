@@ -1,9 +1,11 @@
-.dots, .pencil {
+.dots,
+.pencil {
   all: unset;
   cursor: pointer;
 }
 
-.dots svg, .pencil svg {
+.dots svg,
+.pencil svg {
   transition: all 0.3s ease;
 }
 
@@ -17,7 +19,8 @@
   height: 22px;
 }
 
-.dots:hover svg, .pencil:hover svg {
+.dots:hover svg,
+.pencil:hover svg {
   fill: #a766ff;
 }
 
@@ -27,9 +30,9 @@
 
 .actions-menu {
   position: absolute;
-  background: #E6E9F5;
+  background: #e6e9f5;
   color: black;
-  border: #D0BBBB solid 2px;
+  border: #d0bbbb solid 2px;
   padding: 10px;
   border-radius: 20px;
   z-index: 1000;
@@ -94,6 +97,7 @@
   transition: filter 0.3s ease;
 }
 
-.album-row:hover .playlist-track-cover, .album-row.active .playlist-track-cover {
+.album-row:hover .playlist-track-cover,
+.album-row.active .playlist-track-cover {
   filter: brightness(0.6);
 }
