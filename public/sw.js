@@ -14,8 +14,25 @@ const APP_SHELL_URLS = [
   '/static/js/setPlayButtonsOnAuth.js',
   '/static/js/validation.js',
   '/static/js/slider.js',
-  '/static/css/(.*)',
-  '/static/img/(.*)',
+  '/static/css/album.css',
+  '/static/css/artist_pages.css',
+  '/static/css/header.css',
+  '/static/css/index.css',
+  '/static/css/library.css',
+  '/static/css/mainpage.css',
+  '/static/css/now_play_slider.css',
+  '/static/css/player.css',
+  '/static/css/playlist.css',
+  '/static/css/profile.css',
+  '/static/css/search_page.css',
+  '/static/css/sidebar.css',
+  '/static/css/style_auth.css',
+  '/static/img/default-album.png',
+  '/static/img/default-artist.png',
+  '/static/img/default-playlist.png',
+  '/static/img/liked_tracks.png',
+  '/static/img/logo.png',
+  '/static/img/wave.png',
   'https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.runtime.min.js',
 ];
 
@@ -33,11 +50,7 @@ self.addEventListener('activate', (event) => {
   console.log('[SW] Активация');
   event.waitUntil(
     caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames
-          .filter((name) => name !== CACHE_NAME)
-          .map((name) => caches.delete(name))
-      );
+      return Promise.all(cacheNames.filter((name) => name !== CACHE_NAME).map((name) => caches.delete(name)));
     })
   );
 });
@@ -51,10 +64,14 @@ self.addEventListener('fetch', (event) => {
   event.respondWith(
     fetch(event.request)
       .then((networkResponse) => {
-        return caches.open(CACHE_NAME).then((cache) => {
-          cache.put(event.request, networkResponse.clone());
+        if (networkResponse && networkResponse.ok){
+          return caches.open(CACHE_NAME).then((cache) => {
+            cache.put(event.request, networkResponse.clone());
+            return networkResponse;
+          });
+        } else {
           return networkResponse;
-        });
+        }
       })
       .catch(async () => {
         const cachedResponse = await caches.match(event.request);

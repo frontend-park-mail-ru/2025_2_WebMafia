@@ -1,15 +1,16 @@
-import { router } from '../../routing.js';
-import { apiServise } from '../../data.js';
-import { initPasswordShowing } from '../../eye.js';
-import { initScrollbar } from '../../scrollbar.js';
-import { durationParser, getValidImage, playsParser } from '../../parsers.js';
-import { sidebar } from '../sidebar/sidebar.js';
-import { slider } from '../../slider.js';
-import { header } from '../header/header.js';
-import { setPlayButtonsOnAuth } from '../../setPlayButtonsOnAuth.js';
-import { FormValidator } from '../../validation.js';
-import { playerOnlyOnPlay } from '../../playerOnlyOnplay.js';
-import { playTrack } from '../../playTrackBtn.js';
+import { router } from '@/routing.js';
+import { apiServise } from '@/data.js';
+import { initPasswordShowing } from '@/eye.js';
+import { initScrollbar } from '@/scrollbar.js';
+import { durationParser, getValidImage, playsParser } from '@/parsers.js';
+import { sidebar } from '@/components/sidebar/sidebar.js';
+import { slider } from '@/slider.js';
+import { header } from '@/components/header/header.js';
+import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
+import { FormValidator } from '@/validation.js';
+import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
+import { playTrack } from '@/playTrackBtn.js';
+import { likeTrackBtn } from '@/utils/likeTrack.js';
 
 export class ProfilePage {
   async render() {
@@ -77,6 +78,7 @@ export class ProfilePage {
     initPasswordShowing();
     initScrollbar();
     setPlayButtonsOnAuth();
+    likeTrackBtn();
     playTrack();
   }
 
@@ -91,9 +93,9 @@ export class ProfilePage {
       });
     }
 
-    const closeEditButton = document.getElementById('closeEditButton');
-    if (closeEditButton && editProfileOverlay) {
-      closeEditButton.addEventListener('click', (e) => {
+    const closeOverlayButton = document.getElementById('closeOverlayButton');
+    if (closeOverlayButton && editProfileOverlay) {
+      closeOverlayButton.addEventListener('click', (e) => {
         e.preventDefault();
 
         document.getElementById('email').value = profile.email;
@@ -101,7 +103,7 @@ export class ProfilePage {
         document.getElementById('password').value = '';
         document.getElementById('passwordConfirm').value = '';
 
-        updateAvatarContainer('avatarEditContainer', profile.avatar, profile.letter, 'profile-edit-avatar');
+        updateAvatarContainer('avatarEditContainer', profile.avatar, profile.letter, 'edit-avatar');
 
         selectedAvatarFile = null;
         deleteAvatar = false;
@@ -204,7 +206,10 @@ export class ProfilePage {
               updateAvatarContainer('avatarEditContainer', event.target.result);
 
               if (!document.getElementById('deleteAvatarButton')) {
-                editAvatarButtons.insertAdjacentHTML('beforeend', `<button id="deleteAvatarButton" class="secondary-button save-avatar-button-size">Удалить фото</button>`);
+                editAvatarButtons.insertAdjacentHTML(
+                  'beforeend',
+                  `<button id="deleteAvatarButton" class="secondary-button save-avatar-button-size">Удалить фото</button>`
+                );
               }
             };
             reader.readAsDataURL(file);
@@ -289,7 +294,7 @@ export class ProfilePage {
 
         const isValid = editValidator.validateForm();
         if (!isValid) {
-          editValidator.showMessage('Пожалуйста, проверьте подсвеченные поля.');
+          editValidator.showMessage('Пожалуйста, проверьте подсвеченные поля');
           return;
         }
 
@@ -317,7 +322,6 @@ export class ProfilePage {
           if (email !== profile.email || login !== profile.nickname || password) {
             if (!password) password = '';
             const data = await apiServise.editUser(login, email, password);
-            console.log(data);
             const newLogin = data.Login;
 
             const headerUsername = document.querySelector('.header-username');
@@ -352,7 +356,8 @@ export class ProfilePage {
           console.error('Ошибка при сохранении профиля:', err);
           let msg = 'Не удалось сохранить изменения. Попробуйте еще раз чуть позже.';
           if (err.message === 'resource conflict') msg = 'Пользователь с такими данными уже существует.';
-          else if (err.message === 'bad request') msg = 'Что-то пошло не так. Пожалуйста, проверьте правильность введенных данных.';
+          else if (err.message === 'bad request')
+            msg = 'Что-то пошло не так. Пожалуйста, проверьте правильность введенных данных.';
           editValidator.showMessage(msg);
         }
       });

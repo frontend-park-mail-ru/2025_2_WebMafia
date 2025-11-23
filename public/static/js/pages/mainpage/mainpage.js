@@ -1,15 +1,14 @@
-import { apiServise } from '../../data.js';
-import { router } from '../../routing.js';
-import { header } from '../header/header.js';
-import { sidebar } from '../sidebar/sidebar.js';
-import { initScrollbar } from '../../scrollbar.js';
-import { slider } from '../../slider.js';
-import { player } from '../player/player.js';
-import { playTrack } from '../../playTrackBtn.js';
-import { getValidImage, playsParser } from '../../parsers.js';
-import { setPlayButtonsOnAuth } from '../../setPlayButtonsOnAuth.js';
-import { playerOnlyOnPlay } from '../../playerOnlyOnplay.js';
-import { Router } from '../../routing.js';
+import { apiServise } from '@/data.js';
+import { router } from '@/routing.js';
+import { header } from '@/components/header/header.js';
+import { sidebar } from '@/components/sidebar/sidebar.js';
+import { initScrollbar } from '@/scrollbar.js';
+import { slider } from '@/slider.js';
+import { player } from '@/components/player/player.js';
+import { playTrack } from '@/playTrackBtn.js';
+import { getValidImage, playsParser } from '@/parsers.js';
+import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
+import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
 
 export class MainPage {
   async render() {
@@ -132,7 +131,11 @@ export class MainPage {
 
     function playerData(track) {
       if (!track) {
-        return { img: 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7', name: '', id: null };
+        return {
+          img: 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7',
+          name: '',
+          id: null,
+        };
       }
 
       const imageUrl = getValidImage('albums/' + track.album?.avatar_url, 'default-album.png');

@@ -170,14 +170,15 @@
   transition: background-color 0.3s ease;
 }
 
-.track-row:hover, .track-row.active {
-  background-color: #E6E9F5;
+.track-row:hover,
+.track-row.active {
+  background-color: #e6e9f5;
 }
 
 .right-row-content {
   flex: 1;
   display: grid;
-  grid-template-columns: 35% 20% 20% 20% 5%;
+  grid-template-columns: 35% 20% 20% 15% 4% 6%;
   align-items: center;
   gap: 8px;
 }
@@ -232,7 +233,7 @@
   opacity: 1;
 }
 
-.play-popular-track.is-active  {
+.play-popular-track.is-active {
   opacity: 1;
 }
 
@@ -244,7 +245,8 @@
   transition: filter 0.3s ease;
 }
 
-.track-row:hover .track-cover, .track-row.active .track-cover {
+.track-row:hover .track-cover,
+.track-row.active .track-cover {
   filter: brightness(0.6);
 }
 
@@ -314,4 +316,49 @@
 .show-tracks-button {
   height: 15px;
   margin: 10px 0 0 15px;
+}
+
+.track-like-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.like-btn-track {
+  opacity: 0;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.like-btn-track svg {
+  fill: none;
+  stroke: #555;
+  stroke-width: 2px;
+  transition: all 0.2s ease;
+}
+
+.artist-like-size svg {
+  width: 22px;
+  height: 22px;
+}
+
+.like-btn-track:hover svg {
+  stroke: #a866eb;
+  transform: scale(1.1);
+}
+
+.like-btn-track.active svg {
+  fill: #a866eb;
+  stroke: #a866eb;
+}
+
+.track-row:hover .like-btn-track,
+.track-row.active .like-btn-track,
+.like-btn-track.active {
+  opacity: 1;
 }

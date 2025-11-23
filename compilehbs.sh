@@ -18,13 +18,19 @@ handlebars public/static/js/pages/artist_singles/artistSinglesPage.hbs -f public
 
 handlebars public/static/js/pages/search_page/search_page.hbs -f public/static/js/pages/search_page/search_page.tmpl.js
 
-handlebars public/static/js/pages/header/header.hbs -f public/static/js/pages/header/header.tmpl.js
+handlebars public/static/js/components/library_grid/libraryGrid.hbs -f public/static/js/components/library_grid/libraryGrid.tmpl.js
 
-handlebars public/static/js/pages/sidebar/sidebar.hbs -f public/static/js/pages/sidebar/sidebar.tmpl.js
+handlebars public/static/js/pages/library/library.hbs -f public/static/js/pages/library/library.tmpl.js
 
-handlebars public/static/js/pages/player/player.hbs -f public/static/js/pages/player/player.tmpl.js
+handlebars public/static/js/components/header/header.hbs -f public/static/js/components/header/header.tmpl.js
+
+handlebars public/static/js/components/sidebar/sidebar.hbs -f public/static/js/components/sidebar/sidebar.tmpl.js
+
+handlebars public/static/js/components/player/player.hbs -f public/static/js/components/player/player.tmpl.js
 
 handlebars public/static/js/pages/album/album.hbs -f public/static/js/pages/album/album.tmpl.js
+
+handlebars public/static/js/pages/playlist/playlist.hbs -f public/static/js/pages/playlist/playlist.tmpl.js
 
 handlebars public/static/js/partials/eyeOpen.hbs -f public/static/js/partials/eyeOpen.tmpl.js
 
@@ -46,9 +52,9 @@ handlebars public/static/js/partials/nextTrack.hbs -f public/static/js/partials/
 
 handlebars public/static/js/partials/prevTrack.hbs -f public/static/js/partials/prevTrack.tmpl.js
 
-handlebars public/static/js/partials/shuffleBtn.hbs -f public/static/js/partials/shuffleBtn.tmpl.js
+handlebars public/static/js/partials/shuffle.hbs -f public/static/js/partials/shuffle.tmpl.js
 
-handlebars public/static/js/partials/repeatBtn.hbs -f public/static/js/partials/repeatBtn.tmpl.js
+handlebars public/static/js/partials/repeat.hbs -f public/static/js/partials/repeat.tmpl.js
 
 handlebars public/static/js/partials/pauseBtn.hbs -f public/static/js/partials/pauseBtn.tmpl.js
 
@@ -60,8 +66,12 @@ handlebars public/static/js/partials/close.hbs -f public/static/js/partials/clos
 
 handlebars public/static/js/partials/profile.hbs -f public/static/js/partials/profile.tmpl.js
 
+handlebars public/static/js/partials/plus.hbs -f public/static/js/partials/plus.tmpl.js
+
 handlebars public/static/js/partials/searchIcon.hbs -f public/static/js/partials/searchIcon.tmpl.js
 
 handlebars public/static/js/partials/pause.hbs -f public/static/js/partials/pause.tmpl.js
 
+handlebars public/static/js/partials/dots.hbs -f public/static/js/partials/dots.tmpl.js
 
+handlebars public/static/js/partials/trash.hbs -f public/static/js/partials/trash.tmpl.js
