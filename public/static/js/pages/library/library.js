@@ -7,7 +7,7 @@ import { getValidImage, playsParser, tracksNumParser } from '@/parsers.js';
 import { playTrack } from '@/playTrackBtn.js';
 import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
 import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
-import { FormValidator } from "@/validation.js";
+import { FormValidator } from '@/validation.js';
 
 export class LibraryPage {
   async render() {
@@ -54,7 +54,7 @@ export class LibraryPage {
           type: 'Артист',
           sub: playsParser(artist.play_count),
           href: 'artist/' + artist.id,
-        }
+        };
         pageData.library.push(item);
         pageData.artists.push(item);
       });
@@ -67,7 +67,7 @@ export class LibraryPage {
           created_at: new Date(album.created_at),
           type: album.type,
           href: 'album/' + album.id,
-        }
+        };
         pageData.library.push(item);
         pageData.albums.push(item);
       });
@@ -80,7 +80,7 @@ export class LibraryPage {
           sub: tracksNumParser(playlist.tracks.length),
           type: 'Плейлист',
           href: 'playlist/' + playlist.id,
-        }
+        };
         pageData.library.push(item);
         pageData.playlists.push(item);
       });
@@ -136,7 +136,6 @@ export class LibraryPage {
           button.style.display = 'none';
 
           document.querySelector('.grid-layout').innerHTML = gridTemplate(data);
-
         } else if (isActivating) {
           button.classList.remove('secondary-button');
           button.classList.add('primary-button');
@@ -154,7 +153,6 @@ export class LibraryPage {
           };
 
           document.querySelector('.grid-layout').innerHTML = gridTemplate(pageData);
-
         } else {
           buttons.forEach((b) => {
             b.style.display = '';
@@ -213,7 +211,7 @@ export class LibraryPage {
       const img = document.getElementById('playlistAvatar');
 
       if (src) img.src = src;
-      else img.src = "static/img/default-playlist.png";
+      else img.src = 'static/img/default-playlist.png';
     }
 
     const editAvatarButtons = document.getElementById('editAvatarButtons');

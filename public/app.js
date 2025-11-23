@@ -15,13 +15,7 @@ function startApp() {
 document.addEventListener('DOMContentLoaded', startApp);
 
 function registerPartials() {
-  const hbsFiles = import.meta.glob(
-    [
-      '@/partials/**/*.hbs',
-      '@/components/**/*.hbs'
-    ],
-    { eager: true }
-  );
+  const hbsFiles = import.meta.glob(['@/partials/**/*.hbs', '@/components/**/*.hbs'], { eager: true });
 
   for (const path in hbsFiles) {
     const name = path.split('/').pop().replace('.hbs', '');

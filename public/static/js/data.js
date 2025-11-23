@@ -63,7 +63,13 @@ export class apiServises {
         this.request(`/artists/${id}/tracks?limit=5`).catch(() => []),
         this.request(`/artists/${id}`).catch(() => []),
         this.request('/artists?limit=10').catch(() => []),
+        // this.getFavoriteTrackIds().catch(() => []),
       ]);
+
+      // const popular_tracks_with_likes = (popular_tracks || []).map((track) => ({
+      //   ...track,
+      //   is_liked: favorite_tracks.includes(track.id),
+      // }));
 
       return {
         albums: albums || [],
@@ -241,66 +247,66 @@ export class apiServises {
         this.request(`/library/playlists/${id}/tracks`).catch(() => []),
       ]);*/
       const playlist = {
-        "id": 42,
-        "title": "Midnight Chill Vibes",
-        "created_at": "2024-03-15T12:00:00.000Z",
-        "avatar_url": "",
-        "description": "Коллекция атмосферных треков для позднего вечера."
+        id: 42,
+        title: 'Midnight Chill Vibes',
+        created_at: '2024-03-15T12:00:00.000Z',
+        avatar_url: '',
+        description: 'Коллекция атмосферных треков для позднего вечера.',
       };
       const tracks = [
         {
-          "id": 101,
-          "title": "Night Breeze",
-          "play_count": 1234,
-          "duration_s": 204,
-          "album": {
-            "id": 3,
-            "title": "Night Compilation"
+          id: 101,
+          title: 'Night Breeze',
+          play_count: 1234,
+          duration_s: 204,
+          album: {
+            id: 3,
+            title: 'Night Compilation',
           },
-          "artists": [
+          artists: [
             {
-              "id": 7,
-              "name": "Luma Drift"
-            }
-          ]
+              id: 7,
+              name: 'Luma Drift',
+            },
+          ],
         },
         {
-          "id": 102,
-          "title": "Soft Neon Lights",
-          "play_count": 842,
-          "duration_s": 250,
-          "album": {
-            "id": 3,
-            "title": "Night Compilation"
+          id: 102,
+          title: 'Soft Neon Lights',
+          play_count: 842,
+          duration_s: 250,
+          album: {
+            id: 3,
+            title: 'Night Compilation',
           },
-          "artists": [
+          artists: [
             {
-              "id": 7,
-              "name": "Luma Drift"
+              id: 7,
+              name: 'Luma Drift',
             },
             {
-              "id": 9,
-              "name": "Synthia Waves"
-            }
-          ]
+              id: 9,
+              name: 'Synthia Waves',
+            },
+          ],
         },
         {
-          "id": 103,
-          "title": "Moonflow",
-          "play_count": 2100,
-          "duration_s": 178,
-          "album": {
-            "id": 8,
-            "title": "Moon Echoes"
+          id: 103,
+          title: 'Moonflow',
+          play_count: 2100,
+          duration_s: 178,
+          album: {
+            id: 8,
+            title: 'Moon Echoes',
           },
-          "artists": [
+          artists: [
             {
-              "id": 12,
-              "name": "Echo Pulse"
-            }
-          ]
-        }
-      ]
+              id: 12,
+              name: 'Echo Pulse',
+            },
+          ],
+        },
+      ];
       return { playlist: playlist || {}, tracks: tracks || [] };
     } catch (error) {
       console.error('Failed to load playlist page data:', error);
@@ -474,6 +480,45 @@ export class apiServises {
       });
     } catch (error) {
       console.error(`Failed to increment listen count for track ${trackId}:`, error);
+    }
+  }
+
+  // async getFavoriteTrackIds() {
+  //   try {
+  //     const favoriteTracks = await this.request('/playlists/tracks');
+  //     return favoriteTracks.map((track) => track.id);
+  //   } catch (error) {
+  //     console.error('Failed to load favorite tracks:', error);
+  //     return [];
+  //   }
+  // }
+
+  async likeTrack(track_Id) {
+    const csrfToken = await this.getCSRFToken();
+    if (!track_Id) return;
+    try {
+      await this.request(`/playlists/favorite/add-track`, {
+        method: 'POST',
+        body: { track_Id },
+      });
+    } catch (error) {
+      console.error(`Failed to like track ${track_Id}:`, error);
+    }
+  }
+
+  async unLikeTrack(track_Id) {
+    if (!track_Id) return;
+    const csrfToken = await this.getCSRFToken();
+    try {
+      await this.request(`/playlists/${track_Id}/tracks`, {
+        method: 'POST',
+        body: { track_Id },
+        headers: {
+          'X-CSRF-Token': csrfToken,
+        },
+      });
+    } catch (error) {
+      console.error(`Failed to like track ${track_Id}:`, error);
     }
   }
 }

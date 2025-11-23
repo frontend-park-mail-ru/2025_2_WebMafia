@@ -15,21 +15,23 @@
 }
 
 .hidden {
-  opacity: 0 !important; 
-  pointer-events: none !important; 
+  opacity: 0 !important;
+  pointer-events: none !important;
   transform: scale(0.8) !important;
   visibility: hidden !important;
-  transition: opacity 0.5s ease, transform 0.5s ease;
+  transition:
+    opacity 0.5s ease,
+    transform 0.5s ease;
   box-shadow: none !important;
 }
 
 .card-fade-out {
   opacity: 0 !important;
-  transform: scale(0.8) !important; 
+  transform: scale(0.8) !important;
 }
 
 .card-reset {
-  transition: none !important; 
+  transition: none !important;
 }
 
 /* Обёртка для слайдера */
@@ -71,7 +73,7 @@
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
-.card-position-current img{
+.card-position-current img {
   filter: brightness(90%);
 }
 
@@ -90,7 +92,8 @@
 }
 
 /* Стили для контента на карточке */
-.current-card-btn.play, .current-card-btn.play.pause,
+.current-card-btn.play,
+.current-card-btn.play.pause,
 .current-card-name {
   position: absolute;
   opacity: 0;
@@ -98,7 +101,8 @@
   z-index: 11;
 }
 
-.card-position-current .current-card-btn.play, .current-card-btn.play.pause,
+.card-position-current .current-card-btn.play,
+.current-card-btn.play.pause,
 .card-position-current .current-card-name {
   opacity: 1;
 }
@@ -122,7 +126,8 @@
   align-items: center;
   justify-content: center;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  transition: transform 0.3s ease,
+  transition:
+    transform 0.3s ease,
     background-position 0.5s ease,
     background 0.5s ease;
 }
@@ -138,7 +143,7 @@
 }
 
 .current-card-btn.play:hover,
-.current-card-btn.play.paused:hover  {
+.current-card-btn.play.paused:hover {
   transform: scale(1.03);
   background-position: left top;
 }
@@ -147,13 +152,15 @@
 .current-card-btn.play.paused::before {
   border-style: solid;
   border-width: 0;
-  background-color: transparent; 
-  height: 20px; 
-  width: 16px; 
+  background-color: transparent;
+  height: 20px;
+  width: 16px;
   opacity: 1;
 
   /* Создаем две полосы с помощью box-shadow */
-  box-shadow: inset 5px 0 0 0 white, inset -5px 0 0 0 white;
+  box-shadow:
+    inset 5px 0 0 0 white,
+    inset -5px 0 0 0 white;
   margin: 0;
 }
 

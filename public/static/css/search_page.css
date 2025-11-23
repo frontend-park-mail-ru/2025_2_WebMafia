@@ -1,36 +1,35 @@
 .seach-pagre-layout {
-    display: flex;
-    justify-content: start;
+  display: flex;
+  justify-content: start;
 }
 
-.best-result-title{
-    display: flex;
-    justify-content: space-between;
-    margin-left: 23px;
-    margin-top: 20px;
+.best-result-title {
+  display: flex;
+  justify-content: space-between;
+  margin-left: 23px;
+  margin-top: 20px;
 }
 
-.best-result-container{
-    display: flex;
-    flex-direction: column;
-    
+.best-result-container {
+  display: flex;
+  flex-direction: column;
 }
 
 .best-result-card {
-    width: 400px;
-    height: 300px;
-    margin-top: 10px;
-    margin-left: 23px ;
-    display: flex;
-    align-items: center;
-    position: relative;
-    background-color: #f3f5fa;
-    border-radius: 30px;
-    transition: transform 0.3s ease;
-    cursor: pointer;
+  width: 400px;
+  height: 300px;
+  margin-top: 10px;
+  margin-left: 23px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  background-color: #f3f5fa;
+  border-radius: 30px;
+  transition: transform 0.3s ease;
+  cursor: pointer;
 }
 
 .best-result-card:hover {
-    background-color: rgba(0, 0, 0, 0.1);
-    transform: scale(1.01);
+  background-color: rgba(0, 0, 0, 0.1);
+  transform: scale(1.01);
 }

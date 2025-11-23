@@ -7,7 +7,7 @@ import { sidebar } from '@/components/sidebar/sidebar.js';
 import { slider } from '@/slider.js';
 import { header } from '@/components/header/header.js';
 import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
-import { FormValidator } from "@/validation.js";
+import { FormValidator } from '@/validation.js';
 import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
 import { playTrack } from '@/playTrackBtn.js';
 import { likeTrackBtn } from '@/utils/likeTrack.js';
