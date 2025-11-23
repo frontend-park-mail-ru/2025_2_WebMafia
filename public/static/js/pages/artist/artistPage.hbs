@@ -3,132 +3,140 @@
   <div class="layout">
     {{> sidebar}}
     <div class="page-wrapper" id="scrollContent">
-        <div
-          class="artist-container"
-          style="
+      <div
+        class="artist-container"
+        style="
             background:
               linear-gradient(to top, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0)),
               url('{{ artist_header }}') top center/cover no-repeat;
           "
-        >
-          <div class="artist-name">{{ name }}</div>
-          <div class="artist-interaction">
-            <div class="listeners-num">{{ listeners }}</div>
-            <button class="primary-outline-button artist-subscription">Подписаться</button>
-          </div>
-          {{#if description}}
-          <p class="artist-description">{{ description }}</p>
-          <button type="button" id="showArtistDescription" aria-label="Показать информацию об исполнителе">
-            {{> angleDown }}
-          </button>
-          {{/if}}
+      >
+        <div class="artist-name">{{ name }}</div>
+        <div class="artist-interaction">
+          <div class="listeners-num">{{ listeners }}</div>
+          <button class="primary-outline-button artist-subscription">Подписаться</button>
         </div>
-        <div class="artist-page">
-          <div class="popular-tracks">
-            <div class="title">
-              <div class="title-name">Популярные треки</div>
-            </div>
-            <div class="tracks-table">
-              {{#each popular_tracks}}
-              <div class="track-row">
-                <div class="track-number">{{numeration @index}}</div>
-                <div class="track-cover-wrapper">
-                  <img class="track-cover" src="{{ cover }}" alt="{{ name }}" />
-                  <button class="play-popular-track" data-track-id="{{ id }}" data-context="artist-popular" data-artist-id="{{../id}}">
-                    <span class="play-icon">{{> play }}</span>
-                    <span class="pause-icon">{{> pause }}</span>
-                  </button>
-                </div>
-                <div class="right-row-content">
-                  <div class="track-name">{{ name }}</div>
-                  <div class="track-performers">
-                    {{#each artists}}
-                    <a href="artist/{{id}}" class="track-performer href-decoration">
-                      {{name}}{{#unless @last}}, {{/unless}}
-                    </a>
-                    {{/each}}
-                  </div>
-                  <div class="track-plays-num">{{ plays }}</div>
-                  <a href="album/{{ album_id }}" class="track-album-name href-decoration">
-                    {{ album }}
-                  </a>
-                  <div class="track-duration">{{ duration }}</div>
-                </div>
+        {{#if description}}
+        <p class="artist-description">{{ description }}</p>
+        <button type="button" id="showArtistDescription" aria-label="Показать информацию об исполнителе">
+          {{> angleDown }}
+        </button>
+        {{/if}}
+      </div>
+      <div class="artist-page">
+        <div class="popular-tracks">
+          <div class="title">
+            <div class="title-name">Популярные треки</div>
+          </div>
+          <div class="tracks-table">
+            {{#each popular_tracks}}
+            <div class="track-row">
+              <div class="track-number">{{numeration @index}}</div>
+              <div class="track-cover-wrapper">
+                <img class="track-cover" src="{{ cover }}" alt="{{ name }}" />
+                <button
+                  class="play-popular-track"
+                  data-track-id="{{ id }}"
+                  data-context="artist-popular"
+                  data-artist-id="{{../id}}"
+                >
+                  <span class="play-icon">{{> play }}</span>
+                  <span class="pause-icon">{{> pause }}</span>
+                </button>
               </div>
-              {{/each}}
-            </div>
-            <a class="secondary-button show-tracks-button" href="/artist/{{id}}/tracks">Показать все</a>
-          </div>
-
-          {{#if albums}}
-          <div class="title">
-            <div class="title-name">Альбомы</div>
-            <a class="show-all" href="/artist/{{id}}/albums">Показать все</a>
-          </div>
-          <div class="slider">
-            <div class="cards" id="slidebar">
-              <p><i class="slide-btn left"></i></p>
-              {{#each albums}}
-              <a href="/album/{{ id }}" class="card">
-                <img src="{{ cover }}" alt="{{ name }}" />
-                <div class="card-bottom-info">
-                  <p class="card-name">{{ name }}</p>
-                  <p class="card-sub">{{ year }}</p>
+              <div class="right-row-content">
+                <div class="track-name">{{ name }}</div>
+                <div class="track-performers">
+                  {{#each artists}}
+                  <a href="artist/{{ id }}" class="track-performer href-decoration">
+                    {{ name }}{{#unless @last}}, {{/unless}}
+                  </a>
+                  {{/each}}
                 </div>
-                <!--<button class="play-button play-button-placement"></button>-->
-              </a>
-              {{/each}}
-              <p><i class="slide-btn right"></i></p>
+                <div class="track-plays-num">{{ plays }}</div>
+                <a href="album/{{ album_id }}" class="track-album-name href-decoration">
+                  {{ album }}
+                </a>
+                <div class="track-like-container">
+                  <button class="like-btn-track artist-like-size" data-track-id="{{ id }}">{{> likeBtn }}</button>
+                </div>
+                <div class="track-duration">{{ duration }}</div>
+              </div>
             </div>
+            {{/each}}
           </div>
-          {{/if}}
+          <a class="secondary-button show-tracks-button" href="/artist/{{ id }}/tracks">Показать все</a>
+        </div>
 
-          {{#if singls}}
-          <div class="title">
-            <div class="title-name">Синглы и EP</div>
-            <a class="show-all" href="/artist/{{id}}/singles">Показать все</a>
-          </div>
-          <div class="slider">
+        {{#if albums}}
+        <div class="title">
+          <div class="title-name">Альбомы</div>
+          <a class="show-all" href="/artist/{{ id }}/albums">Показать всё</a>
+        </div>
+        <div class="slider">
+          <div class="cards" id="slidebar">
             <p><i class="slide-btn left"></i></p>
-            <div class="cards" id="slidebar">
-              {{#each singls}}
-              <a href="/album/{{ id }}" class="card">
-                <img src="{{ cover }}" alt="{{ name }}" />
-                <div class="card-bottom-info">
-                  <p class="card-name">{{ name }}</p>
-                  <p class="card-sub">
-                    {{ type }}
-                    <span class="dot"></span>
-                    {{ year }}
-                  </p>
-                </div>
-                <!--<button class="play-button play-button-placement"></button>-->
-              </a>
-              {{/each}}
-            <p><i class="slide-btn right"></i></p>
-            </div>
-          </div>
-          {{/if}}
-
-          <div class="title">
-            <div class="title-name">Похожие исполнители</div>
-          </div>
-          <div class="slider">
-            <p><i class="slide-btn left"></i></p>
-            <div class="cards" id="slidebar">
-              {{#each similar_artists}}
-              <a href="artist/{{ id }}" class="card">
-                <img src="{{ image }}" alt="{{ name }}" />
-                <div class="card-bottom-info">
-                  <p class="card-name">{{ name }}</p>
-                  <p class="card-sub">{{ listeners }}</p>
-                </div>
-              </a>
-              {{/each}}
-            </div>
+            {{#each albums}}
+            <a href="/album/{{ id }}" class="card">
+              <img src="{{ cover }}" alt="{{ name }}" />
+              <div class="card-bottom-info">
+                <p class="card-name">{{ name }}</p>
+                <p class="card-sub">{{ year }}</p>
+              </div>
+              <!--<button class="play-button play-button-placement"></button>-->
+            </a>
+            {{/each}}
             <p><i class="slide-btn right"></i></p>
           </div>
         </div>
+        {{/if}}
+
+        {{#if singls}}
+        <div class="title">
+          <div class="title-name">Синглы и EP</div>
+          <a class="show-all" href="/artist/{{ id }}/singles">Показать всё</a>
+        </div>
+        <div class="slider">
+          <p><i class="slide-btn left"></i></p>
+          <div class="cards" id="slidebar">
+            {{#each singls}}
+            <a href="/album/{{ id }}" class="card">
+              <img src="{{ cover }}" alt="{{ name }}" />
+              <div class="card-bottom-info">
+                <p class="card-name">{{ name }}</p>
+                <p class="card-sub">
+                  {{ type }}
+                  <span class="dot"></span>
+                  {{ year }}
+                </p>
+              </div>
+              <!--<button class="play-button play-button-placement"></button>-->
+            </a>
+            {{/each}}
+            <p><i class="slide-btn right"></i></p>
+          </div>
+        </div>
+        {{/if}}
+
+        <div class="title">
+          <div class="title-name">Похожие исполнители</div>
+        </div>
+        <div class="slider">
+          <p><i class="slide-btn left"></i></p>
+          <div class="cards" id="slidebar">
+            {{#each similar_artists}}
+            <a href="artist/{{ id }}" class="card">
+              <img src="{{ image }}" alt="{{ name }}" />
+              <div class="card-bottom-info">
+                <p class="card-name">{{ name }}</p>
+                <p class="card-sub">{{ listeners }}</p>
+              </div>
+            </a>
+            {{/each}}
+          </div>
+          <p><i class="slide-btn right"></i></p>
+        </div>
+      </div>
     </div>
   </div>
 </div>

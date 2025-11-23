@@ -4,34 +4,37 @@ import { header } from '@/components/header/header.js';
 import { sidebar } from '@/components/sidebar/sidebar.js';
 import { initScrollbar } from '@/scrollbar.js';
 import { slider } from '@/slider.js';
-import { playsParser, durationParser, getValidImage, totalDurationParser, tracksNumParser } from '@/parsers.js';
+import {
+  playsParser,
+  durationParser,
+  getValidImage,
+  totalDurationParser,
+  tracksNumParser,
+  dateParser,
+} from '@/parsers.js';
 import { playTrack } from '@/playTrackBtn.js';
 import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
 import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
-import { likeTrackBtn } from '@/utils/likeTrack.js';
 
-export class AlbumPage {
+export class PlaylistPage {
   async render(id) {
     let pageData = {};
 
-    const contentTemplate = Handlebars.templates['album.hbs'];
+    const contentTemplate = Handlebars.templates['playlist.hbs'];
     document.getElementById('app').innerHTML = contentTemplate(pageData);
     document.querySelector('head title').textContent = 'Wave Music';
 
     try {
-      const data = await apiServise.getAlbumPageData(id);
+      const data = await apiServise.getPlaylistPageData(id);
       pageData = {
-        id: data.album.id,
-        title: data.album.title,
-        type: data.album.type,
-        year: data.album.release_date ? data.album.release_date.slice(0, 4) : '',
-        cover: getValidImage('albums/' + data.album.avatar_url, 'default-album.png'),
-        artist: {
-          id: data.album.artists[0].id,
-          name: data.album.artists[0].name,
-          avatar: getValidImage('artists/' + data.album.artists[0].avatar_url, 'default-album.png'),
-        },
-        description: data.album.description,
+        id: data.playlist.id,
+        title: data.playlist.title,
+        date: dateParser(data.playlist.created_at),
+        cover: getValidImage(
+          data.playlist.avatar_url ? 'playlist/' + data.playlist.avatar_url : '',
+          'default-playlist.png'
+        ),
+        description: data.playlist.description,
       };
       let totalDuration = 0;
       pageData.tracks = (data.tracks || []).map((track) => {
@@ -39,6 +42,10 @@ export class AlbumPage {
         return {
           id: track.id,
           name: track.title,
+          album: track.album.title,
+          album_id: track.album.id,
+          cover: getValidImage('albums/' + track.album.avatar_url, 'default-album.png'),
+          artists: track.artists,
           plays: playsParser(track.play_count),
           duration: durationParser(track.duration_s),
         };
@@ -46,7 +53,7 @@ export class AlbumPage {
       pageData.totalDuration = totalDurationParser(totalDuration);
       pageData.tracksNum = tracksNumParser(pageData.tracks.length);
     } catch (error) {
-      console.error('Failed to load album page data:', error);
+      console.error('Failed to load playlist page data:', error);
 
       if (error.response && error.response.status === 404) {
         router.navigate('/not-found');
@@ -58,7 +65,7 @@ export class AlbumPage {
         return;
       }
 
-      alert('Не удалось загрузить страницу альбома.');
+      alert('Не удалось загрузить страницу плейлиста.');
       return;
     }
 
@@ -71,13 +78,12 @@ export class AlbumPage {
     initScrollbar();
     this.addEventListeners();
     setPlayButtonsOnAuth();
-    likeTrackBtn();
     playTrack();
   }
 
   addEventListeners() {
     const getDescriptionButton = document.getElementById('getDescription');
-    const getDescriptionOverlay = document.getElementById('albumDescriptionOverlay');
+    const getDescriptionOverlay = document.getElementById('descriptionOverlay');
 
     if (getDescriptionButton && getDescriptionOverlay) {
       getDescriptionButton.addEventListener('click', (e) => {
@@ -102,5 +108,28 @@ export class AlbumPage {
         }
       });
     }
+
+    const dotsBtn = document.getElementById('playlistActions');
+    const menu = document.getElementById('playlistMenu');
+
+    dotsBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      menu.classList.toggle('hidden');
+
+      const rect = dotsBtn.getBoundingClientRect();
+      const parentRect = dotsBtn.parentElement.getBoundingClientRect();
+
+      const top = rect.top - parentRect.top - menu.offsetHeight - 6;
+      const left = rect.left - parentRect.left - 10;
+
+      menu.style.top = `${top}px`;
+      menu.style.left = `${left}px`;
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!menu.contains(e.target) && !dotsBtn.contains(e.target)) {
+        menu.classList.add('hidden');
+      }
+    });
   }
 }

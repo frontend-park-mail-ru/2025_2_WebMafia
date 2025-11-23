@@ -4,35 +4,43 @@
     {{> sidebar}}
     <div class="page" id="scrollContent">
       <div class="title">
-        <div class="title-name-track-by-artist">Треки <a class="href-decoration" href="artist/{{ artistId }}">{{ artistName }}</a></div>
+        <div class="title-name-track-by-artist">
+          Треки <a class="href-decoration" href="artist/{{ artistId }}">{{ artistName }}</a>
+        </div>
       </div>
       <div class="tracks-table-track-by-artist">
         {{#each tracks}}
-          <div class="track-row">
-            <div class="track-number">{{numeration @index}}</div>
-            <div class="track-cover-wrapper">
-              <img class="track-cover" src="{{ cover }}" alt="{{ name }}" />
-              <button class="play-all-artist-tracks"  data-track-id="{{ id }}" data-context="artist_tracks" data-artist-id="{{ ../artistId }}">
-                <span class="play-icon">{{> play }}</span>
-                <span class="pause-icon">{{> pause }}</span>
-              </button>
-            </div>
-            <div class="right-row-content">
-              <div class="track-name">{{ name }}</div>
-              <div class="track-performers">
-                {{#each artists}}
-                  <a href="artist/{{id}}" class="track-performer">
-                    {{name}}{{#unless @last}}, {{/unless}}
-                  </a>
-                {{/each}}
-              </div>
-              <div class="track-plays-num">{{ plays }}</div>
-              <a href="album/{{ album_id }}" class="track-album-name">
-                {{ album }}
-              </a>
-              <div class="track-duration">{{ duration }}</div>
-            </div>
+        <div class="track-row">
+          <div class="track-number">{{numeration @index}}</div>
+          <div class="track-cover-wrapper">
+            <img class="track-cover" src="{{ cover }}" alt="{{ name }}" />
+            <button
+              class="play-all-artist-tracks"
+              data-track-id="{{ id }}"
+              data-context="artist_tracks"
+              data-artist-id="{{ ../artistId }}"
+            >
+              <span class="play-icon">{{> play }}</span>
+              <span class="pause-icon">{{> pause }}</span>
+            </button>
           </div>
+          <div class="right-row-content">
+            <div class="track-name">{{ name }}</div>
+            <div class="track-performers">
+              {{#each artists}}
+              <a href="artist/{{ id }}" class="track-performer"> {{ name }}{{#unless @last}}, {{/unless}} </a>
+              {{/each}}
+            </div>
+            <div class="track-plays-num">{{ plays }}</div>
+            <a href="album/{{ album_id }}" class="track-album-name">
+              {{ album }}
+            </a>
+            <div class="track-like-container">
+              <button class="like-btn-track artist-like-size" data-track-id="{{ id }}">{{> likeBtn }}</button>
+            </div>
+            <div class="track-duration">{{ duration }}</div>
+          </div>
+        </div>
         {{/each}}
       </div>
     </div>

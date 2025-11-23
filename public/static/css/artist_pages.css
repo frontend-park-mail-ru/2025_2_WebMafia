@@ -2,7 +2,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 20px;
-  padding: 20px;
+  padding: 20px 27px;
 }
 
 .grid-layout .card {
@@ -12,10 +12,12 @@
 .title-name-track-by-artist {
   font-weight: 700;
   font-size: 42px;
+  margin-top: 10px;
 }
 
 .tracks-table-track-by-artist {
- padding-right: 10px;
+  padding-right: 10px;
+  margin: 15px 0;
 }
 
 .play-all-artist-tracks {
@@ -59,6 +61,6 @@
   opacity: 1;
 }
 
-.play-all-artist-tracks.is-active  {
+.play-all-artist-tracks.is-active {
   opacity: 1;
 }

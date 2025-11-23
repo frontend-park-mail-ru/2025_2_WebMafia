@@ -96,7 +96,7 @@
 }
 
 .edit-button-size {
-  height: 30px;
+  height: 28px;
 }
 
 .primary-button:hover {
@@ -128,7 +128,7 @@
   margin: 20px 0 24px 0;
 }
 
-.edit-profile-overlay {
+.overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -145,12 +145,12 @@
   z-index: 1000;
 }
 
-.edit-profile-overlay.active {
+.overlay.active {
   opacity: 1;
   pointer-events: all;
 }
 
-.edit-profile-window {
+.window {
   background: #fff;
   padding: 40px;
   border-radius: 20px;
@@ -161,21 +161,33 @@
     opacity 0.8s ease;
 }
 
-.edit-profile-overlay.active .edit-profile-window {
+.overlay.active .window {
   transform: translateY(0);
   opacity: 1;
 }
 
 @keyframes shake {
-  0% { transform: translateY(0) translateX(0); }
-  20% { transform: translateX(-5px); }
-  40% { transform: translateX(5px); }
-  60% { transform: translateX(-5px); }
-  80% { transform: translateX(5px); }
-  100% { transform: translateX(0); }
+  0% {
+    transform: translateY(0) translateX(0);
+  }
+  20% {
+    transform: translateX(-5px);
+  }
+  40% {
+    transform: translateX(5px);
+  }
+  60% {
+    transform: translateX(-5px);
+  }
+  80% {
+    transform: translateX(5px);
+  }
+  100% {
+    transform: translateX(0);
+  }
 }
 
-.edit-profile-window.highlight {
+.window.highlight {
   animation: shake 0.4s ease;
   border: 2px solid #a766ff;
   border-radius: 20px;
@@ -210,8 +222,8 @@
   border-radius: 50%;
 }
 
-.save-profile-button-size {
-  height: 20px;
+.save-overlay-button-size {
+  height: 30px;
 }
 
 .edit-profile-info {
@@ -219,12 +231,10 @@
   margin-top: 20px;
 }
 
-.edit-profile-buttons {
+.save-overlay-button {
   display: flex;
   justify-content: flex-end;
-  gap: 15px;
-  margin-top: 40px;
-  font-size: 18px;
+  margin-top: 30px;
 }
 
 .edit-avatar-buttons {
@@ -232,8 +242,8 @@
   flex-direction: column;
   font-size: 14px;
   width: 140px;
-  margin-top: 17px;
-  gap: 17px;
+  margin-top: 15px;
+  gap: 15px;
 }
 
 .save-avatar-button-size {

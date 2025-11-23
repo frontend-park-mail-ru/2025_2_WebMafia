@@ -48,12 +48,15 @@
 
 .menu-item svg {
   stroke: black;
-  transition: fill 0.3s ease, stroke 0.3s ease;
+  transition:
+      fill 0.3s ease,
+      stroke 0.3s ease;
   width: 24px;
   height: 24px;
 }
 
-.menu-item.active svg, .menu-item.active:hover svg {
+.menu-item.active svg,
+.menu-item.active:hover svg {
   fill: transparent;
   stroke: #fafafa;
 }
@@ -62,7 +65,8 @@
   stroke: #a766ff;
 }
 
-.menu-item.active:hover, .menu-item.active {
+.menu-item.active:hover,
+.menu-item.active {
   color: #fafafa;
 }
 
@@ -70,7 +74,7 @@
   color: #a766ff;
 }
 
-.library-items{
+.library-items {
   display: flex;
   flex-direction: column;
   gap: 14px;
