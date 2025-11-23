@@ -1,15 +1,45 @@
 const API_BASE_URL = 'http://localhost:8080/api/v1';
+const API_Data_URL = 'http://localhost:8081/api/v1';
 export const API_AVATARS_URL = 'http://217.16.17.173:8099/avatars';
 export const API_TRACKS_URL = 'http://217.16.17.173:8099/music/tracks';
 
 export class apiServises {
   constructor() {
     this.baseURL = API_BASE_URL;
+    this.dataURL = API_Data_URL;
     this.csrfToken = null;
+    this.userRoutes = ['/login', '/register', '/csrf-token', '/logout', '/avatar', '/profile', '/me'];
+    this.tracksArtistAlbumRoutes = [
+      '/artists/search',
+      '/artists',
+      '/artists/:id',
+      '/albums/search',
+      '/albums',
+      '/albums/:id',
+      '/artists/:id/albums',
+      '/tracks/search',
+      '/tracks',
+      '/tracks/:id',
+      '/artists/:id/tracks',
+      '/albums/:id/tracks',
+      '/genres/:id/tracks',
+      '/tracks/:id/listen',
+    ];
   }
 
   async request(endpoint, options = {}) {
-    const url = `${this.baseURL}${endpoint}`;
+    let url = '';
+    const endpointWithoutQuery = endpoint.split('?')[0];
+    const endpointPattern = endpointWithoutQuery.replace(/[a-fA-F0-9-]{36}/g, ':id');
+
+    if (this.userRoutes.includes(endpointPattern)) {
+      url = `${this.baseURL}${endpoint}`;
+    } else if (this.tracksArtistAlbumRoutes.includes(endpointPattern)) {
+      url = `${this.dataURL}${endpoint}`;
+    } else {
+      console.warn(`Роут ${endpoint} не найден в доступных маршрутах`);
+      throw new Error(`Unknown route: ${endpoint}`);
+    }
     const isFormData = options.body instanceof FormData;
 
     const config = {
