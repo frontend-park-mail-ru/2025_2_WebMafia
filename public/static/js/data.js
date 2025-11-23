@@ -34,7 +34,7 @@ export class apiServises {
 
     if (this.userRoutes.includes(endpointPattern)) {
       url = `${this.baseURL}${endpoint}`;
-    } else if (this.trcksArtistAlbumRoutes.includes(endpointPattern)) {
+    } else if (this.tracksArtistAlbumRoutes.includes(endpointPattern)) {
       url = `${this.dataURL}${endpoint}`;
     } else {
       console.warn(`Роут ${endpoint} не найден в доступных маршрутах`);
