@@ -5,6 +5,7 @@ export function playTrack() {
     '.play-button-track, .play-button, .current-card-btn.play, .play-popular-track, .play-album-track, .play-all-artist-tracks, .play-button-album'
   );
   let currentTrackId = player.currentTrack ? player.currentTrack.id : null;
+  const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
 
   playBtn.forEach((button) => {
     if (button.dataset.listenerAdded === 'true') return;
@@ -28,20 +29,22 @@ export function playTrack() {
       } else {
         await player.togglePlayPause();
       }
-
-      updateButtons();
+      if (isAuthenticated) {
+        updateButtons();
+      }
     });
   });
+  if (isAuthenticated) {
+    if (!player.audio.dataset.syncAttached) {
+      player.audio.dataset.syncAttached = 'true';
+      player.audio.addEventListener('play', updateButtons);
+      player.audio.addEventListener('pause', updateButtons);
+      player.audio.addEventListener('ended', updateButtons);
+      player.audio.addEventListener('loadeddata', updateButtons);
+    }
 
-  if (!player.audio.dataset.syncAttached) {
-    player.audio.dataset.syncAttached = 'true';
-    player.audio.addEventListener('play', updateButtons);
-    player.audio.addEventListener('pause', updateButtons);
-    player.audio.addEventListener('ended', updateButtons);
-    player.audio.addEventListener('loadeddata', updateButtons);
+    if (player.currentTrack) updateButtons();
   }
-
-  if (player.currentTrack) updateButtons();
 
   function updateButtons() {
     const playerTrackId = player.currentTrack ? player.currentTrack.id : null;
