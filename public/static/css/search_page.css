@@ -1,42 +1,41 @@
 .seach-pagre-layout {
-    display: flex;
-    justify-content: start;
+  display: flex;
+  justify-content: start;
 }
 
-.best-result-title{
-    display: flex;
-    justify-content: space-between;
-    margin-left: 23px;
-    margin-top: 20px;
-    margin-right: 40px;
+.best-result-title {
+  display: flex;
+  justify-content: space-between;
+  margin-left: 23px;
+  margin-top: 20px;
+  margin-right: 40px;
 }
 
-.best-result-container{
-    display: flex;
-    flex-direction: column;
-    
+.best-result-container {
+  display: flex;
+  flex-direction: column;
 }
 
 .best-result-card {
-    width: 350px;
-    height: 250px;
-    margin-top: 10px;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    background-color: #f3f5fa;
-    border-radius: 30px;
-    transition: transform 0.3s ease;
-    cursor: pointer;
-    padding: 15px;
+  width: 350px;
+  height: 250px;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background-color: #f3f5fa;
+  border-radius: 30px;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+  padding: 15px;
 }
 
 .best-result-card img {
-    width: 190px;
-    height: 190px;
-    border-radius: 20%;
-    object-fit: cover;
-    flex-shrink: 0;
+  width: 190px;
+  height: 190px;
+  border-radius: 20%;
+  object-fit: cover;
+  flex-shrink: 0;
 }
 
 .best-result-card.active img {
@@ -49,8 +48,8 @@
 }
 
 .best-result-card:hover {
-    background-color: rgba(0, 0, 0, 0.1);
-    transform: scale(1.01);
+  background-color: rgba(0, 0, 0, 0.1);
+  transform: scale(1.01);
 }
 
 .best-result-card-name {
@@ -73,24 +72,24 @@
 }
 
 .best-result-card-information {
-    gap: 6px;
-    display: flex;
-    align-items: center;
+  gap: 6px;
+  display: flex;
+  align-items: center;
 }
 
-.best-result-text{
+.best-result-text {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.popular-tracks-search{
-    width: 73%;
-    margin-bottom: 30px;
+.popular-tracks-search {
+  width: 73%;
+  margin-bottom: 30px;
 }
 
 .right-row-content-search {
-    flex: 1;
+  flex: 1;
   display: grid;
   align-items: center;
   gap: 8px;
@@ -105,7 +104,7 @@
   justify-content: center;
 }
 
-.search-alert-text{
+.search-alert-text {
   text-align: center;
   color: #636363;
 }
@@ -120,7 +119,7 @@
   font-weight: 500;
 }
 
-.alert-input-text{
+.alert-input-text {
   font-weight: 700;
   color: #444444;
 }

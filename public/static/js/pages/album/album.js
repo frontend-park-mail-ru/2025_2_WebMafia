@@ -1,14 +1,14 @@
-import { apiServise } from '../../data.js';
-import { router } from '../../routing.js';
-import { header } from '../header/header.js';
-import { sidebar } from '../sidebar/sidebar.js';
-import { initScrollbar } from '../../scrollbar.js';
-import { slider } from '../../slider.js';
-import { playsParser, durationParser, getValidImage, totalDurationParser, tracksNumParser } from '../../parsers.js';
-import { playTrack } from '../../playTrackBtn.js';
-import { setPlayButtonsOnAuth } from '../../setPlayButtonsOnAuth.js';
-import { playerOnlyOnPlay } from '../../playerOnlyOnplay.js';
-import { likeTrackBtn } from '../../utils/likeTrack.js';
+import { apiServise } from '@/data.js';
+import { router } from '@/routing.js';
+import { header } from '@/components/header/header.js';
+import { sidebar } from '@/components/sidebar/sidebar.js';
+import { initScrollbar } from '@/scrollbar.js';
+import { slider } from '@/slider.js';
+import { playsParser, durationParser, getValidImage, totalDurationParser, tracksNumParser } from '@/parsers.js';
+import { playTrack } from '@/playTrackBtn.js';
+import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
+import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
+import { likeTrackBtn } from '@/utils/likeTrack.js';
 
 export class AlbumPage {
   async render(id) {

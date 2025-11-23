@@ -1,13 +1,13 @@
-import { router } from '../../routing.js';
-import { initScrollbar } from '../../scrollbar.js';
-import { apiServise } from '../../data.js';
-import { durationParser, getValidImage, playsParser } from '../../parsers.js';
-import { header } from '../header/header.js';
-import { sidebar } from '../sidebar/sidebar.js';
-import { slider } from '../../slider.js';
-import { playTrack } from '../../playTrackBtn.js';
-import { setPlayButtonsOnAuth } from '../../setPlayButtonsOnAuth.js';
-import { playerOnlyOnPlay } from '../../playerOnlyOnplay.js';
+import { initScrollbar } from '@/scrollbar.js';
+import { router } from '@/routing.js';
+import { apiServise } from '@/data.js';
+import { durationParser, getValidImage, playsParser } from '@/parsers.js';
+import { header } from '@/components/header/header.js';
+import { sidebar } from '@/components/sidebar/sidebar.js';
+import { slider } from '@/slider.js';
+import { playTrack } from '@/playTrackBtn.js';
+import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
+import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
 
 export class SearchPage {
   async render(name) {
@@ -28,7 +28,11 @@ export class SearchPage {
     document.querySelector('head title').textContent = 'Wave music';
 
     try {
-      const [searchTracktData, searchAlbumData, searchArtistData] = await Promise.all([apiServise.searchTrack(name), apiServise.searchAlbum(name), apiServise.searchArtist(name)]);
+      const [searchTracktData, searchAlbumData, searchArtistData] = await Promise.all([
+        apiServise.searchTrack(name),
+        apiServise.searchAlbum(name),
+        apiServise.searchArtist(name),
+      ]);
       pageData.artists = (searchArtistData || []).map((artist) => ({
         id: artist.id,
         name: artist.name,

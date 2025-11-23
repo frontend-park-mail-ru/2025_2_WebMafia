@@ -1,13 +1,20 @@
-import { apiServise } from '../../data.js';
-import { router } from '../../routing.js';
-import { header } from '../header/header.js';
-import { sidebar } from '../sidebar/sidebar.js';
-import { initScrollbar } from '../../scrollbar.js';
-import { slider } from '../../slider.js';
-import { playsParser, durationParser, getValidImage, totalDurationParser, tracksNumParser, dateParser } from '../../parsers.js';
-import { playTrack } from '../../playTrackBtn.js';
-import { setPlayButtonsOnAuth } from '../../setPlayButtonsOnAuth.js';
-import { playerOnlyOnPlay } from '../../playerOnlyOnplay.js';
+import { apiServise } from '@/data.js';
+import { router } from '@/routing.js';
+import { header } from '@/components/header/header.js';
+import { sidebar } from '@/components/sidebar/sidebar.js';
+import { initScrollbar } from '@/scrollbar.js';
+import { slider } from '@/slider.js';
+import {
+  playsParser,
+  durationParser,
+  getValidImage,
+  totalDurationParser,
+  tracksNumParser,
+  dateParser,
+} from '@/parsers.js';
+import { playTrack } from '@/playTrackBtn.js';
+import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
+import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
 
 export class PlaylistPage {
   async render(id) {
@@ -23,7 +30,10 @@ export class PlaylistPage {
         id: data.playlist.id,
         title: data.playlist.title,
         date: dateParser(data.playlist.created_at),
-        cover: getValidImage(data.playlist.avatar_url ? 'playlist/' + data.playlist.avatar_url : '', 'default-playlist.png'),
+        cover: getValidImage(
+          data.playlist.avatar_url ? 'playlist/' + data.playlist.avatar_url : '',
+          'default-playlist.png'
+        ),
         description: data.playlist.description,
       };
       let totalDuration = 0;

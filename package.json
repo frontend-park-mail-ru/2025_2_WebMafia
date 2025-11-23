@@ -4,6 +4,8 @@
   "description": "Frontend-часть для музыкального сервиса Wave Music. Веб-приложение разработано на JavaScript с использованием Handlebars шаблонов, предоставляющее современный пользовательский интерфейс для работы с музыкой.",
   "main": "server.js",
   "scripts": {
+    "dev": "vite",
+    "build": "vite build",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "compilehbs.sh && node server.js",
     "lint": "eslint .",
@@ -26,6 +28,8 @@
     "stylelint-config-standard": "^39.0.0"
   },
   "dependencies": {
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "vite": "^7.2.2",
+    "vite-plugin-string": "^1.2.3"
   }
 }

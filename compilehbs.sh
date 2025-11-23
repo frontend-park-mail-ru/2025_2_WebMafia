@@ -10,8 +10,6 @@ handlebars public/static/js/pages/artist/artistPage.hbs -f public/static/js/page
 
 handlebars public/static/js/pages/profile/profilePage.hbs -f public/static/js/pages/profile/profilePage.tmpl.js
 
-handlebars public/static/js/pages/library_grid/libraryGrid.hbs -f public/static/js/pages/library_grid/libraryGrid.tmpl.js
-
 handlebars public/static/js/pages/artist_albums/artistAlbumsPage.hbs -f public/static/js/pages/artist_albums/artistAlbumsPage.tmpl.js
 
 handlebars public/static/js/pages/artist_tracks/artistTracksPage.hbs -f public/static/js/pages/artist_tracks/artistTracksPage.tmpl.js
@@ -20,13 +18,15 @@ handlebars public/static/js/pages/artist_singles/artistSinglesPage.hbs -f public
 
 handlebars public/static/js/pages/search_page/search_page.hbs -f public/static/js/pages/search_page/search_page.tmpl.js
 
+handlebars public/static/js/components/library_grid/libraryGrid.hbs -f public/static/js/components/library_grid/libraryGrid.tmpl.js
+
 handlebars public/static/js/pages/library/library.hbs -f public/static/js/pages/library/library.tmpl.js
 
-handlebars public/static/js/pages/header/header.hbs -f public/static/js/pages/header/header.tmpl.js
+handlebars public/static/js/components/header/header.hbs -f public/static/js/components/header/header.tmpl.js
 
-handlebars public/static/js/pages/sidebar/sidebar.hbs -f public/static/js/pages/sidebar/sidebar.tmpl.js
+handlebars public/static/js/components/sidebar/sidebar.hbs -f public/static/js/components/sidebar/sidebar.tmpl.js
 
-handlebars public/static/js/pages/player/player.hbs -f public/static/js/pages/player/player.tmpl.js
+handlebars public/static/js/components/player/player.hbs -f public/static/js/components/player/player.tmpl.js
 
 handlebars public/static/js/pages/album/album.hbs -f public/static/js/pages/album/album.tmpl.js
 
@@ -52,9 +52,9 @@ handlebars public/static/js/partials/nextTrack.hbs -f public/static/js/partials/
 
 handlebars public/static/js/partials/prevTrack.hbs -f public/static/js/partials/prevTrack.tmpl.js
 
-handlebars public/static/js/partials/shuffleBtn.hbs -f public/static/js/partials/shuffleBtn.tmpl.js
+handlebars public/static/js/partials/shuffle.hbs -f public/static/js/partials/shuffle.tmpl.js
 
-handlebars public/static/js/partials/repeatBtn.hbs -f public/static/js/partials/repeatBtn.tmpl.js
+handlebars public/static/js/partials/repeat.hbs -f public/static/js/partials/repeat.tmpl.js
 
 handlebars public/static/js/partials/pauseBtn.hbs -f public/static/js/partials/pauseBtn.tmpl.js
 

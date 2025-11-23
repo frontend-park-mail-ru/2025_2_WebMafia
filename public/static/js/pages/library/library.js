@@ -1,13 +1,13 @@
-import { apiServise } from '../../data.js';
-import { router } from '../../routing.js';
-import { header } from '../header/header.js';
-import { sidebar } from '../sidebar/sidebar.js';
-import { initScrollbar } from '../../scrollbar.js';
-import { getValidImage, playsParser, tracksNumParser } from '../../parsers.js';
-import { playTrack } from '../../playTrackBtn.js';
-import { setPlayButtonsOnAuth } from '../../setPlayButtonsOnAuth.js';
-import { playerOnlyOnPlay } from '../../playerOnlyOnplay.js';
-import { FormValidator } from '../../validation.js';
+import { apiServise } from '@/data.js';
+import { router } from '@/routing.js';
+import { header } from '@/components/header/header.js';
+import { sidebar } from '@/components/sidebar/sidebar.js';
+import { initScrollbar } from '@/scrollbar.js';
+import { getValidImage, playsParser, tracksNumParser } from '@/parsers.js';
+import { playTrack } from '@/playTrackBtn.js';
+import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
+import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
+import { FormValidator } from '@/validation.js';
 
 export class LibraryPage {
   async render() {
@@ -243,7 +243,10 @@ export class LibraryPage {
               updateAvatarContainer(event.target.result);
 
               if (!document.getElementById('deleteAvatarButton')) {
-                editAvatarButtons.insertAdjacentHTML('beforeend', `<button id="deleteAvatarButton" class="secondary-button save-avatar-button-size">Удалить фото</button>`);
+                editAvatarButtons.insertAdjacentHTML(
+                  'beforeend',
+                  `<button id="deleteAvatarButton" class="secondary-button save-avatar-button-size">Удалить фото</button>`
+                );
               }
             };
             reader.readAsDataURL(file);
@@ -273,7 +276,12 @@ export class LibraryPage {
       },
     };
 
-    const createValidator = new FormValidator('createPlaylistForm', createValidators, createInformation, '.primary-button');
+    const createValidator = new FormValidator(
+      'createPlaylistForm',
+      createValidators,
+      createInformation,
+      '.primary-button'
+    );
     createValidator.init();
 
     const saveButton = document.getElementById('savePlaylistButton');
@@ -300,7 +308,8 @@ export class LibraryPage {
         } catch (err) {
           console.error('Ошибка при сохранении профиля:', err);
           let msg = 'Не удалось сохранить изменения. Попробуйте еще раз чуть позже.';
-          if (err.message === 'bad request') msg = 'Что-то пошло не так. Пожалуйста, проверьте правильность введенных данных.';
+          if (err.message === 'bad request')
+            msg = 'Что-то пошло не так. Пожалуйста, проверьте правильность введенных данных.';
           createValidator.showMessage(msg);
         }
       });
