@@ -1,7 +1,9 @@
-import { player } from './pages/player/player.js';
+import { player } from '@/components/player/player.js';
 
 export function playTrack() {
-  const playBtn = document.querySelectorAll('.play-button-track, .play-button, .current-card-btn.play, .play-popular-track, .play-album-track, .play-all-artist-tracks, .play-button-album');
+  const playBtn = document.querySelectorAll(
+    '.play-button-track, .play-button, .current-card-btn.play, .play-popular-track, .play-album-track, .play-all-artist-tracks, .play-button-album'
+  );
   let currentTrackId = player.currentTrack ? player.currentTrack.id : null;
 
   playBtn.forEach((button) => {
@@ -47,17 +49,21 @@ export function playTrack() {
   function updateButtons() {
     const playerTrackId = player.currentTrack ? player.currentTrack.id : null;
 
-    document.querySelectorAll('.play-button-track, .play-button, .current-card-btn.play, .play-popular-track, .play-album-track, .play-all-artist-tracks, .play-button-album').forEach((button) => {
-      const buttonTrackId = button.dataset.trackId;
-      const isCurrent = playerTrackId && buttonTrackId === playerTrackId;
+    document
+      .querySelectorAll(
+        '.play-button-track, .play-button, .current-card-btn.play, .play-popular-track, .play-album-track, .play-all-artist-tracks, .play-button-album'
+      )
+      .forEach((button) => {
+        const buttonTrackId = button.dataset.trackId;
+        const isCurrent = playerTrackId && buttonTrackId === playerTrackId;
 
-      button.classList.toggle('is-active', isCurrent);
-      if (isCurrent) {
-        button.classList.toggle('paused', !player.audio.paused);
-      } else {
-        button.classList.remove('paused', 'is-active');
-      }
-    });
+        button.classList.toggle('is-active', isCurrent);
+        if (isCurrent) {
+          button.classList.toggle('paused', !player.audio.paused);
+        } else {
+          button.classList.remove('paused', 'is-active');
+        }
+      });
     document.querySelectorAll('.card-tracks, .track-row, .album-row').forEach((card) => {
       const buttons =
         card.querySelector('.play-button-track') ||

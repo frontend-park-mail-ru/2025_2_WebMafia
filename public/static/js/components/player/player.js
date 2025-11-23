@@ -1,5 +1,5 @@
-import { apiServise, API_TRACKS_URL } from '../../data.js';
-import { getValidImage } from '../../parsers.js';
+import { apiServise, API_TRACKS_URL } from '@/data.js';
+import { getValidImage } from '@/parsers.js';
 
 export class Player extends EventTarget {
   constructor() {
@@ -145,9 +145,16 @@ export class Player extends EventTarget {
         this.prevTrackId = prevTrackObject ? prevTrackObject.id : null;
       }
 
-      const [nextTrackData, prevTrackData] = await Promise.all([this.getDataTrackById(this.nextTrackId), this.getDataTrackById(this.prevTrackId)]);
+      const [nextTrackData, prevTrackData] = await Promise.all([
+        this.getDataTrackById(this.nextTrackId),
+        this.getDataTrackById(this.prevTrackId),
+      ]);
       const event = new CustomEvent('trackchange', {
-        detail: { prev: prevTrackData ? prevTrackData : null, current: this.currentTrack, next: nextTrackData ? nextTrackData : null },
+        detail: {
+          prev: prevTrackData ? prevTrackData : null,
+          current: this.currentTrack,
+          next: nextTrackData ? nextTrackData : null,
+        },
       });
       this.dispatchEvent(event);
     } catch (error) {
@@ -219,7 +226,10 @@ export class Player extends EventTarget {
 
     // document.querySelector('.track-cover-player').src = getValidImage('albums/' + track?.album?.avatar_url.split('/').pop(), 'default-album.png');
 
-    document.querySelector('.track-cover-player').src = getValidImage('albums/' + track?.album?.avatar_url, 'default-album.png');
+    document.querySelector('.track-cover-player').src = getValidImage(
+      'albums/' + track?.album?.avatar_url,
+      'default-album.png'
+    );
 
     // let file_url = track.file_url.split('/').pop();
     let file_url = track.file_url;

@@ -1,12 +1,13 @@
-import { apiServise } from '../../data.js';
-import { router } from '../../routing.js';
-import { getValidImage } from '../../parsers.js';
-import { player } from '../player/player.js';
+import { apiServise } from '@/data.js';
+import { router } from '@/routing.js';
+import { getValidImage } from '@/parsers.js';
+import { player } from '@/components/player/player.js';
 
 export class Header {
-  async render() {
+  async render(searchValue) {
     let pageData = {
       isAuthenticated: localStorage.getItem('isAuthenticated') === 'true',
+      searchValue: searchValue,
     };
 
     const contentTemplate = Handlebars.templates['header.hbs'];
@@ -65,6 +66,7 @@ export class Header {
           e.preventDefault();
           const searchVal = searchWindow.value;
           if (searchVal === '') return;
+          searchWindow.value = searchVal;
           router.navigate(`/search/${searchVal}`);
         }
       });
@@ -74,19 +76,20 @@ export class Header {
   profileDropdown() {
     const profileBtn = document.querySelector('.profile-btn');
     const dropDownMenu = document.querySelector('.dropdown-menu');
+    if (profileBtn && dropDownMenu) {
+      profileBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        dropDownMenu.classList.toggle('show');
+      });
 
-    profileBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      dropDownMenu.classList.toggle('show');
-    });
+      document.addEventListener('click', (e) => {
+        const isClickInside = profileBtn.contains(e.target) || dropDownMenu.contains(e.target);
 
-    document.addEventListener('click', (e) => {
-      const isClickInside = profileBtn.contains(e.target) || dropDownMenu.contains(e.target);
-
-      if (!isClickInside) {
-        dropDownMenu.classList.remove('show');
-      }
-    });
+        if (!isClickInside) {
+          dropDownMenu.classList.remove('show');
+        }
+      });
+    }
   }
 }
 

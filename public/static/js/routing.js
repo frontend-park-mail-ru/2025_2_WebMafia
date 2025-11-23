@@ -1,16 +1,16 @@
-import { MainPage } from './pages/mainpage/mainpage.js';
-import { notFoundPage } from './pages/notfoundpage/notFoundPage.js';
-import { LoginPage } from './pages/login/login.js';
-import { RegistrationPage } from './pages/register/register.js';
-import { ArtistPage } from './pages/artist/artist.js';
-import { ProfilePage } from './pages/profile/profilePage.js';
-import { ArtistAlbumsPage } from './pages/artist_albums/artistAlbumsPage.js';
-import { ArtistTracksPage } from './pages/artist_tracks/artistTracksPage.js';
-import { AlbumPage } from './pages/album/album.js';
-import { ArtistSinglesPage } from './pages/artist_singles/artistSinglesPage.js';
-import { LibraryPage } from './pages/library/library.js';
-import { SearchPage } from './pages/search_page/search_page.js';
-import { PlaylistPage } from './pages/playlist/playlist.js';
+import { MainPage } from '@/pages/mainpage/mainpage.js';
+import { notFoundPage } from '@/pages/notfoundpage/notFoundPage.js';
+import { LoginPage } from '@/pages/login/login.js';
+import { RegistrationPage } from '@/pages/register/register.js';
+import { ArtistPage } from '@/pages/artist/artist.js';
+import { ProfilePage } from '@/pages/profile/profilePage.js';
+import { ArtistAlbumsPage } from '@/pages/artist_albums/artistAlbumsPage.js';
+import { ArtistTracksPage } from '@/pages/artist_tracks/artistTracksPage.js';
+import { AlbumPage } from '@/pages/album/album.js';
+import { ArtistSinglesPage } from '@/pages/artist_singles/artistSinglesPage.js';
+import { LibraryPage } from '@/pages/library/library.js';
+import { SearchPage } from '@/pages/search_page/search_page.js';
+import { PlaylistPage } from '@/pages/playlist/playlist.js';
 
 export class Router {
   constructor() {
@@ -18,15 +18,33 @@ export class Router {
       { pattern: /^\/$/, component: new MainPage() },
       { pattern: /^\/login$/, component: new LoginPage() },
       { pattern: /^\/register$/, component: new RegistrationPage() },
-      { pattern: /^\/artist\/([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})\/albums$/, component: new ArtistAlbumsPage() },
-      { pattern: /^\/artist\/([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})\/tracks$/, component: new ArtistTracksPage() },
-      { pattern: /^\/artist\/([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})\/singles$/, component: new ArtistSinglesPage() },
-      { pattern: /^\/artist\/([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})$/, component: new ArtistPage() },
+      {
+        pattern: /^\/artist\/([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})\/albums$/,
+        component: new ArtistAlbumsPage(),
+      },
+      {
+        pattern: /^\/artist\/([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})\/tracks$/,
+        component: new ArtistTracksPage(),
+      },
+      {
+        pattern: /^\/artist\/([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})\/singles$/,
+        component: new ArtistSinglesPage(),
+      },
+      {
+        pattern: /^\/artist\/([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})$/,
+        component: new ArtistPage(),
+      },
       { pattern: /^\/profile$/, component: new ProfilePage() },
       { pattern: /^\/library$/, component: new LibraryPage() },
-      { pattern: /^\/album\/([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})$/, component: new AlbumPage() },
+      {
+        pattern: /^\/album\/([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})$/,
+        component: new AlbumPage(),
+      },
       { pattern: /^\/search\/((.+))$/, component: new SearchPage() },
-      { pattern: /^\/playlist\/([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})$/, component: new PlaylistPage() },
+      {
+        pattern: /^\/playlist\/([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})$/,
+        component: new PlaylistPage(),
+      },
     ];
     this.handleLocation = this.handleLocation.bind(this);
   }

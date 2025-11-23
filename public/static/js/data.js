@@ -1,15 +1,45 @@
 const API_BASE_URL = 'http://localhost:8080/api/v1';
+const API_Data_URL = 'http://localhost:8081/api/v1';
 export const API_AVATARS_URL = 'http://217.16.17.173:8099/avatars';
 export const API_TRACKS_URL = 'http://217.16.17.173:8099/music/tracks';
 
 export class apiServises {
   constructor() {
     this.baseURL = API_BASE_URL;
+    this.dataURL = API_Data_URL;
     this.csrfToken = null;
+    this.userRoutes = ['/login', '/register', '/csrf-token', '/logout', '/avatar', '/profile', '/me'];
+    this.tracksArtistAlbumRoutes = [
+      '/artists/search',
+      '/artists',
+      '/artists/:id',
+      '/albums/search',
+      '/albums',
+      '/albums/:id',
+      '/artists/:id/albums',
+      '/tracks/search',
+      '/tracks',
+      '/tracks/:id',
+      '/artists/:id/tracks',
+      '/albums/:id/tracks',
+      '/genres/:id/tracks',
+      '/tracks/:id/listen',
+    ];
   }
 
   async request(endpoint, options = {}) {
-    const url = `${this.baseURL}${endpoint}`;
+    let url = '';
+    const endpointWithoutQuery = endpoint.split('?')[0];
+    const endpointPattern = endpointWithoutQuery.replace(/[a-fA-F0-9-]{36}/g, ':id');
+
+    if (this.userRoutes.includes(endpointPattern)) {
+      url = `${this.baseURL}${endpoint}`;
+    } else if (this.tracksArtistAlbumRoutes.includes(endpointPattern)) {
+      url = `${this.dataURL}${endpoint}`;
+    } else {
+      console.warn(`Роут ${endpoint} не найден в доступных маршрутах`);
+      throw new Error(`Unknown route: ${endpoint}`);
+    }
     const isFormData = options.body instanceof FormData;
 
     const config = {
@@ -43,7 +73,11 @@ export class apiServises {
 
   async getMainPageData() {
     try {
-      const [albums, tracks, artists] = await Promise.all([this.request('/albums?limit=20').catch(() => []), this.request('/tracks?limit=30').catch(() => []), this.request('/artists?limit=20').catch(() => [])]);
+      const [albums, tracks, artists] = await Promise.all([
+        this.request('/albums?limit=20').catch(() => []),
+        this.request('/tracks?limit=30').catch(() => []),
+        this.request('/artists?limit=20').catch(() => []),
+      ]);
 
       return {
         albums: albums || [],
@@ -79,7 +113,10 @@ export class apiServises {
 
   async getArtistAlbums(id) {
     try {
-      const [albums, artist] = await Promise.all([this.request(`/artists/${id}/albums`).catch(() => []), this.request(`/artists/${id}`).catch(() => [])]);
+      const [albums, artist] = await Promise.all([
+        this.request(`/artists/${id}/albums`).catch(() => []),
+        this.request(`/artists/${id}`).catch(() => []),
+      ]);
       return { albums: albums, artist: artist };
     } catch (error) {
       console.error('Failed to load artist albums page data:', error);
@@ -89,7 +126,10 @@ export class apiServises {
 
   async getArtistTracks(id) {
     try {
-      const [tracks, artist] = await Promise.all([this.request(`/artists/${id}/tracks`).catch(() => []), this.request(`/artists/${id}`).catch(() => [])]);
+      const [tracks, artist] = await Promise.all([
+        this.request(`/artists/${id}/tracks`).catch(() => []),
+        this.request(`/artists/${id}`).catch(() => []),
+      ]);
       return { tracks: tracks, artist: artist };
     } catch (error) {
       console.error('Failed to load artist albums page data:', error);
@@ -99,7 +139,10 @@ export class apiServises {
 
   async getProfilePageData() {
     try {
-      const [artists, top_tracks] = await Promise.all([this.request('/artists?limit=10').catch(() => []), this.request(`/tracks?limit=5`).catch(() => [])]);
+      const [artists, top_tracks] = await Promise.all([
+        this.request('/artists?limit=10').catch(() => []),
+        this.request(`/tracks?limit=5`).catch(() => []),
+      ]);
 
       return {
         top_artists: artists || [],
@@ -226,7 +269,10 @@ export class apiServises {
 
   async getAlbumPageData(id) {
     try {
-      const [album, tracks] = await Promise.all([this.request(`/albums/${id}`).catch(() => []), this.request(`/albums/${id}/tracks`).catch(() => [])]);
+      const [album, tracks] = await Promise.all([
+        this.request(`/albums/${id}`).catch(() => []),
+        this.request(`/albums/${id}/tracks`).catch(() => []),
+      ]);
       return { album: album || {}, tracks: tracks || [] };
     } catch (error) {
       console.error('Failed to load album page data:', error);
@@ -475,6 +521,21 @@ export class apiServises {
     } catch (error) {
       console.error(`Failed to increment listen count for track ${trackId}:`, error);
     }
+  }
+
+  async searchTrack(name) {
+    const track = this.request(`/tracks/search?q=${name}&limit=5`).catch(() => []);
+    return track;
+  }
+
+  async searchAlbum(name) {
+    const album = this.request(`/albums/search?q=${name}&limit=5`).catch(() => []);
+    return album;
+  }
+
+  async searchArtist(name) {
+    const artist = this.request(`/artists/search?q=${name}&limit=5`).catch(() => []);
+    return artist;
   }
 }
 

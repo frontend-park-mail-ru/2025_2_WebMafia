@@ -78,14 +78,14 @@
 }
 
 .general-error {
-  max-width: 428px; 
-  margin: 0 auto 15px; 
-  padding: 10px; 
-  border-radius: 5px; 
-  text-align: center; 
-  color: rgb(231, 76, 60); 
-  background-color: rgba(231, 76, 60, 0.1); 
-  overflow-wrap: break-word; 
+  max-width: 428px;
+  margin: 0 auto 15px;
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
+  color: rgb(231, 76, 60);
+  background-color: rgba(231, 76, 60, 0.1);
+  overflow-wrap: break-word;
   display: none;
 }
 

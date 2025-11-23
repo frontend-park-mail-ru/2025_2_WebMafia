@@ -17,7 +17,7 @@
 
 .player.none_playing {
   display: none;
-} 
+}
 
 /* Левая часть */
 .player-left {
@@ -58,7 +58,7 @@
   stroke: #fafafa;
 }
 
-.like-btn:hover svg{
+.like-btn:hover svg {
   stroke: #a766ff;
   cursor: pointer;
   transform: scale(1.03);
@@ -100,7 +100,8 @@
   cursor: pointer;
 }
 
-.track-artist:hover, .track-title:hover {
+.track-artist:hover,
+.track-title:hover {
   color: #fff;
   text-decoration: underline;
 }
@@ -113,7 +114,7 @@
   color: #fff;
 }
 
-.track-time.current{
+.track-time.current {
   width: 34px;
 }
 
@@ -133,19 +134,19 @@
   align-items: center;
 }
 
-.control-btn.prev{
+.control-btn.prev {
   transform: rotate(180deg);
   margin-bottom: 6px;
 }
 
 .control-btn.prev svg,
-.control-btn.next svg{
+.control-btn.next svg {
   width: 23px;
   height: 23px;
 }
 
 .control-btn.prev g,
-.control-btn.next g{
+.control-btn.next g {
   fill: #fff;
 }
 
@@ -171,7 +172,27 @@
 }
 
 .control-btn.play path {
-  transform: translate(1px, 0);
+  transform: scale(1.8) translateX(1px);
+  transform-origin: center;
+}
+
+.control-btn.play circle {
+  r: 15px;
+}
+
+.control-btn.pause rect {
+  transform: scale(1.5);
+  transform-origin: center;
+  width: 4px;
+  x: 11px;
+}
+
+.control-btn.pause rect:last-child {
+  x: 17px;
+}
+
+.control-btn.pause circle {
+  r: 15px;
 }
 
 .control-btn svg {
@@ -191,7 +212,7 @@
 }
 
 .control-btn.prev g:hover,
-.control-btn.next g:hover{
+.control-btn.next g:hover {
   fill: #a766ff;
 }
 
@@ -213,32 +234,34 @@
   --progress: 0%;
 }
 
-.remote-slider::-webkit-slider-container{
+.remote-slider::-webkit-slider-container {
   border-radius: 30px;
 }
 
-.remote-slider::-webkit-slider-runnable-track, .volume-slider::-webkit-slider-runnable-track {
+.remote-slider::-webkit-slider-runnable-track,
+.volume-slider::-webkit-slider-runnable-track {
   height: 6px;
   border-radius: 30px;
-  background: linear-gradient(90deg, #7fd8e6 0%, #F048FF var(--progress), #e0e0e0 var(--progress), #e0e0e0 100%);
+  background: linear-gradient(90deg, #7fd8e6 0%, #f048ff var(--progress), #e0e0e0 var(--progress), #e0e0e0 100%);
 }
 
-.remote-slider::-webkit-slider-thumb, .volume-slider::-webkit-slider-thumb {
+.remote-slider::-webkit-slider-thumb,
+.volume-slider::-webkit-slider-thumb {
   opacity: 0;
   appearance: none;
   width: 14px;
   height: 14px;
   border-radius: 50%;
-  background: #F048FF;
+  background: #f048ff;
   margin-top: -4px;
   transition: all 0.2s ease;
 }
 
-.remote-slider::-webkit-slider-thumb:hover{
+.remote-slider::-webkit-slider-thumb:hover {
   transform: scale(1.1);
 }
 
-.remote-container:hover .remote-slider::-webkit-slider-thumb{
+.remote-container:hover .remote-slider::-webkit-slider-thumb {
   opacity: 1;
 }
 
@@ -259,7 +282,7 @@
   --progress: 50%;
 }
 
-.volume-slider::-webkit-slider-thumb:hover{
+.volume-slider::-webkit-slider-thumb:hover {
   transform: scale(1.1);
   border-color: #a866eb;
 }

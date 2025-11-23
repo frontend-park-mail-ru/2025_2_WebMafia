@@ -174,7 +174,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.3s ease,
+  transition:
+    transform 0.3s ease,
     background-position 0.5s ease,
     background 0.5s ease;
 }
@@ -203,7 +204,9 @@ body {
   height: 20px;
   width: 16px;
   opacity: 1;
-  box-shadow: inset 5px 0 0 0 white, inset -5px 0 0 0 white;
+  box-shadow:
+    inset 5px 0 0 0 white,
+    inset -5px 0 0 0 white;
   margin: 0;
 }
 
@@ -312,12 +315,12 @@ body {
   transform: scale(1.01);
 }
 
-.card-tracks.active{
+.card-tracks.active {
   background-color: rgba(0, 0, 0, 0.1);
   transform: scale(1.01);
 }
 
-.card-tracks.active img{
+.card-tracks.active img {
   filter: brightness(70%);
 }
 
@@ -382,7 +385,9 @@ body {
   height: 20px;
   width: 16px;
   opacity: 1;
-  box-shadow: inset 5px 0 0 0 white, inset -5px 0 0 0 white;
+  box-shadow:
+    inset 5px 0 0 0 white,
+    inset -5px 0 0 0 white;
   margin: 0;
 }
 

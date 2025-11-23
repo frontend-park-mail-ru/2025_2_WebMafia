@@ -149,7 +149,7 @@
   text-align: right;
   font-size: 16px;
   font-weight: 500;
-  color: #4A4459;
+  color: #4a4459;
   max-width: 180px;
   white-space: nowrap;
   overflow: hidden;
@@ -183,7 +183,7 @@
   height: 48px;
   border-radius: 14px;
   border: none;
-  background-color: #D3D7E7;
+  background-color: #d3d7e7;
   padding: 15px 10px 15px 45px;
   font-weight: 500;
   font-size: 16px;
@@ -191,6 +191,19 @@
   color: #333;
   outline: none;
   box-sizing: border-box;
+  transition: background-color 0.3s ease;
+}
+
+.search-input:focus {
+  background-color: #fff;
+  border: 2px solid #888;
+  color: #000000;
+  font-weight: 500;
+}
+
+.search-input.is-highlighted {
+  font-weight: 500;
+  color: rgb(0, 0, 0);
 }
 
 .search-input::placeholder {
