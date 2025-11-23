@@ -9,7 +9,7 @@ export class apiServises {
     this.dataURL = API_Data_URL;
     this.csrfToken = null;
     this.userRoutes = ['/login', '/register', '/csrf-token', '/logout', '/avatar', '/profile', '/me'];
-    this.trcksArtistAlbumRoutes = [
+    this.tracksArtistAlbumRoutes = [
       '/artists/search',
       '/artists',
       '/artists/:id',
