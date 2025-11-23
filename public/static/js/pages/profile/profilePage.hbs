@@ -49,7 +49,12 @@
             <div class="track-number">{{numeration @index}}</div>
             <div class="track-cover-wrapper">
               <img class="track-cover" src="{{ cover }}" alt="{{ name }}" />
-              <button class="play-popular-track" data-track-id="{{ id }}" data-context="artist-popular" data-artist-id="{{../id}}">
+              <button
+                class="play-popular-track"
+                data-track-id="{{ id }}"
+                data-context="artist-popular"
+                data-artist-id="{{../id}}"
+              >
                 <span class="play-icon">{{> play }}</span>
                 <span class="pause-icon">{{> pause }}</span>
               </button>
@@ -121,7 +126,14 @@
               <div class="form-group">
                 <label for="email">Адрес почты</label>
                 <div class="input-wrapper">
-                  <input type="email" id="email" name="email" placeholder="example@domain.com" autocomplete="email" value="{{ profile.email }}" />
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="example@domain.com"
+                    autocomplete="email"
+                    value="{{ profile.email }}"
+                  />
                   <div class="error-message" id="emailError"></div>
                   <div class="validation-message" id="emailInformation"></div>
                 </div>
@@ -130,7 +142,14 @@
               <div class="form-group">
                 <label for="login">Имя пользователя</label>
                 <div class="input-wrapper">
-                  <input type="text" id="login" name="login" placeholder="Имя пользователя" autocomplete="username" value="{{ profile.nickname }}" />
+                  <input
+                    type="text"
+                    id="login"
+                    name="login"
+                    placeholder="Имя пользователя"
+                    autocomplete="username"
+                    value="{{ profile.nickname }}"
+                  />
                   <div class="error-message" id="loginError"></div>
                   <div class="validation-message" id="loginInformation"></div>
                 </div>
@@ -139,7 +158,17 @@
               <div class="form-group">
                 <label for="password">Сменить пароль</label>
                 <div class="password-wrapper">
+<<<<<<< HEAD
                   <input type="password" id="password" name="password" placeholder="Пароль" autocomplete="new-password" />
+=======
+                  <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Пароль"
+                    autocomplete="new-password"
+                  />
+>>>>>>> dev
                   <button type="button" class="eye" aria-label="Показать пароль">
                     {{> eyeOpen }}
                     {{> eyeClosed }}
@@ -151,7 +180,17 @@
 
               <div class="form-group">
                 <div class="password-wrapper">
+<<<<<<< HEAD
                   <input type="password" id="passwordConfirm" name="passwordConfirm" placeholder="Повторите пароль" autocomplete="new-password" />
+=======
+                  <input
+                    type="password"
+                    id="passwordConfirm"
+                    name="passwordConfirm"
+                    placeholder="Повторите пароль"
+                    autocomplete="new-password"
+                  />
+>>>>>>> dev
                   <button type="button" class="eye" aria-label="Показать пароль">
                     {{> eyeOpen }}
                     {{> eyeClosed }}
@@ -165,7 +204,9 @@
             </form>
           </div>
           <div class="save-overlay-button">
-            <button class="primary-button save-overlay-button-size" id="saveProfileChangesButton">Сохранить изменения</button>
+            <button class="primary-button save-overlay-button-size" id="saveProfileChangesButton">
+              Сохранить изменения
+            </button>
           </div>
         </div>
       </div>

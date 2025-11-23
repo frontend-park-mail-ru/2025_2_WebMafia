@@ -191,6 +191,19 @@
   color: #333;
   outline: none;
   box-sizing: border-box;
+  transition: background-color 0.3s ease;
+}
+
+.search-input:focus {
+  background-color: #fff;
+  border: 2px solid #888;
+  color: #000000;
+  font-weight: 500;
+}
+
+.search-input.is-highlighted {
+  font-weight: 500;
+  color: rgb(0, 0, 0);
 }
 
 .search-input::placeholder {

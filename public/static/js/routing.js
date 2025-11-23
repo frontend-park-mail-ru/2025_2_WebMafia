@@ -18,15 +18,33 @@ export class Router {
       { pattern: /^\/$/, component: new MainPage() },
       { pattern: /^\/login$/, component: new LoginPage() },
       { pattern: /^\/register$/, component: new RegistrationPage() },
-      { pattern: /^\/artist\/([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})\/albums$/, component: new ArtistAlbumsPage() },
-      { pattern: /^\/artist\/([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})\/tracks$/, component: new ArtistTracksPage() },
-      { pattern: /^\/artist\/([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})\/singles$/, component: new ArtistSinglesPage() },
-      { pattern: /^\/artist\/([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})$/, component: new ArtistPage() },
+      {
+        pattern: /^\/artist\/([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})\/albums$/,
+        component: new ArtistAlbumsPage(),
+      },
+      {
+        pattern: /^\/artist\/([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})\/tracks$/,
+        component: new ArtistTracksPage(),
+      },
+      {
+        pattern: /^\/artist\/([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})\/singles$/,
+        component: new ArtistSinglesPage(),
+      },
+      {
+        pattern: /^\/artist\/([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})$/,
+        component: new ArtistPage(),
+      },
       { pattern: /^\/profile$/, component: new ProfilePage() },
       { pattern: /^\/library$/, component: new LibraryPage() },
-      { pattern: /^\/album\/([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})$/, component: new AlbumPage() },
+      {
+        pattern: /^\/album\/([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})$/,
+        component: new AlbumPage(),
+      },
       { pattern: /^\/search\/((.+))$/, component: new SearchPage() },
-      { pattern: /^\/playlist\/([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})$/, component: new PlaylistPage() },
+      {
+        pattern: /^\/playlist\/([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})$/,
+        component: new PlaylistPage(),
+      },
     ];
     this.handleLocation = this.handleLocation.bind(this);
   }

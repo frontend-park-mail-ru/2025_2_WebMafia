@@ -131,7 +131,11 @@ export class MainPage {
 
     function playerData(track) {
       if (!track) {
-        return { img: 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7', name: '', id: null };
+        return {
+          img: 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7',
+          name: '',
+          id: null,
+        };
       }
 
       const imageUrl = getValidImage('albums/' + track.album?.avatar_url, 'default-album.png');

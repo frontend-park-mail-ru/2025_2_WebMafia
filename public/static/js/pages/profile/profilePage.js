@@ -206,7 +206,10 @@ export class ProfilePage {
               updateAvatarContainer('avatarEditContainer', event.target.result);
 
               if (!document.getElementById('deleteAvatarButton')) {
-                editAvatarButtons.insertAdjacentHTML('beforeend', `<button id="deleteAvatarButton" class="secondary-button save-avatar-button-size">Удалить фото</button>`);
+                editAvatarButtons.insertAdjacentHTML(
+                  'beforeend',
+                  `<button id="deleteAvatarButton" class="secondary-button save-avatar-button-size">Удалить фото</button>`
+                );
               }
             };
             reader.readAsDataURL(file);
@@ -353,7 +356,8 @@ export class ProfilePage {
           console.error('Ошибка при сохранении профиля:', err);
           let msg = 'Не удалось сохранить изменения. Попробуйте еще раз чуть позже.';
           if (err.message === 'resource conflict') msg = 'Пользователь с такими данными уже существует.';
-          else if (err.message === 'bad request') msg = 'Что-то пошло не так. Пожалуйста, проверьте правильность введенных данных.';
+          else if (err.message === 'bad request')
+            msg = 'Что-то пошло не так. Пожалуйста, проверьте правильность введенных данных.';
           editValidator.showMessage(msg);
         }
       });

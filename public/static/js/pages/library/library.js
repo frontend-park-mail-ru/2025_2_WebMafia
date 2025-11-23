@@ -243,7 +243,10 @@ export class LibraryPage {
               updateAvatarContainer(event.target.result);
 
               if (!document.getElementById('deleteAvatarButton')) {
-                editAvatarButtons.insertAdjacentHTML('beforeend', `<button id="deleteAvatarButton" class="secondary-button save-avatar-button-size">Удалить фото</button>`);
+                editAvatarButtons.insertAdjacentHTML(
+                  'beforeend',
+                  `<button id="deleteAvatarButton" class="secondary-button save-avatar-button-size">Удалить фото</button>`
+                );
               }
             };
             reader.readAsDataURL(file);
@@ -273,7 +276,12 @@ export class LibraryPage {
       },
     };
 
-    const createValidator = new FormValidator('createPlaylistForm', createValidators, createInformation, '.primary-button');
+    const createValidator = new FormValidator(
+      'createPlaylistForm',
+      createValidators,
+      createInformation,
+      '.primary-button'
+    );
     createValidator.init();
 
     const saveButton = document.getElementById('savePlaylistButton');
@@ -300,7 +308,8 @@ export class LibraryPage {
         } catch (err) {
           console.error('Ошибка при сохранении профиля:', err);
           let msg = 'Не удалось сохранить изменения. Попробуйте еще раз чуть позже.';
-          if (err.message === 'bad request') msg = 'Что-то пошло не так. Пожалуйста, проверьте правильность введенных данных.';
+          if (err.message === 'bad request')
+            msg = 'Что-то пошло не так. Пожалуйста, проверьте правильность введенных данных.';
           createValidator.showMessage(msg);
         }
       });

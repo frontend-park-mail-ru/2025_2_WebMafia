@@ -172,7 +172,27 @@
 }
 
 .control-btn.play path {
-  transform: translate(1px, 0);
+  transform: scale(1.8) translateX(1px);
+  transform-origin: center;
+}
+
+.control-btn.play circle {
+  r: 15px;
+}
+
+.control-btn.pause rect {
+  transform: scale(1.5);
+  transform-origin: center;
+  width: 4px;
+  x: 11px;
+}
+
+.control-btn.pause rect:last-child {
+  x: 17px;
+}
+
+.control-btn.pause circle {
+  r: 15px;
 }
 
 .control-btn svg {

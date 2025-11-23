@@ -4,50 +4,67 @@
   <div class="layout">
     {{> sidebar}}
     <div class="page" id="scrollContent">
+      {{#if best_result}}
       <div class="seach-pagre-layout">
         <!-- Лучшее совпадение -->
         <div class="best-result-container">
           <div class="best-result-title">
             <div class="title-name">Лучшее совпадение</div>
           </div>
-          <div data-href="/album/{{ id }}" class="best-result-card click-event-card">
+          {{#with best_result}}
+          <div
+            data-href="{{#if duration}} /album/{{ album_id }} {{else}} {{#if artist_id}}/album/{{
+              id
+            }}{{else}}/artist/{{ id }} {{/if}}
+                                {{/if}} "
+            class="best-result-card click-event-card"
+          >
             <img src="{{ image }}" alt="{{ name }}" />
             <p class="best-result-card-name">{{ name }}</p>
-            <p class="best-result-card-sub card-sub-limiter">
+            <div class="best-result-card-information">
               {{ type }}
-              <span class="dot"></span>
-              <a class="best-result-text href-decoration" href="/artist/{{ artist_id }}">{{ artist }}</a>
-            </p>
+              <p class="best-result-card-sub card-sub-limiter">
+                {{#if artist}}
+                <span class="dot"></span>
+                <a class="best-result-text href-decoration" href="/artist/{{ artist_id }}">{{ artist }}</a>
+                {{/if}}
+              </p>
+            </div>
           </div>
+          {{/with}}
         </div>
 
         <!-- Треки -->
-        <div class="popular-tracks">
+        {{#if tracks}}
+        <div class="popular-tracks-search">
           <div class="title">
-            <div class="title-name">Найденные треки</div>
+            <div class="title-name">Треки</div>
           </div>
           <div class="tracks-table">
-            {{#each popular_tracks}}
+            {{#each tracks}}
             <div class="track-row">
               <div class="track-number">{{numeration @index}}</div>
               <div class="track-cover-wrapper">
-                <img class="track-cover" src="{{ cover }}" alt="{{ name }}" />
-                <button class="play-popular-track" data-track-id="{{ id }}" data-context="artist-popular" data-artist-id="{{../id}}">
+                <img class="track-cover" src="{{ image }}" alt="{{ name }}" />
+                <button
+                  class="play-popular-track"
+                  data-track-id="{{ id }}"
+                  data-context="artist-popular"
+                  data-artist-id="{{../id}}"
+                >
                   <span class="play-icon">{{> play }}</span>
                   <span class="pause-icon">{{> pause }}</span>
                 </button>
               </div>
-              <div class="right-row-content">
+              <div class="right-row-content-search">
                 <div class="track-name">{{ name }}</div>
                 <div class="track-performers">
                   {{#each artists}}
-                  <a href="artist/{{ id }}" class="track-performer href-decoration"> {{ name }}{{#unless @last}}, {{/unless}} </a>
+                  <a href="artist/{{ id }}" class="track-performer href-decoration">
+                    {{ name }}{{#unless @last}}, {{/unless}}
+                  </a>
                   {{/each}}
                 </div>
-                <div class="track-plays-num">{{ plays }}</div>
-                <a href="album/{{ album_id }}" class="track-album-name href-decoration">
-                  {{ album }}
-                </a>
                 <div class="track-duration">{{ duration }}</div>
               </div>
             </div>
@@ -55,9 +72,12 @@
           </div>
           <a class="secondary-button show-tracks-button" href="/artist/{{ id }}/tracks">Показать все</a>
         </div>
+
+        {{/if}}
       </div>
 
       <!-- Альбомы -->
+      {{#if albums}}
       <div class="title">
         <div class="title-name">Альбомы</div>
       </div>
@@ -78,8 +98,10 @@
         </div>
         <i class="slide-btn right"></i>
       </div>
+      {{/if}}
 
       <!-- Артисты -->
+      {{#if artists}}
       <div class="title">
         <div class="title-name">Артисты</div>
       </div>
@@ -96,6 +118,17 @@
         </div>
         <p><i class="slide-btn right"></i></p>
       </div>
+      {{/if}}
+      {{else}}
+      <div class="search-alert-container">
+        <div class="search-alert-text">
+          <div class="search-alert-title">
+            Извините, по запросу <span class="alert-input-text">"{{ titleName }}"</span> ничего не нашлось.
+          </div>
+          <div class="search-alert-subtitle">Проверь, нет ли опечаток, сократите запрос или перефразируй его.</div>
+        </div>
+      </div>
+      {{/if}}
     </div>
   </div>
 </div>
