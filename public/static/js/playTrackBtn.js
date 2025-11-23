@@ -14,7 +14,7 @@ export function playTrack() {
       const nowPlayingContainer = document.querySelector('.now-playing-container');
       const playerContent = document.querySelector('.player');
       const layout = document.querySelector('.layout');
-      if (layout) layout.classList.remove('whithout_player');
+      if (!layout.classList.contains('with_player')) layout.classList.add('with_player');
       if (playerContent) playerContent.classList.remove('none_playing');
       if (nowPlayingContainer) nowPlayingContainer.classList.remove('none_play');
 

@@ -215,6 +215,11 @@
 
   .card-position-current {
     transform: translateX(0) scale(1.2);
+    transition: transform 0.3s ease;
+  }
+
+  .card-position-current:active {
+    transform: translateX(0) scale(1.1);
   }
 
   .card-position-next {

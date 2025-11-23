@@ -212,7 +212,6 @@
   .head {
     height: 64px;
     padding: 0 21px;
-    -webkit-tap-highlight-color: transparent;
   }
 
   .logo {
@@ -406,5 +405,11 @@
 
   .profile-btn:active {
     transform: scale(0.9);
+  }
+
+  .dropdown-menu {
+    right: -21px;
+    margin-top: 9px;
+    min-width: 140px;
   }
 }

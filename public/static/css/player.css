@@ -183,16 +183,6 @@
   stroke: #a766ff;
 }
 
-.control-btn.prev:hover {
-  transform: scale(1.01) rotate(180deg);
-  color: #a766ff;
-}
-
-.control-btn.prev g:hover,
-.control-btn.next g:hover{
-  fill: #a766ff;
-}
-
 .progress-remote {
   gap: 15px;
   display: flex;
@@ -543,6 +533,14 @@
   .control-btn.next svg {
     width: 32px;
     height: 32px;
+  }
+
+  .control-btn {
+    transition: transform 0.3s ease;
+  }
+
+  .control-btn:active, .like-btn:active {
+    transform: scale(0.9);
   }
 
   .track-artist:hover, .track-title:hover {

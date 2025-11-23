@@ -400,6 +400,12 @@ body {
 }
 
 @media (max-width: 560px) {
+  body, html {
+    -webkit-tap-highlight-color: transparent;
+    position: relative;
+    overflow-x: hidden;
+  }
+
   .layout {
     margin-bottom: 78px;
   }
@@ -414,17 +420,28 @@ body {
   }
 
   .title {
-    margin-left: 23px;
+    margin-left: 18px;
+    display: flex;
+    align-items: center;
+  }
+
+  .title-name {
+    font-size: 28px;
   }
 
   .cards {
     padding: 16px 0 0 18px;
-    margin: 0 0 12px 0;
+    margin: 0 0 16px 0;
   }
 
   .card {
     flex: 0 0 155px;
     min-height: 170px;
+    transition: transform 0.3s ease;
+  }
+
+  .card:active {
+    transform: scale(0.9);
   }
 
   .card img {
