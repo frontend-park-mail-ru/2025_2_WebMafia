@@ -1,4 +1,4 @@
-import { player } from '../pages/player/player.js';
+import { player } from '@/components/player/player.js';
 
 export function spaceToggle() {
   window.addEventListener('keydown', (event) => {

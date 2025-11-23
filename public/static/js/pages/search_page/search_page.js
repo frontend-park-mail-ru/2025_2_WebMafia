@@ -1,13 +1,12 @@
-import { router } from '../../routing.js';
-import { initScrollbar } from '../../scrollbar.js';
-import { apiServise } from '../../data.js';
-import { durationParser, getValidImage, playsParser } from '../../parsers.js';
-import { header } from '../header/header.js';
-import { sidebar } from '../sidebar/sidebar.js';
-import { slider } from '../../slider.js';
-import { playTrack } from '../../playTrackBtn.js';
-import { setPlayButtonsOnAuth } from '../../setPlayButtonsOnAuth.js';
-import { playerOnlyOnPlay } from '../../playerOnlyOnplay.js';
+import { initScrollbar } from '@/scrollbar.js';
+import { apiServise } from '@/data.js';
+import { getValidImage, playsParser } from '@/parsers.js';
+import { header } from '@/components/header/header.js';
+import { sidebar } from '@/components/sidebar/sidebar.js';
+import { slider } from '@/slider.js';
+import { playTrack } from '@/playTrackBtn.js';
+import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
+import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
 
 export class SearchPage {
   async render() {

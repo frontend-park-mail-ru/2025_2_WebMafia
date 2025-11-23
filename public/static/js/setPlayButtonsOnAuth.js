@@ -1,4 +1,4 @@
-import { router } from './routing.js';
+import { router } from '@/routing.js';
 
 export function setPlayButtonsOnAuth() {
   const playbtn = document.querySelectorAll('.play-button-track, .play-button, .current-card-btn.play, .play-popular-track, .play-album-track, .play-all-artist-tracks');
