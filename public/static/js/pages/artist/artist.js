@@ -114,12 +114,8 @@ export class ArtistPage {
           }, 600);
         } else {
           wrapper.style.setProperty('-webkit-line-clamp', 'unset');
-          const newHeight = height + wrapper.scrollHeight - 35;
-          if (height === 350)
-            wrapper.style.maxHeight = wrapper.scrollHeight - 18 + 'px';
-          else
-            wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
-          container.style.minHeight = newHeight + 'px';
+          wrapper.style.maxHeight = wrapper.scrollHeight + 48 + 'px';
+          container.style.minHeight = height + wrapper.scrollHeight - 35 + 'px';
         }
 
         container.classList.toggle('expanded');

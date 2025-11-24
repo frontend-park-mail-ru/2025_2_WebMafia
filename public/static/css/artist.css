@@ -394,7 +394,7 @@
   .artist-description {
     font-size: 12px;
     margin-top: 7px;
-    width: calc(100% - 36px);
+    width: calc(100% - 18px);
   }
 
   .artist-page {
@@ -407,7 +407,7 @@
 
   .track-row {
     display: flex;
-    padding: 10px 40px 10px 25px;
+    padding: 10px 55px 10px 25px;
     align-items: center;
     justify-content: space-between;
     border-radius: 30px;
@@ -433,7 +433,7 @@
   .track-like-container {
     position: absolute;
     top: calc(50% - 18px);
-    right: -17px;
+    right: -35px;
   }
 
   .like-btn-track {

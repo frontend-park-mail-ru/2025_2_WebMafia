@@ -431,12 +431,16 @@ body {
   }
 
   .title-name {
-    font-size: 28px;
+    font-size: 26px;
   }
 
   .cards {
     padding: 16px 0 0 18px;
     margin: 0 0 16px 0;
+  }
+
+  .cards.tracks {
+    padding: 15px 10px 30px 43px;
   }
 
   .card {
