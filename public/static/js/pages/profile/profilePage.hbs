@@ -45,37 +45,39 @@
         </div>
         <div class="tracks-table tracks-table-placement">
           {{#each top_tracks}}
-          <div class="track-row">
-            <div class="track-number">{{numeration @index}}</div>
-            <div class="track-cover-wrapper">
-              <img class="track-cover" src="{{ cover }}" alt="{{ name }}" />
-              <button
-                class="play-popular-track"
-                data-track-id="{{ id }}"
-                data-context="artist-popular"
-                data-artist-id="{{../id}}"
-              >
-                <span class="play-icon">{{> play }}</span>
-                <span class="pause-icon">{{> pause }}</span>
-              </button>
-            </div>
-            <div class="right-row-content">
-              <div class="track-name">{{ name }}</div>
-              <div class="track-performers">
-                {{#each artists}}
-                <a href="artist/{{ id }}" class="track-performer"> {{ name }}{{#unless @last}}, {{/unless}} </a>
-                {{/each}}
+            {{#if is_liked}}
+              <div class="track-row">
+                <div class="track-number">{{numeration @index}}</div>
+                <div class="track-cover-wrapper">
+                  <img class="track-cover" src="{{ cover }}" alt="{{ name }}" />
+                  <button
+                    class="play-popular-track"
+                    data-track-id="{{ id }}"
+                    data-context="artist-popular"
+                    data-artist-id="{{../id}}"
+                  >
+                    <span class="play-icon">{{> play }}</span>
+                    <span class="pause-icon">{{> pause }}</span>
+                  </button>
+                </div>
+                <div class="right-row-content">
+                  <div class="track-name">{{ name }}</div>
+                  <div class="track-performers">
+                    {{#each artists}}
+                    <a href="artist/{{ id }}" class="track-performer"> {{ name }}{{#unless @last}}, {{/unless}} </a>
+                    {{/each}}
+                  </div>
+                  <div class="track-plays-num">{{ plays }}</div>
+                  <a href="album/{{ album_id }}" class="track-album-name">
+                    {{ album }}
+                  </a>
+                  <div class="track-like-container">
+                    <button class="like-btn-track artist-like-size {{#if is_liked}}active{{/if}}" data-track-id="{{ id }}">{{> likeBtn }}</button>
+                  </div>
+                  <div class="track-duration">{{ duration }}</div>
+                </div>
               </div>
-              <div class="track-plays-num">{{ plays }}</div>
-              <a href="album/{{ album_id }}" class="track-album-name">
-                {{ album }}
-              </a>
-              <div class="track-like-container">
-                <button class="like-btn-track" data-track-id="{{ id }}">{{> likeBtn }}</button>
-              </div>
-              <div class="track-duration">{{ duration }}</div>
-            </div>
-          </div>
+            {{/if}}
           {{/each}}
         </div>
 
@@ -158,9 +160,6 @@
               <div class="form-group">
                 <label for="password">Сменить пароль</label>
                 <div class="password-wrapper">
-<<<<<<< HEAD
-                  <input type="password" id="password" name="password" placeholder="Пароль" autocomplete="new-password" />
-=======
                   <input
                     type="password"
                     id="password"
@@ -168,7 +167,6 @@
                     placeholder="Пароль"
                     autocomplete="new-password"
                   />
->>>>>>> dev
                   <button type="button" class="eye" aria-label="Показать пароль">
                     {{> eyeOpen }}
                     {{> eyeClosed }}
@@ -180,9 +178,6 @@
 
               <div class="form-group">
                 <div class="password-wrapper">
-<<<<<<< HEAD
-                  <input type="password" id="passwordConfirm" name="passwordConfirm" placeholder="Повторите пароль" autocomplete="new-password" />
-=======
                   <input
                     type="password"
                     id="passwordConfirm"
@@ -190,7 +185,6 @@
                     placeholder="Повторите пароль"
                     autocomplete="new-password"
                   />
->>>>>>> dev
                   <button type="button" class="eye" aria-label="Показать пароль">
                     {{> eyeOpen }}
                     {{> eyeClosed }}

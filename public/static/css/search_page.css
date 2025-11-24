@@ -20,6 +20,7 @@
   width: 350px;
   height: 250px;
   margin-top: 10px;
+  margin-left: 20px;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -93,7 +94,7 @@
   display: grid;
   align-items: center;
   gap: 8px;
-  grid-template-columns: 65% 30% 5%;
+  grid-template-columns: 65% 25% 5% 15%;
 }
 
 .search-alert-container {

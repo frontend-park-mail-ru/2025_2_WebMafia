@@ -8,6 +8,7 @@ import { slider } from '@/slider.js';
 import { playTrack } from '@/playTrackBtn.js';
 import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
 import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
+import { likeTrackBtn } from '@/utils/likeTrack';
 
 export class SearchPage {
   async render(name) {
@@ -57,6 +58,7 @@ export class SearchPage {
         artist: track.artists ? track.artists[0].name : 'Unknown Artist',
         artist_id: track.album.artists?.[0].id,
         type: 'Трэк',
+        is_liked: track.is_liked,
       }));
 
       if (pageData.artists.length > 0) {
@@ -87,6 +89,7 @@ export class SearchPage {
     initScrollbar();
     this.addEventListeners();
     setPlayButtonsOnAuth();
+    likeTrackBtn();
     playTrack();
   }
 

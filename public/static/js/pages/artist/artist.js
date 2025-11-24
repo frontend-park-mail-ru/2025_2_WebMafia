@@ -46,6 +46,7 @@ export class ArtistPage {
         duration: durationParser(track.duration_s),
         cover: getValidImage('albums/' + track.album.avatar_url, 'default-album.png'),
         artists: track.artists,
+        is_liked: track.is_liked,
       }));
       data.albums.forEach((album) => {
         const item = {

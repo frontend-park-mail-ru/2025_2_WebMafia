@@ -3,7 +3,7 @@ import { apiServise } from '@/data.js';
 export function likeTrackBtn() {
   const likeBnt = document.querySelectorAll('.like-btn-track');
   likeBnt.forEach((button) => {
-    button.addEventListener('click', async (event) => {
+    button.addEventListener('click', async () => {
       const trackId = button.dataset.trackId;
       try {
         if (button.classList.contains('active')) {

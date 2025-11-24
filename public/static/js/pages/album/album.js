@@ -41,6 +41,7 @@ export class AlbumPage {
           name: track.title,
           plays: playsParser(track.play_count),
           duration: durationParser(track.duration_s),
+          is_liked: track.is_liked,
         };
       });
       pageData.totalDuration = totalDurationParser(totalDuration);

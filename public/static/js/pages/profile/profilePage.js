@@ -54,6 +54,7 @@ export class ProfilePage {
         duration: durationParser(track.duration_s),
         cover: getValidImage('albums/' + track.album.avatar_url, 'default-album.png'),
         artists: track.artists,
+        is_liked: track.is_liked,
       }));
       pageData.recent = (data.recent || []).map((artist) => ({
         id: artist.id,

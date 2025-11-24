@@ -1,5 +1,6 @@
 const API_BASE_URL = 'http://localhost:8080/api/v1';
 const API_Data_URL = 'http://localhost:8081/api/v1';
+const API_PLAYLIST_URL = 'http://localhost:8082/api/v1';
 export const API_AVATARS_URL = 'http://217.16.17.173:8099/avatars';
 export const API_TRACKS_URL = 'http://217.16.17.173:8099/music/tracks';
 
@@ -7,9 +8,10 @@ export class apiServises {
   constructor() {
     this.baseURL = API_BASE_URL;
     this.dataURL = API_Data_URL;
+    this.playlistURL = API_PLAYLIST_URL;
     this.csrfToken = null;
     this.userRoutes = ['/login', '/register', '/csrf-token', '/logout', '/avatar', '/profile', '/me'];
-    this.trcksArtistAlbumRoutes = [
+    this.tracksArtistAlbumRoutes = [
       '/artists/search',
       '/artists',
       '/artists/:id',
@@ -25,6 +27,21 @@ export class apiServises {
       '/genres/:id/tracks',
       '/tracks/:id/listen',
     ];
+    this.playlistRoutes = [
+      '/playlists/favorite',
+      '/playlists/favorite/add-track',
+      '/playlists/:id',
+      '/users/:id/playlists',
+      '/playlists',
+      '/playlists/:id',
+      '/playlists/:id',
+      '/playlists/:id/avatar',
+      '/playlists/:id/avatar',
+      '/playlists/my',
+      '/playlists/:id/tracks',
+      '/playlists/:id/tracks',
+    ];
+    this.PlaylistId = null;
   }
 
   async request(endpoint, options = {}) {
@@ -34,8 +51,10 @@ export class apiServises {
 
     if (this.userRoutes.includes(endpointPattern)) {
       url = `${this.baseURL}${endpoint}`;
-    } else if (this.trcksArtistAlbumRoutes.includes(endpointPattern)) {
+    } else if (this.tracksArtistAlbumRoutes.includes(endpointPattern)) {
       url = `${this.dataURL}${endpoint}`;
+    } else if (this.playlistRoutes.includes(endpointPattern)) {
+      url = `${this.playlistURL}${endpoint}`;
     } else {
       console.warn(`Роут ${endpoint} не найден в доступных маршрутах`);
       throw new Error(`Unknown route: ${endpoint}`);
@@ -92,22 +111,22 @@ export class apiServises {
 
   async getArtistPageData(id) {
     try {
-      const [albums, popular_tracks, artist, similar_artists] = await Promise.all([
+      const [albums, popular_tracks, artist, similar_artists, favorite_tracks] = await Promise.all([
         this.request(`/artists/${id}/albums?limit=10`).catch(() => []),
         this.request(`/artists/${id}/tracks?limit=5`).catch(() => []),
         this.request(`/artists/${id}`).catch(() => []),
         this.request('/artists?limit=10').catch(() => []),
-        // this.getFavoriteTrackIds().catch(() => []),
+        this.getFavoriteTrackIds().catch(() => []),
       ]);
 
-      // const popular_tracks_with_likes = (popular_tracks || []).map((track) => ({
-      //   ...track,
-      //   is_liked: favorite_tracks.includes(track.id),
-      // }));
+      const popular_tracks_with_likes = (popular_tracks || []).map((track) => ({
+        ...track,
+        is_liked: favorite_tracks.includes(track.id),
+      }));
 
       return {
         albums: albums || [],
-        popular_tracks: popular_tracks || [],
+        popular_tracks: popular_tracks_with_likes || [],
         artist: artist || {},
         similar_artists: similar_artists || [],
       };
@@ -132,11 +151,16 @@ export class apiServises {
 
   async getArtistTracks(id) {
     try {
-      const [tracks, artist] = await Promise.all([
+      const [tracks, artist, favorite_tracks] = await Promise.all([
         this.request(`/artists/${id}/tracks`).catch(() => []),
         this.request(`/artists/${id}`).catch(() => []),
+        this.getFavoriteTrackIds().catch(() => []),
       ]);
-      return { tracks: tracks, artist: artist };
+      const tracks_with_likes = (tracks || []).map((track) => ({
+        ...track,
+        is_liked: favorite_tracks.includes(track.id),
+      }));
+      return { tracks: tracks_with_likes, artist: artist };
     } catch (error) {
       console.error('Failed to load artist albums page data:', error);
       throw error;
@@ -145,14 +169,20 @@ export class apiServises {
 
   async getProfilePageData() {
     try {
-      const [artists, top_tracks] = await Promise.all([
+      const [artists, top_tracks, favorite_tracks] = await Promise.all([
         this.request('/artists?limit=10').catch(() => []),
         this.request(`/tracks?limit=5`).catch(() => []),
+        this.getFavoriteTrackIds().catch(() => []),
       ]);
+
+      const tracks_with_likes = (top_tracks || []).map((track) => ({
+        ...track,
+        is_liked: favorite_tracks.includes(track.id),
+      }));
 
       return {
         top_artists: artists || [],
-        top_tracks: top_tracks || [],
+        top_tracks: tracks_with_likes || [],
         recent: artists || [],
       };
     } catch (error) {
@@ -275,11 +305,18 @@ export class apiServises {
 
   async getAlbumPageData(id) {
     try {
-      const [album, tracks] = await Promise.all([
+      const [album, tracks, favorite_tracks] = await Promise.all([
         this.request(`/albums/${id}`).catch(() => []),
         this.request(`/albums/${id}/tracks`).catch(() => []),
+        this.getFavoriteTrackIds().catch(() => []),
       ]);
-      return { album: album || {}, tracks: tracks || [] };
+
+      const tracks_with_likes = (tracks || []).map((track) => ({
+        ...track,
+        is_liked: favorite_tracks.includes(track.id),
+      }));
+
+      return { album: album || {}, tracks: tracks_with_likes || [] };
     } catch (error) {
       console.error('Failed to load album page data:', error);
       throw error;
@@ -362,114 +399,12 @@ export class apiServises {
 
   async getLibraryPageData() {
     try {
-      const [albums, playlists, artists, tracks] = [
-        // === ALBUMS ===
-        [
-          {
-            id: 1,
-            title: 'Город Огней',
-            avatar_url: 'city-lights.jpg',
-            created_at: '2024-12-01T14:20:00Z',
-            type: 'Альбом',
-            artists: [{ id: 1, name: 'Александр Волков' }],
-          },
-          {
-            id: 2,
-            title: 'Мелодии Севера',
-            avatar_url: 'northern-melodies.png',
-            created_at: '2025-01-15T10:00:00Z',
-            type: 'EP',
-            artists: [{ id: 2, name: 'ArcticSound' }],
-          },
-          {
-            id: 3,
-            title: 'Вечерние волны',
-            avatar_url: 'evening-waves.jpg',
-            created_at: '2025-03-20T19:30:00Z',
-            type: 'Сингл',
-            artists: [{ id: 3, name: 'Luna Waves' }],
-          },
-        ],
-
-        // === PLAYLISTS ===
-        [
-          {
-            id: 101,
-            title: 'Лучшее 2025',
-            avatar_url: 'best-2025.jpg',
-            created_at: '2025-02-10T08:00:00Z',
-            tracks: [
-              { id: 1, title: 'Трек 1' },
-              { id: 2, title: 'Трек 2' },
-              { id: 3, title: 'Трек 3' },
-            ],
-          },
-          {
-            id: 102,
-            title: 'Утренний Чилл',
-            avatar_url: 'morning-chill.jpg',
-            created_at: '2025-04-01T11:00:00Z',
-            tracks: [
-              { id: 4, title: 'Пробуждение' },
-              { id: 5, title: 'Солнечный свет' },
-            ],
-          },
-          {
-            id: 103,
-            title: 'Workout Energy',
-            avatar_url: 'workout-energy.png',
-            created_at: '2025-05-25T18:45:00Z',
-            tracks: [
-              { id: 6, title: 'Пульс' },
-              { id: 7, title: 'Скорость' },
-              { id: 8, title: 'Финиш' },
-              { id: 9, title: 'Отдых' },
-            ],
-          },
-        ],
-
-        // === ARTISTS ===
-        [
-          {
-            id: 1,
-            name: 'Александр Волков',
-            avatar_url: 'alex-volkov.jpg',
-            created_at: '2024-11-15T12:00:00Z',
-            play_count: 12800,
-          },
-          {
-            id: 2,
-            name: 'ArcticSound',
-            avatar_url: 'arctic-sound.png',
-            created_at: '2024-10-05T09:30:00Z',
-            play_count: 5400,
-          },
-          {
-            id: 3,
-            name: 'Luna Waves',
-            avatar_url: 'luna-waves.jpg',
-            created_at: '2025-02-20T17:15:00Z',
-            play_count: 9600,
-          },
-        ],
-        // === TRACKS ===
-        {
-          id: 104,
-          tracks: [
-            { id: 10, title: 'Класс' },
-            { id: 11, title: 'Круто' },
-            { id: 12, title: 'Замечательно' },
-            { id: 13, title: 'Потрясающе' },
-          ],
-        },
-      ];
-
-      /*await Promise.all([
-        this.request(`/library/albums`).catch(() => []),
-        this.request(`/library/playlists`).catch(() => []),
-        this.request('/library/artists').catch(() => []),
-        this.request('/library/tracks').catch(() => []),
-      ]);*/
+      const [albums, playlists, artists, tracks] = await Promise.all([
+        // this.request(`/library/albums`).catch(() => []),
+        this.request(`/playlists/my`).catch(() => []),
+        // this.request('/library/artists').catch(() => []),
+        this.request('/playlists/favorite').catch(() => []),
+      ]);
 
       return {
         albums: albums || [],
@@ -529,21 +464,39 @@ export class apiServises {
     }
   }
 
-  // async getFavoriteTrackIds() {
-  //   try {
-  //     const favoriteTracks = await this.request('/playlists/tracks');
-  //     return favoriteTracks.map((track) => track.id);
-  //   } catch (error) {
-  //     console.error('Failed to load favorite tracks:', error);
-  //     return [];
-  //   }
-  // }
+  async getFavoriteTrackIds() {
+    try {
+      const favoriteTracks = await this.request('/playlists/favorite');
+      console.log(favoriteTracks);
+      return favoriteTracks.tracks;
+    } catch (error) {
+      console.error('Failed to load favorite tracks:', error);
+      return [];
+    }
+  }
+
+  async getPlaylist() {
+    if (this.PlaylistId) {
+      return this.PlaylistId;
+    }
+    try {
+      const allPlaylists = await this.request('/playlists/my');
+      const favoritePlaylist = allPlaylists.find((p) => p.is_favorite === true);
+
+      if (favoritePlaylist && favoritePlaylist.id) {
+        this.PlaylistId = favoritePlaylist.id;
+        return this.PlaylistId;
+      }
+    } catch (error) {
+      console.error('Failed to load favorite tracks:', error);
+      return [];
+    }
+  }
 
   async likeTrack(track_Id) {
-    const csrfToken = await this.getCSRFToken();
     if (!track_Id) return;
     try {
-      await this.request(`/playlists/favorite/add-track`, {
+      await this.request('/playlists/favorite/add-track', {
         method: 'POST',
         body: { track_Id },
       });
@@ -553,24 +506,27 @@ export class apiServises {
   }
 
   async unLikeTrack(track_Id) {
-    if (!track_Id) return;
-    const csrfToken = await this.getCSRFToken();
+    const playlist_id = await this.getPlaylist();
     try {
-      await this.request(`/playlists/${track_Id}/tracks`, {
-        method: 'POST',
+      await this.request(`/playlists/${playlist_id}/tracks`, {
+        method: 'DELETE',
         body: { track_Id },
-        headers: {
-          'X-CSRF-Token': csrfToken,
-        },
       });
     } catch (error) {
-      console.error(`Failed to like track ${track_Id}:`, error);
+      console.error(`Failed to unlike track`, error);
     }
   }
 
   async searchTrack(name) {
-    const track = this.request(`/tracks/search?q=${name}&limit=5`).catch(() => []);
-    return track;
+    const [tracks, favorite_tracks] = await Promise.all([
+      this.request(`/tracks/search?q=${name}&limit=5`).catch(() => []),
+      this.getFavoriteTrackIds().catch(() => []),
+    ]);
+    const tracks_with_likes = (tracks || []).map((track) => ({
+      ...track,
+      is_liked: favorite_tracks.includes(track.id),
+    }));
+    return tracks_with_likes;
   }
 
   async searchAlbum(name) {
