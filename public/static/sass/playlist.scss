@@ -2,24 +2,28 @@
 .pencil {
   all: unset;
   cursor: pointer;
-}
-.dots svg,
-.pencil svg {
-  transition: all 0.3s ease;
-}
-.dots:hover svg,
-.pencil:hover svg {
-  fill: #a766ff;
+
+  svg {
+    transition: all 0.3s ease;
+  }
+
+  &:hover svg {
+    fill: #a766ff;
+  }
 }
 
-.dots svg {
-  width: 26px;
-  height: 26px;
+.dots {
+  svg {
+    width: 26px;
+    height: 26px;
+  }
 }
 
-.pencil svg {
-  width: 22px;
-  height: 22px;
+.pencil {
+  svg {
+    width: 22px;
+    height: 22px;
+  }
 }
 
 .play-button-playlist {
@@ -34,9 +38,10 @@
   padding: 10px;
   border-radius: 20px;
   z-index: 1000;
-}
-.actions-menu.hidden {
-  display: none;
+
+  &.hidden {
+    display: none;
+  }
 }
 
 .actions-item {
@@ -52,19 +57,22 @@
   font-size: 18px;
   font-weight: 500;
   box-sizing: border-box;
-}
-.actions-item:hover {
-  color: #9c58e0;
-}
-.actions-item:hover .pencil-svg {
-  fill: #9c58e0;
-}
-.actions-item .pencil-svg {
-  transition: fill 0.3s ease;
+
+  &:hover {
+    color: #9c58e0;
+
+    .pencil-svg {
+      fill: #9c58e0;
+    }
+  }
+
+  .pencil-svg {
+    transition: fill 0.3s ease;
+  }
 }
 
 .playlist-track-number {
-  color: #636363;
+  color: #636363ff;
   font-size: 22px;
   font-weight: 600;
   width: 40px;
@@ -91,8 +99,9 @@
   transition: filter 0.3s ease;
 }
 
-.album-row:hover .playlist-track-cover, .album-row.active .playlist-track-cover {
-  filter: brightness(0.6);
+.album-row {
+  &:hover .playlist-track-cover,
+  &.active .playlist-track-cover {
+    filter: brightness(0.6);
+  }
 }
-
-/*# sourceMappingURL=playlist.css.map */

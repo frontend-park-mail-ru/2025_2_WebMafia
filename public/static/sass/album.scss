@@ -1,15 +1,30 @@
+$page-bg-color: rgba(250, 250, 250, 0.5);
+$album-card-color: #fafafa;
+
+$text-color-dark: #000;
+$text-color-light: #636363ff;
+$text-color-muted: #666;
+
+$border-radius-round: 50%;
+$border-radius-medium: 20px;
+$border-radius-large: 30px;
+
+$base-margin: 50px;
+$margin-medium: 15px;
+
+
 .album-page {
   box-sizing: content-box;
   display: flex;
   align-items: flex-start;
-  background-color: rgba(250, 250, 250, 0.5);
+  background-color: $page-bg-color;
   margin: 0 20px;
-  clip-path: inset(0 round 30px);
+  clip-path: inset(0 round $border-radius-large);
   overflow-y: auto;
   overflow-x: hidden;
   flex: 1;
   z-index: 1;
-  border-radius: 30px;
+  border-radius: $border-radius-large;
 }
 
 .turquoise-oval {
@@ -18,7 +33,7 @@
   bottom: 50px;
   width: 750px;
   height: 250px;
-  border-radius: 50%;
+  border-radius: $border-radius-round;
   background: rgba(191, 232, 255, 0.8);
   filter: blur(80px);
   z-index: 0;
@@ -40,15 +55,15 @@
 .album-card {
   position: sticky;
   top: 50px;
-  background-color: #fafafa;
+  background-color: $album-card-color;
   width: 300px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  border-radius: 30px;
+  border-radius: $border-radius-large;
   padding: 25px 30px;
   z-index: 1;
-  margin: 50px 0 0 50px;
+  margin: $base-margin 0 0 $base-margin;
 }
 
 .album-artist {
@@ -61,12 +76,12 @@
   object-fit: cover;
   width: 15px;
   height: 15px;
-  border-radius: 50px;
+  border-radius: $base-margin;
 }
 
 .album-artist-name {
   text-decoration: none;
-  color: #000;
+  color: $text-color-dark;
   font-weight: 500;
   font-size: 12px;
 }
@@ -79,7 +94,7 @@
   margin: 13px 0;
   width: 270px;
   height: 270px;
-  border-radius: 20px;
+  border-radius: $border-radius-medium;
 }
 
 .album-card-title {
@@ -128,11 +143,11 @@
 }
 
 .tracks-card {
-  margin: 50px 50px 40px 40px;
-  border-radius: 30px;
+  margin: $base-margin $base-margin 40px 40px;
+  border-radius: $border-radius-large;
   flex-grow: 1;
   z-index: 1;
-  background-color: #fafafa;
+  background-color: $album-card-color;
   padding: 10px;
 }
 
@@ -146,7 +161,7 @@
   display: flex;
   padding: 10px 25px 10px 10px;
   align-items: center;
-  border-radius: 30px;
+  border-radius: $border-radius-large;
   transition: background-color 0.3s ease;
   height: 75px;
 }
@@ -168,10 +183,10 @@
 }
 
 .album-track-number {
-  color: #636363;
+  color: #636363ff;
   font-size: 22px;
   font-weight: 600;
-  margin: 15px 0;
+  margin: $margin-medium 0;
 }
 
 .play-icon,
@@ -207,7 +222,7 @@
 }
 
 .play-album-track svg {
-  fill: #fafafa;
+  fill: $album-card-color;
   height: 25px;
   width: 25px;
 }
@@ -253,11 +268,11 @@
 }
 
 .close-button svg {
-  fill: #666;
+  fill: $text-color-muted;
 }
 
 .close-button:hover svg {
-  fill: #000;
+  fill: $text-color-dark;
 }
 
 .header-divider {
@@ -271,5 +286,3 @@
 .like-btn-track.active {
   opacity: 1;
 }
-
-/*# sourceMappingURL=album.css.map */

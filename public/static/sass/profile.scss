@@ -1,4 +1,16 @@
-@charset "UTF-8";
+$page-bg-color-light: #ffffff;
+
+$avatar-bg-color-light: #fafafa;
+
+
+$gradient-profile-avatar: linear-gradient(135deg, #7fd8e6 14.9%, #e556fd 100%);
+
+$gradient-primary-button:linear-gradient(157deg, #7e4dff, #a766ff, #da96ff);
+
+$transition-fast: 0.3s ease;
+$transition-medium: 0.4s ease;
+$transition-slow: 0.5s ease;
+
 .profile-container {
   height: 325px;
   background-color: rgba(4, 25, 109, 0.08);
@@ -14,11 +26,11 @@
 
 .profile-page {
   box-sizing: content-box;
-  background-color: #ffffff;
+  background-color: $page-bg-color-light;
   padding: 23px 0 0 23px;
   color: black;
   flex: 1;
-  transition: overflow-y 0.3s ease;
+  transition: overflow-y $transition-fast;
 }
 
 .profile-wrapper {
@@ -33,7 +45,7 @@
 .profile-avatar {
   width: 250px;
   height: 250px;
-  border: 5px solid #ffffff;
+  border: 5px solid $page-bg-color-light;
   border-radius: 50%;
   box-shadow: 0 15px 4px 0 rgba(0, 0, 0, 0.15);
   overflow: hidden;
@@ -50,13 +62,13 @@
 .default-avatar {
   width: 100%;
   height: 100%;
-  color: #fafafa;
+  color: $avatar-bg-color-light;
   font-weight: 700;
   border-radius: 50%;
   align-items: center;
   justify-content: center;
   display: flex;
-  background: linear-gradient(135deg, #7fd8e6 14.9%, #e556fd 100%);
+  background: $gradient-profile-avatar;
 }
 
 .default-avatar-profile {
@@ -85,12 +97,14 @@
   gap: 12px;
   border-radius: 14px;
   padding: 10px 15px 10px 15px;
-  background: linear-gradient(157deg, #7e4dff, #a766ff, #da96ff) right bottom;
+  background: $gradient-primary-button right bottom;
   background-size: 150% 150%;
-  transition: background-position 0.5s ease, background 0.5s ease;
+  transition:
+    background-position 0.5s ease,
+    background 0.5s ease;
   font-weight: 600;
   font-size: 20px;
-  color: #fafafa;
+  color: $avatar-bg-color-light;
   cursor: pointer;
 }
 
@@ -103,7 +117,7 @@
 }
 
 .primary-button svg {
-  fill: #fafafa;
+  fill: $avatar-bg-color-light;
 }
 
 /*Для показа кружочков на заднем фоне*/
@@ -140,7 +154,7 @@
   justify-content: center;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.3s ease;
+  transition: opacity $transition-fast;
   z-index: 1000;
 }
 
@@ -150,12 +164,14 @@
 }
 
 .window {
-  background: #ffffff;
+  background: $page-bg-color-light;
   padding: 40px;
   border-radius: 20px;
   transform: translateY(-500px);
   opacity: 0;
-  transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.8s ease;
+  transition:
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.8s ease;
 }
 
 .overlay.active .window {
@@ -183,8 +199,9 @@
     transform: translateX(0);
   }
 }
+
 .window.highlight {
-  animation: shake 0.4s ease;
+  animation: shake $transition-medium;
   border: 2px solid #a766ff;
   border-radius: 20px;
 }
@@ -250,5 +267,3 @@
   font-weight: 700;
   font-size: 64px;
 }
-
-/*# sourceMappingURL=profile.css.map */

@@ -1,0 +1,233 @@
+.layout-auth
+    margin: 0
+    font-family: 'Montserrat', sans-serif
+    background: linear-gradient(135deg, #9ad5ca, #acdde7, #adb9e3, #a379c9, #b744b8)
+    background-size: 400% 400%
+    animation: gradient-move 12s ease infinite
+    display: flex
+    justify-content: center
+    align-items: center
+    min-height: 100vh
+    box-sizing: border-box
+
+@keyframes gradient-move
+    0%
+        background-position: 0% 50%
+
+    50%
+        background-position: 100% 50%
+
+    100%
+        background-position: 0% 50%
+
+.error-message
+    color: #e74c3c
+    font-size: 14px
+    display: none
+    pointer-events: none
+    bottom: -20px
+    left: 0
+    position: absolute
+
+    &.show
+        display: block
+
+.validation-message
+    background: #d4d9d9
+    position: absolute
+    z-index: 10
+    left: -10px
+    top: 50%
+    transform: translate(-100%, -50%)
+    border-radius: 8px
+    font-size: 14px
+    display: none
+    padding: 10px 12px
+    max-width: 200px
+    white-space: normal
+    overflow-wrap: break-word
+    text-align: center
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15)
+
+    &::after
+        content: ''
+        position: absolute
+        top: 50%
+        right: -14px
+        transform: translateY(-50%)
+        border-width: 8px
+        border-style: solid
+        border-color: transparent transparent transparent #d4d9d9
+
+    &.show
+        display: block
+
+.form-group.error input
+    border-color: #e74c3c
+    box-shadow: 0 0 5px rgba(231, 76, 60, 0.3)
+
+.general-error
+    max-width: 428px
+    margin: 0 auto 15px
+    padding: 10px
+    border-radius: 5px
+    text-align: center
+    color: rgb(231, 76, 60)
+    background-color: rgba(231, 76, 60, 0.1)
+    overflow-wrap: break-word
+    display: none
+
+    &.show
+        display: block
+
+.container
+    background: #fafafa
+    border-radius: 16px
+    padding: 2.5vh 3vh
+    width: 450px
+    height: 100%
+    max-height: 90vh
+    margin: 0 auto
+    text-align: center
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1)
+
+.logo-auth
+    max-width: 18vh
+    height: auto
+    margin-bottom: 1.8vh
+
+.form-title
+    margin: 0 0 3vh
+    font-size: 32px
+    font-weight: 600
+    color: #000
+
+.form-group
+    text-align: left
+    margin: 0 0 2.4vh
+    position: relative
+
+    & label
+        font-size: 18px
+        font-weight: 600
+        display: block
+        margin-bottom: 0.8vh
+
+    & input
+        font-family: 'Montserrat', sans-serif
+        width: 450px
+        height: 6.6vh
+        padding: 10px
+        border-radius: 8px
+        border: 1px solid #d0bbbb
+        font-size: 20px
+        box-sizing: border-box
+
+.form-extra
+    display: flex
+    justify-content: space-between
+    align-items: center
+    margin: 0 0 20px
+    font-size: 18px
+
+    & a
+        color: #000
+
+    & input
+        height: 16px
+        width: 16px
+        accent-color: #b744b9
+
+.login-button
+    width: 450px
+    padding: 12px
+    display: flex
+    align-items: center
+    justify-content: center
+    background: linear-gradient(90deg, #9c58e0, #4e85e1, #9c58e0)
+    border: 1px solid #d0bbbb
+    border-radius: 8px
+    color: #fafafa
+    font-size: 24px
+    font-weight: 600
+    cursor: pointer
+    height: 6.6vh
+    box-sizing: border-box
+    margin: 5px auto 0 auto
+
+    transition: background-position 0.5s ease
+    background-size: 150% 100%
+
+    &:disabled
+        background: linear-gradient(90deg, #b1a5bd, #929cae)
+        cursor: not-allowed
+
+    &:hover
+        background-position: right center
+
+.below-question
+    margin-top: 15px
+    font-size: 16px
+
+    & a
+        font-weight: 600
+        color: #000
+
+    & a:hover
+        color: #4a4a4a
+
+.password-wrapper,
+.input-wrapper
+    position: relative
+    display: flex
+    align-items: center
+
+.eye
+    position: absolute
+    right: 20px
+    top: 50%
+    transform: translateY(-50%)
+    background: none
+    border: none
+    cursor: pointer
+    padding: 0
+    display: flex
+    align-items: center
+    justify-content: center
+
+    & svg
+        fill: #595959
+        transition: fill 0.3s
+
+    &:hover svg
+        fill: #000
+
+.validation-message ul
+    margin: 0
+    padding-left: 4px
+    list-style: none
+
+.validation-message li
+    position: relative
+    margin-bottom: 6px
+    line-height: 1.4
+    padding-left: 6px
+
+    &:last-child
+        margin-bottom: 0
+
+    &::before
+        content: '•'
+        font-size: 24px
+        color: #444
+        position: absolute
+        left: -5px
+        top: 50%
+        transform: translateY(-57%)
+
+input[type='password']
+    font-size: 30px
+
+input[type='password']::placeholder
+    font-size: 20px
+    transform: translateY(-4px)

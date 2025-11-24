@@ -1,6 +1,7 @@
+@charset "UTF-8";
 .layout-auth {
   margin: 0;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   background: linear-gradient(135deg, #9ad5ca, #acdde7, #adb9e3, #a379c9, #b744b8);
   background-size: 400% 400%;
   animation: gradient-move 12s ease infinite;
@@ -15,16 +16,13 @@
   0% {
     background-position: 0% 50%;
   }
-
   50% {
     background-position: 100% 50%;
   }
-
   100% {
     background-position: 0% 50%;
   }
 }
-
 .error-message {
   color: #e74c3c;
   font-size: 14px;
@@ -34,7 +32,6 @@
   left: 0;
   position: absolute;
 }
-
 .error-message.show {
   display: block;
 }
@@ -56,9 +53,8 @@
   text-align: center;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
-
 .validation-message::after {
-  content: '';
+  content: "";
   position: absolute;
   top: 50%;
   right: -14px;
@@ -67,7 +63,6 @@
   border-style: solid;
   border-color: transparent transparent transparent #d4d9d9;
 }
-
 .validation-message.show {
   display: block;
 }
@@ -88,7 +83,6 @@
   overflow-wrap: break-word;
   display: none;
 }
-
 .general-error.show {
   display: block;
 }
@@ -123,16 +117,14 @@
   margin: 0 0 2.4vh;
   position: relative;
 }
-
 .form-group label {
   font-size: 18px;
   font-weight: 600;
   display: block;
   margin-bottom: 0.8vh;
 }
-
 .form-group input {
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   width: 450px;
   height: 6.6vh;
   padding: 10px;
@@ -149,11 +141,9 @@
   margin: 0 0 20px;
   font-size: 18px;
 }
-
 .form-extra a {
   color: #000;
 }
-
 .form-extra input {
   height: 16px;
   width: 16px;
@@ -176,17 +166,13 @@
   height: 6.6vh;
   box-sizing: border-box;
   margin: 5px auto 0 auto;
-
-  /* Эксперименты */
   transition: background-position 0.5s ease;
   background-size: 150% 100%;
 }
-
 .login-button:disabled {
   background: linear-gradient(90deg, #b1a5bd, #929cae);
   cursor: not-allowed;
 }
-
 .login-button:hover {
   background-position: right center;
 }
@@ -195,12 +181,10 @@
   margin-top: 15px;
   font-size: 16px;
 }
-
 .below-question a {
   font-weight: 600;
   color: #000;
 }
-
 .below-question a:hover {
   color: #4a4a4a;
 }
@@ -225,12 +209,10 @@
   align-items: center;
   justify-content: center;
 }
-
 .eye svg {
   fill: #595959;
   transition: fill 0.3s;
 }
-
 .eye:hover svg {
   fill: #000;
 }
@@ -247,13 +229,11 @@
   line-height: 1.4;
   padding-left: 6px;
 }
-
 .validation-message li:last-child {
   margin-bottom: 0;
 }
-
 .validation-message li::before {
-  content: '•';
+  content: "•";
   font-size: 24px;
   color: #444;
   position: absolute;
@@ -262,11 +242,13 @@
   transform: translateY(-57%);
 }
 
-input[type='password'] {
+input[type=password] {
   font-size: 30px;
 }
 
-input[type='password']::placeholder {
+input[type=password]::placeholder {
   font-size: 20px;
   transform: translateY(-4px);
 }
+
+/*# sourceMappingURL=style_auth.css.map */

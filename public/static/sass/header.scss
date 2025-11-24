@@ -1,9 +1,30 @@
+$text-dark: #393939;
+$text-light: #fafafa;
+$text-placeholder: #787878;
+$text-user-muted: #4a4459;
+$brand-purple-light: #a766ff;
+$bg-input: #d3d7e7;
+
+$font-logo: 'Nunito', sans-serif;
+$font-main: 'Montserrat', sans-serif;
+
+$gradient-button: linear-gradient(157deg, #7e4dff, #a766ff, #da96ff);
+$gradient-dropdown: linear-gradient(125deg, #a766ff, #da96ff);
+
+$border-radius-btn: 14px;
+$border-radius-dropdown: 30px;
+$border-radius-round: 50%;
+
+$transition-fast: 0.3s ease;
+$transition-medium: 0.4s ease;
+$transition-slow: 0.5s ease;
+
 .head {
   top: 0;
   left: 0;
   right: 0;
   height: 70px;
-  background: rgba(61, 25, 124, 0);
+  background: #3d197c00;
   z-index: 100;
   display: flex;
   align-items: center;
@@ -26,10 +47,10 @@
 }
 
 .icon-name {
-  font-family: "Nunito", sans-serif;
+  font-family: $font-logo;
   font-size: 42px;
   font-weight: 800;
-  color: #393939;
+  color: $text-dark;
 }
 
 .head-right {
@@ -54,29 +75,32 @@
   text-decoration: none;
   font-size: 20px;
   font-weight: 600;
-  transition: color 0.3s ease;
+  transition: color $transition-fast;
 }
 
 .nav-link.register {
-  color: #fafafa;
+  color: $text-light;
   text-decoration: none;
   padding: 10px 15px;
   border-radius: 14px;
   margin: 0 20px;
   font-size: 20px;
   font-weight: 600;
-  background: linear-gradient(157deg, #7e4dff, #a766ff, #da96ff) right bottom;
+  background: $gradient-button right bottom;
   background-size: 150% 150%;
-  transition: background-position 0.5s ease, background 0.5s ease;
+  transition:
+    background-position 0.5s ease,
+    background 0.5s ease;
 }
 
 .nav-link.login:hover {
-  color: #a766ff;
+  color: $brand-purple-light;
 }
 
 .nav-link.register:hover {
   background-position: left top;
 }
+
 
 .profile-btn {
   background: none;
@@ -100,7 +124,7 @@
   position: absolute;
   right: -3px;
   top: 100%;
-  background: linear-gradient(125deg, #a766ff, #da96ff);
+  background: $gradient-dropdown;
   border-radius: 30px;
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
   min-width: 160px;
@@ -110,20 +134,22 @@
   opacity: 0;
   transform: translateY(-10px);
   pointer-events: none;
-  transition: all 0.3s ease;
+  transition: all $transition-fast;
   padding: 10px 15px 10px 15px;
-}
-.dropdown-menu a {
-  display: block;
-  padding: 5px;
-  text-decoration: none;
-  color: #fff;
-  font-size: 20px;
-  font-weight: 600;
-}
-.dropdown-menu a:hover {
-  color: #dfd7e7;
-  text-decoration: underline;
+
+  a {
+    display: block;
+    padding: 5px;
+    text-decoration: none;
+    color: #fff;
+    font-size: 20px;
+    font-weight: 600;
+    }
+
+    a:hover {
+        color: #dfd7e7;
+        text-decoration: underline;
+        }
 }
 
 .dropdown-menu.show {
@@ -131,6 +157,7 @@
   transform: translateY(0);
   pointer-events: auto;
 }
+
 
 .header-username {
   order: -1;
@@ -146,7 +173,7 @@
   opacity: 0;
   transform: translateX(15px);
   pointer-events: none;
-  transition: all 0.4s ease;
+  transition: all $transition-medium;
 }
 
 .profile-dropdown {
@@ -178,11 +205,11 @@
   height: 48px;
   border-radius: 14px;
   border: none;
-  background-color: #d3d7e7;
+  background-color: $bg-input;
   padding: 15px 10px 15px 45px;
   font-weight: 500;
   font-size: 16px;
-  font-family: "Montserrat", sans-serif;
+  font-family: 'Montserrat', sans-serif;
   color: #333;
   outline: none;
   box-sizing: border-box;
@@ -212,5 +239,3 @@
   transform: translateY(-50%);
   pointer-events: none;
 }
-
-/*# sourceMappingURL=header.css.map */

@@ -1,12 +1,12 @@
 body {
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   margin: 0;
   padding: 0;
   overflow-y: hidden;
 }
 
 .section {
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   background-color: #e6e9f5;
   display: flex;
   flex-direction: column;
@@ -14,7 +14,6 @@ body {
   height: 100vh;
 }
 
-/* Макет под хедером */
 .layout {
   display: flex;
   flex: 1;
@@ -45,11 +44,10 @@ body {
   margin-left: 23px;
   margin-top: 20px;
 }
-
 .title-name {
   font-weight: 600;
   font-size: 32px;
-  color: rgb(0, 0, 0);
+  color: #000;
 }
 
 /* Slider */
@@ -61,15 +59,14 @@ body {
   scroll-behavior: smooth;
   scroll-snap-type: x mandatory;
 }
-
 .slider.can-scroll:hover .slide-btn {
   opacity: 1;
-  pointer-events: auto; /* снова кликабельные */
+  pointer-events: auto;
 }
 
 .slide-btn {
   opacity: 0;
-  pointer-events: none; /* чтобы не мешали, пока невидимы */
+  pointer-events: none;
   transition: opacity 0.5s ease;
   top: 45%;
   position: absolute;
@@ -86,36 +83,30 @@ body {
   transform: translateY(-50%);
   z-index: 10;
 }
-
 .slide-btn:hover {
   background-color: #f0f0f0;
   border-color: #bbb;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
   transform: translateY(-50%) scale(1.05);
 }
-
 .slide-btn::before {
-  content: '';
+  content: "";
   width: 10px;
   height: 10px;
   border: solid #333;
   border-width: 0 3px 3px 0;
   display: inline-block;
 }
-
 .slide-btn.left {
   left: 10px;
 }
-
 .slide-btn.left::before {
   transform: rotate(135deg);
   margin-left: 6px;
 }
-
 .slide-btn.right {
   right: 10px;
 }
-
 .slide-btn.right::before {
   transform: rotate(-45deg);
   margin-right: 6px;
@@ -130,9 +121,20 @@ body {
   margin-left: -23px;
   padding: 15px 0 10px 43px;
 }
-
 .cards::-webkit-scrollbar {
   display: none;
+}
+.cards.tracks {
+  display: grid;
+  grid-auto-flow: column;
+  gap: 10px;
+  grid-template-rows: repeat(2, auto);
+  max-height: 200px;
+  width: 100%;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  margin-left: -23px;
+  padding: 15px 0 30px 43px;
 }
 
 .card {
@@ -150,19 +152,64 @@ body {
   padding: 10px;
   margin-right: 10px;
   cursor: pointer;
+  position: relative;
 }
-
 .card:hover {
   background-color: rgba(0, 0, 0, 0.1);
   transform: scale(1.01);
 }
-
+.card:hover .play-button {
+  opacity: 1;
+}
+.card:hover img {
+  filter: brightness(70%);
+}
 .card.active {
   background-color: rgba(0, 0, 0, 0.1);
   transform: scale(1.01);
 }
+.card.active img {
+  filter: brightness(70%);
+}
+.card img {
+  margin-top: 10px;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+.card .card-name {
+  font-size: 16px;
+  font-weight: 600;
+  margin-top: 9px;
+  line-height: 1.4;
+  max-height: 45px;
+  overflow: hidden;
+  word-break: break-word;
+}
+.card .card-sub {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 400;
+  opacity: 0.8;
+  margin-top: 3px;
+}
+.card .card-sub .text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.card .card-sub-limiter {
+  overflow: hidden;
+  max-width: 170px;
+}
 
-.play-button {
+/* Play buttons */
+.play-button,
+.play-button-track {
   cursor: pointer;
   width: 56px;
   height: 56px;
@@ -174,21 +221,11 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition:
-    transform 0.3s ease,
-    background-position 0.5s ease,
-    background 0.5s ease;
+  transition: transform 0.3s ease, background-position 0.5s ease, background 0.5s ease;
 }
-
-.play-button-placement {
-  position: absolute;
-  opacity: 0;
-  top: 50%;
-  left: 60%;
-}
-
-.play-button::before {
-  content: '';
+.play-button::before,
+.play-button-track::before {
+  content: "";
   width: 0;
   height: 0;
   border-style: solid;
@@ -196,108 +233,27 @@ body {
   border-color: transparent transparent transparent #fafafa;
   margin-left: 2px;
 }
-
-.play-button.paused::before {
-  border-style: solid;
+.play-button.paused::before,
+.play-button-track.paused::before {
   border-width: 0;
-  background-color: transparent;
+  background: transparent;
   height: 20px;
   width: 16px;
   opacity: 1;
-  box-shadow:
-    inset 5px 0 0 0 white,
-    inset -5px 0 0 0 white;
+  box-shadow: inset 5px 0 0 0 white, inset -5px 0 0 0 white;
   margin: 0;
 }
-
-.play-button:hover {
+.play-button:hover,
+.play-button-track:hover {
   transform: scale(1.03);
   background-position: left top;
 }
-
-.card:hover .play-button {
+.play-button.is-active,
+.play-button-track.is-active {
   opacity: 1;
 }
 
-.play-button.is-active {
-  opacity: 1;
-}
-
-.card img {
-  margin-top: 10px;
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  object-fit: cover;
-  flex-shrink: 0;
-}
-
-.card.active img {
-  filter: brightness(70%);
-}
-
-.card-name {
-  font-size: 16px;
-  font-weight: 600;
-  margin-top: 9px;
-  line-height: 1.4;
-  max-height: 45px;
-  overflow: hidden;
-  word-break: break-word;
-}
-
-.card-sub {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 14px;
-  font-weight: 400;
-  opacity: 0.8;
-  margin-top: 3px;
-}
-
-.card-sub-limiter {
-  overflow: hidden;
-  max-width: 170px;
-}
-
-.href-decoration {
-  text-decoration: none;
-  color: inherit;
-  cursor: pointer;
-}
-
-.href-decoration:hover {
-  text-decoration: underline;
-}
-
-.card-sub .text {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.dot {
-  flex-shrink: 0;
-  width: 4px;
-  height: 4px;
-  background: #636363;
-  border-radius: 50%;
-}
-
-.cards.tracks {
-  display: grid;
-  grid-auto-flow: column;
-  gap: 10px;
-  grid-template-rows: repeat(2, auto);
-  max-height: 200px;
-  width: 100%;
-  overflow: hidden;
-  scroll-behavior: smooth;
-  margin-left: -23px;
-  padding: 15px 0 30px 43px;
-}
-
+/* Track cards */
 .card-tracks {
   width: 250px;
   height: 100px;
@@ -309,29 +265,23 @@ body {
   transition: transform 0.3s ease;
   cursor: pointer;
 }
-
 .card-tracks:hover {
   background-color: rgba(0, 0, 0, 0.1);
   transform: scale(1.01);
 }
-
+.card-tracks:hover .play-button-track {
+  opacity: 1;
+}
+.card-tracks:hover img {
+  filter: brightness(70%);
+}
 .card-tracks.active {
   background-color: rgba(0, 0, 0, 0.1);
   transform: scale(1.01);
 }
-
 .card-tracks.active img {
   filter: brightness(70%);
 }
-
-.card-track-content {
-  display: flex;
-  padding: 10px;
-  align-items: center;
-  flex: 1;
-  gap: 15px;
-}
-
 .card-tracks img {
   object-fit: cover;
   flex-shrink: 0;
@@ -340,13 +290,15 @@ body {
   border-radius: 50%;
   border: none;
 }
-
-.card-tracks:hover img {
-  filter: brightness(70%);
+.card-tracks .card-track-content {
+  display: flex;
+  padding: 10px;
+  align-items: center;
+  flex: 1;
+  gap: 15px;
 }
-
-.card-name-track {
-  color: #000000;
+.card-tracks .card-name-track {
+  color: #000;
   font-size: 16px;
   font-weight: 600;
   max-width: 140px;
@@ -357,8 +309,7 @@ body {
   text-overflow: ellipsis;
   white-space: normal;
 }
-
-.card-sub-track {
+.card-tracks .card-sub-track {
   text-decoration: none;
   color: #000;
   font-size: 14px;
@@ -366,35 +317,39 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-
-.play-button-track {
+.card-tracks .play-button-track {
   position: absolute;
   left: 22px;
   opacity: 0;
 }
-
-.play-button-track:hover {
-  transform: scale(1.03);
-  background-position: left top;
+.card-tracks .play-button-track.is-active {
+  opacity: 1;
 }
-
-.play-button-track.paused::before {
-  border-style: solid;
+.card-tracks .play-button-track.paused::before {
   border-width: 0;
-  background-color: transparent;
+  background: transparent;
   height: 20px;
   width: 16px;
   opacity: 1;
-  box-shadow:
-    inset 5px 0 0 0 white,
-    inset -5px 0 0 0 white;
+  box-shadow: inset 5px 0 0 0 white, inset -5px 0 0 0 white;
   margin: 0;
 }
 
-.play-button-track.is-active {
-  opacity: 1;
+.href-decoration {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+.href-decoration:hover {
+  text-decoration: underline;
 }
 
-.card-tracks:hover .play-button-track {
-  opacity: 1;
+.dot {
+  flex-shrink: 0;
+  width: 4px;
+  height: 4px;
+  background: #636363;
+  border-radius: 50%;
 }
+
+/*# sourceMappingURL=mainpage.css.map */

@@ -1,3 +1,24 @@
+$text-light: #fafafa;
+$text-dark: #000;
+$text-muted: #636363ff;
+$text-link: #393939;
+$primary-purple: #9c58e0;
+$like-color: #a866eb;
+$bg-hover: #e6e9f5;
+$bg-secondary-button: #e6e8ef;
+$bg-secondary-button-hover: #c7cad3;
+$scrollbar-thumb: #707070;
+$scrollbar-thumb-hover: #4e4e4e;
+$scrollbar-thumb-dragging: #2e2e2e;
+
+$border-radius-large: 30px;
+$border-radius-medium: 20px;
+$border-radius-small: 14px;
+
+// Анимации
+$transition-fast: 0.3s ease;
+$transition-slow: 0.6s ease;
+
 .artist-container {
   display: flex;
   flex-direction: column;
@@ -5,10 +26,10 @@
   align-items: flex-start;
   min-height: 450px;
   padding: 30px 30px 25px 30px;
-  border-radius: 20px;
+  border-radius: $border-radius-medium;
   box-shadow: 0 5px 80px 8px rgba(26, 25, 30, 0.4);
-  color: #fafafa;
-  transition: min-height 0.6s ease;
+  color: $text-light;
+  transition: min-height $transition-slow;
 }
 
 #scrollContent {
@@ -25,7 +46,7 @@
   position: absolute;
   width: 10px;
   opacity: 0;
-  transition: 0.3s ease;
+  transition: $transition-fast;
   border-radius: 4px;
   overflow: hidden;
 }
@@ -33,17 +54,17 @@
 #customScrollbarThumb {
   position: absolute;
   width: 100%;
-  background: #707070;
+  background: $scrollbar-thumb;
   border-radius: 4px;
-  transition: background 0.3s ease;
+  transition: background $transition-fast;
 }
 
 #customScrollbar:hover #customScrollbarThumb {
-  background: #4e4e4e;
+  background: $scrollbar-thumb-hover;
 }
 
 #customScrollbarThumb.dragging {
-  background: #2e2e2e !important;
+  background: $scrollbar-thumb-dragging !important;
 }
 
 .page-wrapper {
@@ -53,16 +74,16 @@
   flex-direction: column;
   flex: 1;
   overflow: hidden;
-  background-color: #fafafa;
+  background-color: $text-light;
 }
 
 .artist-page {
   display: flex;
   flex-direction: column;
   box-sizing: content-box;
-  color: #000;
+  color: $text-dark;
   flex: 1;
-  transition: overflow-y 0.3s ease;
+  transition: overflow-y $transition-fast;
   padding: 25px 12px 0 12px;
 }
 
@@ -87,9 +108,9 @@
   display: inline-flex;
   align-items: center;
   padding: 10px 15px 10px 15px;
-  border-radius: 14px;
-  border: 3px solid #9c58e0;
-  color: #9c58e0;
+  border-radius: $border-radius-small;
+  border: 3px solid $primary-purple;
+  color: $primary-purple;
   background: none;
   cursor: pointer;
 }
@@ -111,7 +132,7 @@
   font-weight: 400;
   margin-top: 12px;
   width: 50%;
-  transition: max-height 0.6s ease;
+  transition: max-height $transition-slow;
 }
 
 .artist-container.expanded .artist-description {
@@ -130,8 +151,8 @@
 }
 
 #showArtistDescription svg {
-  fill: #fafafa;
-  transition: transform 0.3s ease;
+  fill: $text-light;
+  transition: transform $transition-fast;
 }
 
 .artist-container.expanded #showArtistDescription svg {
@@ -147,7 +168,7 @@
   font-size: 20px;
   font-weight: 600;
   text-decoration: none;
-  color: #393939;
+  color: $text-link;
 }
 
 .show-all:hover {
@@ -168,11 +189,12 @@
   justify-content: space-between;
   border-radius: 30px;
   transition: background-color 0.3s ease;
+  
 }
 
 .track-row:hover,
 .track-row.active {
-  background-color: #e6e9f5;
+  background-color: $bg-hover;
 }
 
 .right-row-content {
@@ -192,43 +214,51 @@
   cursor: pointer;
 }
 
-.play-popular-track {
-  all: unset;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  opacity: 0;
-  height: 18px;
-  transition: opacity 0.3s ease;
-}
-.play-popular-track svg {
-  fill: #fafafa;
-  height: 18px;
-  width: 18px;
+
+.play-popular-track  {
+    all: unset;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    height: 18px;
+    transition: opacity $transition-fast;
+    
+    svg{
+        fill: #fafafa;
+        height: 18px;
+        width: 18px;
+    }
 }
 
-.play-popular-track .pause-icon {
-  display: none;
-}
+.play-popular-track .pause-icon{
+        display: none;
+    }
 
-.play-popular-track.is-active {
-  opacity: 1;
-}
+.play-popular-track.is-active{
+        opacity: 1;
+    }
 
-.play-popular-track.is-active:not(.paused) .pause-icon {
-  display: none;
-}
-.play-popular-track.is-active:not(.paused) .play-icon {
-  display: block;
-}
+.play-popular-track.is-active:not(.paused) {
+        .pause-icon {
+            display: none;
+        }
+        .play-icon {
+            display: block;
+        }
+    }
 
-.play-popular-track.is-active.paused .pause-icon {
-  display: block;
-}
-.play-popular-track.is-active.paused .play-icon {
-  display: none;
-}
+.play-popular-track.is-active.paused{
+        .pause-icon {
+            display: block;
+        }
+
+        .play-icon {
+            display: none;
+        }
+    } 
+
 
 .track-row:hover .play-popular-track {
   opacity: 1;
@@ -239,7 +269,7 @@
   height: 40px;
   border-radius: 5px;
   object-fit: cover;
-  transition: filter 0.3s ease;
+  transition: filter $transition-fast;
 }
 
 .track-row:hover .track-cover,
@@ -253,7 +283,7 @@
 }
 
 .track-number {
-  color: #636363;
+  color: $text-muted;
   font-size: 18px;
   font-weight: 600;
   margin-right: 15px;
@@ -264,7 +294,7 @@
 .track-plays-num,
 .track-album-name,
 .track-duration {
-  color: #636363;
+  color: $text-muted;
   font-size: 18px;
   font-weight: 600;
   text-decoration: none;
@@ -280,7 +310,7 @@
 }
 
 .track-performer .track-plays-num .track-album-name {
-  transition: color 0.3s ease;
+  transition: color $transition-fast;
 }
 
 .track-row:hover .track-performer,
@@ -295,7 +325,7 @@
 .secondary-button {
   all: unset;
   border-radius: 14px;
-  background: #e6e8ef;
+  background: $bg-secondary-button;
   font-weight: 600;
   display: inline-flex;
   align-items: center;
@@ -307,7 +337,7 @@
 }
 
 .secondary-button:hover {
-  background: #c7cad3;
+  background: $bg-secondary-button-hover;
 }
 
 .show-tracks-button {
@@ -330,13 +360,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
+
+  svg{
+    fill: none;
+    stroke: #555;
+    stroke-width: 2px;
+    transition: all 0.2s ease;
+    }
 }
-.like-btn-track svg {
-  fill: none;
-  stroke: #555;
-  stroke-width: 2px;
-  transition: all 0.2s ease;
-}
+
 
 .artist-like-size svg {
   width: 22px;
@@ -344,13 +376,13 @@
 }
 
 .like-btn-track:hover svg {
-  stroke: #a866eb;
+  stroke: $like-color;
   transform: scale(1.1);
 }
 
 .like-btn-track.active svg {
-  fill: #a866eb;
-  stroke: #a866eb;
+  fill: $like-color;
+  stroke: $like-color;
 }
 
 .track-row:hover .like-btn-track,
@@ -358,5 +390,3 @@
 .like-btn-track.active {
   opacity: 1;
 }
-
-/*# sourceMappingURL=artist.css.map */
