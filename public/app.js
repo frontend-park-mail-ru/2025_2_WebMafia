@@ -32,6 +32,9 @@ function initializePage() {
   registerPartials();
   persistence();
   spaceToggle();
-  player.init();
+  const currentTrack = localStorage.getItem('currentTrackId');
+  if (currentTrack) {
+    player.init();
+  }
   router.init();
 }

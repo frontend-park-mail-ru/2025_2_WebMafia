@@ -110,18 +110,18 @@ export class MainPage {
       const prevCard = document.querySelector('.card-position-prev');
       const nextCard = document.querySelector('.card-position-next');
       if (next) {
-        nextBtn.classList.remove('hidden');
+        if (nextBtn) nextBtn.classList.remove('hidden');
         if (nextCard) nextCard.classList.remove('hidden');
       } else {
-        nextBtn.classList.add('hidden');
+        if (nextBtn) nextBtn.classList.add('hidden');
         if (nextCard) nextCard.classList.add('hidden');
       }
 
       if (prev) {
-        prevBtn.classList.remove('hidden');
+        if (prevBtn) prevBtn.classList.remove('hidden');
         if (prevCard) prevCard.classList.remove('hidden');
       } else {
-        prevBtn.classList.add('hidden');
+        if (prevBtn) prevBtn.classList.add('hidden');
         if (prevCard) prevCard.classList.add('hidden');
       }
 
@@ -233,16 +233,18 @@ export class MainPage {
       }, animationDuration);
     }
 
-    nextBtn.addEventListener('click', async () => {
-      if (isAnimating) return;
-      shiftCards('next');
-      await player.nextTrack();
-    });
-    prevBtn.addEventListener('click', async () => {
-      if (isAnimating) return;
-      shiftCards('prev');
-      await player.prevTrack();
-    });
+    if (nextBtn || prevBtn) {
+      nextBtn.addEventListener('click', async () => {
+        if (isAnimating) return;
+        shiftCards('next');
+        await player.nextTrack();
+      });
+      prevBtn.addEventListener('click', async () => {
+        if (isAnimating) return;
+        shiftCards('prev');
+        await player.prevTrack();
+      });
+    }
 
     if (player.currentTrack) {
       await player.getPrevAndNextTracks();
