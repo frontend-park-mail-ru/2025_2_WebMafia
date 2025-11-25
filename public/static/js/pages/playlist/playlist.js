@@ -119,7 +119,7 @@ export class PlaylistPage {
 
     const editPlaylistButton = document.querySelector('.actions-item.edit');
     const deletePlaylistButton = document.querySelector('.actions-item.delete');
-    const editPlaylistOverlay = document.getElementById('editProfileOverlay');
+    const editPlaylistOverlay = document.getElementById('editPlaylistOverlay');
     const closeOverlayButton = document.getElementById('closeOverlayButton');
 
     if (editPlaylistButton && editPlaylistOverlay) {
@@ -149,25 +149,14 @@ export class PlaylistPage {
     let deleteAvatar = false;
     const editAvatarButtons = document.getElementById('editPlaylistAvatarButtons');
 
-    function updateAvatarContainer(containerId, avatarUrl = null, letter = null, className = '') {
+    function updateAvatarContainer(containerId, src = null) {
       const container = document.getElementById(containerId);
       if (!container) return;
 
-      container.textContent = '';
+      const img = container.querySelector('img');
 
-      if (avatarUrl) {
-        const img = document.createElement('img');
-        img.src = avatarUrl;
-        img.alt = 'Ваш аватар';
-        img.className = 'profile-image';
-        img.style.objectFit = 'cover';
-        container.appendChild(img);
-      } else {
-        const avatarDiv = document.createElement('div');
-        avatarDiv.className = `default-avatar ${className}`;
-        avatarDiv.textContent = letter || '';
-        container.appendChild(avatarDiv);
-      }
+      if (src) img.src = src;
+      else img.src = 'static/img/default-playlist.png';
     }
 
     if (editAvatarButtons) {
@@ -215,7 +204,7 @@ export class PlaylistPage {
           selectedAvatarFile = null;
           deleteAvatar = true;
 
-          updateAvatarContainer('playlistAvatarEditContainer', null, null, 'profile-edit-avatar');
+          updateAvatarContainer('playlistAvatarEditContainer');
 
           target.remove();
         }
@@ -223,60 +212,20 @@ export class PlaylistPage {
     }
 
     const editValidators = {
-      email: (value) => {
-        if (!value) return 'Пожалуйста, заполните это поле';
-        if (!/\S+@\S+\.\S+/.test(value)) return 'Некорректный email';
-        return null;
-      },
-      login: (value) => {
-        if (!value) return 'Пожалуйста, заполните это поле';
-        if (value.length < 5) return 'Минимум 5 символов';
-        else if (value.length > 35) return 'Максимум 35 символов';
-        return null;
-      },
-      password: (value) => {
-        if (value && value.length < 8) return 'Минимум 8 символов';
-        return null;
-      },
-      passwordConfirm: (value) => {
-        const password = document.getElementById('password')?.value;
-        if (value !== password) return 'Пароли не совпадают. Пожалуйста, проверьте.';
+      title: (value) => {
+        if (!value) return 'Назовите ваш плейлист';
         return null;
       },
     };
 
     const editInformation = {
-      email: (value) => (!/\S+@\S+\.\S+/.test(value) ? 'Формат: example@mail.com' : null),
-      login: (value) => {
-        if (value.length < 5) return 'Минимум 5 символов';
-        else if (value.length > 35) return 'Максимум 35 символов';
-        return null;
-      },
-      password: (value) => {
-        const errors = [];
-        const passwordConfirm = document.getElementById('passwordConfirm');
-        if (value && value.length < 8) {
-          errors.push('Минимум 8 символов');
-        }
-        if (value !== passwordConfirm.value) {
-          errors.push('Пароли не совпадают');
-        }
-        return errors.length ? errors : null;
-      },
-      passwordConfirm: (value) => {
-        const errors = [];
-        const password = document.getElementById('password');
-        if (value && value.length < 8) {
-          errors.push('Минимум 8 символов');
-        }
-        if (value !== password.value) {
-          errors.push('Пароли не совпадают');
-        }
-        return errors.length ? errors : null;
+      title: (value) => (value ? null : 'Укажите название плейлиста'),
+      description: (value) => {
+        return 'Максимум 300 символов';
       },
     };
 
-    const editValidator = new FormValidator('editProfileForm', editValidators, editInformation, '.primary-button');
+    const editValidator = new FormValidator('editPlaylistForm', editValidators, editInformation, '.primary-button');
 
     editValidator.init();
 
@@ -295,26 +244,11 @@ export class PlaylistPage {
           if (selectedAvatarFile) {
             const response = await apiServise.uploadPlaylistAvatar(selectedAvatarFile, playlistId);
             const newAvatarUrl = getValidImage(response.avatar_url);
-
-            updateAvatarContainer('avatarEditContainer', newAvatarUrl);
-            updateAvatarContainer('profileAvatarContainer', newAvatarUrl);
-
+            updateAvatarContainer('playlistAvatarContainer', newAvatarUrl);
             selectedAvatarFile = null;
           } else if (deleteAvatar) {
-            const response = await apiServise.deletePlaylistAvatar(playlistId);
-            const newAvatarUrl = getValidImage(response.avatar_url);
-
-            updateAvatarContainer('avatarEditContainer', newAvatarUrl);
-            const profileAvatarContainer = document.getElementById('profileAvatarContainer');
-            if (profileAvatarContainer) {
-              const imgElement = profileAvatarContainer.querySelector('img');
-              if (imgElement) {
-                imgElement.src = 'static/img/default-playlist.png';
-              } else {
-                console.error('No img element found inside profileAvatarContainer');
-              }
-            }
-
+            await apiServise.deletePlaylistAvatar(playlistId);
+            updateAvatarContainer('playlistAvatarContainer');
             deleteAvatar = false;
           }
 
@@ -344,10 +278,9 @@ export class PlaylistPage {
             editPlaylistOverlay.classList.remove('active');
           }, 1000);
         } catch (err) {
-          console.error('Ошибка при сохранении профиля:', err);
+          console.error('Ошибка при сохранении плейлиста:', err);
           let msg = 'Не удалось сохранить изменения. Попробуйте еще раз чуть позже.';
-          if (err.message === 'resource conflict') msg = 'Пользователь с такими данными уже существует.';
-          else if (err.message === 'bad request')
+          if (err.message === 'bad request')
             msg = 'Что-то пошло не так. Пожалуйста, проверьте правильность введенных данных.';
           editValidator.showMessage(msg);
         }

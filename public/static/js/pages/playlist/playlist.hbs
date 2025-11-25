@@ -5,7 +5,7 @@
       <div class="blue-background-circle album-blue-position"></div>
       <div class="purple-background-circle album-purple-position"></div>
       <div class="album-card">
-        <div id="profileAvatarContainer"><img class="album-cover" src="{{ cover }}" alt="{{ title }}"  /></div>
+        <div id="playlistAvatarContainer"><img class="album-cover" src="{{ cover }}" alt="{{ title }}"  /></div>
         
         <div class="album-card-title">{{ title }}</div>
         <div class="album-card-info">
@@ -93,10 +93,10 @@
         <div class="card-sub all-description">{{ description }}</div>
       </div>
     </div>
-    <div class="overlay" id="editProfileOverlay">
+    <div class="overlay" id="editPlaylistOverlay">
       <div class="window">
         <div class="overlay-header">
-          <h2 class="title-name">Редактировать профиль</h2>
+          <h2 class="title-name">Редактировать плейлист</h2>
           <button id="closeOverlayButton" class="close-button" aria-label="Закрыть">{{> close }}</button>
         </div>
         <div class="header-divider"></div>
@@ -117,7 +117,7 @@
                 {{/if}}
               </div>
             </div>
-            <form id="editProfileForm">
+            <form id="editPlaylistForm">
               <div class="form-group">
                 <label for="text">Название плейлиста</label>
                 <div class="input-wrapper">
