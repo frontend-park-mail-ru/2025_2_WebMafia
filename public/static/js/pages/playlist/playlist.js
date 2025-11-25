@@ -386,7 +386,7 @@ export class PlaylistPage {
 
         let pageData = {
           searched_tracks: [],
-        }
+        };
 
         pageData.searched_tracks = (data || []).map((track) => ({
           id: track.id,
@@ -403,33 +403,37 @@ export class PlaylistPage {
         searchedTracksContainer.innerHTML = tracksTemplate(pageData);
 
         const addButtons = searchedTracksContainer.querySelectorAll('.add-track-size');
+        let num = 0;
         addButtons.forEach((button) => {
           button.addEventListener('click', (e) => {
             e.stopPropagation();
 
-            const track = data.find(t => t.id === button.dataset.id);
+            const track = pageData.searched_tracks.find((t) => t.id === button.dataset.trackId);
+            console.log(track, 'track');
             if (!track) return;
+            num = num + 1;
 
             const rowData = {
+              num: num,
               id: track.id,
-              name: track.title,
+              name: track.name,
               album: track.album.title,
               album_id: track.album.id,
-              cover: getValidImage('albums/' + track.album.avatar_url, 'default-album.png'),
+              cover: track.cover,
               artists: track.artists,
-              plays: playsParser(track.play_count),
-              duration: durationParser(track.duration_s),
-              is_liked: true,
+              plays: track.plays,
+              duration: track.duration,
+              is_liked: track.is_liked,
             };
 
-            apiServise.addTrackToPlaylist(button.dataset.id);
+            apiServise.addTrackToPlaylist(button.dataset.trackId, playlistId);
 
             const tracksTable = document.getElementById('addedTracksTable');
             const trackRow = Handlebars.templates['trackRow.hbs'];
 
             tracksTable.insertAdjacentHTML('beforeend', trackRow(rowData));
-          })
-        })
+          });
+        });
       });
     }
   }
