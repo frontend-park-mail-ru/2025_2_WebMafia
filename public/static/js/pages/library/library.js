@@ -115,6 +115,44 @@ export class LibraryPage {
   }
 
   addEventListeners(data) {
+    const searchToggle = document.getElementById('librarySearchToggle');
+    const libraryHeaderContainer = document.querySelector('.library-header-container');
+    const titleName = document.querySelector('.title-name');
+    const createPlaylistToggle = document.querySelector('.create-playlist-toggle');
+    const rightSearchContainer = document.querySelector('.library-search-container');
+    const closeButton = rightSearchContainer.querySelector('.input-close-button');
+    const originalParent = rightSearchContainer.parentElement;
+
+    searchToggle.addEventListener('click', (e) => {
+      e.preventDefault();
+
+      titleName.classList.add('hidden');
+      searchToggle.classList.add('hidden');
+      createPlaylistToggle.classList.add('hidden');
+
+      libraryHeaderContainer.appendChild(rightSearchContainer);
+
+      rightSearchContainer.classList.remove('active');
+      requestAnimationFrame(() => {
+        rightSearchContainer.classList.add('active');
+      });
+
+      const input = rightSearchContainer.querySelector('#librarySearchInput');
+      setTimeout(() => input.focus(), 200);
+    });
+
+    closeButton.addEventListener('click', (e) => {
+      e.preventDefault();
+
+      rightSearchContainer.classList.remove('active');
+
+      titleName.classList.remove('hidden');
+      searchToggle.classList.remove('hidden');
+      createPlaylistToggle.classList.remove('hidden');
+
+      setTimeout(() => originalParent.appendChild(rightSearchContainer), 200);
+    });
+
     const container = document.querySelector('.sort-buttons');
     const buttons = container.querySelectorAll('button');
     const disableSort = document.getElementById('disableSort');
@@ -168,12 +206,14 @@ export class LibraryPage {
     });
 
     const createPlaylistOverlay = document.getElementById('createPlaylistOverlay');
-    const createPlaylistButton = document.getElementById('createPlaylistButton');
-    if (createPlaylistOverlay && createPlaylistButton) {
-      createPlaylistButton.addEventListener('click', (e) => {
-        e.preventDefault();
-        createPlaylistOverlay.classList.add('active');
-      });
+    const createPlaylistButtons = document.querySelectorAll('.create-playlist-button');
+    if (createPlaylistOverlay) {
+      createPlaylistButtons.forEach((button) => {
+        button.addEventListener('click', (e) => {
+          e.preventDefault();
+          createPlaylistOverlay.classList.add('active');
+        });
+      })
     }
 
     let selectedAvatarFile = null;

@@ -158,6 +158,10 @@
     fill: url(#menuGradient);
   }
 
+  .menu-item.active .library-path {
+    stroke: url(#menuGradient);
+  }
+
   .menu-item.active {
     color: black;
   }
@@ -196,5 +200,9 @@
     position: fixed;
     bottom: 0;
     left: 0;
+  }
+
+  .menu .secondary-button:active, .menu .secondary-button:hover {
+    background: transparent;
   }
 }
