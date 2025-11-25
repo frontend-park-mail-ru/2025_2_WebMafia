@@ -101,3 +101,20 @@
 .album-row.active .playlist-track-cover {
   filter: brightness(0.6);
 }
+
+.warning-btns-overlay {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.primary-button.close-warning {
+  background: #e6e8ef;
+  height: 30px;
+  color: #000;
+}
+
+.primary-button.close-warning:hover {
+ background: #c7cad3;
+}
+    
