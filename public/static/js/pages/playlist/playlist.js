@@ -122,6 +122,58 @@ export class PlaylistPage {
     const editPlaylistOverlay = document.getElementById('editPlaylistOverlay');
     const closeOverlayButton = document.getElementById('closeOverlayButton');
 
+    if (this.playlistData.is_favorite) {
+      const appContainer = document.getElementById('app');
+
+      if (appContainer) {
+        appContainer.addEventListener('click', (e) => {
+          const likeBtn = e.target.closest('.like-btn-track');
+
+          if (likeBtn) {
+            const row = likeBtn.closest('.album-row.playlist');
+
+            if (row) {
+              row.remove();
+
+              const remainingRows = document.querySelectorAll('.album-row .playlist-track-number');
+              remainingRows.forEach((el, index) => {
+                el.textContent = index + 1;
+              });
+            }
+          }
+        });
+      }
+
+      const handlePlayerLikeChange = (e) => {
+        if (!appContainer.querySelector('.album-row.playlist')) {
+          window.removeEventListener('player-like-changed', handlePlayerLikeChange);
+          return;
+        }
+
+        const { id, isLiked } = e.detail;
+
+        if (!isLiked) {
+          const trackBtn = document.querySelector(`.album-row.playlist .like-btn-track[data-track-id="${id}"]`);
+
+          if (trackBtn) {
+            const row = trackBtn.closest('.album-row.playlist');
+            if (row) {
+              row.remove();
+
+              const remainingRows = document.querySelectorAll('.album-row.playlist .playlist-track-number');
+              remainingRows.forEach((el, index) => {
+                el.textContent = index + 1;
+              });
+
+              // const tracksNumSpan = document.querySelector('.tracks-amount');
+              // if (tracksNumSpan) tracksNumSpan.textContent = remainingRows.length + ' треков';
+            }
+          }
+        }
+      };
+      window.addEventListener('player-like-changed', handlePlayerLikeChange);
+    }
+
     if (editPlaylistButton && editPlaylistOverlay) {
       editPlaylistButton.addEventListener('click', (e) => {
         e.preventDefault();
@@ -287,13 +339,13 @@ export class PlaylistPage {
       });
     }
 
-    const warningOverlay = document.getElementById('warningOverlay');
+    const warningOverlay = document.getElementById('warningOverlayPlayer');
     if (deletePlaylistButton) {
       deletePlaylistButton.addEventListener('click', async (e) => {
         e.preventDefault();
         warningOverlay.classList.add('active');
-        const closeBtn = document.getElementById('cancelAction');
-        const confirmBtn = document.getElementById('confirmAction');
+        const closeBtn = document.getElementById('cancelActionPlaylist');
+        const confirmBtn = document.getElementById('confirmActionPlaylist');
         if (closeBtn) {
           closeBtn.addEventListener('click', (e) => {
             e.preventDefault();
@@ -310,7 +362,7 @@ export class PlaylistPage {
       });
     }
     const closeDescriptionButton = document.getElementById('closeDescriptionButton');
-    const closeWarningBtn = document.getElementById('closeWarningBtn');
+    const closeWarningBtn = document.getElementById('closeWarningBtnPlaylist');
 
     if (closeWarningBtn && warningOverlay) {
       closeWarningBtn.addEventListener('click', (e) => {
@@ -397,7 +449,7 @@ export class PlaylistPage {
           artists: track.artists,
           plays: playsParser(track.play_count),
           duration: durationParser(track.duration_s),
-          is_liked: true,
+          is_liked: null,
         }));
 
         searchedTracksContainer.innerHTML = tracksTemplate(pageData);
@@ -409,7 +461,6 @@ export class PlaylistPage {
             e.stopPropagation();
 
             const track = pageData.searched_tracks.find((t) => t.id === button.dataset.trackId);
-            console.log(track, 'track');
             if (!track) return;
             num = num + 1;
 
@@ -417,7 +468,7 @@ export class PlaylistPage {
               num: num,
               id: track.id,
               name: track.name,
-              album: track.album.title,
+              album: track.album,
               album_id: track.album.id,
               cover: track.cover,
               artists: track.artists,
@@ -430,8 +481,9 @@ export class PlaylistPage {
 
             const tracksTable = document.getElementById('addedTracksTable');
             const trackRow = Handlebars.templates['trackRow.hbs'];
-
             tracksTable.insertAdjacentHTML('beforeend', trackRow(rowData));
+            playTrack();
+            likeTrackBtn();
           });
         });
       });

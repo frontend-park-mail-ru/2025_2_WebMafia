@@ -144,7 +144,8 @@
 .warning-btns-overlay {
   display: flex;
   align-items: center;
-  justify-content: space-evenly;
+  justify-content: right;
+  gap: 15px;
 }
 
 .primary-button.close-warning {

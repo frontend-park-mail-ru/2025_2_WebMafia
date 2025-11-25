@@ -1,5 +1,6 @@
 import { apiServise, API_TRACKS_URL } from '@/data.js';
 import { getValidImage } from '@/parsers.js';
+import { likeTrackBtn, likeChange } from '@/utils/likeTrack';
 
 export class Player extends EventTarget {
   constructor() {
@@ -174,11 +175,9 @@ export class Player extends EventTarget {
       this.onLikeClickBound = this.handleLikeClick.bind(this);
       likeBtn.addEventListener('click', this.onLikeClickBound);
     }
-    if (storedTrackId) {
-      this.audio.addEventListener('timeupdate', () => {
-        this.updateCurrentTimeAndSlider();
-      });
-    }
+    this.audio.addEventListener('timeupdate', () => {
+      this.updateCurrentTimeAndSlider();
+    });
     this.setInitialVolume();
     this.setInitialPLayTime();
 
@@ -244,18 +243,27 @@ export class Player extends EventTarget {
     event.stopPropagation();
 
     const trackId = this.currentTrack.id;
-    console.log(trackId);
 
     try {
       if (this.currentTrack.is_liked) {
         await apiServise.unLikeTrack(trackId);
         this.currentTrack.is_liked = false;
-        p_btn.classList.remove('active');
+        // p_btn.classList.remove('active');
+        likeChange(trackId, false);
       } else {
         await apiServise.likeTrack(trackId);
         this.currentTrack.is_liked = true;
-        p_btn.classList.add('active');
+        // p_btn.classList.add('active');
+        likeChange(trackId, true);
       }
+
+      const eventChange = new CustomEvent('player-like-changed', {
+        detail: {
+          id: trackId,
+          isLiked: this.currentTrack.is_liked,
+        },
+      });
+      window.dispatchEvent(eventChange);
     } catch (error) {
       console.error('Ошибка при изменении лайка:', error);
     }

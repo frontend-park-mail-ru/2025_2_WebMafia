@@ -42,7 +42,7 @@
       <div class="tracks-card">
         <div class="album-table" id="addedTracksTable">
           {{#each tracks}}
-          <div class="album-row">
+          <div class="album-row playlist">
             <div class="playlist-track-number">{{numeration @index}}</div>
             <div class="album-play-wrapper">
               <img
@@ -176,22 +176,21 @@
         </div>
       </div>
     </div>
-    <div class="overlay" id="warningOverlay">
+    <div class="overlay" id="warningOverlayPlayer">
       <div class="window">
         <div class="overlay-header">
           <span class="album-title">Вы точно хотите удалить плейлист?</span>
-          <button id="closeWarningBtn" class="close-button" aria-label="Закрыть">{{> close }}</button>
+          <button id="closeWarningBtnPlaylist" class="close-button" aria-label="Закрыть">{{> close }}</button>
         </div>
-        <div class="header-divider"></div>
         <div class="card-sub all-description">Плейлист {{title}} будет удалён из библиотеки</div>
         <div class="warning-btns-overlay">
           <div class="save-overlay-button">
-          <button class="primary-button close-warning save-avatar-button-size" id="cancelAction">
+          <button class="primary-button close-warning save-avatar-button-size" id="cancelActionPlaylist">
             Закрыть
           </button>
         </div>
         <div class="save-overlay-button">
-          <button class="primary-button save-overlay-button-size" id="confirmAction">
+          <button class="primary-button save-overlay-button-size" id="confirmActionPlaylist">
             Удалить
           </button>
         </div>
