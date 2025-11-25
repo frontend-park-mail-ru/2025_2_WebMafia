@@ -48,10 +48,7 @@ export class PlaylistPage {
           id: data.playlist.id,
           title: data.playlist.title,
           date: dateParser(data.playlist.created_at),
-          cover: getValidImage(
-            data.playlist.avatar_url ? 'playlist/' + data.playlist.avatar_url : '',
-            'default-playlist.png'
-          ),
+          cover: getValidImage(data.playlist.avatar_url ? data.playlist.avatar_url : '', 'default-playlist.png'),
           description: data.playlist.description,
         };
       }
@@ -86,7 +83,6 @@ export class PlaylistPage {
       });
       pageData.totalDuration = totalDurationParser(totalDuration);
       pageData.tracksNum = tracksNumParser(pageData.tracks.length);
-      console.log(pageData);
     } catch (error) {
       console.error('Failed to load playlist page data:', error);
 
@@ -308,7 +304,15 @@ export class PlaylistPage {
             const newAvatarUrl = getValidImage(response.avatar_url);
 
             updateAvatarContainer('avatarEditContainer', newAvatarUrl);
-            updateAvatarContainer('profileAvatarContainer', newAvatarUrl);
+            const profileAvatarContainer = document.getElementById('profileAvatarContainer');
+            if (profileAvatarContainer) {
+              const imgElement = profileAvatarContainer.querySelector('img');
+              if (imgElement) {
+                imgElement.src = 'static/img/default-playlist.png';
+              } else {
+                console.error('No img element found inside profileAvatarContainer');
+              }
+            }
 
             deleteAvatar = false;
           }

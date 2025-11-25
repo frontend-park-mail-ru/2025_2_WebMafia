@@ -349,8 +349,6 @@ export class apiServises {
         this.getFavoriteTrackIds().catch(() => []),
       ]);
 
-      console.log(playlist, 'asdasdasd');
-
       let tracks_with_likes;
       if (favorite_tracks) {
         tracks_with_likes = (playlist.tracks || []).map((track) => ({
@@ -435,7 +433,6 @@ export class apiServises {
   async getFavoriteTrackIds() {
     try {
       const favoriteTracks = await this.request('/playlists/favorite');
-      console.log(favoriteTracks);
       return favoriteTracks.tracks;
     } catch (error) {
       console.error('Failed to load favorite tracks:', error);
