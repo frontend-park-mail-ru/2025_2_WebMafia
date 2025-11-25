@@ -34,55 +34,57 @@ export class LibraryPage {
 
     try {
       const data = await apiServise.getLibraryPageData();
-      const tracks = data.tracks;
+      console.log(data);
       const item = {
         name: 'Понравившиеся треки',
         image: 'static/img/liked_tracks.png',
         created_at: new Date(),
-        sub: tracksNumParser(tracks.tracks.length),
-        href: 'playlist/' + tracks.id,
+        sub: data.favourite.tracks ? tracksNumParser(data.favourite.tracks.length) : 0,
+        href: 'playlist/' + data.favourite.id,
         type: 'Плейлист',
       };
       pageData.library.push(item);
       pageData.playlists.push(item);
-      data.artists.forEach((artist) => {
-        const item = {
-          name: artist.name,
-          default_avatar: 'default-artist.png',
-          image: getValidImage('artists/' + artist.avatar_url, 'default-artist.png'),
-          created_at: new Date(artist.created_at),
-          type: 'Артист',
-          sub: playsParser(artist.play_count),
-          href: 'artist/' + artist.id,
-        };
-        pageData.library.push(item);
-        pageData.artists.push(item);
-      });
-      data.albums.forEach((album) => {
-        const item = {
-          name: album.title,
-          default_avatar: 'default-album.png',
-          image: getValidImage('albums/' + album.avatar_url, 'default-album.png'),
-          sub: album.artists ? album.artists[0].name : 'Unknown Artist',
-          created_at: new Date(album.created_at),
-          type: album.type,
-          href: 'album/' + album.id,
-        };
-        pageData.library.push(item);
-        pageData.albums.push(item);
-      });
+      // data.artists.forEach((artist) => {
+      //   const item = {
+      //     name: artist.name,
+      //     default_avatar: 'default-artist.png',
+      //     image: getValidImage('artists/' + artist.avatar_url, 'default-artist.png'),
+      //     created_at: new Date(artist.created_at),
+      //     type: 'Артист',
+      //     sub: playsParser(artist.play_count),
+      //     href: 'artist/' + artist.id,
+      //   };
+      //   pageData.library.push(item);
+      //   pageData.artists.push(item);
+      // });
+      // data.albums.forEach((album) => {
+      //   const item = {
+      //     name: album.title,
+      //     default_avatar: 'default-album.png',
+      //     image: getValidImage('albums/' + album.avatar_url, 'default-album.png'),
+      //     sub: album.artists ? album.artists[0].name : 'Unknown Artist',
+      //     created_at: new Date(album.created_at),
+      //     type: album.type,
+      //     href: 'album/' + album.id,
+      //   };
+      //   pageData.library.push(item);
+      //   pageData.albums.push(item);
+      // });
       data.playlists.forEach((playlist) => {
-        const item = {
-          name: playlist.title,
-          default_avatar: 'default-playlist.png',
-          image: getValidImage('playlists/' + playlist.avatar_url, 'default-album.png'),
-          created_at: new Date(playlist.created_at),
-          sub: tracksNumParser(playlist.tracks.length),
-          type: 'Плейлист',
-          href: 'playlist/' + playlist.id,
-        };
-        pageData.library.push(item);
-        pageData.playlists.push(item);
+        if (!playlist.is_favorite) {
+          const item = {
+            name: playlist.title,
+            default_avatar: 'default-playlist.png',
+            image: getValidImage('playlists/' + playlist.avatar_url, 'default-album.png'),
+            created_at: new Date(playlist.created_at),
+            sub: playlist.tracks ? tracksNumParser(playlist.tracks.length) : 0,
+            type: 'Плейлист',
+            href: 'playlist/' + playlist.id,
+          };
+          pageData.library.push(item);
+          pageData.playlists.push(item);
+        }
       });
       pageData.library.sort((a, b) => b.created_at - a.created_at);
     } catch (error) {
