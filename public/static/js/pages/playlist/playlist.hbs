@@ -40,7 +40,7 @@
         </div>
       </div>
       <div class="tracks-card">
-        <div class="album-table">
+        <div class="album-table" id="addedTracksTable">
           {{#each tracks}}
           <div class="album-row">
             <div class="playlist-track-number">{{numeration @index}}</div>
@@ -49,7 +49,7 @@
                 class="playlist-track-cover"
                 src="{{ cover }}"
                 alt="{{ name }}"
-                onerror="this.onerror=null; this.src='static/img/default-album.png';"
+                onerror="this.onerror=null; this.src='static/img/default-playlist.png';"
               />
               <button
                 class="play-album-track"
@@ -79,6 +79,22 @@
             </div>
           </div>
           {{/each}}
+        </div>
+        {{#if tracks}}
+          <div class="header-divider">
+        {{/if}}
+        <div class="playlist-search-title">Давай добавим что-нибудь в твой плейлист</div>
+        <div class="playlist-search-container">
+          <div class="search-icon">{{> searchIcon }}</div>
+          <input
+            type="text"
+            class="search-input"
+            id="searchTracks"
+            placeholder="Название трека"
+            value="{{ searchValue }}"
+          />
+        </div>
+        <div class="tracks-table" id="searchedTracksContainer">
         </div>
       </div>
     </div>

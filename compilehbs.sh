@@ -28,6 +28,10 @@ handlebars public/static/js/components/sidebar/sidebar.hbs -f public/static/js/c
 
 handlebars public/static/js/components/player/player.hbs -f public/static/js/components/player/player.tmpl.js
 
+handlebars public/static/js/components/searched_tracks/searchedTracks.hbs -f public/static/js/components/searched_tracks/searchedTracks.tmpl.js
+
+handlebars public/static/js/components/tracks_row/trackRow.hbs -f public/static/js/components/tracks_row/trackRow.tmpl.js
+
 handlebars public/static/js/pages/album/album.hbs -f public/static/js/pages/album/album.tmpl.js
 
 handlebars public/static/js/pages/playlist/playlist.hbs -f public/static/js/pages/playlist/playlist.tmpl.js

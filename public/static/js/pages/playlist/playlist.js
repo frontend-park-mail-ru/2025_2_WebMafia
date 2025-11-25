@@ -341,5 +341,64 @@ export class PlaylistPage {
         menu.classList.add('hidden');
       }
     });
+
+    const tracksTemplate = Handlebars.templates['searchedTracks.hbs'];
+    const searchTracks = document.getElementById('searchTracks');
+    const searchedTracksContainer = document.getElementById('searchedTracksContainer');
+    if (searchTracks && searchedTracksContainer) {
+      searchTracks.addEventListener('input', async (e) => {
+        const searchVal = e.target.value;
+        if (searchVal === '') return;
+
+        const data = await apiServise.searchTrack(searchVal);
+
+        let pageData = {
+          searched_tracks: [],
+        }
+
+        pageData.searched_tracks = (data || []).map((track) => ({
+          id: track.id,
+          name: track.title,
+          album: track.album.title,
+          album_id: track.album.id,
+          cover: getValidImage('albums/' + track.album.avatar_url, 'default-album.png'),
+          artists: track.artists,
+          plays: playsParser(track.play_count),
+          duration: durationParser(track.duration_s),
+          is_liked: true,
+        }));
+
+        searchedTracksContainer.innerHTML = tracksTemplate(pageData);
+
+        const addButtons = searchedTracksContainer.querySelectorAll('.add-track-size');
+        addButtons.forEach((button) => {
+          button.addEventListener('click', (e) => {
+            e.stopPropagation();
+
+            const track = data.find(t => t.id === button.dataset.id);
+            if (!track) return;
+
+            const rowData = {
+              id: track.id,
+              name: track.title,
+              album: track.album.title,
+              album_id: track.album.id,
+              cover: getValidImage('albums/' + track.album.avatar_url, 'default-album.png'),
+              artists: track.artists,
+              plays: playsParser(track.play_count),
+              duration: durationParser(track.duration_s),
+              is_liked: true,
+            };
+
+            apiServise.addTrackToPlaylist(button.dataset.id);
+
+            const tracksTable = document.getElementById('addedTracksTable');
+            const trackRow = Handlebars.templates['trackRow.hbs'];
+
+            tracksTable.insertAdjacentHTML('beforeend', trackRow(rowData));
+          })
+        })
+      });
+    }
   }
 }

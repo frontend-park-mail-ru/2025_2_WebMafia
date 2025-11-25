@@ -57,7 +57,7 @@ export class SearchPage {
         image: getValidImage('albums/' + track.album.avatar_url, 'default-album.png'),
         artist: track.artists ? track.artists[0].name : 'Unknown Artist',
         artist_id: track.album.artists?.[0].id,
-        type: 'Трэк',
+        type: 'Трек',
         is_liked: track.is_liked,
       }));
 

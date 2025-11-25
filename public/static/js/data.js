@@ -476,6 +476,18 @@ export class apiServises {
     }
   }
 
+  async addTrackToPlaylist(track_Id) {
+    try {
+      return this.request(`/playlists/${id}/tracks`, {
+        method: 'POST',
+        body: { track_Id },
+      });
+    } catch {
+      console.error(`Failed to add track ${track_Id}:`, error);
+      return [];
+    }
+  }
+
   async likeTrack(track_Id) {
     if (!track_Id) return;
     try {

@@ -101,3 +101,42 @@
 .album-row.active .playlist-track-cover {
   filter: brightness(0.6);
 }
+
+.playlist-search-container {
+  position: relative;
+  margin: 15px 0 15px 13px;
+  width: 300px;
+}
+
+.playlist-search-title {
+  font-size: 20px;
+  font-weight: 600;
+  margin-left: 13px;
+  margin-top: 5px
+}
+
+.tracks-card .header-divider {
+  margin: 10px;
+}
+
+.right-row-content-playlist {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 80% 20%;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.add-track-size {
+  height: 20px;
+}
+
+.playlist-row {
+  display: flex;
+  padding: 10px 25px 10px 10px;
+  align-items: center;
+  border-radius: 30px;
+  transition: background-color 0.3s ease;
+  height: 75px;
+}
