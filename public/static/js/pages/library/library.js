@@ -34,7 +34,6 @@ export class LibraryPage {
 
     try {
       const data = await apiServise.getLibraryPageData();
-      console.log(data);
       const item = {
         name: 'Понравившиеся треки',
         image: 'static/img/liked_tracks.png',
@@ -76,7 +75,7 @@ export class LibraryPage {
           const item = {
             name: playlist.title,
             default_avatar: 'default-playlist.png',
-            image: getValidImage('playlists/' + playlist.avatar_url, 'default-album.png'),
+            image: getValidImage(playlist.avatar_url, 'default-album.png'),
             created_at: new Date(playlist.created_at),
             sub: playlist.tracks ? tracksNumParser(playlist.tracks.length) : 0,
             type: 'Плейлист',

@@ -1,6 +1,6 @@
-const API_BASE_URL = 'http://217.16.17.173:8080/api/v1';
-const API_Data_URL = 'http://217.16.17.173:8081/api/v1';
-const API_PLAYLIST_URL = 'http://217.16.17.173:8082/api/v1';
+const API_BASE_URL = 'http://localhost:8080/api/v1';
+const API_Data_URL = 'http://localhost:8081/api/v1';
+const API_PLAYLIST_URL = 'http://localhost:8082/api/v1';
 export const API_AVATARS_URL = 'http://217.16.17.173:8099/avatars';
 export const API_TRACKS_URL = 'http://217.16.17.173:8099/music/tracks';
 
@@ -119,21 +119,14 @@ export class apiServises {
         this.getFavoriteTrackIds().catch(() => []),
       ]);
 
-      let popular_tracks_with_likes;
-      if (favorite_tracks) {
-        popular_tracks_with_likes = (popular_tracks || []).map((track) => ({
-          ...track,
-          is_liked: favorite_tracks.includes(track.id),
-        }));
-      } else {
-        popular_tracks_with_likes = (popular_tracks || []).map((track) => ({
-          ...track,
-        }));
-      }
+      const popular_tracks_with_likes = (popular_tracks || []).map((track) => ({
+        ...track,
+        is_liked: Array.isArray(favorite_tracks) ? favorite_tracks.includes(track.id) : false,
+      }));
 
       return {
         albums: albums || [],
-        popular_tracks: popular_tracks_with_likes || [],
+        popular_tracks: popular_tracks_with_likes,
         artist: artist || {},
         similar_artists: similar_artists || [],
       };
@@ -232,8 +225,18 @@ export class apiServises {
   async loadTrackById(id) {
     if (!id) return null;
     try {
-      const track = this.request(`/tracks/${id}`).catch(() => []);
-      return track;
+      const [track, favorite_tracks] = await Promise.all([
+        this.request(`/tracks/${id}`).catch(() => []),
+        this.getFavoriteTrackIds().catch(() => []),
+      ]);
+      const tracks_with_likes = track
+        ? {
+            ...track,
+            is_liked: Array.isArray(favorite_tracks) ? favorite_tracks.includes(track.id) : false,
+          }
+        : null;
+
+      return tracks_with_likes;
     } catch (error) {
       console.error('Failed to load artist page data:', error);
       throw error;
@@ -433,7 +436,11 @@ export class apiServises {
   async getFavoriteTrackIds() {
     try {
       const favoriteTracks = await this.request('/playlists/favorite');
-      return favoriteTracks.tracks;
+      if (!favoriteTracks || !Array.isArray(favoriteTracks.tracks)) {
+        return [];
+      }
+      const trackIds = favoriteTracks.tracks.map((track) => track.id);
+      return trackIds;
     } catch (error) {
       console.error('Failed to load favorite tracks:', error);
       return [];
@@ -454,6 +461,17 @@ export class apiServises {
       }
     } catch (error) {
       console.error('Failed to load favorite tracks:', error);
+      return [];
+    }
+  }
+
+  async deletePlaylist(id) {
+    try {
+      return this.request(`/playlists/${id}`, {
+        method: 'DELETE',
+      });
+    } catch {
+      console.error('Failed to delete playlist:');
       return [];
     }
   }

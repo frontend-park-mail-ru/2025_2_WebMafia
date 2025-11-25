@@ -1,6 +1,7 @@
 {{#each library}}
 <a class="card" href="/{{ href }}">
-  <img src="{{ image }}" alt="{{ name }}" onerror="this.onerror=null; this.src='static/img/{{ default_avatar }}';" />
+  <div id="playlistCover"><img src="{{ image }}" alt="{{ name }}" /></div>
+  
   <div class="card-bottom-info">
     <p class="card-name">{{ name }}</p>
     <p class="card-sub">

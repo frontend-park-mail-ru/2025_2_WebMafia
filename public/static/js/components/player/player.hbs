@@ -5,7 +5,9 @@
       <a class="track-title"></a>
       <a class="track-artist"></a>
     </div>
-    <button class="like-btn">{{> likeBtn }}</button>
+    <div class="track-like-container">
+      <button class="like-btn artist-like-size {{#if is_liked}}active{{/if}} " data-track-id="{{ id }}">{{> likeBtn }}</button>
+    </div>
   </div>
 
   <div class="player-center">

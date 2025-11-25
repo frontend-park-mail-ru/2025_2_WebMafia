@@ -118,6 +118,7 @@ export class PlaylistPage {
     const getDescriptionOverlay = document.getElementById('descriptionOverlay');
 
     const editPlaylistButton = document.querySelector('.actions-item.edit');
+    const deletePlaylistButton = document.querySelector('.actions-item.delete');
     const editPlaylistOverlay = document.getElementById('editProfileOverlay');
     const closeOverlayButton = document.getElementById('closeOverlayButton');
 
@@ -350,6 +351,14 @@ export class PlaylistPage {
             msg = 'Что-то пошло не так. Пожалуйста, проверьте правильность введенных данных.';
           editValidator.showMessage(msg);
         }
+      });
+    }
+
+    if (deletePlaylistButton) {
+      deletePlaylistButton.addEventListener('click', async (e) => {
+        e.preventDefault();
+        await apiServise.deletePlaylist(playlistId);
+        router.navigate('/library');
       });
     }
 

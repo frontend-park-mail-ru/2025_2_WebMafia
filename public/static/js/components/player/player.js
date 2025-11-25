@@ -34,22 +34,6 @@ export class Player extends EventTarget {
     }
   }
 
-  async renderWithoutData() {
-    const contentTemplate = Handlebars.templates['player.hbs'];
-    const playerHTML = contentTemplate();
-
-    const playerContainer = document.getElementById('player-container');
-    if (playerContainer && !document.getElementById('player')) {
-      playerContainer.insertAdjacentHTML('afterbegin', playerHTML);
-    }
-
-    this.volumeRender();
-    this.playPauseSwitch();
-    this.sliderColorChange();
-    this.likeTrack();
-    this.soundChange();
-  }
-
   async destroy() {
     const playerElement = document.querySelector('.player');
     if (playerElement) {
@@ -61,6 +45,10 @@ export class Player extends EventTarget {
       playerElement.querySelector('.control-btn.prev')?.removeEventListener('click', this.handlePrevClick);
       playerElement.querySelector('.like-btn')?.removeEventListener('click', this.handleLikeClick);
       playerElement.querySelector('.remote-slider')?.removeEventListener('input', this.handleSliderInput);
+      const likeBtn = playerElement.querySelector('.like-btn');
+      if (likeBtn && this.onLikeClickBound) {
+        likeBtn.removeEventListener('click', this.onLikeClickBound);
+      }
       playerElement.remove();
     }
     if (this.listenIncrementTimeout) {
@@ -105,7 +93,6 @@ export class Player extends EventTarget {
 
     try {
       const currentTrackArtistId = this.currentTrack.artists[0].id;
-      // const allTracks = await apiServise.request(`/artists/${currentTrackArtistId}/tracks`).catch(() => []);
       if (isNewContext) {
         this.currentContext = context;
         localStorage.setItem('playerContext', JSON.stringify(context));
@@ -172,7 +159,6 @@ export class Player extends EventTarget {
     this.volumeRender();
     this.playPauseSwitch();
     this.sliderColorChange();
-    this.likeTrack();
     this.soundChange();
     this.trackSwitching();
 
@@ -182,9 +168,17 @@ export class Player extends EventTarget {
     const storedContext = storedContextString ? JSON.parse(storedContextString) : null;
 
     await Promise.all([this.loadTrack(storedTrackData, storedContext), this.getPrevAndNextTracks()]);
-    this.audio.addEventListener('timeupdate', () => {
-      this.updateCurrentTimeAndSlider();
-    });
+
+    const likeBtn = document.querySelector('.player .like-btn');
+    if (likeBtn) {
+      this.onLikeClickBound = this.handleLikeClick.bind(this);
+      likeBtn.addEventListener('click', this.onLikeClickBound);
+    }
+    if (storedTrackId) {
+      this.audio.addEventListener('timeupdate', () => {
+        this.updateCurrentTimeAndSlider();
+      });
+    }
     this.setInitialVolume();
     this.setInitialPLayTime();
 
@@ -210,7 +204,6 @@ export class Player extends EventTarget {
   loadTrackInfo(track) {
     const titlePlacement = document.querySelector('.track-title');
     titlePlacement.textContent = track.title;
-    console.log(track);
     titlePlacement.href = `/album/${track.album?.id}`;
     const artist = track.artists?.[0];
     const artistPlacement = document.querySelector('.track-artist');
@@ -223,18 +216,49 @@ export class Player extends EventTarget {
     const durationFormatted = `${minutes}:${seconds.toString().padStart(2, '0')}`;
     document.querySelector('.track-time.total').textContent = durationFormatted;
 
-    // document.querySelector('.track-cover-player').src = getValidImage('albums/' + track?.album?.avatar_url.split('/').pop(), 'default-album.png');
-
     document.querySelector('.track-cover-player').src = getValidImage(
       'albums/' + track?.album?.avatar_url,
       'default-album.png'
     );
 
-    // let file_url = track.file_url.split('/').pop();
+    const likeBtn = document.querySelector('.player .like-btn');
+    if (likeBtn) {
+      likeBtn.dataset.trackId = track.id;
+      if (track.is_liked) {
+        likeBtn.classList.add('active');
+      } else {
+        likeBtn.classList.remove('active');
+      }
+    }
+
     let file_url = track.file_url;
     this.audio.src = file_url ? `${API_TRACKS_URL}/${file_url}` : `static/music/${file_url}`;
 
     this.audio.load();
+  }
+
+  async handleLikeClick(event) {
+    const p_btn = event.target.closest('.like-btn');
+    if (!p_btn || !this.currentTrack) return;
+
+    event.stopPropagation();
+
+    const trackId = this.currentTrack.id;
+    console.log(trackId);
+
+    try {
+      if (this.currentTrack.is_liked) {
+        await apiServise.unLikeTrack(trackId);
+        this.currentTrack.is_liked = false;
+        p_btn.classList.remove('active');
+      } else {
+        await apiServise.likeTrack(trackId);
+        this.currentTrack.is_liked = true;
+        p_btn.classList.add('active');
+      }
+    } catch (error) {
+      console.error('Ошибка при изменении лайка:', error);
+    }
   }
 
   updateCurrentTimeAndSlider() {
@@ -386,16 +410,24 @@ export class Player extends EventTarget {
     );
   }
 
-  likeTrack() {
-    const likeBnt = document.querySelector('.like-btn');
-    likeBnt.addEventListener('click', () => {
-      if (likeBnt.classList.contains('active')) {
-        likeBnt.classList.remove('active');
-      } else {
-        likeBnt.classList.add('active');
-      }
-    });
-  }
+  // likeTrack() {
+  //   const likeBnt = document.querySelector('.like-btn');
+  //   console.log(this.currentTrack);
+
+  //   // const is_liked = this.currentTrack.is_liked;
+  //   // if (is_liked) {
+  //   //   likeBnt.classList.add('active');
+  //   // } else {
+  //   //   likeBnt.classList.remove('active');
+  //   // }
+  //   // likeBnt.addEventListener('click', () => {
+  //   //   if (likeBnt.classList.contains('active')) {
+  //   //     likeBnt.classList.remove('active');
+  //   //   } else {
+  //   //     likeBnt.classList.add('active');
+  //   //   }
+  //   // });
+  // }
 
   soundChange() {
     const volumeRegulator = document.querySelector('.volume-slider');
@@ -407,7 +439,6 @@ export class Player extends EventTarget {
       this.audio.volume = value / 100;
     });
 
-    //чтобы сохранялась гросмкость на будущее
     volumeRegulator.addEventListener('change', function () {
       const value = this.value;
       localStorage.setItem('volume', value);
