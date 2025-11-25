@@ -225,7 +225,7 @@ export class PlaylistPage {
       },
     };
 
-    const editValidator = new FormValidator('editProfileForm', editValidators, editInformation, '.primary-button');
+    const editValidator = new FormValidator('editPlaylistForm', editValidators, editInformation, '.primary-button');
 
     editValidator.init();
 
@@ -287,11 +287,44 @@ export class PlaylistPage {
       });
     }
 
+    const warningOverlay = document.getElementById('warningOverlay');
     if (deletePlaylistButton) {
       deletePlaylistButton.addEventListener('click', async (e) => {
         e.preventDefault();
-        await apiServise.deletePlaylist(playlistId);
-        router.navigate('/library');
+        warningOverlay.classList.add('active');
+        const closeBtn = document.getElementById('cancelAction');
+        const confirmBtn = document.getElementById('confirmAction');
+        if (closeBtn) {
+          closeBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            warningOverlay.classList.remove('active');
+          });
+        }
+        if (confirmBtn) {
+          confirmBtn.addEventListener('click', async (e) => {
+            e.preventDefault();
+            await apiServise.deletePlaylist(playlistId);
+            router.navigate('/library');
+          });
+        }
+      });
+    }
+    const closeDescriptionButton = document.getElementById('closeDescriptionButton');
+    const closeWarningBtn = document.getElementById('closeWarningBtn');
+
+    if (closeWarningBtn && warningOverlay) {
+      closeWarningBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+
+        warningOverlay.classList.remove('active');
+      });
+    }
+
+    if (warningOverlay) {
+      warningOverlay.addEventListener('click', (e) => {
+        if (e.target === warningOverlay) {
+          warningOverlay.classList.remove('active');
+        }
       });
     }
 
@@ -302,7 +335,6 @@ export class PlaylistPage {
       });
     }
 
-    const closeDescriptionButton = document.getElementById('closeDescriptionButton');
     if (closeDescriptionButton && getDescriptionOverlay) {
       closeDescriptionButton.addEventListener('click', (e) => {
         e.preventDefault();
