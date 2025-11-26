@@ -323,7 +323,7 @@
   display: none;
 }
 
-@media (max-width: 560px) {
+@media (max-width: 800px) {
   .player {
     margin: 8px 0 0 0;
     bottom: 78px;
@@ -500,8 +500,7 @@
   }
 
   .player-center {
-    flex: 0 0 25%;
-    width: 25%;
+    width: 100px;
   }
 
   .player-right, .track-time, .shuffle, .prev, .repeat {

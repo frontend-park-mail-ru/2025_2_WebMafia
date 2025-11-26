@@ -404,7 +404,7 @@ body {
   opacity: 1;
 }
 
-@media (max-width: 560px) {
+@media (max-width: 800px) {
   body, html {
     -webkit-tap-highlight-color: transparent;
     position: relative;

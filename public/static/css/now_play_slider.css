@@ -195,7 +195,7 @@
   display: inline-block;
 }
 
-@media (max-width: 560px) {
+@media (max-width: 800px) {
   .card-slider {
     width: 180px;
     height: 120px;
