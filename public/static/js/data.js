@@ -275,6 +275,9 @@ export class apiServises {
     return this.request(`/playlists/${playlistId}`, {
       method: 'PUT',
       body: { title, description },
+      headers: {
+        'X-CSRF-Token': csrfToken,
+      },
     });
   }
 
