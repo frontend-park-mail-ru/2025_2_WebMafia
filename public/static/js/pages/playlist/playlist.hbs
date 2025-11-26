@@ -43,7 +43,7 @@
       <div class="tracks-card">
         <div class="album-table" id="addedTracksTable">
           {{#each tracks}}
-          <div class="album-row playlist">
+          <div class="{{#if @root.favourite }}album-row playlist {{else}} album-row playlist-unfav {{/if}}">
             <div class="playlist-track-number">{{numeration @index}}</div>
             <div class="album-play-wrapper">
               <img
@@ -62,7 +62,7 @@
                 <span class="pause-icon">{{> pause }}</span>
               </button>
             </div>
-            <div class="tracks-duration-wrapper">
+            <div class="tracks-duration-wrapper {{#unless @root.favourite}}playlists{{/unless}}">
               <div class="album-track-info">
                 <div class="track-name">{{ name }}</div>
                 <p class="playlist-sub">
@@ -74,9 +74,12 @@
                 </p>
               </div>
               <div class="track-like-container">
-                <button class="like-btn-track album-like-size active" data-track-id="{{ id }}">{{> likeBtn }}</button>
+                <button class="like-btn-track album-like-size {{#if is_liked}}active{{/if}}" data-track-id="{{ id }}">{{> likeBtn }}</button>
               </div>
               <div class="track-duration">{{ duration }}</div>
+              {{#unless @root.favourite}}
+              <button class="delete-btn-track" data-track-id="{{ id }}">{{> delete }}</button>
+              {{/unless}}
             </div>
           </div>
           {{/each}}

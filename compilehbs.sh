@@ -79,3 +79,6 @@ handlebars public/static/js/partials/pause.hbs -f public/static/js/partials/paus
 handlebars public/static/js/partials/dots.hbs -f public/static/js/partials/dots.tmpl.js
 
 handlebars public/static/js/partials/trash.hbs -f public/static/js/partials/trash.tmpl.js
+
+handlebars public/static/js/partials/delete.hbs -f public/static/js/partials/delete.tmpl.js
+

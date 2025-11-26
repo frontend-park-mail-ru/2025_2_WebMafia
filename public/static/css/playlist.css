@@ -164,3 +164,26 @@
  background: #c7cad3;
 }
 
+.tracks-duration-wrapper.playlists {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 70% 15% 10% 5%;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+
+.delete-btn-track {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.delete-btn-track:hover svg {
+  cursor: pointer;
+  transform: scale(1.03);
+}
+
+
+

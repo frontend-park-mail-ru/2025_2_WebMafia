@@ -10,12 +10,14 @@ import {
   getValidImage,
   totalDurationParser,
   tracksNumParser,
-  dateParser, durationToSec,
+  dateParser,
+  durationToSec,
 } from '@/parsers.js';
 import { playTrack } from '@/playTrackBtn.js';
 import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
 import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
 import { FormValidator } from '@/validation.js';
+import { likeChange, likeTrackBtn } from '../../utils/likeTrack';
 
 export class PlaylistPage {
   constructor() {
@@ -44,7 +46,7 @@ export class PlaylistPage {
         };
       } else {
         pageData = {
-          favourite: null,
+          favourite: false,
           id: data.playlist.id,
           title: data.playlist.title,
           date: dateParser(data.playlist.created_at),
@@ -53,7 +55,7 @@ export class PlaylistPage {
         };
       }
       let totalDuration = 0;
-      pageData.tracks = (data.playlist.tracks || []).map((track) => {
+      pageData.tracks = (data.tracks || []).map((track) => {
         totalDuration += track.duration_s;
         if (data.playlist.is_favorite) {
           return {
@@ -65,7 +67,7 @@ export class PlaylistPage {
             artists: track.artists,
             plays: playsParser(track.play_count),
             duration: durationParser(track.duration_s),
-            is_liked: true,
+            is_liked: track.is_liked,
           };
         } else {
           return {
@@ -77,7 +79,7 @@ export class PlaylistPage {
             artists: track.artists,
             plays: playsParser(track.play_count),
             duration: durationParser(track.duration_s),
-            is_liked: true,
+            is_liked: track.is_liked,
           };
         }
       });
@@ -110,6 +112,7 @@ export class PlaylistPage {
     initScrollbar();
     this.addEventListeners(this.playlistData.id);
     setPlayButtonsOnAuth();
+    likeTrackBtn();
     playTrack();
   }
 
@@ -131,9 +134,12 @@ export class PlaylistPage {
 
           if (likeBtn) {
             const row = likeBtn.closest('.album-row.playlist');
+            const id = likeBtn.dataset.trackId;
 
             if (row) {
               row.remove();
+
+              likeChange(id, false);
 
               const remainingRows = document.querySelectorAll('.album-row .playlist-track-number');
               remainingRows.forEach((el, index) => {
@@ -448,7 +454,7 @@ export class PlaylistPage {
           artists: track.artists,
           plays: playsParser(track.play_count),
           duration: durationParser(track.duration_s),
-          is_liked: null,
+          is_liked: track.is_liked,
         }));
 
         searchedTracksContainer.innerHTML = tracksTemplate(pageData);
@@ -467,7 +473,7 @@ export class PlaylistPage {
             const lastTrack = tracks.length ? tracks[tracks.length - 1] : null;
 
             track.num = lastTrack ? Number(lastTrack.textContent) + 1 : 1;
-            track.is_liked = true;
+            // track.is_liked = null;
 
             apiServise.addTrackToPlaylist(button.dataset.trackId, playlistId);
 
@@ -479,38 +485,43 @@ export class PlaylistPage {
 
             tracksNumElement.textContent = tracksNumParser(parseInt(tracksNumElement.textContent) + 1);
 
-            this.totalDuration += durationToSec(track.duration)
+            this.totalDuration += durationToSec(track.duration);
             totalDurationElement.textContent = totalDurationParser(this.totalDuration);
 
+            likeTrackBtn();
             playTrack();
           });
         });
       });
     }
 
-    document.getElementById('addedTracksTable').addEventListener('click', async (e) => {
-      const btn = e.target.closest('.like-btn-track');
-      if (!btn) return;
+    const addedTracksTable = document.getElementById('addedTracksTable');
+    if (addedTracksTable) {
+      addedTracksTable.addEventListener('click', async (e) => {
+        const btn = e.target.closest('.delete-btn-track');
+        if (!btn) return;
+        e.stopPropagation();
 
-      const row = btn.closest('.album-row.playlist');
-      const trackId = btn.dataset.trackId;
+        const row = btn.closest('.album-row.playlist-unfav');
+        const trackId = btn.dataset.trackId;
 
-      await apiServise.deleteTrackFromPlaylist(trackId, playlistId);
+        await apiServise.deleteTrackFromPlaylist(trackId, playlistId);
 
-      const tracksNumElement = document.getElementById('tracksNum');
-      const totalDurationElement = document.getElementById('totalDuration');
+        const tracksNumElement = document.getElementById('tracksNum');
+        const totalDurationElement = document.getElementById('totalDuration');
 
-      tracksNumElement.textContent = tracksNumParser(parseInt(tracksNumElement.textContent) - 1);
+        tracksNumElement.textContent = tracksNumParser(parseInt(tracksNumElement.textContent) - 1);
 
-      this.totalDuration -= durationToSec(row.querySelector('.track-duration')?.textContent);
-      totalDurationElement.textContent = totalDurationParser(this.totalDuration);
+        this.totalDuration -= durationToSec(row.querySelector('.track-duration')?.textContent);
+        totalDurationElement.textContent = totalDurationParser(this.totalDuration);
 
-      row.remove();
-      const rows = document.querySelectorAll('#addedTracksTable .playlist-track-number');
+        row.remove();
+        const rows = document.querySelectorAll('#addedTracksTable .playlist-track-number');
 
-      rows.forEach((numEl, i) => {
-        numEl.textContent = i + 1;
+        rows.forEach((numEl, i) => {
+          numEl.textContent = i + 1;
+        });
       });
-    });
+    }
   }
 }
