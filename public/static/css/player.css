@@ -25,7 +25,7 @@
   display: flex;
   align-items: center;
   gap: 15px;
-  width: 257px;
+  width: 20%;
 }
 
 .like-btn {
@@ -116,6 +116,11 @@
   flex-direction: column;
   align-items: center;
   color: #fff;
+  width: 50%;
+}
+
+.track-time {
+  flex-shrink: 0;
 }
 
 .track-time.current {
@@ -188,13 +193,14 @@
   gap: 15px;
   display: flex;
   align-items: center;
+  width: 100%;
 }
 
 .remote-slider {
   -webkit-appearance: none;
   appearance: none;
   background: transparent;
-  width: 600px;
+  width: 100%;
   flex: 1;
   cursor: pointer;
   display: flex;
@@ -233,24 +239,32 @@
   opacity: 1;
 }
 
+.remote-container {
+  flex: 1;
+}
+
+
 /* Правая часть */
 .player-right {
   margin-right: 20px;
   display: flex;
   align-items: center;
+  justify-content: flex-end;
+  width: 15%;
 }
 
 .volume-slider {
   -webkit-appearance: none;
   appearance: none;
   background: transparent;
-  width: 120px;
+  width: 80%;
+  max-width: 120px;
   cursor: pointer;
 
   --progress: 50%;
 }
 
-.volume-slider::-webkit-slider-thumb:hover {
+.volume-slider::-webkit-slider-thumb:hover{
   transform: scale(1.1);
   border-color: #a866eb;
 }
@@ -301,7 +315,6 @@
   opacity: 1;
 }
 
-/* Эффект приглушения цвета при mute */
 .volume-icon.level-0 {
   color: #9ca3af;
 }
@@ -317,7 +330,6 @@
     height: 60px;
     overflow: hidden;
     justify-content: center;
-    gap: 10px;
     transition: all 0.4s ease;
     width: calc(100dvw - 9px);
   }
@@ -479,12 +491,12 @@
   }
 
   .player-left {
-    margin: 0 10px 0 15px;
+    margin: 0 0 0 10px;
     display: flex;
     align-items: center;
     gap: 15px;
-    flex: 0 0 70%;
-    width: 70%;
+    flex: 1;
+    position: relative;
   }
 
   .player-center {
@@ -529,8 +541,8 @@
 
   .like-btn {
     position: absolute;
-    right: 120px;
-    top: 17px;
+    right: 16px;
+    top: calc(50% - 16px);
   }
 
   .control-btn.next svg {

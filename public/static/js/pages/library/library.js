@@ -207,7 +207,7 @@ export class LibraryPage {
 
     const createPlaylistOverlay = document.getElementById('createPlaylistOverlay');
     const createPlaylistButtons = document.querySelectorAll('.create-playlist-button');
-    if (createPlaylistOverlay) {
+    if (createPlaylistOverlay && createPlaylistButtons) {
       createPlaylistButtons.forEach((button) => {
         button.addEventListener('click', (e) => {
           e.preventDefault();

@@ -96,6 +96,7 @@
 
 .edit-button-size {
   height: 28px;
+  width: 200px;
 }
 
 .primary-button:hover {
@@ -322,6 +323,7 @@
 
   .edit-button-size {
     height: 20px;
+    width: auto;
   }
 
   .primary-button {

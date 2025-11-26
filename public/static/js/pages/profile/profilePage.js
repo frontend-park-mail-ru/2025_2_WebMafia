@@ -324,6 +324,7 @@ export class ProfilePage {
           if (email !== profile.email || login !== profile.nickname || password) {
             if (!password) password = '';
             const data = await apiServise.editUser(login, email, password);
+            console.log(data);
             const newLogin = data.Login;
 
             const headerUsername = document.querySelector('.header-username');
