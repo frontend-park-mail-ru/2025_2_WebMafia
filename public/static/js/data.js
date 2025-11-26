@@ -272,6 +272,8 @@ export class apiServises {
   }
 
   async updatePlaylist(title, description, playlistId) {
+    const csrfToken = await this.getCSRFToken();
+
     return this.request(`/playlists/${playlistId}`, {
       method: 'PUT',
       body: { title, description },
