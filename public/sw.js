@@ -36,6 +36,8 @@ const APP_SHELL_URLS = [
   'https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.runtime.min.js',
 ];
 
+const AVATAR_DOMAIN = 'http://217.16.17.173:8099';
+
 self.addEventListener('install', (event) => {
   console.log('[SW] Установка');
   event.waitUntil(
@@ -55,7 +57,6 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') {
     return;
@@ -64,7 +65,7 @@ self.addEventListener('fetch', (event) => {
   event.respondWith(
     fetch(event.request)
       .then((networkResponse) => {
-        if (networkResponse && networkResponse.ok){
+        if (networkResponse && networkResponse.ok) {
           return caches.open(CACHE_NAME).then((cache) => {
             cache.put(event.request, networkResponse.clone());
             return networkResponse;
