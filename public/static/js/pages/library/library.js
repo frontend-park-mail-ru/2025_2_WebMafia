@@ -302,7 +302,7 @@ export class LibraryPage {
           const data = await apiServise.createPlaylist(title, description);
 
           if (selectedAvatarFile) {
-            await apiServise.uploadPlaylistAvatar(selectedAvatarFile);
+            await apiServise.uploadPlaylistAvatar(selectedAvatarFile, data.id);
           }
 
           router.navigate(`playlist/${data.id}`);

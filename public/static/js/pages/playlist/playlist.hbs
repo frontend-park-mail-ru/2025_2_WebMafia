@@ -135,34 +135,24 @@
             </div>
             <form id="editPlaylistForm">
               <div class="form-group">
-                <label for="text">Название плейлиста</label>
+                <label for="title">Название</label>
                 <div class="input-wrapper">
-                  <input
-                    type="text"
-                    id="title"
-                    name="title"
-                    placeholder="Название плейлиста"
-                    autocomplete="title"
-                    value="{{ title }}"
-                  />
-                  <div class="error-message" id="emailError"></div>
-                  <div class="validation-message" id="emailInformation"></div>
+                  <input type="text" id="title" name="title" placeholder="Добавь название" />
+                  <div class="error-message" id="titleError"></div>
+                  <div class="validation-message" id="titleInformation"></div>
                 </div>
               </div>
 
               <div class="form-group">
-                <label for="login">Описание плейлиста</label>
+                <label for="description">Описание</label>
                 <div class="input-wrapper">
-                  <input
-                    type="text"
+                  <textarea
+                    maxlength="300"
                     id="description"
                     name="description"
-                    placeholder="Описание плейлиста"
-                    autocomplete="description"
-                    value="{{ description }}"
-                  />
-                  <div class="error-message" id="loginError"></div>
-                  <div class="validation-message" id="loginInformation"></div>
+                    placeholder="Добавь описание (необязательно)"
+                  ></textarea>
+                  <div class="validation-message" id="descriptionInformation"></div>
                 </div>
               </div>
               <div class="general-error" id="generalError"></div>

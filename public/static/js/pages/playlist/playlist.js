@@ -426,7 +426,6 @@ export class PlaylistPage {
     const tracksTemplate = Handlebars.templates['searchedTracks.hbs'];
     const searchTracks = document.getElementById('searchTracks');
     const searchedTracksContainer = document.getElementById('searchedTracksContainer');
-    const tracksTable = document.getElementById('addedTracksTable');
     if (searchTracks && searchedTracksContainer) {
       searchTracks.addEventListener('input', async (e) => {
         const searchVal = e.target.value;
