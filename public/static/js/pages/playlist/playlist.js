@@ -35,6 +35,7 @@ export class PlaylistPage {
     try {
       const data = await apiServise.getPlaylistPageData(id);
       this.playlistData = data.playlist;
+      const firstTrackId = data.tracks && data.tracks.length > 0 ? data.tracks[0].id : null;
       if (data.playlist.is_favorite) {
         pageData = {
           favourite: true,
@@ -43,6 +44,7 @@ export class PlaylistPage {
           date: dateParser(data.playlist.created_at),
           cover: 'static/img/liked_tracks.png',
           description: data.playlist.description,
+          track_id: firstTrackId,
         };
       } else {
         pageData = {
@@ -52,6 +54,7 @@ export class PlaylistPage {
           date: dateParser(data.playlist.created_at),
           cover: getValidImage(data.playlist.avatar_url ? data.playlist.avatar_url : '', 'default-playlist.png'),
           description: data.playlist.description,
+          track_id: firstTrackId,
         };
       }
       let totalDuration = 0;

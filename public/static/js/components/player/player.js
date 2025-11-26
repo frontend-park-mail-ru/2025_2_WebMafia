@@ -93,11 +93,11 @@ export class Player extends EventTarget {
     const isNewContext = context && JSON.stringify(context) !== JSON.stringify(this.currentContext);
 
     try {
-      const currentTrackArtistId = this.currentTrack.artists[0].id;
       if (isNewContext) {
         this.currentContext = context;
         localStorage.setItem('playerContext', JSON.stringify(context));
         let tracks = [];
+        let result = {};
         try {
           switch (context.type) {
             case 'artist-popular':
@@ -108,6 +108,10 @@ export class Player extends EventTarget {
               break;
             case 'artist_tracks':
               tracks = await apiServise.request(`/artists/${context.id}/tracks`);
+              break;
+            case 'playlist-tracks':
+              result = await apiServise.getPlaylistPageData(context.id);
+              tracks = result.tracks;
               break;
             case 'all-tracks':
             default:
@@ -271,18 +275,20 @@ export class Player extends EventTarget {
 
   updateCurrentTimeAndSlider() {
     const currentTime = this.audio.currentTime;
-    const duration_ms = this.currentTrack.duration_s;
+    if (this.currentTrack) {
+      const duration_ms = this.currentTrack.duration_s;
 
-    const minutes = Math.floor(currentTime / 60);
-    const seconds = Math.floor(currentTime % 60);
+      const minutes = Math.floor(currentTime / 60);
+      const seconds = Math.floor(currentTime % 60);
 
-    document.querySelector('.track-time.current').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+      document.querySelector('.track-time.current').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
 
-    const percent = (currentTime / duration_ms) * 100;
-    const timeRegulator = document.querySelector('.remote-slider');
-    if (timeRegulator) {
-      timeRegulator.value = percent;
-      timeRegulator.style.setProperty('--progress', percent + '%');
+      const percent = (currentTime / duration_ms) * 100;
+      const timeRegulator = document.querySelector('.remote-slider');
+      if (timeRegulator) {
+        timeRegulator.value = percent;
+        timeRegulator.style.setProperty('--progress', percent + '%');
+      }
     }
 
     if (this.canSaveTime) {
@@ -417,25 +423,6 @@ export class Player extends EventTarget {
       }.bind(this)
     );
   }
-
-  // likeTrack() {
-  //   const likeBnt = document.querySelector('.like-btn');
-  //   console.log(this.currentTrack);
-
-  //   // const is_liked = this.currentTrack.is_liked;
-  //   // if (is_liked) {
-  //   //   likeBnt.classList.add('active');
-  //   // } else {
-  //   //   likeBnt.classList.remove('active');
-  //   // }
-  //   // likeBnt.addEventListener('click', () => {
-  //   //   if (likeBnt.classList.contains('active')) {
-  //   //     likeBnt.classList.remove('active');
-  //   //   } else {
-  //   //     likeBnt.classList.add('active');
-  //   //   }
-  //   // });
-  // }
 
   soundChange() {
     const volumeRegulator = document.querySelector('.volume-slider');

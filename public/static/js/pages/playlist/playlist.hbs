@@ -24,6 +24,8 @@
             class="play-button play-button-playlist"
             data-playlist-id="{{ id }}"
             data-context="playlist-tracks"
+            data-track-id="{{ track_id }}"
+            data-first-track-id="{{ track_id }}"
           ></button>
           {{#unless favourite}}
           <button class="dots" id="playlistActions">{{> dots}}</button>
@@ -55,8 +57,8 @@
               <button
                 class="play-album-track"
                 data-track-id="{{ id }}"
-                data-context="album-tracks"
-                data-album-id="{{../id}}"
+                data-context="playlist-tracks"
+                data-playlist-id="{{@root.id}}"
               >
                 <span class="play-icon">{{> play }}</span>
                 <span class="pause-icon">{{> pause }}</span>

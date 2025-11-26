@@ -1,10 +1,13 @@
 import { player } from '@/components/player/player.js';
+import { apiServise } from './data';
 
 export function playTrack() {
   const playBtn = document.querySelectorAll(
-    '.play-button-track, .play-button, .current-card-btn.play, .play-popular-track, .play-album-track, .play-all-artist-tracks, .play-button-album'
+    '.play-button-track, .play-button, .current-card-btn.play, .play-popular-track, .play-album-track, .play-all-artist-tracks, .play-button-album, .play-button-playlist'
   );
   let currentTrackId = player.currentTrack ? player.currentTrack.id : null;
+  const currentTrack = player.currentTrack;
+  const playerTrackId = currentTrack ? currentTrack.id : null;
   const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
 
   playBtn.forEach((button) => {
@@ -23,8 +26,9 @@ export function playTrack() {
 
       const context = {
         type: button.dataset.context || 'all-tracks',
-        id: button.dataset.artistId || button.dataset.albumId || null,
+        id: button.dataset.artistId || button.dataset.albumId || button.dataset.playlistId || null,
       };
+
       if (!current || current.id !== trackId) {
         currentTrackId = trackId;
         await player.init();
@@ -54,11 +58,48 @@ export function playTrack() {
 
     document
       .querySelectorAll(
-        '.play-button-track, .play-button, .current-card-btn.play, .play-popular-track, .play-album-track, .play-all-artist-tracks, .play-button-album'
+        '.play-button-track, .play-button, .current-card-btn.play, .play-popular-track, .play-album-track, .play-all-artist-tracks, .play-button-album, .play-button-playlist'
       )
       .forEach((button) => {
         const buttonTrackId = button.dataset.trackId;
         const isCurrent = playerTrackId && buttonTrackId === playerTrackId;
+
+        if (button.classList.contains('play-button-album')) {
+          const albumId = button.dataset.albumId;
+          const firstTrackId = button.dataset.firstTrackId;
+
+          const isTrackFromThisAlbum =
+            currentTrack && currentTrack.album && String(currentTrack.album.id) === String(albumId);
+
+          if (isTrackFromThisAlbum) {
+            button.dataset.trackId = playerTrackId;
+          } else {
+            if (firstTrackId) {
+              button.dataset.trackId = firstTrackId;
+            }
+          }
+        }
+        if (button.classList.contains('play-button-playlist')) {
+          const playlistId = button.dataset.playlistId;
+          const firstTrackId = button.dataset.firstTrackId;
+          const playerContext = player.currentContext || {};
+          (async () => {
+            try {
+              const isTrackFromThisPlaylist =
+                playerContext.type === 'playlist-tracks' && String(playerContext.id) === String(playlistId);
+
+              if (isTrackFromThisPlaylist) {
+                button.dataset.trackId = playerTrackId;
+              } else {
+                if (firstTrackId) {
+                  button.dataset.trackId = firstTrackId;
+                }
+              }
+            } catch (error) {
+              console.log(error);
+            }
+          })();
+        }
 
         button.classList.toggle('is-active', isCurrent);
         if (isCurrent) {

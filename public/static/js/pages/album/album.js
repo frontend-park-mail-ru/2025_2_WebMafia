@@ -20,6 +20,7 @@ export class AlbumPage {
 
     try {
       const data = await apiServise.getAlbumPageData(id);
+      const firstTrackId = data.tracks && data.tracks.length > 0 ? data.tracks[0].id : null;
       pageData = {
         id: data.album.id,
         title: data.album.title,
@@ -32,6 +33,7 @@ export class AlbumPage {
           avatar: getValidImage('artists/' + data.album.artists[0].avatar_url, 'default-album.png'),
         },
         description: data.album.description,
+        track_id: firstTrackId,
       };
       let totalDuration = 0;
       pageData.tracks = (data.tracks || []).map((track) => {
