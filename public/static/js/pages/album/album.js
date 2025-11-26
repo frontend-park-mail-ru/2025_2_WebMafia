@@ -20,7 +20,7 @@ export class AlbumPage {
 
     try {
       const data = await apiServise.getAlbumPageData(id);
-      const firstTrackId = data.tracks && data.tracks.length > 0 ? data.tracks[0].id : null;
+      const firstTrackId = data.tracks.length > 0 ? data.tracks[0].id : false;
       pageData = {
         id: data.album.id,
         title: data.album.title,

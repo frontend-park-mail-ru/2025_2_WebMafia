@@ -67,9 +67,10 @@ export function playTrack() {
         if (button.classList.contains('play-button-album')) {
           const albumId = button.dataset.albumId;
           const firstTrackId = button.dataset.firstTrackId;
+          const playerContext = player.currentContext || {};
 
           const isTrackFromThisAlbum =
-            currentTrack && currentTrack.album && String(currentTrack.album.id) === String(albumId);
+            playerContext.type === 'album-tracks' && String(playerContext.id) === String(albumId);
 
           if (isTrackFromThisAlbum) {
             button.dataset.trackId = playerTrackId;
@@ -115,7 +116,8 @@ export function playTrack() {
         card.querySelector('.play-popular-track') ||
         card.querySelector('.play-album-track') ||
         card.querySelector('.play-all-artist-tracks') ||
-        card.querySelector('.play-button-album');
+        card.querySelector('.play-button-album') ||
+        card.querySelector('.play-button-playlist');
       const trackId = buttons ? buttons.dataset.trackId : null;
       card.classList.toggle('active', trackId === playerTrackId);
     });

@@ -86,6 +86,7 @@
           </div>
           {{/each}}
         </div>
+        {{#unless favourite}}
         {{#if tracks}}
           <div class="header-divider"></div>
         {{/if}}
@@ -101,6 +102,7 @@
           />
         </div>
         <div class="tracks-table" id="searchedTracksContainer"></div>
+        {{/unless}}
       </div>
     </div>
     <div class="turquoise-oval"></div>
