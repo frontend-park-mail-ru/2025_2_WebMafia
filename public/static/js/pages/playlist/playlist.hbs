@@ -6,11 +6,14 @@
       <div class="purple-background-circle album-purple-position"></div>
       <div class="album-card">
         <div id="playlistAvatarContainer"><img class="album-cover" src="{{ cover }}" alt="{{ title }}"  /></div>
-        
         <div class="album-card-title">{{ title }}</div>
         <div class="album-card-info">
           <div class="card-sub">Плейлист<span class="dot"></span>{{ date }}</div>
-          <div class="card-sub">{{ tracksNum }}<span class="dot"></span>{{ totalDuration }}</div>
+          <div class="card-sub">
+            <span id="tracksNum">{{ tracksNum }}</span>
+            <span class="dot"></span>
+            <span id="totalDuration">{{ totalDuration }}</span>
+          </div>
         </div>
         {{#if description}}
         <div class="card-sub album-description" id="getDescription">{{ description }}</div>
@@ -22,21 +25,19 @@
             data-playlist-id="{{ id }}"
             data-context="playlist-tracks"
           ></button>
+          {{#unless favourite}}
           <button class="dots" id="playlistActions">{{> dots}}</button>
           <div id="playlistMenu" class="actions-menu hidden">
-            {{#if favourite }}
-             
-            {{else}}
              <button class="actions-item edit">
                 <span class="pencil-svg">{{> pencil }}</span
                 >Редактировать
               </button>
-            {{/if}}
             <button class="actions-item delete">
               <span class="trash-svg">{{> trash}}</span
               >Удалить
             </button>
           </div>
+          {{/unless}}
         </div>
       </div>
       <div class="tracks-card">
@@ -81,7 +82,7 @@
           {{/each}}
         </div>
         {{#if tracks}}
-          <div class="header-divider">
+          <div class="header-divider"></div>
         {{/if}}
         <div class="playlist-search-title">Давай добавим что-нибудь в твой плейлист</div>
         <div class="playlist-search-container">
@@ -94,8 +95,7 @@
             value="{{ searchValue }}"
           />
         </div>
-        <div class="tracks-table" id="searchedTracksContainer">
-        </div>
+        <div class="tracks-table" id="searchedTracksContainer"></div>
       </div>
     </div>
     <div class="turquoise-oval"></div>

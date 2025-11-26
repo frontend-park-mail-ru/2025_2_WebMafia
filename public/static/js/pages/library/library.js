@@ -38,7 +38,7 @@ export class LibraryPage {
         name: 'Понравившиеся треки',
         image: 'static/img/liked_tracks.png',
         created_at: new Date(),
-        sub: data.favourite.tracks ? tracksNumParser(data.favourite.tracks.length) : 0,
+        sub: data.favourite.tracks ? tracksNumParser(data.favourite.tracks.length) : '0 треков',
         href: 'playlist/' + data.favourite.id,
         type: 'Плейлист',
       };
@@ -77,7 +77,7 @@ export class LibraryPage {
             default_avatar: 'default-playlist.png',
             image: getValidImage(playlist.avatar_url, 'default-album.png'),
             created_at: new Date(playlist.created_at),
-            sub: playlist.tracks ? tracksNumParser(playlist.tracks.length) : 0,
+            sub: playlist.tracks ? tracksNumParser(playlist.tracks.length) : '0 треков',
             type: 'Плейлист',
             href: 'playlist/' + playlist.id,
           };

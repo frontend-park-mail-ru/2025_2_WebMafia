@@ -87,6 +87,12 @@
   font-weight: 600;
   margin-top: 3px;
   color: #636363;
+  overflow: hidden;
+}
+
+.playlist-sub .text {
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .playlist-track-cover {
@@ -116,16 +122,16 @@
 }
 
 .tracks-card .header-divider {
-  margin: 10px;
+  margin: 0 10px 15px 10px;
 }
 
 .right-row-content-playlist {
-    flex: 1;
-    display: grid;
-    grid-template-columns: 80% 20%;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
 }
 
 .add-track-size {

@@ -279,27 +279,41 @@ export class apiServises {
   }
 
   async deletePlaylistAvatar(playlistId) {
+    const csrfToken = await this.getCSRFToken();
+
     return this.request(`/playlists/${playlistId}/avatar`, {
       method: 'DELETE',
+      headers: {
+        'X-CSRF-Token': csrfToken,
+      },
     });
   }
 
   async uploadPlaylistAvatar(file, id) {
     const formData = new FormData();
     formData.append('avatar', file);
+    const csrfToken = await this.getCSRFToken();
 
     const data = await this.request(`/playlists/${id}/avatar`, {
       method: 'POST',
       body: formData,
+      headers: {
+        'X-CSRF-Token': csrfToken,
+      },
     });
 
     return data;
   }
 
   async createPlaylist(title, description) {
+    const csrfToken = await this.getCSRFToken();
+
     return this.request('/playlists', {
       method: 'POST',
       body: { title, description },
+      headers: {
+        'X-CSRF-Token': csrfToken,
+      },
     });
   }
 
@@ -467,8 +481,13 @@ export class apiServises {
 
   async deletePlaylist(id) {
     try {
+      const csrfToken = await this.getCSRFToken();
+
       return this.request(`/playlists/${id}`, {
         method: 'DELETE',
+        headers: {
+          'X-CSRF-Token': csrfToken,
+        },
       });
     } catch {
       console.error('Failed to delete playlist:');
@@ -478,9 +497,14 @@ export class apiServises {
 
   async addTrackToPlaylist(track_Id, id) {
     try {
+      const csrfToken = await this.getCSRFToken();
+
       return this.request(`/playlists/${id}/tracks`, {
         method: 'POST',
         body: { track_Id },
+        headers: {
+          'X-CSRF-Token': csrfToken,
+        },
       });
     } catch {
       console.error(`Failed to add track ${track_Id}:`);
@@ -488,12 +512,33 @@ export class apiServises {
     }
   }
 
+  async deleteTrackFromPlaylist(track_Id, playlist_id) {
+    try {
+      const csrfToken = await this.getCSRFToken();
+
+      await this.request(`/playlists/${playlist_id}/tracks`, {
+        method: 'DELETE',
+        body: { track_Id },
+        headers: {
+          'X-CSRF-Token': csrfToken,
+        },
+      });
+    } catch (error) {
+      console.error(`Failed to delete track from playlist with id: ${playlist_id}`, error);
+    }
+  }
+
   async likeTrack(track_Id) {
     if (!track_Id) return;
     try {
+      const csrfToken = await this.getCSRFToken();
+
       await this.request('/playlists/favorite/add-track', {
         method: 'POST',
         body: { track_Id },
+        headers: {
+          'X-CSRF-Token': csrfToken,
+        },
       });
     } catch (error) {
       console.error(`Failed to like track ${track_Id}:`, error);
@@ -503,9 +548,14 @@ export class apiServises {
   async unLikeTrack(track_Id) {
     const playlist_id = await this.getPlaylist();
     try {
+      const csrfToken = await this.getCSRFToken();
+
       await this.request(`/playlists/${playlist_id}/tracks`, {
         method: 'DELETE',
         body: { track_Id },
+        headers: {
+          'X-CSRF-Token': csrfToken,
+        },
       });
     } catch (error) {
       console.error(`Failed to unlike track`, error);

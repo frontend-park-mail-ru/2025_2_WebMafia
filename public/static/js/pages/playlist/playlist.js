@@ -10,17 +10,17 @@ import {
   getValidImage,
   totalDurationParser,
   tracksNumParser,
-  dateParser,
+  dateParser, durationToSec,
 } from '@/parsers.js';
 import { playTrack } from '@/playTrackBtn.js';
 import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
 import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
 import { FormValidator } from '@/validation.js';
-import { likeTrackBtn } from '@/utils/likeTrack.js';
 
 export class PlaylistPage {
   constructor() {
     this.playlistData = {};
+    this.totalDuration = 0;
   }
 
   async render(id) {
@@ -82,7 +82,8 @@ export class PlaylistPage {
         }
       });
       pageData.totalDuration = totalDurationParser(totalDuration);
-      pageData.tracksNum = tracksNumParser(pageData.tracks.length);
+      this.totalDuration = totalDuration;
+      pageData.tracksNum = pageData.tracks.length ? tracksNumParser(pageData.tracks.length) : '0 треков';
     } catch (error) {
       console.error('Failed to load playlist page data:', error);
 
@@ -109,7 +110,6 @@ export class PlaylistPage {
     initScrollbar();
     this.addEventListeners(this.playlistData.id);
     setPlayButtonsOnAuth();
-    likeTrackBtn();
     playTrack();
   }
 
@@ -164,9 +164,6 @@ export class PlaylistPage {
               remainingRows.forEach((el, index) => {
                 el.textContent = index + 1;
               });
-
-              // const tracksNumSpan = document.querySelector('.tracks-amount');
-              // if (tracksNumSpan) tracksNumSpan.textContent = remainingRows.length + ' треков';
             }
           }
         }
@@ -429,6 +426,7 @@ export class PlaylistPage {
     const tracksTemplate = Handlebars.templates['searchedTracks.hbs'];
     const searchTracks = document.getElementById('searchTracks');
     const searchedTracksContainer = document.getElementById('searchedTracksContainer');
+    const tracksTable = document.getElementById('addedTracksTable');
     if (searchTracks && searchedTracksContainer) {
       searchTracks.addEventListener('input', async (e) => {
         const searchVal = e.target.value;
@@ -453,40 +451,65 @@ export class PlaylistPage {
         }));
 
         searchedTracksContainer.innerHTML = tracksTemplate(pageData);
+        playTrack();
 
         const addButtons = searchedTracksContainer.querySelectorAll('.add-track-size');
-        let num = 0;
         addButtons.forEach((button) => {
           button.addEventListener('click', (e) => {
             e.stopPropagation();
 
             const track = pageData.searched_tracks.find((t) => t.id === button.dataset.trackId);
             if (!track) return;
-            num = num + 1;
 
-            const rowData = {
-              num: num,
-              id: track.id,
-              name: track.name,
-              album: track.album,
-              album_id: track.album.id,
-              cover: track.cover,
-              artists: track.artists,
-              plays: track.plays,
-              duration: track.duration,
-              is_liked: track.is_liked,
-            };
+            const tracksTable = document.getElementById('addedTracksTable');
+            const tracks = tracksTable.querySelectorAll('.playlist-track-number');
+            const lastTrack = tracks.length ? tracks[tracks.length - 1] : null;
+
+            track.num = lastTrack ? Number(lastTrack.textContent) + 1 : 1;
+            track.is_liked = true;
 
             apiServise.addTrackToPlaylist(button.dataset.trackId, playlistId);
 
-            const tracksTable = document.getElementById('addedTracksTable');
             const trackRow = Handlebars.templates['trackRow.hbs'];
-            tracksTable.insertAdjacentHTML('beforeend', trackRow(rowData));
+            tracksTable.insertAdjacentHTML('beforeend', trackRow(track));
+
+            const tracksNumElement = document.getElementById('tracksNum');
+            const totalDurationElement = document.getElementById('totalDuration');
+
+            tracksNumElement.textContent = tracksNumParser(parseInt(tracksNumElement.textContent) + 1);
+
+            this.totalDuration += durationToSec(track.duration)
+            totalDurationElement.textContent = totalDurationParser(this.totalDuration);
+
             playTrack();
-            likeTrackBtn();
           });
         });
       });
     }
+
+    document.getElementById('addedTracksTable').addEventListener('click', async (e) => {
+      const btn = e.target.closest('.like-btn-track');
+      if (!btn) return;
+
+      const row = btn.closest('.album-row.playlist');
+      const trackId = btn.dataset.trackId;
+
+      await apiServise.deleteTrackFromPlaylist(trackId, playlistId);
+
+      const tracksNumElement = document.getElementById('tracksNum');
+      const totalDurationElement = document.getElementById('totalDuration');
+
+      tracksNumElement.textContent = tracksNumParser(parseInt(tracksNumElement.textContent) - 1);
+
+      this.totalDuration -= durationToSec(row.querySelector('.track-duration')?.textContent);
+      totalDurationElement.textContent = totalDurationParser(this.totalDuration);
+
+      row.remove();
+      const rows = document.querySelectorAll('#addedTracksTable .playlist-track-number');
+
+      rows.forEach((numEl, i) => {
+        numEl.textContent = i + 1;
+      });
+    });
   }
 }
