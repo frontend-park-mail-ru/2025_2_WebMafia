@@ -80,6 +80,7 @@
   width: 270px;
   height: 270px;
   border-radius: 20px;
+  object-fit: cover;
 }
 
 .album-card-title {
