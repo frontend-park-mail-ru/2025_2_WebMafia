@@ -65,7 +65,9 @@
             </div>
             {{/each}}
           </div>
+          {{#if popular_tracks}}
           <a class="secondary-button show-tracks-button" href="/artist/{{ id }}/tracks">Показать все</a>
+          {{/if}}
         </div>
 
         {{#if albums}}

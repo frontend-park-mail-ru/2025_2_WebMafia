@@ -31,8 +31,14 @@ export function playTrack() {
 
       if (!current || current.id !== trackId) {
         currentTrackId = trackId;
-        await player.init();
-        await player.loadAndPlayTrackById(trackId, context);
+        try {
+          if (isAuthenticated) {
+            await player.init();
+            await player.loadAndPlayTrackById(trackId, context);
+          }
+        } catch {
+          console.error('No play');
+        }
       } else {
         await player.togglePlayPause();
       }

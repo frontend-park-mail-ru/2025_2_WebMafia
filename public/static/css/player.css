@@ -151,7 +151,8 @@
 }
 
 .control-btn.shuffle svg,
-.control-btn.repeat svg {
+.control-btn.repeat svg,
+.control-btn.repeatOne svg {
   width: 23px;
   height: 23px;
 }
@@ -214,6 +215,19 @@
 .control-btn.prev g:hover,
 .control-btn.next g:hover {
   fill: #a766ff;
+}
+
+.control-btn.shuffle.active svg{
+  color: #a766ff;
+}
+
+.control-btn.repeatOne {
+  display: none;
+}
+
+.control-btn.repeat.active svg,
+.control-btn.repeatOne.active svg{
+  color: #a766ff;
 }
 
 .progress-remote {

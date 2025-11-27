@@ -9,6 +9,7 @@ import { playTrack } from '@/playTrackBtn.js';
 import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
 import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
 import { likeTrackBtn } from '@/utils/likeTrack.js';
+import { player } from '@/components/player/player';
 
 export class AlbumPage {
   async render(id) {
@@ -81,6 +82,15 @@ export class AlbumPage {
   addEventListeners() {
     const getDescriptionButton = document.getElementById('getDescription');
     const getDescriptionOverlay = document.getElementById('albumDescriptionOverlay');
+    const albumShuffleBtn = document.querySelector('.album-buttons .control-btn.shuffle');
+    if (albumShuffleBtn) {
+      if (player.isShaffle) {
+        albumShuffleBtn.classList.add('active');
+      }
+      albumShuffleBtn.addEventListener('click', () => {
+        player.handleShaffleClick();
+      });
+    }
 
     if (getDescriptionButton && getDescriptionOverlay) {
       getDescriptionButton.addEventListener('click', (e) => {

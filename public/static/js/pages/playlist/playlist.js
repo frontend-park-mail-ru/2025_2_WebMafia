@@ -18,6 +18,7 @@ import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
 import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
 import { FormValidator } from '@/validation.js';
 import { likeChange, likeTrackBtn } from '../../utils/likeTrack';
+import { player } from '@/components/player/player';
 
 export class PlaylistPage {
   constructor() {
@@ -127,6 +128,15 @@ export class PlaylistPage {
     const deletePlaylistButton = document.querySelector('.actions-item.delete');
     const editPlaylistOverlay = document.getElementById('editPlaylistOverlay');
     const closeOverlayButton = document.getElementById('closeOverlayButton');
+    const playlistShuffleBtn = document.querySelector('.album-buttons .control-btn.shuffle');
+    if (playlistShuffleBtn) {
+      if (player.isShaffle) {
+        playlistShuffleBtn.classList.add('active');
+      }
+      playlistShuffleBtn.addEventListener('click', () => {
+        player.handleShaffleClick();
+      });
+    }
 
     if (this.playlistData.is_favorite) {
       const appContainer = document.getElementById('app');

@@ -13,6 +13,9 @@ export class Player extends EventTarget {
 
     this.listenIncrementTimeout = null;
 
+    this.isShaffle = false;
+    this.repeatMode = 0;
+    this.originalQueue = [];
     this.playQueue = [];
     this.currentContext = null;
   }
@@ -118,9 +121,17 @@ export class Player extends EventTarget {
               tracks = await apiServise.request('/tracks?limit=30');
               break;
           }
-          this.playQueue = tracks;
+          this.originalQueue = tracks;
+          if (this.isShaffle) {
+            this.playQueue = [...this.originalQueue];
+            this.shuffleQueue();
+          } else {
+            this.playQueue = tracks;
+          }
+          // this.playQueue = tracks;
         } catch (error) {
           this.playQueue = [];
+          this.originalQueue = [];
         }
       }
 
@@ -166,6 +177,8 @@ export class Player extends EventTarget {
     this.sliderColorChange();
     this.soundChange();
     this.trackSwitching();
+    this.initShaffleBtn();
+    this.initRepeatBtn();
 
     const storedTrackId = localStorage.getItem('currentTrackId');
     let storedTrackData = await this.getDataTrackById(storedTrackId);
@@ -186,8 +199,17 @@ export class Player extends EventTarget {
     this.setInitialPLayTime();
 
     this.audio.addEventListener('ended', () => {
-      this.nextTrack();
+      this.handletrackEnd();
     });
+  }
+
+  handletrackEnd() {
+    if (this.repeatMode == 2) {
+      this.audio.currentTime = 0;
+      this.audio.play();
+    } else {
+      this.nextTrack();
+    }
   }
 
   async loadAndPlayTrackById(trackId, context) {
@@ -206,23 +228,30 @@ export class Player extends EventTarget {
 
   loadTrackInfo(track) {
     const titlePlacement = document.querySelector('.track-title');
-    titlePlacement.textContent = track.title;
-    titlePlacement.href = `/album/${track.album?.id}`;
+    if (titlePlacement) {
+      titlePlacement.textContent = track.title;
+      titlePlacement.href = `/album/${track.album?.id}`;
+    }
     const artist = track.artists?.[0];
     const artistPlacement = document.querySelector('.track-artist');
-    artistPlacement.textContent = artist?.name;
-    artistPlacement.href = `/artist/${artist?.id}`;
+    if (artistPlacement) {
+      artistPlacement.textContent = artist?.name;
+      artistPlacement.href = `/artist/${artist?.id}`;
+    }
 
     const durationInSeconds = track.duration_s;
     const minutes = Math.floor(durationInSeconds / 60);
     const seconds = durationInSeconds % 60;
     const durationFormatted = `${minutes}:${seconds.toString().padStart(2, '0')}`;
-    document.querySelector('.track-time.total').textContent = durationFormatted;
+    const trackTimeTotal = document.querySelector('.track-time.total');
+    if (trackTimeTotal) {
+      trackTimeTotal.textContent = durationFormatted;
+    }
 
-    document.querySelector('.track-cover-player').src = getValidImage(
-      'albums/' + track?.album?.avatar_url,
-      'default-album.png'
-    );
+    const trackImage = document.querySelector('.track-cover-player');
+    if (trackImage) {
+      trackImage.src = getValidImage('albums/' + track?.album?.avatar_url, 'default-album.png');
+    }
 
     const likeBtn = document.querySelector('.player .like-btn');
     if (likeBtn) {
@@ -273,6 +302,150 @@ export class Player extends EventTarget {
     }
   }
 
+  initRepeatBtn() {
+    const repeatBtn = document.querySelector('.control-btn.repeat');
+    const repeatBtnOne = document.querySelector('.control-btn.repeatOne');
+    if (!repeatBtn) return;
+    const storedRepeatMode = localStorage.getItem('repeatMode');
+    this.repeatMode = storedRepeatMode ? parseInt(storedRepeatMode) : 0;
+
+    this.updateRepeatBtnUi();
+
+    repeatBtn.addEventListener('click', this.handleRepeatClick.bind(this));
+    repeatBtnOne.addEventListener('click', this.handleRepeatClick.bind(this));
+  }
+
+  handleRepeatClick() {
+    this.repeatMode = (this.repeatMode + 1) % 3;
+    localStorage.setItem('repeatMode', this.repeatMode);
+    this.updateRepeatBtnUi();
+    this.updatePrevAndNextTrackId();
+  }
+
+  updateRepeatBtnUi() {
+    const repeatBtn = document.querySelector('.control-btn.repeat');
+    const repeatBtnOne = document.querySelector('.control-btn.repeatOne');
+    if (!repeatBtn) return;
+    repeatBtn.classList.remove('active');
+    repeatBtnOne.classList.remove('active');
+    if (this.repeatMode === 1) {
+      repeatBtn.classList.add('active');
+    } else if (this.repeatMode === 2) {
+      repeatBtn.classList.remove('active');
+      repeatBtn.style.display = 'none';
+      repeatBtnOne.style.display = 'flex';
+      repeatBtnOne.classList.add('active');
+    } else if (this.repeatMode == 0) {
+      repeatBtnOne.style.display = 'none';
+      repeatBtnOne.classList.remove('active');
+      repeatBtn.style.display = 'flex';
+    }
+  }
+
+  initShaffleBtn() {
+    const allShuffleBtns = document.querySelectorAll('.control-btn.shuffle');
+    if (!allShuffleBtns) return;
+    const isShaffle = localStorage.getItem('isShuffle') === 'true';
+
+    this.isShaffle = isShaffle;
+
+    if (this.isShaffle) {
+      allShuffleBtns.forEach((btn) => btn.classList.add('active'));
+      if (this.playQueue.length > 0) {
+        this.shuffleQueue();
+      }
+    }
+    const playerShuffleBtn = document.querySelector('.player .control-btn.shuffle');
+    if (playerShuffleBtn) {
+      playerShuffleBtn.removeEventListener('click', this.boundShuffleHandler);
+      this.boundShuffleHandler = this.handleShaffleClick.bind(this);
+      playerShuffleBtn.addEventListener('click', this.boundShuffleHandler);
+    }
+  }
+
+  handleShaffleClick() {
+    this.isShaffle = !this.isShaffle;
+    const allShuffleBtns = document.querySelectorAll('.control-btn.shuffle');
+    allShuffleBtns.forEach((btn) => {
+      if (this.isShaffle) {
+        btn.classList.add('active');
+        this.shuffleQueue();
+      } else {
+        btn.classList.remove('active');
+        this.restoreQueue();
+      }
+    });
+
+    localStorage.setItem('isShuffle', this.isShaffle);
+    this.updatePrevAndNextTrackId();
+  }
+
+  shuffleQueue() {
+    if (!this.originalQueue.length) return;
+
+    if (this.originalQueue.length === 0 && this.playQueue.length > 0) {
+      this.originalQueue = [...this.playQueue];
+    }
+
+    let shaffleQueueArr = [...this.originalQueue];
+
+    for (let i = shaffleQueueArr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shaffleQueueArr[i], shaffleQueueArr[j]] = [shaffleQueueArr[j], shaffleQueueArr[i]];
+    }
+
+    this.playQueue = shaffleQueueArr;
+  }
+
+  restoreQueue() {
+    if (this.originalQueue.length > 0) {
+      this.playQueue = [...this.originalQueue];
+    }
+  }
+
+  async updatePrevAndNextTrackId() {
+    if (!this.currentTrack) return;
+
+    const currentIndex = this.playQueue.findIndex((t) => t.id === this.currentTrack.id);
+
+    if (currentIndex === -1) {
+      this.nextTrackId = null;
+      this.prevTrackId = null;
+    } else {
+      let nextTrackObject = this.playQueue[currentIndex + 1];
+      let prevTrackObject = this.playQueue[currentIndex - 1];
+
+      if (!nextTrackObject && this.repeatMode === 1) {
+        nextTrackObject = this.playQueue[0];
+      }
+
+      if (!prevTrackObject && this.repeatMode === 1) {
+        prevTrackObject = this.playQueue[this.playQueue.length - 1];
+      }
+
+      // if (!nextTrackObject && (this.repeatMode === 1 || this.repeatMode === 2)) {
+      //   nextTrackObject = this.playQueue[0];
+      //   prevTrackObject = this.playQueue[this.playQueue.length - 1];
+      // }
+
+      this.nextTrackId = nextTrackObject ? nextTrackObject.id : null;
+      this.prevTrackId = prevTrackObject ? prevTrackObject.id : null;
+    }
+
+    const [nextTrackData, prevTrackData] = await Promise.all([
+      await apiServise.loadTrackById(this.nextTrackId),
+      await apiServise.loadTrackById(this.prevTrackId),
+    ]);
+    const event = new CustomEvent('trackchange', {
+      detail: {
+        prev: prevTrackData ? prevTrackData : null,
+        current: this.currentTrack,
+        next: nextTrackData ? nextTrackData : null,
+      },
+    });
+    this.dispatchEvent(event);
+  }
+
   updateCurrentTimeAndSlider() {
     const currentTime = this.audio.currentTime;
     if (this.currentTrack) {
@@ -293,8 +466,10 @@ export class Player extends EventTarget {
 
     if (this.canSaveTime) {
       this.canSaveTime = false;
-
-      localStorage.setItem('playTime', currentTime.toFixed(1));
+      const isAuthenticated = localStorage.getItem('isAuthenticated');
+      if (isAuthenticated) {
+        localStorage.setItem('playTime', currentTime.toFixed(1));
+      }
 
       setTimeout(() => {
         this.canSaveTime = true;
@@ -474,10 +649,12 @@ export class Player extends EventTarget {
   }
 
   async nextTrack() {
+    await this.updatePrevAndNextTrackId();
     await this.loadAndPlayTrackById(this.nextTrackId);
   }
 
   async prevTrack() {
+    await this.updatePrevAndNextTrackId();
     await this.loadAndPlayTrackById(this.prevTrackId);
   }
 }

@@ -437,19 +437,15 @@ export class apiServises {
     });
   }
 
-  async incrementTrackListenCount(trackId) {
-    if (!trackId) return;
+  async incrementTrackListenCount(id) {
+    if (!id) return;
     const csrfToken = await this.getCSRFToken();
-    try {
-      await this.request(`/tracks/${trackId}/listen`, {
-        method: 'POST',
-        headers: {
-          'X-CSRF-Token': csrfToken,
-        },
-      });
-    } catch (error) {
-      console.error(`Failed to increment listen count for track ${trackId}:`, error);
-    }
+    await this.request(`/tracks/${id}/listen`, {
+      method: 'POST',
+      headers: {
+        'X-CSRF-Token': csrfToken,
+      },
+    });
   }
 
   async getFavoriteTrackIds() {
