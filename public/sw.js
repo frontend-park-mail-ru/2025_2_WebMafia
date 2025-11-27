@@ -8,7 +8,7 @@ const APP_SHELL_URLS = [
   '/static/js/eye.js',
   '/static/js/parsers.js',
   '/static/js/playerOnlyOnPlay.js',
-  '/static/js/playerTrackBtn.js',
+  '/static/js/playTrackBtn.js',
   '/static/js/routing.js',
   '/static/js/scrollbar.js',
   '/static/js/setPlayButtonsOnAuth.js',
