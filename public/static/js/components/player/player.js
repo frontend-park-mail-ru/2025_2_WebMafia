@@ -1,5 +1,6 @@
 import { apiServise, API_TRACKS_URL } from '@/data.js';
 import { getValidImage } from '@/parsers.js';
+import { setupMarquees } from "@/marquee.js";
 
 export class Player extends EventTarget {
   constructor() {
@@ -29,25 +30,10 @@ export class Player extends EventTarget {
       if (!document.getElementById('player')) {
         await this.render();
       }
+      setupMarquees();
     } else {
       await this.destroy();
     }
-  }
-
-  async renderWithoutData() {
-    const contentTemplate = Handlebars.templates['player.hbs'];
-    const playerHTML = contentTemplate();
-
-    const playerContainer = document.getElementById('player-container');
-    if (playerContainer && !document.getElementById('player')) {
-      playerContainer.insertAdjacentHTML('afterbegin', playerHTML);
-    }
-
-    this.volumeRender();
-    this.playPauseSwitch();
-    this.sliderColorChange();
-    this.likeTrack();
-    this.soundChange();
   }
 
   async destroy() {
@@ -169,6 +155,7 @@ export class Player extends EventTarget {
       playerContainer.insertAdjacentHTML('afterbegin', playerHTML);
     }
 
+    this.setupExpandOnClick();
     this.volumeRender();
     this.playPauseSwitch();
     this.sliderColorChange();
@@ -210,8 +197,7 @@ export class Player extends EventTarget {
   loadTrackInfo(track) {
     const titlePlacement = document.querySelector('.track-title');
     titlePlacement.textContent = track.title;
-    console.log(track);
-    titlePlacement.href = `/album/${track.album?.id}`;
+    titlePlacement.parentNode.parentNode.href = `/album/${track.album?.id}`;
     const artist = track.artists?.[0];
     const artistPlacement = document.querySelector('.track-artist');
     artistPlacement.textContent = artist?.name;
@@ -453,6 +439,75 @@ export class Player extends EventTarget {
 
   async prevTrack() {
     await this.loadAndPlayTrackById(this.prevTrackId);
+  }
+
+  setupExpandOnClick() {
+    const player = document.getElementById('player');
+    const closeBtn = document.querySelector('.player-close');
+    const slider = document.querySelector('.remote-slider');
+
+    if (!player) return;
+
+    const minHeight = 60;
+    const maxHeight = window.innerHeight - 80 - 64 + 4;
+    let isDraggingSlider = false;
+    const closeThreshold = 100;
+    let startY = 0;
+    let startHeight = 0;
+
+    player.addEventListener('click', (e) => {
+      if (window.innerWidth > 800 || player.classList.contains('expanded')) return;
+
+      if (e.target.closest('.control-btn') || e.target.closest('.like-btn'))
+        return;
+
+      player.classList.add('expanded');
+      player.style.height = maxHeight + 'px';
+    });
+
+    if (closeBtn) {
+      closeBtn.addEventListener('click', (e) => {
+        if (player.classList.contains('expanded'))
+          e.stopPropagation();
+          player.classList.remove('expanded');
+          player.style.height = minHeight + 'px';
+      })
+    }
+
+    slider.addEventListener('touchstart', () => {
+      isDraggingSlider = true;
+    });
+
+    slider.addEventListener('touchend', () => {
+      isDraggingSlider = false;
+    });
+
+    player.addEventListener('touchstart', (e) => {
+      if (isDraggingSlider) return;
+      startY = e.touches[0].clientY;
+      startHeight = player.offsetHeight;
+    });
+
+    player.addEventListener('touchmove', (e) => {
+      if (isDraggingSlider) return;
+      const dy = e.touches[0].clientY - startY;
+      let newHeight = startHeight - dy;
+      newHeight = Math.max(minHeight, Math.min(maxHeight, newHeight));
+      player.style.height = newHeight + 'px';
+    });
+
+    player.addEventListener('touchend', (e) => {
+      if (isDraggingSlider) return;
+      const dy = e.changedTouches[0].clientY - startY;
+
+      if (dy > closeThreshold || player.offsetHeight < maxHeight / 2) {
+        player.classList.remove('expanded');
+        player.style.height = minHeight + 'px';
+      } else {
+        player.classList.add('expanded');
+        player.style.height = maxHeight + 'px';
+      }
+    });
   }
 }
 

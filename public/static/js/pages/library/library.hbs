@@ -5,7 +5,17 @@
     <div class="page" id="scrollContent">
       <div class="library-header">
         <div class="left-content">
-          <div class="title-name">Библиотека</div>
+          <div class="library-header-container">
+            <div class="title-name">Библиотека</div>
+            <div class="library-events-buttons">
+              <button class="search-toggle" id="librarySearchToggle">
+                {{> searchIcon }}
+              </button>
+              <button class="create-playlist-toggle create-playlist-button">
+                {{> plus}}
+              </button>
+            </div>
+          </div>
           <div class="sort-buttons">
             <button class="secondary-button second-cross-icon" id="disableSort">{{> plus}}</button>
             <button class="secondary-button" data-name="playlists">Плейлисты</button>
@@ -21,13 +31,14 @@
           </div>
         </div>
         <div class="right-content">
-          <button class="primary-button edit-button-size" id="createPlaylistButton">
+          <button class="primary-button create-playlist-button">
             {{> plus}}
             Создать плейлист
           </button>
           <div class="library-search-container">
             <div class="search-icon">{{> searchIcon }}</div>
-            <input type="text" class="search-input" id="searchInput" placeholder="Искать в библиотеке" />
+            <input type="text" class="search-input" id="librarySearchInput" placeholder="Искать в библиотеке" value="{{ searchValue }}"/>
+            <div class="input-close-button">{{> close}}</div>
           </div>
         </div>
       </div>

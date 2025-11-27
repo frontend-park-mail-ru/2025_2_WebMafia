@@ -14,7 +14,11 @@
           {{/if}}
         </div>
         <div class="profile-info">
-          <div class="profile-username">{{ profile.nickname }}</div>
+          <div class="marquee profile-marquee-limiter">
+            <div class="marquee-inner">
+              <span class="profile-username marquee-text">{{ profile.nickname }}</span>
+            </div>
+          </div>
           <button class="primary-button edit-button-size" id="editProfileBtn">
             Редактировать
             {{> pencil }}
@@ -23,7 +27,7 @@
       </div>
       <div class="profile-page">
         <div class="title">
-          <div class="title-name">Топ исполнителей этого месяца</div>
+          <div class="title-name">Топ исполнителей</div>
         </div>
         <div class="slider">
           <p><i class="slide-btn left"></i></p>
@@ -41,7 +45,7 @@
         </div>
 
         <div class="title">
-          <div class="title-name">Топ треков этого месяца</div>
+          <div class="title-name">Топ треков</div>
         </div>
         <div class="tracks-table tracks-table-placement">
           {{#each top_tracks}}
@@ -71,7 +75,7 @@
                 {{ album }}
               </a>
               <div class="track-like-container">
-                <button class="like-btn-track" data-track-id="{{ id }}">{{> likeBtn }}</button>
+                <button class="like-btn-track artist-like-size" data-track-id="{{ id }}">{{> likeBtn }}</button>
               </div>
               <div class="track-duration">{{ duration }}</div>
             </div>
@@ -80,7 +84,7 @@
         </div>
 
         <div class="title">
-          <div class="title-name">Недавно прослушано</div>
+          <div class="title-name">Подписки</div>
         </div>
         <div class="slider">
           <p><i class="slide-btn left"></i></p>

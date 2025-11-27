@@ -1,11 +1,18 @@
 <div class="player" id="player">
+  <button type="button" class="player-close">{{> angleDown }}</button>
   <div class="player-left">
     <img alt="Cover" class="track-cover-player" />
-    <div class="track-info">
-      <a class="track-title"></a>
-      <a class="track-artist"></a>
+    <div class="track-info-container">
+      <div class="track-info">
+        <a class="marquee player-marquee-limiter">
+          <div class="marquee-inner">
+            <div class="track-title marquee-text"></div>
+          </div>
+        </a>
+        <a class="track-artist"></a>
+      </div>
+      <button class="like-btn">{{> likeBtn }}</button>
     </div>
-    <button class="like-btn">{{> likeBtn }}</button>
   </div>
 
   <div class="player-center">

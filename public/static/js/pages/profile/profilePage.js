@@ -11,6 +11,7 @@ import { FormValidator } from '@/validation.js';
 import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
 import { playTrack } from '@/playTrackBtn.js';
 import { likeTrackBtn } from '@/utils/likeTrack.js';
+import { setupMarquees } from "@/marquee.js";
 
 export class ProfilePage {
   async render() {
@@ -80,6 +81,7 @@ export class ProfilePage {
     setPlayButtonsOnAuth();
     likeTrackBtn();
     playTrack();
+    setupMarquees();
   }
 
   addEventListeners(profile) {
@@ -322,6 +324,7 @@ export class ProfilePage {
           if (email !== profile.email || login !== profile.nickname || password) {
             if (!password) password = '';
             const data = await apiServise.editUser(login, email, password);
+            console.log(data);
             const newLogin = data.Login;
 
             const headerUsername = document.querySelector('.header-username');
@@ -329,10 +332,9 @@ export class ProfilePage {
               headerUsername.textContent = newLogin;
             }
 
-            const profileUsername = document.querySelector('.profile-username');
-            if (profileUsername) {
-              profileUsername.textContent = newLogin;
-            }
+            const profileUsername = document.querySelectorAll('.profile-username');
+            profileUsername.forEach((username) => username.textContent = newLogin);
+            setupMarquees(false);
 
             const newLetter = newLogin[0] ? newLogin[0].toUpperCase() : '?';
             document.querySelectorAll('.default-avatar').forEach((el) => {

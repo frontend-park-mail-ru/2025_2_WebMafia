@@ -15,8 +15,10 @@ export function playTrack() {
       const current = player.currentTrack;
       const nowPlayingContainer = document.querySelector('.now-playing-container');
       const playerContent = document.querySelector('.player');
+      const layout = document.querySelector('.layout');
       if (playerContent) playerContent.classList.remove('none_playing');
       if (nowPlayingContainer) nowPlayingContainer.classList.remove('none_play');
+      if (layout && !layout.classList.contains('with_player')) layout.classList.add('with_player');
 
       const context = {
         type: button.dataset.context || 'all-tracks',

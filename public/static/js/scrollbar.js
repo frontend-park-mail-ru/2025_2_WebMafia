@@ -4,6 +4,7 @@ export const initScrollbar = () => {
     return;
   }
 
+  const isMobile = window.innerWidth < 800;
   const scrollbarTrack = document.createElement('div');
   scrollbarTrack.id = 'customScrollbar';
 
@@ -27,7 +28,8 @@ export const initScrollbar = () => {
 
     // position the track next to the scrollable content
     scrollbarTrack.style.top = `${contentRect.top}px`;
-    scrollbarTrack.style.left = `${contentRect.right - 10}px`; // 10px is the width
+    const width = isMobile ? 5 : 10;
+    scrollbarTrack.style.left = `${contentRect.right - width}px`; // 10px is the width
     scrollbarTrack.style.height = `${contentRect.height}px`;
 
     // calculate thumb height and position
@@ -39,21 +41,31 @@ export const initScrollbar = () => {
     scrollbarThumb.style.top = `${thumbTop}px`;
   };
 
-  // show/hide on hover
-  scrollContent.addEventListener('pointerenter', () => {
-    scrollbarTrack.style.opacity = '1';
-  });
-  scrollContent.addEventListener('pointerleave', () => {
-    if (!isDragging) {
+  if (isMobile) {
+    scrollContent.addEventListener('touchmove', () => {
+      scrollbarTrack.style.opacity = '1';
+    });
+    scrollContent.addEventListener('touchend', () => {
       scrollbarTrack.style.opacity = '0';
-    }
-  });
+    });
+  }
+  else {// show/hide on hover
+    scrollContent.addEventListener('pointerenter', () => {
+      scrollbarTrack.style.opacity = '1';
+    });
+    scrollContent.addEventListener('pointerleave', () => {
+      if (!isDragging) {
+        scrollbarTrack.style.opacity = '0';
+      }
+    });
+  }
 
   scrollContent.addEventListener('scroll', updateThumb);
   window.addEventListener('resize', updateThumb);
 
   updateThumb();
 
+  if (isMobile) return;
   // Добавил возможность перетаскивать скроллбар мышкой
   let isDragging = false;
   let startY = 0;

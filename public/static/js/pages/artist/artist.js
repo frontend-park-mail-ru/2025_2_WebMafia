@@ -102,10 +102,11 @@ export class ArtistPage {
         e.preventDefault();
 
         const wrapper = container.querySelector('.artist-description');
+        const height = window.innerWidth < 560 ? 350 : 450;
 
         if (container.classList.contains('expanded')) {
           wrapper.style.maxHeight = '35px';
-          container.style.minHeight = '450px';
+          container.style.minHeight = height + 'px';
           setTimeout(() => {
             wrapper.style.removeProperty('-webkit-line-clamp');
             wrapper.style.setProperty('-webkit-line-clamp', '2');
@@ -113,9 +114,8 @@ export class ArtistPage {
           }, 600);
         } else {
           wrapper.style.setProperty('-webkit-line-clamp', 'unset');
-          const newHeight = 450 + wrapper.scrollHeight - 35;
-          wrapper.style.maxHeight = wrapper.scrollHeight + 'px';
-          container.style.minHeight = newHeight + 'px';
+          wrapper.style.maxHeight = wrapper.scrollHeight + 48 + 'px';
+          container.style.minHeight = height + wrapper.scrollHeight - 35 + 'px';
         }
 
         container.classList.toggle('expanded');
