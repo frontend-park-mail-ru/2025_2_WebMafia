@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'v1.1';
+const CACHE_VERSION = 'v1.3';
 const CACHE_NAME = `wave-music-${CACHE_VERSION}`;
 
 const APP_SHELL_URLS = [
@@ -14,19 +14,12 @@ const APP_SHELL_URLS = [
   '/static/js/setPlayButtonsOnAuth.js',
   '/static/js/validation.js',
   '/static/js/slider.js',
-  '/static/css/album.css',
-  '/static/css/artist_pages.css',
   '/static/css/header.css',
   '/static/css/index.css',
-  '/static/css/library.css',
   '/static/css/mainpage.css',
   '/static/css/now_play_slider.css',
   '/static/css/player.css',
-  '/static/css/playlist.css',
-  '/static/css/profile.css',
-  '/static/css/search_page.css',
   '/static/css/sidebar.css',
-  '/static/css/style_auth.css',
   '/static/img/default-album.png',
   '/static/img/default-artist.png',
   '/static/img/default-playlist.png',
@@ -35,8 +28,6 @@ const APP_SHELL_URLS = [
   '/static/img/wave.png',
   'https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.runtime.min.js',
 ];
-
-const AVATAR_DOMAIN = 'http://217.16.17.173:8099';
 
 self.addEventListener('install', (event) => {
   console.log('[SW] Установка');
@@ -81,7 +72,6 @@ self.addEventListener('fetch', (event) => {
         }
 
         if (event.request.mode === 'navigate') {
-          console.log('[SW] Сеть недоступна, возвращаем index.html для SPA-роутинга');
           return await caches.match('/index.html');
         }
         return null;
