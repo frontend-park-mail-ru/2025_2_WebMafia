@@ -116,6 +116,17 @@
   left: 150px;
 }
 
+.sidebar .header-divider {
+  width: 90%;
+  background: #aaacb5;
+  margin: 20px 0;
+}
+
+.sidebar-secondary-button {
+  cursor: pointer !important;
+  width: 190px !important;
+}
+
 @media (max-width: 800px) {
   .sidebar {
     position: absolute;
@@ -172,7 +183,7 @@
     background-size: auto;
   }
 
-  .header-divider {
+  .sidebar .header-divider {
     display: none;
   }
 

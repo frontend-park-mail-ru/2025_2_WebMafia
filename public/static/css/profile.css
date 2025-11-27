@@ -256,6 +256,7 @@
 }
 
 .marquee {
+  text-decoration: none;
   overflow: hidden;
   white-space: nowrap;
   position: relative;
@@ -267,19 +268,22 @@
 
 .marquee-text {
   white-space: nowrap;
-  padding-right: 80px;
+  padding-right: 70px;
 }
 
 @keyframes scroll-loop {
-  from {
+  0% {
     transform: translateX(0);
   }
-  to {
+  90% {
+    transform: translateX(-50%);
+  }
+  100% {
     transform: translateX(-50%);
   }
 }
 
-@media (max-width: 560px) {
+@media (max-width: 900px) {
   .profile-wrapper {
     margin: 0;
   }
@@ -295,8 +299,9 @@
   }
 
   .profile-avatar {
-      width: 150px;
-      height: 150px;
+      width: 35%;
+      height: auto;
+      aspect-ratio: 1/1;
       border: 4px solid #fff;
       border-radius: 50%;
       box-shadow: 0 8px 4px 0 rgba(0, 0, 0, 0.15);
@@ -310,6 +315,7 @@
   .profile-info {
     margin: 0;
     gap: 15px;
+    max-width: 50%;
   }
 
   .profile-username {

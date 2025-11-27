@@ -1,5 +1,6 @@
 import { apiServise, API_TRACKS_URL } from '@/data.js';
 import { getValidImage } from '@/parsers.js';
+import { setupMarquees } from "@/marquee.js";
 
 export class Player extends EventTarget {
   constructor() {
@@ -29,6 +30,7 @@ export class Player extends EventTarget {
       if (!document.getElementById('player')) {
         await this.render();
       }
+      setupMarquees();
     } else {
       await this.destroy();
     }
@@ -195,8 +197,7 @@ export class Player extends EventTarget {
   loadTrackInfo(track) {
     const titlePlacement = document.querySelector('.track-title');
     titlePlacement.textContent = track.title;
-    console.log(track);
-    titlePlacement.href = `/album/${track.album?.id}`;
+    titlePlacement.parentNode.parentNode.href = `/album/${track.album?.id}`;
     const artist = track.artists?.[0];
     const artistPlacement = document.querySelector('.track-artist');
     artistPlacement.textContent = artist?.name;

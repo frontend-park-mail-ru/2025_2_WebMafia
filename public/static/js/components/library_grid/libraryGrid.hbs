@@ -3,7 +3,7 @@
   <img src="{{ image }}" alt="{{ name }}" onerror="this.onerror=null; this.src='static/img/{{ default_avatar }}';" />
   <div class="card-bottom-info">
     <p class="card-name">{{ name }}</p>
-    <p class="card-sub">
+    <p class="card-sub card-sub-limiter">
       {{#if ../showType}}
       {{ type }}
       <span class="dot"></span>

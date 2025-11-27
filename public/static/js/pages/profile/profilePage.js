@@ -334,7 +334,7 @@ export class ProfilePage {
 
             const profileUsername = document.querySelectorAll('.profile-username');
             profileUsername.forEach((username) => username.textContent = newLogin);
-            setupMarquees();
+            setupMarquees(false);
 
             const newLetter = newLogin[0] ? newLogin[0].toUpperCase() : '?';
             document.querySelectorAll('.default-avatar').forEach((el) => {

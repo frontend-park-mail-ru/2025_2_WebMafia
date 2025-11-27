@@ -195,6 +195,10 @@
   display: inline-block;
 }
 
+.cards-marquee-limiter {
+  max-width: 300px;
+}
+
 @media (max-width: 800px) {
   .card-slider {
     width: 180px;
@@ -242,5 +246,9 @@
   .current-card-name {
     font-size: 18px;
     bottom: 10px;
+  }
+
+  .cards-marquee-limiter {
+    max-width: 200px;
   }
 }

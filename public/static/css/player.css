@@ -13,6 +13,7 @@
   left: 0;
   right: 0;
   bottom: 0;
+  gap: 15px;
 }
 
 .player.none_playing {
@@ -21,11 +22,11 @@
 
 /* Левая часть */
 .player-left {
-  margin-left: 20px;
+  margin-left: 15px;
   display: flex;
   align-items: center;
   gap: 15px;
-  width: 20%;
+  min-width: 260px;
 }
 
 .like-btn {
@@ -85,11 +86,15 @@
   all: unset;
   font-size: 16px;
   font-weight: 600;
-  max-width: 30vh;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   cursor: pointer;
+  color: #fafafa;
+}
+
+.player-marquee-limiter {
+  max-width: 20vw;
 }
 
 .track-artist {
@@ -104,8 +109,7 @@
   cursor: pointer;
 }
 
-.track-artist:hover,
-.track-title:hover {
+.track-artist:hover {
   color: #fff;
   text-decoration: underline;
 }
@@ -116,7 +120,9 @@
   flex-direction: column;
   align-items: center;
   color: #fff;
-  width: 50%;
+  flex: 1;
+  min-width: 25%;
+  max-width: 55%;
 }
 
 .track-time {
@@ -250,7 +256,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  width: 15%;
+  width: clamp(60px, 15vw, 150px);
 }
 
 .volume-slider {
@@ -363,7 +369,7 @@
     height: auto;
     aspect-ratio: 1/1;
     border-radius: 20px;
-    margin-bottom: 7vh;
+    margin-bottom: 7dvh;
   }
 
   .player.expanded .player-left {
@@ -372,7 +378,7 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 0;
-    margin: 0 0 40px 0;
+    margin: 0 0 4dvh 0;
   }
 
   .player.expanded .track-artist {
@@ -383,6 +389,9 @@
   .player.expanded .track-title {
     font-size: 24px;
     font-weight: 600;
+  }
+
+  .player.expanded .player-marquee-limiter {
     max-width: 70dvw;
   }
 
@@ -398,7 +407,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 3.5vh 0 5vh 0;
+    margin: 3.5dvh 0 4dvh 0;
   }
 
   .player.expanded .track-time, .player.expanded .shuffle, .player.expanded .prev, .player.expanded .repeat {
@@ -425,7 +434,7 @@
     justify-content: space-between;
     padding: 0 10px;
     gap: 0;
-    margin: 40px 0 0 0;
+    margin: 4dvh 0 0 0;
     order: 2;
   }
 
@@ -497,10 +506,14 @@
     gap: 15px;
     flex: 1;
     position: relative;
+    width: auto;
   }
 
   .player-center {
     width: 100px;
+    flex: unset;
+    max-width: unset;
+    min-width: unset;
   }
 
   .player-right, .track-time, .shuffle, .prev, .repeat {
@@ -509,7 +522,7 @@
 
   .remote-container {
     position: absolute;
-    bottom: -2px;
+    bottom: -3px;
     left: 10px;
     width: calc(100% - 20px);
   }
@@ -534,13 +547,17 @@
     gap: 12px;
   }
 
-  .track-title, .track-artist {
+  .track-artist {
     max-width: 20vh;
+  }
+
+  .player-marquee-limiter {
+    max-width: 40vw;
   }
 
   .like-btn {
     position: absolute;
-    right: 16px;
+    right: 2px;
     top: calc(50% - 16px);
   }
 

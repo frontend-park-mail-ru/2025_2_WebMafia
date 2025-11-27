@@ -9,6 +9,7 @@ import { playTrack } from '@/playTrackBtn.js';
 import { getValidImage, playsParser } from '@/parsers.js';
 import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
 import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
+import { setupMarquees } from "@/marquee.js";
 
 export class MainPage {
   async render() {
@@ -180,10 +181,14 @@ export class MainPage {
         playButton.className = 'current-card-btn play';
         playButton.dataset.trackId = data.id;
         const nameP = document.createElement('p');
-        nameP.className = 'current-card-name';
-        nameP.textContent = data.name;
+        nameP.innerHTML = `
+            <div class="marquee-inner">
+              <span class="marquee-text">${data.name}</span>
+            </div>`
+        nameP.className = 'marquee current-card-name cards-marquee-limiter';
         card.appendChild(playButton);
         card.appendChild(nameP);
+        setupMarquees();
       }
     }
 

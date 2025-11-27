@@ -72,4 +72,15 @@
     gap: 10px;
     padding: 20px 18px;
   }
+
+  .title-name-track-by-artist {
+    font-weight: 700;
+    font-size: 32px;
+    margin-top: 5px;
+  }
+
+  .tracks-table-track-by-artist {
+    padding-right: 10px;
+    margin: 10px 0;
+  }
 }

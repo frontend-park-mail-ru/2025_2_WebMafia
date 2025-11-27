@@ -101,3 +101,19 @@
 .album-row.active .playlist-track-cover {
   filter: brightness(0.6);
 }
+
+@media (max-width: 560px) {
+  .playlist-track-number {
+    display: none;
+  }
+
+  .playlist-sub-limiter {
+    max-width: 200px;
+  }
+
+  .playlist-sub .text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
