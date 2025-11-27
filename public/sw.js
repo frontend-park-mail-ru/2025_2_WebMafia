@@ -62,6 +62,7 @@ self.addEventListener('fetch', (event) => {
             return networkResponse;
           });
         }
+        return networkResponse;
       })
       .catch(async () => {
         const cachedResponse = await caches.match(event.request);
