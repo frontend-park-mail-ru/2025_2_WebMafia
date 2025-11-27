@@ -62,14 +62,6 @@ self.addEventListener('fetch', (event) => {
             return networkResponse;
           });
         }
-        if (networkResponse) {
-          return caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, networkResponse.clone());
-            return networkResponse;
-          });
-        } else {
-          return networkResponse;
-        }
       })
       .catch(async () => {
         const cachedResponse = await caches.match(event.request);
