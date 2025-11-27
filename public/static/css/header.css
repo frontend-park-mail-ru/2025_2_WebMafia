@@ -206,7 +206,7 @@
   display: none;
 }
 
-@media (max-width: 800px) {
+@media (max-width: 900px) {
   .head {
     height: 64px;
     padding: 0 21px;

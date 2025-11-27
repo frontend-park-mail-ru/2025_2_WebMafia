@@ -4,9 +4,10 @@
   backdrop-filter: blur(34px);
   background-size: 400% 400%;
   box-sizing: content-box;
+  align-items: center;
   flex-shrink: 0;
   display: flex;
-  gap: 50px;
+  gap: 6%;
   position: relative;
   overflow: hidden;
 }
@@ -30,13 +31,14 @@
 }
 
 .profile-avatar {
-  width: 250px;
   height: 250px;
+  width: auto;
+  aspect-ratio: 1/1;
   border: 5px solid #fff;
   border-radius: 50%;
   box-shadow: 0 15px 4px 0 rgba(0, 0, 0, 0.15);
   overflow: hidden;
-  margin: 37px 0 0 60px;
+  margin-left: 6%;
 }
 
 .profile-image {
@@ -72,7 +74,6 @@
 .profile-info {
   display: flex;
   flex-direction: column;
-  margin-top: 113px;
 }
 
 .primary-button {
@@ -282,15 +283,44 @@
     transform: translateX(-50%);
   }
 }
+@media (max-width: 1000px) {
+  .profile-avatar {
+    height: 200px;
+  }
+}
 
 @media (max-width: 900px) {
+  .profile-avatar {
+    height: 150px;
+  }
+
+  .default-avatar-profile {
+    font-size: 80px;
+  }
+
+  .profile-container {
+    height: 250px;
+  }
+}
+
+@media (max-width: 850px) {
+  .profile-avatar {
+    height: 120px;
+  }
+
+  .profile-container {
+    height: 200px;
+  }
+}
+
+@media (max-width: 800px) {
   .profile-wrapper {
     margin: 0;
   }
 
   .profile-container {
     height: 200px;
-    gap: 15px;
+    gap: 4vw;
     align-items: center;
   }
 
@@ -299,17 +329,13 @@
   }
 
   .profile-avatar {
-      width: 35%;
-      height: auto;
-      aspect-ratio: 1/1;
-      border: 4px solid #fff;
-      border-radius: 50%;
-      box-shadow: 0 8px 4px 0 rgba(0, 0, 0, 0.15);
-      margin: 0 0 0 20px;
-  }
-
-  .default-avatar-profile {
-    font-size: 80px;
+    height: 75%;
+    width: auto;
+    aspect-ratio: 1/1;
+    border: 4px solid #fff;
+    border-radius: 50%;
+    box-shadow: 0 8px 4px 0 rgba(0, 0, 0, 0.15);
+    margin: 0 0 0 2.5vw;
   }
 
   .profile-info {

@@ -178,7 +178,7 @@
 .right-row-content {
   flex: 1;
   display: grid;
-  grid-template-columns: 33% 20% 20% 15% 6% 6%;
+  grid-template-columns: 31% 20% 18% 17% 6% 8%;
   align-items: center;
   gap: 8px;
 }
@@ -276,7 +276,8 @@
 .track-performers,
 .track-plays-num,
 .track-album-name,
-.track-duration {
+.track-duration,
+.track-name {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -348,59 +349,7 @@
   opacity: 1;
 }
 
-@media (max-width: 560px) {
-  .artist-container {
-    min-height: 350px;
-    padding: 16px 18px;
-    width: calc(100% - 35px);
-  }
-
-  #customScrollbar {
-    width: 6px;
-    border-radius: 3px;
-  }
-
-  #customScrollbarThumb {
-    border-radius: 3px;
-  }
-
-  .page-wrapper {
-    margin: 0;
-  }
-
-  .artist-name {
-    font-size: 48px;
-  }
-
-  .listeners-num {
-    font-size: 16px;
-  }
-
-  .artist-interaction {
-    gap: 10px;
-    margin-top: 3px;
-  }
-
-  .primary-outline-button {
-    padding: 7px 10px;
-    border-radius: 10px;
-  }
-
-  .artist-subscription {
-    font-size: 14px;
-    height: 10px;
-  }
-
-  .artist-description {
-    font-size: 12px;
-    margin-top: 7px;
-    width: calc(100% - 18px);
-  }
-
-  .artist-page {
-    padding: 0 0 20px 0;
-  }
-
+@media (max-width: 900px) {
   .track-performers, .track-duration, .track-album-name {
     display: none;
   }
@@ -409,7 +358,7 @@
     display: flex;
     padding: 10px 55px 10px 25px;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-evenly;
     border-radius: 30px;
     transition: background-color 0.3s ease;
   }
@@ -477,6 +426,60 @@
   .track-plays-num {
     font-size: 16px;
   }
+}
+
+@media (max-width: 800px) {
+  .artist-container {
+    min-height: 350px;
+    padding: 16px 18px;
+    width: calc(100% - 35px);
+  }
+
+  #customScrollbar {
+    width: 6px;
+    border-radius: 3px;
+  }
+
+  #customScrollbarThumb {
+    border-radius: 3px;
+  }
+
+  .page-wrapper {
+    margin: 0;
+  }
+
+  .artist-name {
+    font-size: 48px;
+  }
+
+  .listeners-num {
+    font-size: 16px;
+  }
+
+  .artist-interaction {
+    gap: 10px;
+    margin-top: 3px;
+  }
+
+  .primary-outline-button {
+    padding: 7px 10px;
+    border-radius: 10px;
+  }
+
+  .artist-subscription {
+    font-size: 14px;
+    height: 10px;
+  }
+
+  .artist-description {
+    font-size: 12px;
+    margin-top: 7px;
+    width: calc(100% - 18px);
+  }
+
+  .artist-page {
+    padding: 0 0 20px 0;
+  }
 
   .show-tracks-button {
     height: 12px;
@@ -488,6 +491,6 @@
   }
 
   .show-all {
-      font-size: 18px;
+    font-size: 18px;
   }
 }

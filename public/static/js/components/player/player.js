@@ -456,7 +456,7 @@ export class Player extends EventTarget {
     let startHeight = 0;
 
     player.addEventListener('click', (e) => {
-      if (window.innerWidth > 560 || player.classList.contains('expanded')) return;
+      if (window.innerWidth > 800 || player.classList.contains('expanded')) return;
 
       if (e.target.closest('.control-btn') || e.target.closest('.like-btn'))
         return;

@@ -123,6 +123,7 @@
   flex: 1;
   min-width: 25%;
   max-width: 55%;
+  gap: 3px;
 }
 
 .track-time {
@@ -154,11 +155,15 @@
 }
 
 .control-btn.prev svg,
-.control-btn.next svg,
+.control-btn.next svg {
+  width: 26px;
+  height: 26px;
+}
+
 .control-btn.shuffle svg,
 .control-btn.repeat svg {
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
 }
 
 .control-btn.prev g,
@@ -182,8 +187,8 @@
 }
 
 .control-btn svg {
-  width: 36px;
-  height: 36px;
+  width: 42px;
+  height: 42px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -365,11 +370,12 @@
   }
 
   .player.expanded .track-cover-player {
-    width: 100%;
+    width: 70%;
     height: auto;
     aspect-ratio: 1/1;
     border-radius: 20px;
-    margin-bottom: 7dvh;
+    margin-bottom: 4vh;
+    margin-left: 15%;
   }
 
   .player.expanded .player-left {
@@ -578,4 +584,100 @@
     color: inherit;
     text-decoration: none;
   }
+}
+
+@media (max-width: 560px) {
+  .player.expanded .track-cover-player {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1/1;
+    border-radius: 20px;
+    margin-bottom: 7dvh;
+  }
+}
+
+@media (max-width: 400px) {
+  .player-left {
+    gap: 10px;
+    margin-left: 6px;
+  }
+
+  .track-cover-player {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+  }
+
+  .track-title {
+    font-size: 15px;
+  }
+
+  .track-artist {
+    font-size: 12px;
+    opacity: 0.9;
+  }
+
+  .controls {
+    gap: 10px;
+    margin-right: 0;
+  }
+
+  .play svg, .pause svg {
+    width: 38px;
+    height: 38px;
+  }
+
+  .next svg, .prev svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .shuffle svg,
+  .repeat svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .remote-container {
+    bottom: -2px;
+    left: 8px;
+    width: calc(100% - 16px);
+  }
+
+  .remote-slider::-webkit-slider-runnable-track {
+    height: 3px;
+  }
+
+  .player.expanded {
+    width: calc(100dvw - 43px);
+    padding: 0 22px;
+  }
+
+  .player.expanded .track-cover-player {
+    width: 70%;
+    margin-bottom: 4vh;
+    margin-left: 15%;
+  }
+
+  .player.expanded .controls {
+    justify-content: space-between;
+  }
+
+  .player.expanded .play svg, .player.expanded .pause svg {
+    width: 64px;
+    height: 64px;
+  }
+
+  .player.expanded .next svg, .player.expanded .prev svg {
+    width: 36px;
+    height: 36px;
+  }
+
+  .player.expanded .shuffle svg, .player.expanded .repeat svg {
+    width: 26px;
+    height: 26px;
+  }
+
+  .player.expanded .track-title  { font-size: 20px; }
+  .player.expanded .track-artist { font-size: 17px; }
 }

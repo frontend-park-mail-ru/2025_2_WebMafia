@@ -144,7 +144,6 @@ body {
   flex: 0 0 180px;
   min-height: 230px;
   text-align: center;
-  max-width: 30vh;
   color: black;
   background-color: #f3f5fa;
   transition-duration: 0.3s;

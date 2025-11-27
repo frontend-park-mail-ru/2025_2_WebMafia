@@ -4,7 +4,7 @@ export const initScrollbar = () => {
     return;
   }
 
-  const isMobile = window.innerWidth < 560;
+  const isMobile = window.innerWidth < 800;
   const scrollbarTrack = document.createElement('div');
   scrollbarTrack.id = 'customScrollbar';
 

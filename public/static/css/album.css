@@ -39,7 +39,7 @@
 
 .album-card {
   position: sticky;
-  top: 50px;
+  top: 4dvh;
   background-color: #fafafa;
   width: 300px;
   display: flex;
@@ -48,7 +48,7 @@
   border-radius: 30px;
   padding: 25px 30px;
   z-index: 1;
-  margin: 50px 0 0 50px;
+  margin: 4dvh 0 0 4dvh;
 }
 
 .album-artist {
@@ -128,7 +128,7 @@
 }
 
 .tracks-card {
-  margin: 50px 50px 40px 40px;
+  margin: 4dvh 50px 40px 40px;
   border-radius: 30px;
   flex-grow: 1;
   z-index: 1;
@@ -219,8 +219,7 @@
 
 .tracks-duration-wrapper {
   flex: 1;
-  display: grid;
-  grid-template-columns: 80% 10% 10%;
+  display: flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
@@ -272,9 +271,8 @@
   opacity: 1;
 }
 
-@media (max-width: 560px) {
+@media (max-width: 1000px) {
   .album-page {
-    margin: 0;
     flex-direction: column;
     align-items: center;
   }
@@ -326,7 +324,7 @@
   }
 
   .album-row {
-    padding: 5px 20px 5px 10px;
+    padding: 5px 10px 5px 0;
     height: 60px;
   }
 
@@ -361,5 +359,11 @@
     right: 0;
     top: calc(50% - 11px);
     display: block;
+  }
+}
+
+@media (max-width: 800px) {
+  .album-page {
+    margin: 0;
   }
 }

@@ -99,7 +99,11 @@
   gap: 15px;
 }
 
-@media (max-width: 800px) {
+.create-playlist-button {
+  width: calc(100% - 30px);
+}
+
+@media (max-width: 900px) {
   .library-header {
     margin-top: 18px;
     padding: 0 18px;
@@ -178,5 +182,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+
+  .form-group textarea {
+    width: 100%;
   }
 }
