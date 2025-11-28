@@ -39,7 +39,7 @@
 
 .album-card {
   position: sticky;
-  top: 50px;
+  top: 4dvh;
   background-color: #fafafa;
   width: 300px;
   display: flex;
@@ -48,7 +48,7 @@
   border-radius: 30px;
   padding: 25px 30px;
   z-index: 1;
-  margin: 50px 0 0 50px;
+  margin: 4dvh 0 0 4dvh;
 }
 
 .album-artist {
@@ -129,7 +129,7 @@
 }
 
 .tracks-card {
-  margin: 50px 50px 40px 40px;
+  margin: 4dvh 50px 40px 40px;
   border-radius: 30px;
   flex-grow: 1;
   z-index: 0;
@@ -220,8 +220,7 @@
 
 .tracks-duration-wrapper {
   flex: 1;
-  display: grid;
-  grid-template-columns: 80% 10% 10%;
+  display: flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
@@ -271,4 +270,113 @@
 .album-row.active .like-btn-track,
 .like-btn-track.active {
   opacity: 1;
+}
+
+@media (max-width: 1050px) {
+  .album-page {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .turquoise-oval {
+    display: none;
+  }
+
+  .album-blue-position {
+    left: 0;
+  }
+
+  .album-purple-position {
+    top: 0;
+  }
+
+  .album-card {
+    position: static;
+    top: auto;
+    width: 90%;
+    padding: 25px 30px;
+    margin: 20px 0 0 0;
+    box-sizing: border-box;
+  }
+
+  .tracks-card {
+    margin: 20px 0 40px 0;
+    width: 90%;
+    box-sizing: border-box;
+  }
+
+  .album-buttons .like-btn {
+    position: static;
+    padding: 0;
+  }
+
+  .play-button-album {
+    margin: 0 26px;
+  }
+
+  .album-buttons .control-btn svg {
+    width: 32px;
+    height: 32px;
+  }
+
+  .album-play-wrapper {
+    margin-right: 10px;
+    cursor: pointer;
+  }
+
+  .album-row {
+    padding: 5px 10px 5px 0;
+    height: 60px;
+  }
+
+  .tracks-duration-wrapper {
+    position: relative;
+  }
+
+  .tracks-duration-wrapper .track-like-container {
+    right: 15%;
+  }
+
+  .tracks-duration-wrapper {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 80% 20%;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .album-artist-name {
+    font-size: 14px;
+  }
+
+  .album-artist-avatar {
+    height: 18px;
+    width: 18px;
+  }
+
+  .tracks-duration-wrapper .track-duration {
+    position: absolute;
+    right: 0;
+    top: calc(50% - 11px);
+    display: block;
+  }
+}
+
+@media (max-width: 800px) {
+  .album-page {
+    margin: 0;
+  }
+}
+
+@media (max-width: 500px) {
+  .tracks-duration-wrapper {
+    grid-template-columns: 75% 25%;
+  }
+}
+
+@media (max-width: 400px) {
+  .tracks-duration-wrapper {
+    grid-template-columns: 67% 33%;
+  }
 }

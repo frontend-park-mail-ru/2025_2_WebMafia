@@ -15,8 +15,7 @@ export class FormValidator {
     if (!this.messageElement) return;
 
     this.messageElement.textContent = message;
-    this.messageElement.style.color = isSuccess ? '#27ae60' : '#e74c3c';
-    this.messageElement.style.backgroundColor = isSuccess ? 'rgba(39, 174, 96, 0.1)' : 'rgba(231, 76, 60, 0.1)';
+    this.messageElement.style.backgroundColor = isSuccess ? '#27ae60' : '#e74c3c';
     this.messageElement.classList.add('show');
   }
 

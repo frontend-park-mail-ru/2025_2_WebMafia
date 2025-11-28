@@ -6,8 +6,6 @@ export function playTrack() {
     '.play-button-track, .play-button, .current-card-btn.play, .play-popular-track, .play-album-track, .play-all-artist-tracks, .play-button-album, .play-button-playlist'
   );
   let currentTrackId = player.currentTrack ? player.currentTrack.id : null;
-  const currentTrack = player.currentTrack;
-  const playerTrackId = currentTrack ? currentTrack.id : null;
   const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
 
   playBtn.forEach((button) => {
@@ -22,7 +20,7 @@ export function playTrack() {
       const layout = document.querySelector('.layout');
       if (playerContent) playerContent.classList.remove('none_playing');
       if (nowPlayingContainer) nowPlayingContainer.classList.remove('none_play');
-      if (layout) layout.style.marginBottom = '90px';
+      if (layout && !layout.classList.contains('with_player')) layout.classList.add('with_player');
 
       const context = {
         type: button.dataset.context || 'all-tracks',

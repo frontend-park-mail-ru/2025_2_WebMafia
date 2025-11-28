@@ -1,6 +1,7 @@
 import { apiServise, API_TRACKS_URL } from '@/data.js';
 import { getValidImage } from '@/parsers.js';
-import { likeTrackBtn, likeChange } from '@/utils/likeTrack';
+import { likeChange } from '@/utils/likeTrack';
+import { setupMarquees } from "@/marquee.js";
 
 export class Player extends EventTarget {
   constructor() {
@@ -33,6 +34,7 @@ export class Player extends EventTarget {
       if (!document.getElementById('player')) {
         await this.render();
       }
+      setupMarquees();
     } else {
       await this.destroy();
     }
@@ -172,6 +174,7 @@ export class Player extends EventTarget {
       playerContainer.insertAdjacentHTML('afterbegin', playerHTML);
     }
 
+    this.setupExpandOnClick();
     this.volumeRender();
     this.playPauseSwitch();
     this.sliderColorChange();
@@ -230,7 +233,7 @@ export class Player extends EventTarget {
     const titlePlacement = document.querySelector('.track-title');
     if (titlePlacement) {
       titlePlacement.textContent = track.title;
-      titlePlacement.href = `/album/${track.album?.id}`;
+      titlePlacement.parentNode.parentNode.href = `/album/${track.album?.id}`;
     }
     const artist = track.artists?.[0];
     const artistPlacement = document.querySelector('.track-artist');
@@ -304,7 +307,6 @@ export class Player extends EventTarget {
 
   initRepeatBtn() {
     const repeatBtn = document.querySelector('.control-btn.repeat');
-    const repeatBtnOne = document.querySelector('.control-btn.repeatOne');
     if (!repeatBtn) return;
     const storedRepeatMode = localStorage.getItem('repeatMode');
     this.repeatMode = storedRepeatMode ? parseInt(storedRepeatMode) : 0;
@@ -312,7 +314,6 @@ export class Player extends EventTarget {
     this.updateRepeatBtnUi();
 
     repeatBtn.addEventListener('click', this.handleRepeatClick.bind(this));
-    repeatBtnOne.addEventListener('click', this.handleRepeatClick.bind(this));
   }
 
   handleRepeatClick() {
@@ -324,21 +325,24 @@ export class Player extends EventTarget {
 
   updateRepeatBtnUi() {
     const repeatBtn = document.querySelector('.control-btn.repeat');
-    const repeatBtnOne = document.querySelector('.control-btn.repeatOne');
     if (!repeatBtn) return;
-    repeatBtn.classList.remove('active');
-    repeatBtnOne.classList.remove('active');
+
+    const svg = repeatBtn.querySelector('svg');
+    if (!svg) return;
+
+    const prevText = svg.querySelector('text');
+    if (prevText) prevText.remove();
+
     if (this.repeatMode === 1) {
       repeatBtn.classList.add('active');
-    } else if (this.repeatMode === 2) {
-      repeatBtn.classList.remove('active');
-      repeatBtn.style.display = 'none';
-      repeatBtnOne.style.display = 'flex';
-      repeatBtnOne.classList.add('active');
-    } else if (this.repeatMode == 0) {
-      repeatBtnOne.style.display = 'none';
-      repeatBtnOne.classList.remove('active');
-      repeatBtn.style.display = 'flex';
+    }
+    else if (this.repeatMode === 2) {
+      svg.insertAdjacentHTML("beforeend", `
+        <text x="20" y="25" text-anchor="middle" font-size="14" font-weight="400" stroke-width="1">1</text>
+      `);
+    }
+    else {
+      if (repeatBtn.classList.contains('active')) repeatBtn.classList.remove('active');
     }
   }
 
@@ -656,6 +660,81 @@ export class Player extends EventTarget {
   async prevTrack() {
     await this.updatePrevAndNextTrackId();
     await this.loadAndPlayTrackById(this.prevTrackId);
+  }
+
+  setupExpandOnClick() {
+    const player = document.getElementById('player');
+    const closeBtn = document.querySelector('.player-close');
+    const slider = document.querySelector('.remote-slider');
+
+    if (!player) return;
+
+    const minHeight = 60;
+    const maxHeight = window.innerHeight - 80 - 64 + 4;
+    let isDraggingSlider = false;
+    const closeThreshold = 100;
+    let startY = 0;
+    let startHeight = 0;
+
+    player.addEventListener('click', (e) => {
+      if (window.innerWidth > 800 || player.classList.contains('expanded')) return;
+
+      if (e.target.closest('.control-btn') || e.target.closest('.like-btn'))
+        return;
+
+      player.classList.add('expanded');
+      player.style.height = maxHeight + 'px';
+
+      setupMarquees();
+    });
+
+    if (closeBtn) {
+      closeBtn.addEventListener('click', (e) => {
+        if (player.classList.contains('expanded')) {
+          e.stopPropagation();
+          player.classList.remove('expanded');
+          player.style.height = minHeight + 'px';
+          setupMarquees();
+        }
+      })
+    }
+
+    slider.addEventListener('touchstart', () => {
+      isDraggingSlider = true;
+    });
+
+    slider.addEventListener('touchend', () => {
+      isDraggingSlider = false;
+    });
+
+    player.addEventListener('touchstart', (e) => {
+      if (isDraggingSlider) return;
+      startY = e.touches[0].clientY;
+      startHeight = player.offsetHeight;
+    });
+
+    player.addEventListener('touchmove', (e) => {
+      if (isDraggingSlider) return;
+      const dy = e.touches[0].clientY - startY;
+      let newHeight = startHeight - dy;
+      newHeight = Math.max(minHeight, Math.min(maxHeight, newHeight));
+      player.style.height = newHeight + 'px';
+    });
+
+    player.addEventListener('touchend', (e) => {
+      if (isDraggingSlider) return;
+      const dy = e.changedTouches[0].clientY - startY;
+
+      if (dy > closeThreshold || player.offsetHeight < maxHeight / 2) {
+        player.classList.remove('expanded');
+        player.style.height = minHeight + 'px';
+      } else {
+        player.classList.add('expanded');
+        player.style.height = maxHeight + 'px';
+      }
+
+      setupMarquees();
+    });
   }
 }
 

@@ -173,7 +173,6 @@
   width: 100%;
 }
 
-
 .delete-btn-track {
   background: none;
   border: none;
@@ -185,5 +184,34 @@
   transform: scale(1.03);
 }
 
+@media (max-width: 560px) {
+  .playlist-track-number {
+    display: none;
+  }
 
+  .playlist-sub-limiter {
+    max-width: 200px;
+  }
 
+  .playlist-sub .text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .tracks-card .header-divider {
+    margin-top: 5px;
+  }
+
+  .playlist-search-container {
+    margin-top: 0;
+  }
+
+  .playlist-search-container .search-input {
+    opacity: 1;
+  }
+
+  .playlist-search-container .search-icon {
+    display: block;
+  }
+}

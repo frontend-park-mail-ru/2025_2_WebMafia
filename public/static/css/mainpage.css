@@ -2,7 +2,7 @@ body {
   font-family: 'Montserrat', sans-serif;
   margin: 0;
   padding: 0;
-  overflow-y: hidden;
+  overflow: hidden;
 }
 
 .section {
@@ -21,6 +21,10 @@ body {
   min-height: 0;
   margin-bottom: 0;
   transition: margin-bottom 0.3s ease;
+}
+
+.layout.with_player {
+  margin-bottom: 90px;
 }
 
 /* Content */
@@ -140,7 +144,6 @@ body {
   flex: 0 0 180px;
   min-height: 230px;
   text-align: center;
-  max-width: 30vh;
   color: black;
   background-color: #f3f5fa;
   transition-duration: 0.3s;
@@ -292,8 +295,8 @@ body {
   grid-template-rows: repeat(2, auto);
   max-height: 200px;
   width: 100%;
-  overflow: hidden;
   overflow-x: auto;
+  overflow-y: hidden;
   scroll-behavior: smooth;
   margin-left: -23px;
   padding: 15px 0 30px 43px;
@@ -398,4 +401,75 @@ body {
 
 .card-tracks:hover .play-button-track {
   opacity: 1;
+}
+
+@media (max-width: 800px) {
+  body, html {
+    -webkit-tap-highlight-color: transparent;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  .layout {
+    margin-bottom: 78px;
+  }
+
+  .layout.with_player {
+    margin-bottom: 156px;
+  }
+
+  .page {
+    margin: 0;
+    padding: 0;
+  }
+
+  .title {
+    margin-left: 18px;
+    display: flex;
+    align-items: center;
+  }
+
+  .title-name {
+    font-size: 26px;
+  }
+
+  .cards {
+    padding: 16px 0 0 18px;
+    margin: 0 0 16px 0;
+  }
+
+  .cards.tracks {
+    padding: 15px 10px 30px 43px;
+  }
+
+  .card {
+    flex: 0 0 155px;
+    min-height: 170px;
+    transition: transform 0.3s ease;
+  }
+
+  .card:active {
+    transform: scale(0.9);
+  }
+
+  .card img {
+    margin-top: 5px;
+    width: 135px;
+    height: 135px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+
+  .card-name {
+    margin-top: 5px;
+  }
+
+  .card-sub-limiter {
+    max-width: 145px;
+  }
+
+  .slide-btn {
+    display: none;
+  }
 }

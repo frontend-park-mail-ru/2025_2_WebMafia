@@ -47,19 +47,22 @@
 }
 
 .menu-item svg {
-  fill: black;
+  stroke: black;
   transition:
-    fill 0.3s ease,
-    stroke 0.3s ease;
+      fill 0.3s ease,
+      stroke 0.3s ease;
+  width: 24px;
+  height: 24px;
 }
 
 .menu-item.active svg,
 .menu-item.active:hover svg {
-  fill: #fafafa;
+  fill: transparent;
+  stroke: #fafafa;
 }
 
 .menu-item:hover svg {
-  fill: #a766ff;
+  stroke: #a766ff;
 }
 
 .menu-item.active:hover,
@@ -83,7 +86,6 @@
   font-weight: 200;
 }
 
-/* фолетовый кружочек на фоне */
 .purple-background-circle {
   position: absolute;
   width: 315px;
@@ -112,4 +114,142 @@
 .sidebar-blue-position {
   top: 80%;
   left: 150px;
+}
+
+.sidebar .header-divider {
+  width: 90%;
+  background: #aaacb5;
+  margin: 20px 0;
+}
+
+.sidebar-secondary-button {
+  cursor: pointer !important;
+  width: 190px !important;
+}
+
+@media (max-width: 1150px) {
+  .sidebar {
+    width: 145px;
+    overflow: hidden;
+    padding: 10px 0;
+  }
+
+  .menu {
+    gap: 20px;
+  }
+
+  .menu-item, .menu .secondary-button {
+    flex: 1;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 3px;
+    width: auto;
+    padding: 0;
+    font-weight: 600;
+  }
+
+  .sidebar-secondary-button {
+    width: auto !important;
+  }
+
+  .menu-item.active .icon-path {
+    stroke: url(#menuGradient);
+    fill: url(#menuGradient);
+  }
+
+  .menu-item.active .library-path {
+    stroke: url(#menuGradient);
+  }
+
+  .menu-item.active {
+    color: black;
+  }
+
+  .menu-item.active {
+    border-radius: 0;
+    background: transparent;
+    background-size: auto;
+  }
+
+  .sidebar .header-divider {
+    display: none;
+  }
+
+  .menu .secondary-button {
+    border-radius: 0;
+    background: transparent;
+    padding: 0;
+  }
+
+  .menu-item svg, .menu .secondary-button svg {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+@media (max-height: 500px) {
+  .sidebar-secondary-button {
+    display: none !important;
+  }
+}
+
+@media (max-width: 800px) {
+  .sidebar {
+    position: absolute;
+    width: 100%;
+    height: 70px;
+    padding: 0;
+    margin: 0;
+    border-radius: 30px 30px 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    box-sizing: border-box;
+  }
+
+  .menu {
+    flex-direction: row;
+    justify-content: space-around;
+    width: 100%;
+    margin: 0;
+    gap: 0;
+    padding: 0;
+  }
+
+  .menu-item, .menu .secondary-button {
+    flex: 1;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 3px;
+    width: auto;
+    font-size: 14px;
+    padding: 0;
+    font-weight: 600;
+  }
+
+  .sidebar-purple-position {
+    position: fixed;
+    top: auto;
+    left: auto;
+    right: 0;
+    bottom: 0;
+    transform: translate(20%, 15%);
+  }
+
+  .sidebar-blue-position {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+  }
+
+  .menu .secondary-button:active, .menu .secondary-button:hover {
+    background: transparent;
+  }
 }

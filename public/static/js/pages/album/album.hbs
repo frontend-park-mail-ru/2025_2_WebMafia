@@ -20,8 +20,8 @@
         {{/if}}
         <div class="album-buttons">
           <button class="like-btn black">{{> likeBtn }}</button>
-          <button class="play-button play-button-album" data-album-id="{{ id }}" data-context="album-tracks" data-track-id="{{ track_id }}" data-first-track-id="{{ track_id }}"></button>
-          <button class="control-btn shuffle">{{> shuffle}}</button>
+          <button class="play-button play-button-album" data-album-id="{{ id }}" data-context="album-tracks"></button>
+          <button class="control-btn shuffle black">{{> shuffle}}</button>
         </div>
       </div>
       <div class="tracks-card">
@@ -46,7 +46,7 @@
                 <div class="track-plays-num">{{ plays }}</div>
               </div>
               <div class="track-like-container">
-                <button class="like-btn-track album-like-size {{#if is_liked}}active{{/if}}" data-track-id="{{ id }}">{{> likeBtn }}</button>
+                <button class="like-btn-track album-like-size" data-track-id="{{ id }}">{{> likeBtn }}</button>
               </div>
               <div class="track-duration">{{ duration }}</div>
             </div>

@@ -1,12 +1,17 @@
 <div class="player" id="player">
+  <button type="button" class="player-close">{{> angleDown }}</button>
   <div class="player-left">
     <img alt="Cover" class="track-cover-player" />
-    <div class="track-info">
-      <a class="track-title"></a>
-      <a class="track-artist"></a>
-    </div>
-    <div class="track-like-container">
-      <button class="like-btn artist-like-size {{#if is_liked}}active{{/if}} " data-track-id="{{ id }}">{{> likeBtn }}</button>
+    <div class="track-info-container">
+      <div class="track-info">
+        <a class="marquee player-marquee-limiter">
+          <div class="marquee-inner">
+            <div class="track-title marquee-text"></div>
+          </div>
+        </a>
+        <a class="track-artist"></a>
+      </div>
+      <button class="like-btn {{#if is_liked}}active{{/if}}" data-track-id="{{ id }}">{{> likeBtn }}</button>
     </div>
   </div>
 
@@ -18,7 +23,6 @@
       <button class="control-btn white pause">{{> pauseBtn }}</button>
       <button class="control-btn white next">{{> nextTrack }}</button>
       <button class="control-btn white repeat">{{> repeat}}</button>
-      <button class="control-btn white repeatOne">{{> repeatOne }}</button>
     </div>
     <div class="progress-remote">
       <span class="track-time current">-:--</span>
