@@ -1,7 +1,7 @@
 import { apiServise, API_TRACKS_URL } from '@/data.js';
 import { getValidImage } from '@/parsers.js';
 import { likeChange } from '@/utils/likeTrack';
-import { setupMarquees } from "@/marquee.js";
+import { setupMarquees } from '@/marquee.js';
 
 export class Player extends EventTarget {
   constructor() {
@@ -335,13 +335,14 @@ export class Player extends EventTarget {
 
     if (this.repeatMode === 1) {
       repeatBtn.classList.add('active');
-    }
-    else if (this.repeatMode === 2) {
-      svg.insertAdjacentHTML("beforeend", `
+    } else if (this.repeatMode === 2) {
+      svg.insertAdjacentHTML(
+        'beforeend',
+        `
         <text x="20" y="25" text-anchor="middle" font-size="14" font-weight="400" stroke-width="1">1</text>
-      `);
-    }
-    else {
+      `
+      );
+    } else {
       if (repeatBtn.classList.contains('active')) repeatBtn.classList.remove('active');
     }
   }
@@ -679,8 +680,7 @@ export class Player extends EventTarget {
     player.addEventListener('click', (e) => {
       if (window.innerWidth > 800 || player.classList.contains('expanded')) return;
 
-      if (e.target.closest('.control-btn') || e.target.closest('.like-btn'))
-        return;
+      if (e.target.closest('.control-btn') || e.target.closest('.like-btn')) return;
 
       player.classList.add('expanded');
       player.style.height = maxHeight + 'px';
@@ -696,7 +696,7 @@ export class Player extends EventTarget {
           player.style.height = minHeight + 'px';
           setupMarquees();
         }
-      })
+      });
     }
 
     slider.addEventListener('touchstart', () => {

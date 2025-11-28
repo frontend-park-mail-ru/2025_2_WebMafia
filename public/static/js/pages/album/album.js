@@ -10,6 +10,7 @@ import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
 import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
 import { likeTrackBtn } from '@/utils/likeTrack.js';
 import { player } from '@/components/player/player';
+import { createPlaylis } from '@/utils/initCreatePlaylist';
 
 export class AlbumPage {
   async render(id) {
@@ -70,7 +71,7 @@ export class AlbumPage {
     document.querySelector('head title').textContent = pageData.title;
     playerOnlyOnPlay();
     await Promise.all([header.render(), sidebar.render()]);
-
+    createPlaylis();
     slider.sliderFunction();
     initScrollbar();
     this.addEventListeners();

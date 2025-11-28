@@ -27,6 +27,7 @@
   align-items: center;
   gap: 15px;
   min-width: 260px;
+  max-width: 260px;
 }
 
 .like-btn {
@@ -85,6 +86,7 @@
 .track-title {
   all: unset;
   font-size: 16px;
+  max-width: 260px;
   font-weight: 600;
   white-space: nowrap;
   overflow: hidden;
@@ -94,7 +96,7 @@
 }
 
 .player-marquee-limiter {
-  max-width: 20vw;
+  max-width: 15vw;
 }
 
 .track-artist {
@@ -190,7 +192,7 @@
 }
 
 .control-btn.shuffle.active svg{
-  color: #a766ff;
+  stroke: #a766ff;
 }
 
 .control-btn.repeat-one {

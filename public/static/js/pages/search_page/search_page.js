@@ -9,6 +9,7 @@ import { playTrack } from '@/playTrackBtn.js';
 import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
 import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
 import { likeTrackBtn } from '@/utils/likeTrack';
+import { createPlaylis } from '@/utils/initCreatePlaylist';
 
 export class SearchPage {
   async render(name) {
@@ -91,6 +92,7 @@ export class SearchPage {
     this.addEventListeners();
     setPlayButtonsOnAuth();
     likeTrackBtn();
+    createPlaylis();
     playTrack();
   }
 
