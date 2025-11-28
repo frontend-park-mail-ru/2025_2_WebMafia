@@ -19,6 +19,7 @@ import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
 import { FormValidator } from '@/validation.js';
 import { likeChange, likeTrackBtn } from '../../utils/likeTrack';
 import { player } from '@/components/player/player';
+import { createPlaylis } from '@/utils/initCreatePlaylist';
 
 export class PlaylistPage {
   constructor() {
@@ -111,7 +112,7 @@ export class PlaylistPage {
     document.querySelector('head title').textContent = pageData.title;
     playerOnlyOnPlay();
     await Promise.all([header.render(), sidebar.render()]);
-
+    createPlaylis();
     slider.sliderFunction();
     initScrollbar();
     this.addEventListeners(this.playlistData.id);
