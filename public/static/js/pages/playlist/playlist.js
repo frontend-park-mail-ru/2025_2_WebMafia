@@ -112,10 +112,10 @@ export class PlaylistPage {
     document.querySelector('head title').textContent = pageData.title;
     playerOnlyOnPlay();
     await Promise.all([header.render(), sidebar.render()]);
-    createPlaylis();
     slider.sliderFunction();
     initScrollbar();
     this.addEventListeners(this.playlistData.id);
+    createPlaylis();
     setPlayButtonsOnAuth();
     likeTrackBtn();
     playTrack();
@@ -128,8 +128,8 @@ export class PlaylistPage {
     const editPlaylistButton = document.querySelector('.actions-item.edit');
     const deletePlaylistButton = document.querySelector('.actions-item.delete');
     const editPlaylistOverlay = document.getElementById('editPlaylistOverlay');
-    const closeOverlayButton = document.getElementById('closeOverlayButton');
-    const playlistShuffleBtn = document.querySelector('.album-buttons .control-btn.shuffle');
+    const closeOverlayButton = document.getElementById('closeOverlayButtonPlaylist');
+    const playlistShuffleBtn = document.querySelector('.album-buttons .control-btn.shuffle-album');
     if (playlistShuffleBtn) {
       if (player.isShaffle) {
         playlistShuffleBtn.classList.add('active');
@@ -294,7 +294,10 @@ export class PlaylistPage {
       },
     };
 
-    const editValidator = new FormValidator('editPlaylistForm', editValidators, editInformation, '.primary-button');
+    const editValidator = new FormValidator('editPlaylistForm', editValidators, editInformation, {
+      submitButtonSelector: '.general-error',
+      messageSelector: '#generalErrorPlaylist',
+    });
 
     editValidator.init();
 
@@ -321,9 +324,9 @@ export class PlaylistPage {
             deleteAvatar = false;
           }
 
-          const newTitle = document.getElementById('title').value;
-          const newDescription = document.getElementById('description').value;
-
+          const newTitle = document.getElementById('titlePlaylist').value;
+          const newDescription = document.getElementById('descriptionPlaylist').value;
+          console.log(newTitle, newDescription);
           if (newTitle !== this.playlistData.title || newDescription !== this.playlistData.description) {
             await apiServise.updatePlaylist(newTitle, newDescription, playlistId);
             const title = document.querySelector('.album-card-title');
@@ -337,7 +340,7 @@ export class PlaylistPage {
           }
           editValidator.showMessage('Изменения успешно сохранены!', true);
           setTimeout(() => {
-            const messageElement = document.getElementById('generalError');
+            const messageElement = document.getElementById('generalErrorPlaylist');
             if (messageElement) {
               messageElement.textContent = '';
               messageElement.classList.remove('show');

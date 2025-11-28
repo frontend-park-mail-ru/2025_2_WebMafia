@@ -83,7 +83,7 @@ export class AlbumPage {
   addEventListeners() {
     const getDescriptionButton = document.getElementById('getDescription');
     const getDescriptionOverlay = document.getElementById('albumDescriptionOverlay');
-    const albumShuffleBtn = document.querySelector('.album-buttons .control-btn.shuffle');
+    const albumShuffleBtn = document.querySelector('.album-buttons .control-btn.shuffle-album');
     if (albumShuffleBtn) {
       if (player.isShaffle) {
         albumShuffleBtn.classList.add('active');

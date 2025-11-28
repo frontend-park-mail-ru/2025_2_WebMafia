@@ -19,7 +19,7 @@
         <div class="card-sub album-description" id="getDescription">{{ description }}</div>
         {{/if}}
         <div class="album-buttons">
-          <button class="control-btn shuffle">{{> shuffle }}</button>
+          <button class="control-btn shuffle-album">{{> shuffle }}</button>
           <button
             class="play-button play-button-playlist"
             data-playlist-id="{{ id }}"
@@ -120,7 +120,7 @@
       <div class="window">
         <div class="overlay-header">
           <h2 class="title-name">Редактировать плейлист</h2>
-          <button id="closeOverlayButton" class="close-button" aria-label="Закрыть">{{> close }}</button>
+          <button id="closeOverlayButtonPlaylist" class="close-button" aria-label="Закрыть">{{> close }}</button>
         </div>
         <div class="header-divider"></div>
         <div class="edit-profile-wrapper">
@@ -144,8 +144,8 @@
               <div class="form-group">
                 <label for="title">Название</label>
                 <div class="input-wrapper">
-                  <input type="text" id="title" name="title" placeholder="Добавь название" value="{{ title }}" />
-                  <div class="error-message" id="titleError"></div>
+                  <input type="text" id="titlePlaylist" name="titlePlaylist" placeholder="Добавь название" value="{{ title }}" />
+                  <div class="error-message" id="titlePlaylistError"></div>
                   <div class="validation-message" id="titleInformation"></div>
                 </div>
               </div>
@@ -155,14 +155,15 @@
                 <div class="input-wrapper">
                   <textarea
                     maxlength="300"
-                    id="description"
-                    name="description"
+                    id="descriptionPlaylist"
+                    name="descriptionPlaylist"
                     placeholder="Добавь описание (необязательно)"
                   >{{ description }}</textarea>
+                  <div class="error-message" id="descriptionPlaylistError"></div>
                   <div class="validation-message" id="descriptionInformation"></div>
                 </div>
               </div>
-              <div class="general-error" id="generalError"></div>
+              <div class="general-error" id="generalErrorPlaylist"></div>
             </form>
           </div>
           <div class="save-overlay-button">

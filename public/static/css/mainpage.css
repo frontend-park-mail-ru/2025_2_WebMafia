@@ -266,12 +266,17 @@ body {
 
 .href-decoration {
   text-decoration: none;
+  border-bottom: 1px solid transparent;
   color: inherit;
-  cursor: pointer;
+  background: linear-gradient(#636363, #636363) no-repeat;
+  background-size: 0% 1px;
+  background-position: 0% 100%;
+  transition: background-size 0.3s ease;
+  display: inline;
 }
 
 .href-decoration:hover {
-  text-decoration: underline;
+  background-size: 100% 1px;
 }
 
 .card-sub .text {

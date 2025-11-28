@@ -71,9 +71,6 @@
   font-size: 12px;
 }
 
-.album-artist-name:hover {
-  text-decoration: underline;
-}
 
 .album-cover {
   margin: 13px 0;

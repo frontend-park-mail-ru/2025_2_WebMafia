@@ -348,38 +348,36 @@ export class Player extends EventTarget {
   }
 
   initShaffleBtn() {
-    const allShuffleBtns = document.querySelectorAll('.control-btn.shuffle');
-    if (!allShuffleBtns) return;
+    const ShuffleBtnPlayer = document.querySelector('.control-btn.shuffle');
+    if (!ShuffleBtnPlayer) return;
     const isShaffle = localStorage.getItem('isShuffle') === 'true';
 
     this.isShaffle = isShaffle;
 
     if (this.isShaffle) {
-      allShuffleBtns.forEach((btn) => btn.classList.add('active'));
+      ShuffleBtnPlayer.classList.add('active');
       if (this.playQueue.length > 0) {
         this.shuffleQueue();
       }
     }
-    const playerShuffleBtn = document.querySelector('.player .control-btn.shuffle');
-    if (playerShuffleBtn) {
-      playerShuffleBtn.removeEventListener('click', this.boundShuffleHandler);
-      this.boundShuffleHandler = this.handleShaffleClick.bind(this);
-      playerShuffleBtn.addEventListener('click', this.boundShuffleHandler);
-    }
+    ShuffleBtnPlayer.removeEventListener('click', this.boundShuffleHandler);
+    this.boundShuffleHandler = this.handleShaffleClick.bind(this);
+    ShuffleBtnPlayer.addEventListener('click', this.boundShuffleHandler);
   }
 
   handleShaffleClick() {
     this.isShaffle = !this.isShaffle;
-    const allShuffleBtns = document.querySelectorAll('.control-btn.shuffle');
-    allShuffleBtns.forEach((btn) => {
-      if (this.isShaffle) {
-        btn.classList.add('active');
-        this.shuffleQueue();
-      } else {
-        btn.classList.remove('active');
-        this.restoreQueue();
-      }
-    });
+    const ShuffleBtnPlayer = document.querySelector('.control-btn.shuffle');
+    const ShuffleBtnAlbum = document.querySelector('.control-btn.shuffle-album');
+    if (this.isShaffle) {
+      ShuffleBtnPlayer.classList.add('active');
+      ShuffleBtnAlbum.classList.add('active');
+      this.shuffleQueue();
+    } else {
+      ShuffleBtnPlayer.classList.remove('active');
+      ShuffleBtnAlbum.classList.remove('active');
+      this.restoreQueue();
+    }
 
     localStorage.setItem('isShuffle', this.isShaffle);
     this.updatePrevAndNextTrackId();

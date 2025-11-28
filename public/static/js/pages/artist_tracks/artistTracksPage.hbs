@@ -28,13 +28,15 @@
             <div class="track-name">{{ name }}</div>
             <div class="track-performers">
               {{#each artists}}
-              <a href="artist/{{ id }}" class="track-performer"> {{ name }}{{#unless @last}}, {{/unless}} </a>
+              <a href="artist/{{ id }}" class="track-performer href-decoration"> {{ name }}{{#unless @last}}, {{/unless}} </a>
               {{/each}}
             </div>
             <div class="track-plays-num">{{ plays }}</div>
-            <a href="album/{{ album_id }}" class="track-album-name">
-              {{ album }}
-            </a>
+            <div class="track-album-name">
+              <a href="album/{{ album_id }}" class="track-album-name href-decoration">
+                {{ album }}
+              </a>
+            </div>
             <div class="track-like-container">
               <button class="like-btn-track artist-like-size {{#if is_liked}}active{{/if}}" data-track-id="{{ id }}">{{> likeBtn }}</button>
             </div>

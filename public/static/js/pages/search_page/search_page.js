@@ -35,7 +35,6 @@ export class SearchPage {
         apiServise.searchAlbum(name),
         apiServise.searchArtist(name),
       ]);
-      console.log(searchTracktData);
       pageData.artists = (searchArtistData || []).map((artist) => ({
         id: artist.id,
         name: artist.name,

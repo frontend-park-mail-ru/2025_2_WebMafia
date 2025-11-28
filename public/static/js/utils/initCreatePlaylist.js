@@ -7,7 +7,6 @@ export function createPlaylis() {
   const createPlaylistButtons = document.querySelectorAll('.create-playlist-button');
   const sidebarButton = document.querySelector('.sidebar-secondary-button');
   const isAuthenticated = localStorage.getItem('isAuthenticated');
-  console.log(createPlaylistOverlay);
   const allCreateButtons = [...createPlaylistButtons];
   if (sidebarButton) {
     allCreateButtons.push(sidebarButton);
@@ -26,7 +25,7 @@ export function createPlaylis() {
   }
 
   let selectedAvatarFile = null;
-  const closeOverlayButton = document.getElementById('closeOverlayButton');
+  const closeOverlayButton = document.getElementById('closeOverlayButtonCreatePlaylist');
   if (closeOverlayButton && createPlaylistOverlay) {
     closeOverlayButton.addEventListener('click', (e) => {
       document.getElementById('title').value = '';
@@ -56,6 +55,36 @@ export function createPlaylis() {
     });
   }
 
+  if (createPlaylistOverlay) {
+    createPlaylistOverlay.addEventListener('click', (e) => {
+      if (e.target === createPlaylistOverlay) {
+        document.getElementById('title').value = '';
+        document.getElementById('description').value = '';
+
+        updateAvatarContainer();
+
+        selectedAvatarFile = null;
+
+        const errorElements = document.querySelectorAll('.error-message');
+        errorElements.forEach((el) => {
+          el.textContent = '';
+          el.classList.remove('show');
+        });
+
+        const formGroups = document.querySelectorAll('.form-group.error');
+        formGroups.forEach((group) => group.classList.remove('error'));
+
+        const messageElement = document.getElementById('generalError');
+        if (messageElement) {
+          messageElement.textContent = '';
+          messageElement.classList.remove('show');
+          messageElement.style.backgroundColor = '';
+        }
+        createPlaylistOverlay.classList.remove('active');
+      }
+    });
+  }
+
   function updateAvatarContainer(src = null) {
     const img = document.getElementById('playlistAvatar');
 
@@ -63,12 +92,12 @@ export function createPlaylis() {
     else img.src = 'static/img/default-playlist.png';
   }
 
-  const editAvatarButtons = document.getElementById('editAvatarButtons');
+  const editAvatarButtons = document.getElementById('editAvatarButtonsPlaylist');
   if (editAvatarButtons) {
     editAvatarButtons.addEventListener('click', (e) => {
       const target = e.target;
 
-      if (target.id === 'setAvatarButton') {
+      if (target.id === 'setAvatarButtonPlaylist') {
         e.preventDefault();
 
         const input = document.createElement('input');
@@ -91,10 +120,10 @@ export function createPlaylis() {
           reader.onload = (event) => {
             updateAvatarContainer(event.target.result);
 
-            if (!document.getElementById('deleteAvatarButton')) {
+            if (!document.getElementById('deleteAvatarButtonPlaylist')) {
               editAvatarButtons.insertAdjacentHTML(
                 'beforeend',
-                `<button id="deleteAvatarButton" class="secondary-button save-avatar-button-size">Удалить фото</button>`
+                `<button id="deleteAvatarButtonPlaylist" class="secondary-button save-avatar-button-size">Удалить фото</button>`
               );
             }
           };
@@ -102,7 +131,7 @@ export function createPlaylis() {
         });
       }
 
-      if (target.id === 'deleteAvatarButton') {
+      if (target.id === 'deleteAvatarButtonPlaylist') {
         e.preventDefault();
         selectedAvatarFile = null;
         updateAvatarContainer();
@@ -129,7 +158,7 @@ export function createPlaylis() {
     'createPlaylistForm',
     createValidators,
     createInformation,
-    '.primary-button'
+    '.general-error'
   );
   createValidator.init();
 

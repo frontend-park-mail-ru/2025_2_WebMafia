@@ -159,6 +159,7 @@
 .control-btn.next svg {
   width: 26px;
   height: 26px;
+  stroke: #ece9e9;
 }
 
 .control-btn.shuffle svg,
@@ -166,6 +167,22 @@
 .control-btn.repeat-one svg {
   width: 20px;
   height: 20px;
+  stroke: #bfb8b8;
+}
+
+.control-btn.shuffle-album svg {
+  width: 20px;
+  height: 20px;
+  stroke: #000000;
+}
+
+.control-btn.shuffle-album:hover svg {
+  transform: scale(1.03);
+  stroke: #000000;
+}
+
+.control-btn.shuffle-album.active svg {
+  stroke: #a766ff;
 }
 
 .control-btn.play.disactive,
@@ -187,8 +204,15 @@
 }
 
 .control-btn:hover svg {
-  transform: scale(1.01);
+  transform: scale(1.03);
   stroke: #a766ff;
+}
+
+.control-btn.shuffle:hover svg,
+.control-btn.repeat:hover svg,
+.control-btn.repeat-one:hover svg {
+  transform: scale(1.03);
+  stroke: #ffffff;
 }
 
 .control-btn.shuffle.active svg{
@@ -329,7 +353,7 @@
 }
 
 .volume-icon.level-0 {
-  color: #9ca3af;
+  color: #e0dcdc;
 }
 
 .player-close {
