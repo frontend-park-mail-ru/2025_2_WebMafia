@@ -6,6 +6,7 @@ export function createPlaylis() {
   const createPlaylistOverlay = document.getElementById('createPlaylistOverlay');
   const createPlaylistButtons = document.querySelectorAll('.create-playlist-button');
   const sidebarButton = document.querySelector('.sidebar-secondary-button');
+  const isAuthenticated = localStorage.getItem('isAuthenticated');
   console.log(createPlaylistOverlay);
   const allCreateButtons = [...createPlaylistButtons];
   if (sidebarButton) {
@@ -15,7 +16,11 @@ export function createPlaylis() {
     allCreateButtons.forEach((button) => {
       button.addEventListener('click', (e) => {
         e.preventDefault();
-        createPlaylistOverlay.classList.add('active');
+        if (isAuthenticated) {
+          createPlaylistOverlay.classList.add('active');
+        } else {
+          router.navigate('/login');
+        }
       });
     });
   }
