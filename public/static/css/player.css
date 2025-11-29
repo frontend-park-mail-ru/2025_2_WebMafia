@@ -35,6 +35,7 @@
   border: none;
   width: 32px;
   height: 32px;
+  padding: 0;
 }
 
 .like-btn svg {
@@ -168,13 +169,16 @@
 }
 
 .control-btn.shuffle-album svg {
-  width: 20px;
-  height: 20px;
+  width: 28px;
+  height: 28px;
   stroke: #000000;
 }
 
-.control-btn.shuffle-album:hover svg {
+.control-btn.shuffle-album:hover {
   transform: scale(1.03);
+}
+
+.control-btn.shuffle-album:hover svg {
   stroke: #000000;
 }
 

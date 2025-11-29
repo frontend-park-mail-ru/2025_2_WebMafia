@@ -118,7 +118,7 @@
 }
 
 .play-button-album {
-  margin: 0 15px 0 23px;
+  margin: 0 23px;
 }
 
 .black svg {
@@ -147,6 +147,11 @@
   border-radius: 30px;
   transition: background-color 0.3s ease;
   height: 75px;
+}
+
+.album-row .track-duration {
+  width: 54px;
+  text-align: right;
 }
 
 .album-row.active,
@@ -224,7 +229,7 @@
 .tracks-duration-wrapper {
   flex: 1;
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: 1fr 100px;
   align-items: center;
   justify-content: space-between;
   width: 100%;
@@ -349,8 +354,12 @@
   }
 
   .album-row {
-    padding: 5px;
+    padding: 5px 0 5px 5px;
     height: 60px;
+  }
+
+  .album-row .track-duration {
+    display: flex;
   }
 
   .album-artist-name {
@@ -366,17 +375,5 @@
 @media (max-width: 800px) {
   .album-page {
     margin: 0;
-  }
-}
-
-@media (max-width: 500px) {
-  .tracks-duration-wrapper {
-    grid-template-columns: 75% 25%;
-  }
-}
-
-@media (max-width: 420px) {
-  .tracks-duration-wrapper {
-    grid-template-columns: 67% 33%;
   }
 }
