@@ -413,7 +413,6 @@ body {
   body, html {
     -webkit-tap-highlight-color: transparent;
     position: relative;
-    overflow-x: hidden;
   }
 
   .layout {
