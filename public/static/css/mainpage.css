@@ -1,10 +1,11 @@
-body {
+html, body {
   font-family: 'Montserrat', sans-serif;
   margin: 0;
   padding: 0;
-  overflow: hidden;
-  height: 100svh;
-  width: 100svw;
+  overflow: hidden !important;
+  max-height: 100svh;
+  max-width: 100svw;
+  position: relative;
 }
 
 .section {
@@ -417,10 +418,12 @@ body {
 
   .layout {
     margin-bottom: 75px;
+    height: calc(100svh - 75px - 64px);
   }
 
   .layout.with_player {
-    margin-bottom: 155px;
+    margin-bottom: 156px;
+    height: calc(100svh - 156px - 64px);
   }
 
   .page {

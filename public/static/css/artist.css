@@ -433,7 +433,6 @@
   .artist-container {
     min-height: 350px;
     padding: 16px 18px;
-    width: calc(100% - 35px);
   }
 
   #customScrollbar {

@@ -9,7 +9,7 @@
   justify-content: space-between;
   background-color: #1a1a1a;
   z-index: 50;
-  position: fixed;
+  position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
@@ -363,7 +363,7 @@
 @media (max-width: 800px) {
   .player {
     margin: 0;
-    bottom: 80px;
+    bottom: 78px;
     height: 60px;
     overflow: hidden;
     justify-content: center;
@@ -664,7 +664,7 @@
   }
 
   .player.expanded {
-    width: calc(100dvw - 43px);
+    width: calc(100dvw - 44px);
     padding: 0 22px;
   }
 
@@ -698,7 +698,7 @@
   }
 
   .like-btn {
-    right: -6px;
+    right: -10px;
   }
 
   .player.expanded .track-title  { font-size: 20px; }
