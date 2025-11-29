@@ -186,7 +186,7 @@ export class MainPage {
         nameP.innerHTML = `
             <div class="marquee-inner">
               <span class="marquee-text">${data.name}</span>
-            </div>`
+            </div>`;
         nameP.className = 'marquee current-card-name cards-marquee-limiter';
         card.appendChild(playButton);
         card.appendChild(nameP);
@@ -274,11 +274,11 @@ export class MainPage {
     const slider = document.querySelector('.card-slider');
 
     if (slider) {
-      slider.addEventListener('touchstart', e => {
+      slider.addEventListener('touchstart', (e) => {
         touchStartX = e.changedTouches[0].clientX;
       });
 
-      slider.addEventListener('touchend', e => {
+      slider.addEventListener('touchend', (e) => {
         touchEndX = e.changedTouches[0].clientX;
         handleGesture();
       });
