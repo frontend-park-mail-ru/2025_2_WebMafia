@@ -45,7 +45,7 @@
       <div class="tracks-card">
         <div class="album-table" id="addedTracksTable">
           {{#each tracks}}
-          <div class="{{#if @root.favourite }}album-row playlist {{else}} album-row playlist-unfav {{/if}}">
+          <div class="album-row {{#if @root.favourite }}playlist{{else}}playlist-unfav{{/if}}">
             <div class="playlist-track-number">{{numeration @index}}</div>
             <div class="album-play-wrapper">
               <img
@@ -68,7 +68,7 @@
               <div class="album-track-info">
                 <div class="track-name">{{ name }}</div>
                 <p class="playlist-sub playlist-sub-limiter">
-                  <a class="text href-decoration" href="/album/{{ album_id }}">{{ album }}</a>
+                  <a class="text href-decoration playlist-album" href="/album/{{ album_id }}">{{ album }}</a>
                   <span class="dot"></span>
                   {{#each artists}}
                   <a href="artist/{{ id }}" class="text href-decoration"> {{ name }}{{#unless @last}}, {{/unless}} </a>

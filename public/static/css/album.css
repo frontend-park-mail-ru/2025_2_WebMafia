@@ -207,7 +207,7 @@
 
 .play-album-track.is-active:not(.paused) .play-icon,
 .play-album-track.is-active.paused .pause-icon {
-  display: block;
+  display: flex;
 }
 
 .album-row:hover .play-album-track,
@@ -334,6 +334,7 @@
   }
 
   .tracks-card {
+    padding: 10px 5px;
     margin: 20px 0 40px 0;
     width: 90%;
     box-sizing: border-box;

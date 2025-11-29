@@ -21,14 +21,17 @@
       <div class="album-track-info">
         <div class="track-name">{{ name }}</div>
         <p class="playlist-sub">
-          <a class="text href-decoration" href="/album/{{ album_id }}">{{ album }}</a>
+          <a class="text href-decoration playlist-album" href="/album/{{ album_id }}">{{ album }}</a>
           <span class="dot"></span>
           {{#each artists}}
             <a href="artist/{{ id }}" class="text href-decoration"> {{ name }}{{#unless @last}}, {{/unless}} </a>
           {{/each}}
         </p>
       </div>
-      <button class="primary-button add-track-size" data-track-id="{{ id }}">Добавить</button>
+      <button class="primary-button add-track-size" data-track-id="{{ id }}">
+        <div class="add-button-toggle">{{> plus}}</div>
+        <div class="add-button-name">Добавить</div>
+      </button>
     </div>
   </div>
 {{/each}}

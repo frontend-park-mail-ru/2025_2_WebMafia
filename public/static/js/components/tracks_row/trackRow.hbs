@@ -21,7 +21,7 @@
     <div class="album-track-info">
       <div class="track-name">{{ name }}</div>
       <p class="playlist-sub">
-        <a class="text href-decoration" href="/album/{{ album_id }}">{{ album }}</a>
+        <a class="text href-decoration playlist-album" href="/album/{{ album_id }}">{{ album }}</a>
         <span class="dot"></span>
         {{#each artists}}
           <a href="artist/{{ id }}" class="text href-decoration"> {{ name }}{{#unless @last}}, {{/unless}} </a>
@@ -33,6 +33,5 @@
     </div>
     <div class="track-duration">{{ duration }}</div>
     <button class="delete-btn-track" data-track-id="{{ id }}">{{> delete }}</button>
-
   </div>
 </div>

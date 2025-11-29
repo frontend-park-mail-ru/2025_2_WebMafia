@@ -4,6 +4,7 @@ body {
   padding: 0;
   overflow: hidden;
   height: 100svh;
+  width: 100svw;
 }
 
 .section {
