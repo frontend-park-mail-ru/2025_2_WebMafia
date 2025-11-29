@@ -108,10 +108,21 @@ export class MainPage {
 
     let isAnimating = false;
     const animationDuration = 500;
+    let pendingTrackData = null;
 
-    function playerSliderDataSync({ prev, current, next }) {
+    function playerSliderDataSync(data) {
+      if (isAnimating) {
+        pendingTrackData = data;
+        return;
+      }
+
+      applyDataToCards(data);
+    }
+
+    function applyDataToCards({ prev, current, next }) {
       const prevCard = document.querySelector('.card-position-prev');
       const nextCard = document.querySelector('.card-position-next');
+
       if (next) {
         if (nextBtn) nextBtn.classList.remove('hidden');
         if (nextCard) nextCard.classList.remove('hidden');
@@ -217,26 +228,35 @@ export class MainPage {
       nextCard.classList.remove('card-position-next');
 
       if (direction === 'next') {
-        prevCard.classList.add('hidden');
-        currentCard.classList.add('hidden');
-        prevCard.classList.remove('hidden');
-        prevCard.classList.add('card-position-next');
-        currentCard.classList.remove('hidden');
+        currentCard.classList.remove('card-position-current');
         currentCard.classList.add('card-position-prev');
+        nextCard.classList.remove('card-position-next');
         nextCard.classList.add('card-position-current');
+        prevCard.classList.remove('card-position-prev');
+        prevCard.style.transition = 'none';
+        prevCard.classList.add('card-position-next');
+        void prevCard.offsetWidth;
+        prevCard.style.transition = '';
       } else {
-        nextCard.classList.add('hidden');
-        currentCard.classList.add('hidden');
-        nextCard.classList.remove('hidden');
-        nextCard.classList.add('card-position-prev');
-        currentCard.classList.remove('hidden');
+        currentCard.classList.remove('card-position-current');
         currentCard.classList.add('card-position-next');
+        prevCard.classList.remove('card-position-prev');
         prevCard.classList.add('card-position-current');
+        nextCard.classList.remove('card-position-next');
+        nextCard.style.transition = 'none';
+        nextCard.classList.add('card-position-prev');
+        void nextCard.offsetWidth;
+        nextCard.style.transition = '';
       }
 
       setTimeout(() => {
         isAnimating = false;
-        updateAllCardsUI();
+        if (typeof pendingTrackData !== 'undefined' && pendingTrackData) {
+          applyDataToCards(pendingTrackData);
+          pendingTrackData = null;
+        } else {
+          updateAllCardsUI();
+        }
       }, animationDuration);
     }
 

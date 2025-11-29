@@ -287,7 +287,10 @@ export class ProfilePage {
       },
     };
 
-    const editValidator = new FormValidator('editProfileForm', editValidators, editInformation, '.primary-button');
+    const editValidator = new FormValidator('editProfileForm', editValidators, editInformation, {
+      submitButtonSelector: '.general-error',
+      messageSelector: '#generalErrorProfile',
+    });
 
     editValidator.init();
 
@@ -347,7 +350,7 @@ export class ProfilePage {
           editValidator.showMessage('Изменения успешно сохранены!', true);
 
           setTimeout(() => {
-            const messageElement = document.getElementById('generalError');
+            const messageElement = document.getElementById('generalErrorProfile');
             if (messageElement) {
               messageElement.textContent = '';
               messageElement.classList.remove('show');

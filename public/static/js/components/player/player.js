@@ -371,11 +371,11 @@ export class Player extends EventTarget {
     const ShuffleBtnAlbum = document.querySelector('.control-btn.shuffle-album');
     if (this.isShaffle) {
       ShuffleBtnPlayer.classList.add('active');
-      ShuffleBtnAlbum.classList.add('active');
+      if (ShuffleBtnAlbum) ShuffleBtnAlbum.classList.add('active');
       this.shuffleQueue();
     } else {
       ShuffleBtnPlayer.classList.remove('active');
-      ShuffleBtnAlbum.classList.remove('active');
+      if (ShuffleBtnAlbum) ShuffleBtnAlbum.classList.remove('active');
       this.restoreQueue();
     }
 
