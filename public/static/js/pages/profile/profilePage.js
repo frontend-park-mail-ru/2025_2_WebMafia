@@ -107,7 +107,7 @@ export class ProfilePage {
         document.getElementById('password').value = '';
         document.getElementById('passwordConfirm').value = '';
 
-        updateAvatarContainer('avatarEditContainer', profile.avatar, profile.letter, 'edit-avatar');
+        updateAvatarContainer('avatarEditContainer', profile.avatar, profile.letter, 'profile-edit-avatar');
 
         selectedAvatarFile = null;
         deleteAvatar = false;
@@ -326,7 +326,8 @@ export class ProfilePage {
           if (email !== profile.email || login !== profile.nickname || password) {
             if (!password) password = '';
             const data = await apiServise.editUser(login, email, password);
-            console.log(data);
+            profile.nickname = data.Login;
+            profile.email = data.Email;
             const newLogin = data.Login;
 
             const headerUsername = document.querySelector('.header-username');
@@ -336,7 +337,7 @@ export class ProfilePage {
 
             const profileUsername = document.querySelectorAll('.profile-username');
             profileUsername.forEach((username) => (username.textContent = newLogin));
-            setupMarquees(false);
+            setupMarquees();
 
             const newLetter = newLogin[0] ? newLogin[0].toUpperCase() : '?';
             document.querySelectorAll('.default-avatar').forEach((el) => {

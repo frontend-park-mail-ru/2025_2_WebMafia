@@ -34,7 +34,6 @@ export class Player extends EventTarget {
       if (!document.getElementById('player')) {
         await this.render();
       }
-      setupMarquees();
     } else {
       await this.destroy();
     }
@@ -230,17 +229,18 @@ export class Player extends EventTarget {
   }
 
   loadTrackInfo(track) {
-    const titlePlacement = document.querySelector('.track-title');
-    if (titlePlacement) {
+    const titlePlacements = document.querySelectorAll('.track-title');
+    titlePlacements.forEach((titlePlacement) => {
       titlePlacement.textContent = track.title;
       titlePlacement.parentNode.parentNode.href = `/album/${track.album?.id}`;
-    }
+    })
     const artist = track.artists?.[0];
     const artistPlacement = document.querySelector('.track-artist');
     if (artistPlacement) {
       artistPlacement.textContent = artist?.name;
       artistPlacement.href = `/artist/${artist?.id}`;
     }
+    setupMarquees();
 
     const durationInSeconds = track.duration_s;
     const minutes = Math.floor(durationInSeconds / 60);

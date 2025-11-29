@@ -142,7 +142,7 @@
 
 .album-row {
   display: flex;
-  padding: 10px 25px 10px 10px;
+  padding: 10px 20px 10px 10px;
   align-items: center;
   border-radius: 30px;
   transition: background-color 0.3s ease;
@@ -170,6 +170,12 @@
   font-size: 22px;
   font-weight: 600;
   margin: 15px 0;
+}
+
+.album-track-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
 }
 
 .play-icon,
@@ -217,7 +223,8 @@
 
 .tracks-duration-wrapper {
   flex: 1;
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto;
   align-items: center;
   justify-content: space-between;
   width: 100%;
@@ -269,7 +276,32 @@
   opacity: 1;
 }
 
-@media (max-width: 1050px) {
+@media (hover: none) and (pointer: coarse) {
+  .like-btn-track {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 1250px) {
+  .album-play-wrapper {
+    margin-right: 0;
+  }
+
+  .album-card {
+    top: 20px;
+    margin: 20px;
+  }
+
+  .tracks-card {
+    margin: 20px 20px 40px 0;
+  }
+
+  .album-play-wrapper {
+    margin-right: 10px;
+  }
+}
+
+@media (max-width: 1000px) {
   .album-page {
     flex-direction: column;
     align-items: center;
@@ -316,31 +348,9 @@
     height: 32px;
   }
 
-  .album-play-wrapper {
-    margin-right: 10px;
-    cursor: pointer;
-  }
-
   .album-row {
-    padding: 5px 10px 5px 0;
+    padding: 5px;
     height: 60px;
-  }
-
-  .tracks-duration-wrapper {
-    position: relative;
-  }
-
-  .tracks-duration-wrapper .track-like-container {
-    right: 15%;
-  }
-
-  .tracks-duration-wrapper {
-    flex: 1;
-    display: grid;
-    grid-template-columns: 80% 20%;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
   }
 
   .album-artist-name {
@@ -350,13 +360,6 @@
   .album-artist-avatar {
     height: 18px;
     width: 18px;
-  }
-
-  .tracks-duration-wrapper .track-duration {
-    position: absolute;
-    right: 0;
-    top: calc(50% - 11px);
-    display: block;
   }
 }
 
@@ -372,7 +375,7 @@
   }
 }
 
-@media (max-width: 400px) {
+@media (max-width: 420px) {
   .tracks-duration-wrapper {
     grid-template-columns: 67% 33%;
   }
