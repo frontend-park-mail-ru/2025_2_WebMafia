@@ -233,7 +233,7 @@ export class Player extends EventTarget {
     titlePlacements.forEach((titlePlacement) => {
       titlePlacement.textContent = track.title;
       titlePlacement.parentNode.parentNode.href = `/album/${track.album?.id}`;
-    })
+    });
     const artist = track.artists?.[0];
     const artistPlacement = document.querySelector('.track-artist');
     if (artistPlacement) {
