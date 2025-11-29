@@ -1,6 +1,6 @@
-const API_BASE_URL = 'http://localhost:8080/api/v1';
-const API_Data_URL = 'http://localhost:8081/api/v1';
-const API_PLAYLIST_URL = 'http://localhost:8082/api/v1';
+const API_BASE_URL = 'http://217.16.17.173:8080/api/v1';
+const API_Data_URL = 'http://217.16.17.173:8081/api/v1';
+const API_PLAYLIST_URL = 'http://217.16.17.173:8082/api/v1';
 export const API_AVATARS_URL = 'http://217.16.17.173:8099/avatars';
 export const API_TRACKS_URL = 'http://217.16.17.173:8099/music/tracks';
 
