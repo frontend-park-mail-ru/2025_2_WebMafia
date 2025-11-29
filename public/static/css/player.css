@@ -87,7 +87,6 @@
 .track-title {
   all: unset;
   font-size: 16px;
-  max-width: 260px;
   font-weight: 600;
   cursor: pointer;
   color: #fafafa;
@@ -363,8 +362,8 @@
 
 @media (max-width: 800px) {
   .player {
-    margin: 8px 0 0 0;
-    bottom: 78px;
+    margin: 0;
+    bottom: 80px;
     height: 60px;
     overflow: hidden;
     justify-content: center;
@@ -595,7 +594,7 @@
 
   .like-btn {
     position: absolute;
-    right: 6px;
+    right: 0;
     top: calc(50% - 16px);
   }
 

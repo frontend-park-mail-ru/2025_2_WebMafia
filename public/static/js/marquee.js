@@ -21,8 +21,10 @@ export function setupMarquees() {
         inner.appendChild(clone);
       }
 
+      const speed = 25;
       texts[0].style.paddingRight = '70px';
-      inner.style.animation = 'scroll-loop 14s linear infinite';
+      const duration = singleWidth / speed;
+      inner.style.animation = `scroll-loop ${duration}s linear infinite`;
     }
   });
 }

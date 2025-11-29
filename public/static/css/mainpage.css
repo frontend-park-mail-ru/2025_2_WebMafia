@@ -412,15 +412,14 @@ body {
 @media (max-width: 800px) {
   body, html {
     -webkit-tap-highlight-color: transparent;
-    position: relative;
   }
 
   .layout {
-    margin-bottom: 78px;
+    margin-bottom: 75px;
   }
 
   .layout.with_player {
-    margin-bottom: 156px;
+    margin-bottom: 155px;
   }
 
   .page {

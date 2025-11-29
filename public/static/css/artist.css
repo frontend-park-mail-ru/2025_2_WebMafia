@@ -356,24 +356,22 @@
 
   .track-row {
     display: flex;
-    padding: 10px 55px 10px 25px;
+    padding: 10px 25px;
     align-items: center;
-    justify-content: space-evenly;
+    justify-content: flex-start;
     border-radius: 30px;
     transition: background-color 0.3s ease;
   }
 
   .track-number {
-    color: black;
-    font-size: 18px;
+    font-size: 20px;
     margin-right: 0;
-    width: 25px;
+    width: 30px;
   }
 
   .right-row-content {
     position: relative;
     display: flex;
-    max-width: 75%;
     flex-direction: column;
     align-items: flex-start;
     gap: 2px;
@@ -391,7 +389,7 @@
   .track-cover-wrapper {
     width: 45px;
     height: 45px;
-    margin-right: 5px;
+    margin-right: 10px;
   }
 
   .track-cover {
@@ -419,6 +417,12 @@
 
   .track-plays-num {
     font-size: 16px;
+  }
+
+  .artist-like-size {
+    position: absolute;
+    top: calc(50% - 16px);
+    right: 0;
   }
 }
 
