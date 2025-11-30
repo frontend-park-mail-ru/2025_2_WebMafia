@@ -5,27 +5,32 @@
   width: 252px;
   background-color: rgba(4, 25, 109, 0.08);
   backdrop-filter: blur(34px);
-  padding-left: 10px;
+  padding-left: 15px;
   border-radius: 30px;
   overflow: hidden;
   margin-left: 10px;
 }
 
 .menu {
-  margin-top: 20px;
+  margin-top: 15px;
   display: flex;
   flex-direction: column;
 }
 
 .menu-item {
-  justify-content: center;
-  align-items: center;
+  all: unset;
+  justify-content: flex-start;
+  align-items: flex-start;
   width: 190px;
   font-size: 20px;
   font-weight: 600;
   color: rgb(0, 0, 0);
   padding: 10px 15px;
   cursor: pointer;
+  text-decoration: none;
+  gap: 12px;
+  display: flex;
+  transition: color 0.3s ease;
 }
 
 .menu-item.active {
@@ -41,51 +46,35 @@
   background-position: left top;
 }
 
-.menu-item a {
-  text-decoration: none;
-  gap: 12px;
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
-  color: rgb(0, 0, 0);
-  transition: color 0.3s ease;
-}
-
-.home a svg {
-  fill: black;
+.menu-item svg {
   stroke: black;
-  stroke-width: 150;
-  stroke-linejoin: round;
+  transition:
+      fill 0.3s ease,
+      stroke 0.3s ease;
+  width: 24px;
+  height: 24px;
 }
 
-.home a.active svg {
-  fill: #fafafa;
+.menu-item.active svg,
+.menu-item.active:hover svg {
+  fill: transparent;
   stroke: #fafafa;
-  stroke-width: 150;
-  stroke-linejoin: round;
 }
 
-.library {
-  margin-top: 5px;
+.menu-item:hover svg {
+  stroke: #a766ff;
 }
 
-.menu-item a.active {
+.menu-item.active:hover,
+.menu-item.active {
   color: #fafafa;
-}
-
-.menu-item a.active:hover {
-  color: #fafafa;
-}
-
-.menu-item a:hover {
-  color: #a766ff;
 }
 
 .menu-item:hover {
   color: #a766ff;
 }
 
-.library-items{
+.library-items {
   display: flex;
   flex-direction: column;
   gap: 14px;
@@ -97,7 +86,6 @@
   font-weight: 200;
 }
 
-/* фолетовый кружочек на фоне */
 .purple-background-circle {
   position: absolute;
   width: 315px;
@@ -126,4 +114,153 @@
 .sidebar-blue-position {
   top: 80%;
   left: 150px;
+}
+
+.sidebar .header-divider {
+  width: 90%;
+  background: #aaacb5;
+  margin: 20px 0;
+}
+
+.sidebar-secondary-button {
+  cursor: pointer !important;
+  width: 190px !important;
+}
+
+@media (max-width: 1150px) {
+  .sidebar {
+    width: 145px;
+    overflow: hidden;
+    padding: 10px 0;
+  }
+
+  .menu {
+    gap: 20px;
+  }
+
+  .menu-item, .menu .secondary-button {
+    flex: 1;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 3px;
+    width: auto;
+    padding: 0;
+    font-weight: 600;
+  }
+
+  .sidebar-secondary-button {
+    width: auto !important;
+  }
+
+  .menu-item.active .icon-path {
+    stroke: url(#menuGradient);
+    fill: url(#menuGradient);
+  }
+
+  .menu-item.active .library-path {
+    stroke: url(#menuGradient);
+  }
+
+  .menu-item.active {
+    color: black;
+  }
+
+  .menu-item.active {
+    border-radius: 0;
+    background: transparent;
+    background-size: auto;
+  }
+
+  .sidebar .header-divider {
+    display: none;
+  }
+
+  .menu .secondary-button {
+    border-radius: 0;
+    background: transparent;
+    padding: 0;
+  }
+
+  .menu-item svg, .menu .secondary-button svg {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+@media (max-height: 500px) and (min-width: 800px) {
+  .menu {
+    gap: 0;
+    margin-top: 0;
+    justify-content: space-between;
+    height: 100%;
+  }
+}
+
+@media (max-height: 350px) and (min-width: 800px) {
+  .sidebar-secondary-button {
+    display: none !important;
+  }
+}
+
+@media (max-width: 800px) {
+  .sidebar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100svw;
+    height: 70px;
+    padding: 0;
+    margin: 0;
+    border-radius: 30px 30px 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    box-sizing: border-box;
+  }
+
+  .menu {
+    flex-direction: row;
+    justify-content: space-around;
+    width: 100%;
+    margin: 0;
+    gap: 0;
+    padding: 0;
+  }
+
+  .menu-item, .menu .secondary-button {
+    flex: 1;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 3px;
+    width: auto;
+    font-size: 14px;
+    padding: 0;
+    font-weight: 600;
+  }
+
+  .sidebar-purple-position {
+    position: fixed;
+    top: auto;
+    left: auto;
+    right: 0;
+    bottom: 0;
+    transform: translate(20%, 15%);
+  }
+
+  .sidebar-blue-position {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+  }
+
+  .menu .secondary-button:active, .menu .secondary-button:hover {
+    background: transparent;
+  }
 }

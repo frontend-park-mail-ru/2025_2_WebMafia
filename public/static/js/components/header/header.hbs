@@ -1,0 +1,70 @@
+<header class="head" id="header">
+  <div class="head-left">
+    <a href="/" class="logo">
+      <span><img src="static/img/logo.png" class="wave-icon" alt="Логотип" /></span>
+      <h1 class="icon-name">Wave</h1>
+    </a>
+  </div>
+  <div class="head-right">
+    <button class="search-toggle" id="searchToggle">
+      {{> searchIcon }}
+    </button>
+    <div class="header-search-container" id="header-search-container">
+      <div class="search-icon">{{> searchIcon }}</div>
+      <input
+        type="text"
+        class="search-input"
+        id="searchInput"
+        placeholder="Что хочешь включить?"
+        value="{{ searchValue }}"
+      />
+      <div class="input-close-button">{{> close}}</div>
+    </div>
+    {{#if isAuthenticated}}
+    <div class="profile-dropdown">
+      <div class="header-username">{{ nickname }}</div>
+      <button class="profile-btn">
+        <div class="profile-avatar-header user-avatar" id="avatarHeaderContainer">
+          {{#if avatar}}
+          <img src="{{ avatar }}" alt="Ваш аватар" class="profile-image" />
+          {{else}}
+          <div class="default-avatar default-avatar-header">{{ letter }}</div>
+          {{/if}}
+        </div>
+      </button>
+      <div class="dropdown-menu">
+        <a class="dropdown-hrefs" href="/profile">Профиль</a>
+        <a class="dropdown-hrefs" id="logoutBtn" href="#">Выйти</a>
+      </div>
+    </div>
+    {{else}}
+    <div class="unauth-login-reg-container">
+      <a class="nav-link login" href="/login">Войти</a>
+      <a class="nav-link register" href="/register">Зарегистрироваться</a>
+    </div>
+    {{/if}}
+  </div>
+</header>
+
+<div class="overlay" id="warningOverlayHeader">
+  <div class="window">
+    <div class="overlay-header">
+      <span class="album-title">Вы точно хотите выйти из профиля?</span>
+      <button id="closeWarningBtn" class="close-button" aria-label="Закрыть">{{> close }}</button>
+    </div>
+    <div class="header-divider"></div>
+    <div class="warning-btns-overlay">
+      <div class="save-overlay-button">
+      <button class="primary-button close-warning save-avatar-button-size" id="cancelAction">
+        Нет
+      </button>
+    </div>
+    <div class="save-overlay-button">
+      <button class="primary-button save-overlay-button-size" id="confirmActionHeader">
+        Выйти
+      </button>
+    </div>
+    </div>
+    
+  </div>
+</div>

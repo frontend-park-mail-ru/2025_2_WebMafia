@@ -1,10 +1,14 @@
-import { apiServise } from '../../data.js';
-import { router } from '../../routing.js';
-import { header } from '../header/header.js';
-import { sidebar } from '../sidebar/sidebar.js';
-import { initScrollbar } from '../../scrollbar.js';
-import { durationParser, getValidImage, playsParser } from '../../parsers.js';
-import { playTrack } from '../../playTrackBtn.js';
+import { apiServise } from '@/data.js';
+import { router } from '@/routing.js';
+import { header } from '@/components/header/header.js';
+import { sidebar } from '@/components/sidebar/sidebar.js';
+import { initScrollbar } from '@/scrollbar.js';
+import { durationParser, getValidImage, playsParser } from '@/parsers.js';
+import { playTrack } from '@/playTrackBtn.js';
+import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
+import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
+import { likeTrackBtn } from '@/utils/likeTrack.js';
+import { createPlaylis } from '@/utils/initCreatePlaylist';
 
 export class ArtistTracksPage {
   async render(artistId) {
@@ -12,6 +16,7 @@ export class ArtistTracksPage {
       isAuthenticated: localStorage.getItem('isAuthenticated') === 'true',
       tracks: [],
       artistName: '',
+      artistId: '',
     };
 
     const contentTemplate = Handlebars.templates['artistTracksPage.hbs'];
@@ -21,6 +26,7 @@ export class ArtistTracksPage {
       const data = await apiServise.getArtistTracks(artistId);
       if (data) {
         pageData.artistName = data.artist.name;
+        pageData.artistId = data.artist.id;
         pageData.tracks = data.tracks.map((track) => ({
           id: track.id,
           name: track.title,
@@ -30,6 +36,7 @@ export class ArtistTracksPage {
           duration: durationParser(track.duration_s),
           cover: getValidImage('albums/' + track.album.avatar_url, 'default-album.png'),
           artists: track.artists,
+          is_liked: track.is_liked,
         }));
       }
     } catch (error) {
@@ -50,9 +57,12 @@ export class ArtistTracksPage {
     }
 
     document.getElementById('app').innerHTML = contentTemplate(pageData);
-
+    playerOnlyOnPlay();
     await Promise.all([header.render(), sidebar.render()]);
+    createPlaylis();
+    setPlayButtonsOnAuth();
     initScrollbar();
+    likeTrackBtn();
     playTrack();
   }
 }

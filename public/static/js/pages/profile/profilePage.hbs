@@ -14,7 +14,11 @@
           {{/if}}
         </div>
         <div class="profile-info">
-          <div class="profile-username">{{ profile.nickname }}</div>
+          <div class="marquee profile-marquee-limiter">
+            <div class="marquee-inner">
+              <span class="profile-username marquee-text">{{ profile.nickname }}</span>
+            </div>
+          </div>
           <button class="primary-button edit-button-size" id="editProfileBtn">
             Редактировать
             {{> pencil }}
@@ -23,79 +27,91 @@
       </div>
       <div class="profile-page">
         <div class="title">
-          <div class="title-name">Топ исполнителей этого месяца</div>
+          <div class="title-name">Топ исполнителей</div>
         </div>
         <div class="slider">
           <p><i class="slide-btn left"></i></p>
           <div class="cards" id="slidebar">
             {{#each top_artists}}
-            <div class="card">
-              <a href="/artist/{{ id }}">
-                <img src="{{ image }}" alt="{{ name }}" />
-                <p class="card-name">{{ name }}</p>
-                <p class="card-sub">{{ listeners }} слушателей</p>
-              </a>
-              <button class="play-button play-button-placement"></button>
-            </div>
+            <a href="/artist/{{ id }}" class="card">
+              <img src="{{ image }}" alt="{{ name }}" />
+              <p class="card-name">{{ name }}</p>
+              <p class="card-sub">{{ listeners }}</p>
+              <!--<button class="play-button play-button-placement"></button>-->
+            </a>
             {{/each}}
           </div>
           <p><i class="slide-btn right"></i></p>
         </div>
 
         <div class="title">
-          <div class="title-name">Топ треков этого месяца</div>
+          <div class="title-name">Топ треков</div>
         </div>
         <div class="tracks-table tracks-table-placement">
           {{#each top_tracks}}
-            <div class="track-row">
-              <div class="track-number">{{numeration @index}}</div>
-              <div class="track-cover-wrapper">
-                <img class="track-cover" src="{{ cover }}" alt="{{ name }}" />
-                <button class="play-popular-track">{{> play }}</button>
-              </div>
-              <div class="right-row-content">
-                <div class="track-name">{{ name }}</div>
-                <div class="track-performers">
-                  {{#each artists}}
-                    <a href="artist/{{id}}" class="track-performer">
-                      {{name}}{{#unless @last}}, {{/unless}}
-                    </a>
-                  {{/each}}
-                </div>
-                <div class="track-plays-num">{{ plays }} прослушиваний</div>
-                <a href="album/{{ album_id }}" class="track-album-name">
-                  {{ album }}
-                </a>
-                <div class="track-duration">{{ duration }}</div>
-              </div>
+          <div class="track-row">
+            <div class="track-number">{{numeration @index}}</div>
+            <div class="track-cover-wrapper">
+              <img class="track-cover" src="{{ cover }}" alt="{{ name }}" />
+              <button
+                class="play-popular-track"
+                data-track-id="{{ id }}"
+                data-context="artist-popular"
+                data-artist-id="{{../id}}"
+              >
+                <span class="play-icon">{{> play }}</span>
+                <span class="pause-icon">{{> pause }}</span>
+              </button>
             </div>
+            <div class="right-row-content">
+              <div class="track-name">{{ name }}</div>
+              <div class="track-performers">
+                {{#each artists}}
+                <a href="artist/{{ id }}" class="track-performer href-decoration"> {{ name }}{{#unless @last}}, {{/unless}} </a>
+                {{/each}}
+              </div>
+              <div class="track-plays-num">{{ plays }}</div>
+              <div class="track-album-name">
+                <a href="album/{{ album_id }}" class="track-album-name href-decoration">
+                {{ album }}
+              </a>
+              </div>
+              
+              <div class="track-like-container">
+                <button class="like-btn-track artist-like-size" data-track-id="{{ id }}">{{> likeBtn }}</button>
+              </div>
+              <div class="track-duration">{{ duration }}</div>
+            </div>
+          </div>
           {{/each}}
         </div>
 
         <div class="title">
-          <div class="title-name">Недавно прослушано</div>
+          <div class="title-name">Подписки</div>
         </div>
         <div class="slider">
           <p><i class="slide-btn left"></i></p>
           <div class="cards" id="slidebar">
             {{#each recent}}
-            <div class="card">
-              <a href="/artist/{{ id }}">
-                <img src="{{ image }}" alt="{{ name }}" />
-                <p class="card-name">{{ name }}</p>
-                <p class="card-sub">{{ listeners }} слушателей</p>
-              </a>
-              <button class="play-button play-button-placement"></button>
-            </div>
+            <a href="/artist/{{ id }}" class="card">
+              <img src="{{ image }}" alt="{{ name }}" />
+              <p class="card-name">{{ name }}</p>
+              <p class="card-sub">{{ listeners }}</p>
+              <!--<button class="play-button play-button-placement"></button>-->
+            </a>
             {{/each}}
           </div>
           <p><i class="slide-btn right"></i></p>
         </div>
       </div>
     </div>
-    <div class="edit-profile-overlay" id="editProfileOverlay">
-      <div class="edit-profile-window">
-        <h2 class="title-name">Редактировать профиль</h2>
+    <div class="overlay" id="editProfileOverlay">
+      <div class="window">
+        <div class="overlay-header">
+          <h2 class="title-name">Редактировать профиль</h2>
+          <button id="closeOverlayButton" class="close-button" aria-label="Закрыть">{{> close }}</button>
+        </div>
+        <div class="header-divider"></div>
         <div class="edit-profile-wrapper">
           <div class="edit-profile-info">
             <div class="edit-avatar">
@@ -117,7 +133,14 @@
               <div class="form-group">
                 <label for="email">Адрес почты</label>
                 <div class="input-wrapper">
-                  <input type="email" id="email" name="email" placeholder="example@domain.com" value="{{ profile.email }}" />
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="example@domain.com"
+                    autocomplete="email"
+                    value="{{ profile.email }}"
+                  />
                   <div class="error-message" id="emailError"></div>
                   <div class="validation-message" id="emailInformation"></div>
                 </div>
@@ -126,7 +149,14 @@
               <div class="form-group">
                 <label for="login">Имя пользователя</label>
                 <div class="input-wrapper">
-                  <input type="text" id="login" name="login" placeholder="Имя пользователя" value="{{ profile.nickname }}" />
+                  <input
+                    type="text"
+                    id="login"
+                    name="login"
+                    placeholder="Имя пользователя"
+                    autocomplete="username"
+                    value="{{ profile.nickname }}"
+                  />
                   <div class="error-message" id="loginError"></div>
                   <div class="validation-message" id="loginInformation"></div>
                 </div>
@@ -135,7 +165,13 @@
               <div class="form-group">
                 <label for="password">Сменить пароль</label>
                 <div class="password-wrapper">
-                  <input type="password" id="password" name="password" placeholder="Пароль" />
+                  <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Пароль"
+                    autocomplete="new-password"
+                  />
                   <button type="button" class="eye" aria-label="Показать пароль">
                     {{> eyeOpen }}
                     {{> eyeClosed }}
@@ -147,7 +183,13 @@
 
               <div class="form-group">
                 <div class="password-wrapper">
-                  <input type="password" id="passwordConfirm" name="passwordConfirm" placeholder="Повторите пароль" />
+                  <input
+                    type="password"
+                    id="passwordConfirm"
+                    name="passwordConfirm"
+                    placeholder="Повторите пароль"
+                    autocomplete="new-password"
+                  />
                   <button type="button" class="eye" aria-label="Показать пароль">
                     {{> eyeOpen }}
                     {{> eyeClosed }}
@@ -157,12 +199,13 @@
                 </div>
               </div>
 
-              <div class="general-error" id="generalError"></div>
+              <div class="general-error" id="generalErrorProfile"></div>
             </form>
           </div>
-          <div class="edit-profile-buttons">
-            <button id="closeEditButton" class="secondary-button">Закрыть</button>
-            <button class="primary-button save-profile-button-size" id="saveProfileChangesButton">Сохранить изменения</button>
+          <div class="save-overlay-button">
+            <button class="primary-button save-overlay-button-size" id="saveProfileChangesButton">
+              Сохранить изменения
+            </button>
           </div>
         </div>
       </div>

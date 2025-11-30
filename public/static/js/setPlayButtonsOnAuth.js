@@ -1,7 +1,9 @@
-import { router } from './routing.js';
+import { router } from '@/routing.js';
 
 export function setPlayButtonsOnAuth() {
-  const playbtn = document.querySelectorAll('.play-button-track, .play-button, .current-card-btn.play, .play-popular-track, .play-album-track');
+  const playbtn = document.querySelectorAll(
+    '.play-button-track, .play-button, .current-card-btn.play, .play-popular-track, .play-album-track, .play-all-artist-tracks, .like-btn-track'
+  );
   playbtn.forEach((button) => {
     button.addEventListener('click', (event) => {
       const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';

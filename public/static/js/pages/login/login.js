@@ -1,8 +1,8 @@
-import { FormValidator } from '../../validation.js';
-import { apiServise } from '../../data.js';
-import { router } from '../../routing.js';
-import { initPasswordShowing } from '../../eye.js';
-import { player } from '../player/player.js';
+import { FormValidator } from '@/validation.js';
+import { apiServise } from '@/data.js';
+import { router } from '@/routing.js';
+import { initPasswordShowing } from '@/eye.js';
+import { player } from '@/components/player/player.js';
 
 export class LoginPage {
   async render() {

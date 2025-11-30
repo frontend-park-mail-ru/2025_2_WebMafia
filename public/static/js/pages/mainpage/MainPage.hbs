@@ -4,12 +4,10 @@
   <div class="layout">
     {{> sidebar}}
     <div class="page" id="scrollContent">
+      {{#if isAuthenticated}}
       <div class="now-playing-container">
         <button class="current-card-btn prev"></button>
-
-        <!-- Обёртка для позиционирования карточек -->
         <div class="card-slider">
-          <!-- Все карточки изначально одинаковы и пусты -->
           <div class="now-playing-container-card">
             <img src="" alt="" />
           </div>
@@ -20,9 +18,9 @@
             <img src="" alt="" />
           </div>
         </div>
-
         <button class="current-card-btn next"></button>
       </div>
+      {{/if}}
 
       <!-- Артисты -->
       <div class="title">
@@ -32,14 +30,12 @@
         <p><i class="slide-btn left"></i></p>
         <div class="cards" id="slidebar">
           {{#each artists}}
-          <div class="card">
-            <a href="/artist/{{ id }}">
-              <img src="{{ image }}" alt="{{ name }}" />
-              <p class="card-name">{{ name }}</p>
-              <p class="card-sub">{{ listeners }} слушателей</p>
-            </a>
-            <button class="play-button play-button-placement" data-artist-id="{{ artist_id }}"></button>
-          </div>
+          <a href="/artist/{{ id }}" class="card">
+            <img src="{{ image }}" alt="{{ name }}" />
+            <p class="card-name">{{ name }}</p>
+            <p class="card-sub">{{ listeners }}</p>
+            <!--<button class="play-button play-button-placement" data-artist-id="{{ artist_id }}"></button>-->
+          </a>
           {{/each}}
         </div>
         <p><i class="slide-btn right"></i></p>
@@ -53,18 +49,15 @@
         <i class="slide-btn left"></i>
         <div class="cards" id="slidebar">
           {{#each albums}}
-          <div class="card">
-            <a href="/album/{{ id }}">
-              <img src="{{ image }}" alt="{{ name }}" />
-              <p class="card-name">{{ name }}</p>
-              <p class="card-sub">{{ artist }}
-                {{#if type}}
-                  <span class="dot"></span>
-                  {{ type }}
-                {{/if}}
-              </p>
-            </a>
-            <button class="play-button play-button-placement" data-album-id="{{ album_id }}"></button>
+          <div data-href="/album/{{ id }}" class="card click-event-card">
+            <img src="{{ image }}" alt="{{ name }}" />
+            <p class="card-name">{{ name }}</p>
+            <p class="card-sub card-sub-limiter">
+              {{ type }}
+              <span class="dot"></span>
+              <a class="text href-decoration" href="/artist/{{ artist_id }}">{{ artist }}</a>
+            </p>
+            <!--<button class="play-button play-button-placement" data-album-id="{{ album_id }}"></button>-->
           </div>
           {{/each}}
         </div>
@@ -80,15 +73,15 @@
         <div class="cards tracks" id="slidebar">
           {{#each tracks}}
           <div class="card-tracks">
-            <a class="card-track-content" href="/album/{{ album_id }}">
+            <div class="card-track-content click-event-card" data-href="/album/{{ album_id }}">
               <img src="{{ image }}" alt="{{ name }}" />
               <div class="track-content">
                 <p class="card-name-track">{{ name }}</p>
                 {{#each artists}}
-                <p class="card-sub-track">{{ name }}</p>
+                <a class="card-sub-track href-decoration" href="/artist/{{ id }}">{{ name }}</a>
                 {{/each}}
               </div>
-            </a>
+            </div>
 
             <button class="play-button play-button-track" data-track-id="{{ id }}"></button>
           </div>

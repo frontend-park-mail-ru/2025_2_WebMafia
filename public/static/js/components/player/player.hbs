@@ -1,0 +1,41 @@
+<div class="player" id="player">
+  <button type="button" class="player-close">{{> angleDown }}</button>
+  <div class="player-left">
+    <img alt="Cover" class="track-cover-player" />
+    <div class="track-info-container">
+      <div class="track-info">
+        <a class="marquee player-marquee-limiter">
+          <div class="marquee-inner">
+            <div class="track-title marquee-text"></div>
+          </div>
+        </a>
+        <a class="track-artist"></a>
+      </div>
+      <button class="like-btn {{#if is_liked}}active{{/if}}" data-track-id="{{ id }}">{{> likeBtn }}</button>
+    </div>
+  </div>
+
+  <div class="player-center">
+    <div class="controls">
+      <button class="control-btn white shuffle">{{> shuffle}}</button>
+      <button class="control-btn white prev">{{> nextTrack}}</button>
+      <button class="control-btn white play">{{> playBtn }}</button>
+      <button class="control-btn white pause">{{> pauseBtn }}</button>
+      <button class="control-btn white next">{{> nextTrack }}</button>
+      <button class="control-btn white repeat">{{> repeat}}</button>
+    </div>
+    <div class="progress-remote">
+      <span class="track-time current">-:--</span>
+      <div class="remote-container">
+        <input type="range" min="0" max="100" value="0" class="remote-slider" />
+      </div>
+      <span class="track-time total">-:--</span>
+    </div>
+  </div>
+
+  <!-- Правая часть -->
+  <div class="player-right">
+    {{> volumeBar }}
+    <input type="range" min="0" max="100" value="50" class="volume-slider" />
+  </div>
+</div>

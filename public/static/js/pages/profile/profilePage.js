@@ -1,13 +1,18 @@
-import { router } from '../../routing.js';
-import { apiServise } from '../../data.js';
-import { initPasswordShowing } from '../../eye.js';
-import { initScrollbar } from '../../scrollbar.js';
-import { durationParser, getValidImage, playsParser } from '../../parsers.js';
-import { sidebar } from '../sidebar/sidebar.js';
-import { slider } from '../../slider.js';
-import { header } from '../header/header.js';
-import { setPlayButtonsOnAuth } from '../../setPlayButtonsOnAuth.js';
-import { FormValidator } from "../../validation.js";
+import { router } from '@/routing.js';
+import { apiServise } from '@/data.js';
+import { initPasswordShowing } from '@/eye.js';
+import { initScrollbar } from '@/scrollbar.js';
+import { durationParser, getValidImage, playsParser } from '@/parsers.js';
+import { sidebar } from '@/components/sidebar/sidebar.js';
+import { slider } from '@/slider.js';
+import { header } from '@/components/header/header.js';
+import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
+import { FormValidator } from '@/validation.js';
+import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
+import { playTrack } from '@/playTrackBtn.js';
+import { likeTrackBtn } from '@/utils/likeTrack.js';
+import { setupMarquees } from '@/marquee.js';
+import { createPlaylis } from '@/utils/initCreatePlaylist';
 
 export class ProfilePage {
   async render() {
@@ -51,10 +56,12 @@ export class ProfilePage {
         duration: durationParser(track.duration_s),
         cover: getValidImage('albums/' + track.album.avatar_url, 'default-album.png'),
         artists: track.artists,
+        is_liked: track.is_liked,
       }));
       pageData.recent = (data.recent || []).map((artist) => ({
         id: artist.id,
         name: artist.name,
+        listeners: playsParser(artist.play_count) || 0,
         image: getValidImage('artists/' + artist.avatar_url, 'default-artist.png'),
       }));
     } catch (error) {
@@ -65,15 +72,18 @@ export class ProfilePage {
     }
 
     document.getElementById('app').innerHTML = contentTemplate(pageData);
-    document.querySelector('head title').textContent = pageData.nickname;
-
+    document.querySelector('head title').textContent = pageData.profile.nickname;
+    playerOnlyOnPlay();
     await Promise.all([header.render(), sidebar.render()]);
-
+    createPlaylis();
     slider.sliderFunction();
     this.addEventListeners(pageData.profile);
     initPasswordShowing();
     initScrollbar();
     setPlayButtonsOnAuth();
+    likeTrackBtn();
+    playTrack();
+    setupMarquees();
   }
 
   addEventListeners(profile) {
@@ -87,9 +97,9 @@ export class ProfilePage {
       });
     }
 
-    const closeEditButton = document.getElementById('closeEditButton');
-    if (closeEditButton && editProfileOverlay) {
-      closeEditButton.addEventListener('click', (e) => {
+    const closeOverlayButton = document.getElementById('closeOverlayButton');
+    if (closeOverlayButton && editProfileOverlay) {
+      closeOverlayButton.addEventListener('click', (e) => {
         e.preventDefault();
 
         document.getElementById('email').value = profile.email;
@@ -216,7 +226,7 @@ export class ProfilePage {
           selectedAvatarFile = null;
           deleteAvatar = true;
 
-          updateAvatarContainer('avatarEditContainer', null, letter, 'profile-edit-avatar');
+          updateAvatarContainer('avatarEditContainer', null, profile.letter, 'profile-edit-avatar');
 
           target.remove();
         }
@@ -225,12 +235,12 @@ export class ProfilePage {
 
     const editValidators = {
       email: (value) => {
-        if (!value) return 'Поле обязательно для заполнения';
+        if (!value) return 'Пожалуйста, заполните это поле';
         if (!/\S+@\S+\.\S+/.test(value)) return 'Некорректный email';
         return null;
       },
       login: (value) => {
-        if (!value) return 'Поле обязательно для заполнения';
+        if (!value) return 'Пожалуйста, заполните это поле';
         if (value.length < 5) return 'Минимум 5 символов';
         else if (value.length > 35) return 'Максимум 35 символов';
         return null;
@@ -241,7 +251,7 @@ export class ProfilePage {
       },
       passwordConfirm: (value) => {
         const password = document.getElementById('password')?.value;
-        if (value !== password) return 'Пароли не совпадают';
+        if (value !== password) return 'Пароли не совпадают. Пожалуйста, проверьте.';
         return null;
       },
     };
@@ -277,12 +287,10 @@ export class ProfilePage {
       },
     };
 
-    const editValidator = new FormValidator(
-      'editProfileForm',
-      editValidators,
-      editInformation,
-      '.primary-button'
-    );
+    const editValidator = new FormValidator('editProfileForm', editValidators, editInformation, {
+      submitButtonSelector: '.general-error',
+      messageSelector: '#generalErrorProfile',
+    });
 
     editValidator.init();
 
@@ -293,7 +301,7 @@ export class ProfilePage {
 
         const isValid = editValidator.validateForm();
         if (!isValid) {
-          editValidator.showMessage('Исправьте ошибки в форме');
+          editValidator.showMessage('Пожалуйста, проверьте подсвеченные поля');
           return;
         }
 
@@ -319,9 +327,10 @@ export class ProfilePage {
           const login = document.getElementById('login').value;
           let password = document.getElementById('password').value;
           if (email !== profile.email || login !== profile.nickname || password) {
-            if (!password) password = "";
+            if (!password) password = '';
             const data = await apiServise.editUser(login, email, password);
-            console.log(data);
+            profile.nickname = data.Login;
+            profile.email = data.Email;
             const newLogin = data.Login;
 
             const headerUsername = document.querySelector('.header-username');
@@ -329,13 +338,12 @@ export class ProfilePage {
               headerUsername.textContent = newLogin;
             }
 
-            const profileUsername = document.querySelector('.profile-username');
-            if (profileUsername) {
-              profileUsername.textContent = newLogin;
-            }
+            const profileUsername = document.querySelectorAll('.profile-username');
+            profileUsername.forEach((username) => (username.textContent = newLogin));
+            setupMarquees();
 
             const newLetter = newLogin[0] ? newLogin[0].toUpperCase() : '?';
-            document.querySelectorAll('.default-avatar').forEach(el => {
+            document.querySelectorAll('.default-avatar').forEach((el) => {
               el.textContent = newLetter;
             });
           }
@@ -343,7 +351,7 @@ export class ProfilePage {
           editValidator.showMessage('Изменения успешно сохранены!', true);
 
           setTimeout(() => {
-            const messageElement = document.getElementById('generalError');
+            const messageElement = document.getElementById('generalErrorProfile');
             if (messageElement) {
               messageElement.textContent = '';
               messageElement.classList.remove('show');
@@ -354,9 +362,10 @@ export class ProfilePage {
           }, 1000);
         } catch (err) {
           console.error('Ошибка при сохранении профиля:', err);
-          let msg = 'Ошибка при сохранения профиля.';
+          let msg = 'Не удалось сохранить изменения. Попробуйте еще раз чуть позже.';
           if (err.message === 'resource conflict') msg = 'Пользователь с такими данными уже существует.';
-          else if (err.message === 'bad request') msg = 'Некорректный запрос. Проверьте введенные данные.';
+          else if (err.message === 'bad request')
+            msg = 'Что-то пошло не так. Пожалуйста, проверьте правильность введенных данных.';
           editValidator.showMessage(msg);
         }
       });

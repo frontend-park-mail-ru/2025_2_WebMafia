@@ -26,6 +26,7 @@ export default defineConfig([
       'prettier/prettier': 'error',
       'no-unused-vars': 'warn',
       'no-console': 'off',
+      'linebreak-style': 'off',
     },
   },
 ]);

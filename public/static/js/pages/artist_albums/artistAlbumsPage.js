@@ -1,11 +1,13 @@
-import { apiServise } from '../../data.js';
-import { router } from '../../routing.js';
-import { header } from '../header/header.js';
-import { sidebar } from '../sidebar/sidebar.js';
-import { initScrollbar } from '../../scrollbar.js';
-import { getValidImage } from '../../parsers.js';
-import { playTrack } from '../../playTrackBtn.js';
-import { setPlayButtonsOnAuth } from '../../setPlayButtonsOnAuth.js';
+import { apiServise } from '@/data.js';
+import { router } from '@/routing.js';
+import { header } from '@/components/header/header.js';
+import { sidebar } from '@/components/sidebar/sidebar.js';
+import { initScrollbar } from '@/scrollbar.js';
+import { getValidImage } from '@/parsers.js';
+import { playTrack } from '@/playTrackBtn.js';
+import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
+import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
+import { createPlaylis } from '@/utils/initCreatePlaylist';
 
 export class ArtistAlbumsPage {
   async render(artistId) {
@@ -20,6 +22,7 @@ export class ArtistAlbumsPage {
     try {
       const data = await apiServise.getArtistAlbums(artistId);
       pageData.artistName = data.artist ? data.artist.name : 'Unknown Artist';
+      pageData.artistId = data.artist.id;
       if (data) {
         data.albums.forEach((album) => {
           const item = {
@@ -53,9 +56,9 @@ export class ArtistAlbumsPage {
     }
 
     document.getElementById('app').innerHTML = contentTemplate(pageData);
-
+    playerOnlyOnPlay();
     await Promise.all([header.render(), sidebar.render()]);
-
+    createPlaylis();
     initScrollbar();
     playTrack();
     setPlayButtonsOnAuth();

@@ -1,8 +1,8 @@
-import { FormValidator } from '../../validation.js';
-import { apiServise } from '../../data.js';
-import { router } from '../../routing.js';
-import { initPasswordShowing } from '../../eye.js';
-import { player } from '../player/player.js';
+import { FormValidator } from '@/validation.js';
+import { apiServise } from '@/data.js';
+import { router } from '@/routing.js';
+import { initPasswordShowing } from '@/eye.js';
+import { player } from '@/components/player/player.js';
 
 export class RegistrationPage {
   async render() {
@@ -55,8 +55,7 @@ export class RegistrationPage {
         const errors = [];
         if (value.length < 5) {
           errors.push('Минимум 5 символов');
-        }
-        else if (value.length > 35) {
+        } else if (value.length > 35) {
           errors.push('Максимум 35 символов');
         }
         return errors.length ? errors : null;
@@ -106,9 +105,9 @@ export class RegistrationPage {
         router.navigate('/');
         await player.init();
       } catch (error) {
-        let msg = 'Ошибка регистрации.';
-        if (error.message === 'resource conflict') msg = 'Пользователь уже существует.';
-        else if (error.message === 'bad request') msg = 'Некорректный запрос. Проверьте введенные данные.';
+        let msg = 'Ошибка регистрации';
+        if (error.message === 'resource conflict') msg = 'Пользователь с такими данными уже существует';
+        else if (error.message === 'bad request') msg = 'Некорректный запрос. Проверьте введенные данные';
         validator.showMessage(msg);
       }
     };
