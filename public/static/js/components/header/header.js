@@ -17,6 +17,7 @@ export class Header {
     if (section && !document.getElementById('header')) {
       section.insertAdjacentHTML('afterbegin', headerHTML);
     }
+    this.addEventListeners();
 
     if (!pageData.isAuthenticated) return;
 
@@ -40,25 +41,6 @@ export class Header {
 
   addEventListeners() {
     const logoutButton = document.getElementById('logoutBtn');
-    if (logoutButton) {
-      logoutButton.addEventListener('click', async (e) => {
-        e.preventDefault();
-        try {
-          await apiServise.logoutUser();
-        } catch (error) {
-          console.error('Logout request failed:', error.message);
-        } finally {
-          localStorage.removeItem('isAuthenticated');
-          localStorage.removeItem('currentTrackId');
-          localStorage.removeItem('isPlaying');
-          localStorage.removeItem('playTime');
-          localStorage.removeItem('volume');
-          localStorage.removeItem('playerContext');
-          player.destroy();
-          router.navigate('/');
-        }
-      });
-    }
     const searchWindow = document.getElementById('searchInput');
     if (searchWindow) {
       searchWindow.addEventListener('keydown', async (e) => {
@@ -68,6 +50,59 @@ export class Header {
           if (searchVal === '') return;
           searchWindow.value = searchVal;
           router.navigate(`/search/${searchVal}`);
+        }
+      });
+    }
+
+    const warningOverlay = document.getElementById('warningOverlayHeader');
+    if (logoutButton) {
+      logoutButton.addEventListener('click', async (e) => {
+        e.preventDefault();
+        warningOverlay.classList.add('active');
+        const closeBtn = document.getElementById('cancelAction');
+        const confirmBtn = document.getElementById('confirmActionHeader');
+        if (closeBtn) {
+          closeBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            warningOverlay.classList.remove('active');
+          });
+        }
+        if (confirmBtn) {
+          confirmBtn.addEventListener('click', async (e) => {
+            e.preventDefault();
+            try {
+              await apiServise.logoutUser();
+            } catch (error) {
+              console.error('Logout request failed:', error.message);
+            } finally {
+              localStorage.removeItem('isAuthenticated');
+              localStorage.removeItem('currentTrackId');
+              localStorage.removeItem('isPlaying');
+              localStorage.removeItem('playTime');
+              localStorage.removeItem('volume');
+              localStorage.removeItem('playerContext');
+              player.destroy();
+              router.navigate('/');
+            }
+          });
+        }
+      });
+    }
+
+    const closeWarningBtn = document.getElementById('closeWarningBtn');
+
+    if (closeWarningBtn && warningOverlay) {
+      closeWarningBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+
+        warningOverlay.classList.remove('active');
+      });
+    }
+
+    if (warningOverlay) {
+      warningOverlay.addEventListener('click', (e) => {
+        if (e.target === warningOverlay) {
+          warningOverlay.classList.remove('active');
         }
       });
     }

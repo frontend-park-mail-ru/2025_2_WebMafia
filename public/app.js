@@ -41,6 +41,10 @@ function initializePage() {
   registerPartials();
   persistence();
   spaceToggle();
-  player.init();
+  const currentTrack = localStorage.getItem('currentTrackId');
+  const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+  if (currentTrack && isAuthenticated) {
+    player.init();
+  }
   router.init();
 }

@@ -8,6 +8,7 @@ import { playTrack } from '@/playTrackBtn.js';
 import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
 import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
 import { FormValidator } from '@/validation.js';
+import { createPlaylis } from '@/utils/initCreatePlaylist';
 
 export class LibraryPage {
   async render() {
@@ -34,55 +35,56 @@ export class LibraryPage {
 
     try {
       const data = await apiServise.getLibraryPageData();
-      const tracks = data.tracks;
       const item = {
         name: 'Понравившиеся треки',
         image: 'static/img/liked_tracks.png',
         created_at: new Date(),
-        sub: tracksNumParser(tracks.tracks.length),
-        href: 'playlist/' + tracks.id,
+        sub: data.favourite.tracks ? tracksNumParser(data.favourite.tracks.length) : '0 треков',
+        href: 'playlist/' + data.favourite.id,
         type: 'Плейлист',
       };
       pageData.library.push(item);
       pageData.playlists.push(item);
-      data.artists.forEach((artist) => {
-        const item = {
-          name: artist.name,
-          default_avatar: 'default-artist.png',
-          image: getValidImage('artists/' + artist.avatar_url, 'default-artist.png'),
-          created_at: new Date(artist.created_at),
-          type: 'Артист',
-          sub: playsParser(artist.play_count),
-          href: 'artist/' + artist.id,
-        };
-        pageData.library.push(item);
-        pageData.artists.push(item);
-      });
-      data.albums.forEach((album) => {
-        const item = {
-          name: album.title,
-          default_avatar: 'default-album.png',
-          image: getValidImage('albums/' + album.avatar_url, 'default-album.png'),
-          sub: album.artists ? album.artists[0].name : 'Unknown Artist',
-          created_at: new Date(album.created_at),
-          type: album.type,
-          href: 'album/' + album.id,
-        };
-        pageData.library.push(item);
-        pageData.albums.push(item);
-      });
+      // data.artists.forEach((artist) => {
+      //   const item = {
+      //     name: artist.name,
+      //     default_avatar: 'default-artist.png',
+      //     image: getValidImage('artists/' + artist.avatar_url, 'default-artist.png'),
+      //     created_at: new Date(artist.created_at),
+      //     type: 'Артист',
+      //     sub: playsParser(artist.play_count),
+      //     href: 'artist/' + artist.id,
+      //   };
+      //   pageData.library.push(item);
+      //   pageData.artists.push(item);
+      // });
+      // data.albums.forEach((album) => {
+      //   const item = {
+      //     name: album.title,
+      //     default_avatar: 'default-album.png',
+      //     image: getValidImage('albums/' + album.avatar_url, 'default-album.png'),
+      //     sub: album.artists ? album.artists[0].name : 'Unknown Artist',
+      //     created_at: new Date(album.created_at),
+      //     type: album.type,
+      //     href: 'album/' + album.id,
+      //   };
+      //   pageData.library.push(item);
+      //   pageData.albums.push(item);
+      // });
       data.playlists.forEach((playlist) => {
-        const item = {
-          name: playlist.title,
-          default_avatar: 'default-playlist.png',
-          image: getValidImage('playlists/' + playlist.avatar_url, 'default-album.png'),
-          created_at: new Date(playlist.created_at),
-          sub: tracksNumParser(playlist.tracks.length),
-          type: 'Плейлист',
-          href: 'playlist/' + playlist.id,
-        };
-        pageData.library.push(item);
-        pageData.playlists.push(item);
+        if (!playlist.is_favorite) {
+          const item = {
+            name: playlist.title,
+            default_avatar: 'default-playlist.png',
+            image: getValidImage(playlist.avatar_url, 'default-album.png'),
+            created_at: new Date(playlist.created_at),
+            sub: playlist.tracks ? tracksNumParser(playlist.tracks.length) : '0 треков',
+            type: 'Плейлист',
+            href: 'playlist/' + playlist.id,
+          };
+          pageData.library.push(item);
+          pageData.playlists.push(item);
+        }
       });
       pageData.library.sort((a, b) => b.created_at - a.created_at);
     } catch (error) {
@@ -107,6 +109,8 @@ export class LibraryPage {
     playerOnlyOnPlay();
 
     await Promise.all([header.render(), sidebar.render()]);
+
+    createPlaylis();
 
     initScrollbar();
     playTrack();
@@ -204,155 +208,5 @@ export class LibraryPage {
         }
       });
     });
-
-    const createPlaylistOverlay = document.getElementById('createPlaylistOverlay');
-    const createPlaylistButtons = document.querySelectorAll('.create-playlist-button');
-    if (createPlaylistOverlay && createPlaylistButtons) {
-      createPlaylistButtons.forEach((button) => {
-        button.addEventListener('click', (e) => {
-          e.preventDefault();
-          createPlaylistOverlay.classList.add('active');
-        });
-      })
-    }
-
-    let selectedAvatarFile = null;
-    const closeOverlayButton = document.getElementById('closeOverlayButton');
-    if (closeOverlayButton && createPlaylistOverlay) {
-      closeOverlayButton.addEventListener('click', (e) => {
-        document.getElementById('title').value = '';
-        document.getElementById('description').value = '';
-
-        updateAvatarContainer();
-
-        selectedAvatarFile = null;
-
-        const errorElements = document.querySelectorAll('.error-message');
-        errorElements.forEach((el) => {
-          el.textContent = '';
-          el.classList.remove('show');
-        });
-
-        const formGroups = document.querySelectorAll('.form-group.error');
-        formGroups.forEach((group) => group.classList.remove('error'));
-
-        const messageElement = document.getElementById('generalError');
-        if (messageElement) {
-          messageElement.textContent = '';
-          messageElement.classList.remove('show');
-          messageElement.style.backgroundColor = '';
-        }
-
-        createPlaylistOverlay.classList.remove('active');
-      });
-    }
-
-    function updateAvatarContainer(src = null) {
-      const img = document.getElementById('playlistAvatar');
-
-      if (src) img.src = src;
-      else img.src = 'static/img/default-playlist.png';
-    }
-
-    const editAvatarButtons = document.getElementById('editAvatarButtons');
-    if (editAvatarButtons) {
-      editAvatarButtons.addEventListener('click', (e) => {
-        const target = e.target;
-
-        if (target.id === 'setAvatarButton') {
-          e.preventDefault();
-
-          const input = document.createElement('input');
-          input.type = 'file';
-          input.accept = 'image/*';
-          input.click();
-
-          input.addEventListener('change', () => {
-            const file = input.files[0];
-            if (!file) return;
-
-            if (file.size > 5 * 1024 * 1024) {
-              alert('Файл слишком большой (максимум 5МБ)');
-              return;
-            }
-
-            selectedAvatarFile = file;
-
-            const reader = new FileReader();
-            reader.onload = (event) => {
-              updateAvatarContainer(event.target.result);
-
-              if (!document.getElementById('deleteAvatarButton')) {
-                editAvatarButtons.insertAdjacentHTML(
-                  'beforeend',
-                  `<button id="deleteAvatarButton" class="secondary-button save-avatar-button-size">Удалить фото</button>`
-                );
-              }
-            };
-            reader.readAsDataURL(file);
-          });
-        }
-
-        if (target.id === 'deleteAvatarButton') {
-          e.preventDefault();
-          selectedAvatarFile = null;
-          updateAvatarContainer();
-          target.remove();
-        }
-      });
-    }
-
-    const createValidators = {
-      title: (value) => {
-        if (!value) return 'Назовите ваш плейлист';
-        return null;
-      },
-    };
-
-    const createInformation = {
-      title: (value) => (value ? null : 'Укажите название плейлиста'),
-      description: (value) => {
-        return 'Максимум 300 символов';
-      },
-    };
-
-    const createValidator = new FormValidator(
-      'createPlaylistForm',
-      createValidators,
-      createInformation,
-      '.primary-button'
-    );
-    createValidator.init();
-
-    const saveButton = document.getElementById('savePlaylistButton');
-    if (saveButton) {
-      saveButton.addEventListener('click', async (e) => {
-        e.preventDefault();
-
-        const isValid = createValidator.validateForm();
-        if (!isValid) {
-          createValidator.showMessage('Необходимо указать название плейлиста');
-          return;
-        }
-
-        try {
-          const title = document.getElementById('title').value;
-          const description = document.getElementById('description').value;
-          const data = await apiServise.createPlaylist(title, description);
-
-          if (selectedAvatarFile) {
-            await apiServise.uploadPlaylistAvatar(selectedAvatarFile);
-          }
-
-          router.navigate(`playlist/${data.id}`);
-        } catch (err) {
-          console.error('Ошибка при сохранении профиля:', err);
-          let msg = 'Не удалось сохранить изменения. Попробуйте еще раз чуть позже.';
-          if (err.message === 'bad request')
-            msg = 'Что-то пошло не так. Пожалуйста, проверьте правильность введенных данных.';
-          createValidator.showMessage(msg);
-        }
-      });
-    }
   }
 }

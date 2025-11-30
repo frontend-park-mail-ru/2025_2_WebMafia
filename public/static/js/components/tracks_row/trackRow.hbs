@@ -1,0 +1,37 @@
+<div class="{{#if @root.favourite }}album-row playlist {{else}} album-row playlist-unfav {{/if}}">
+  <div class="playlist-track-number">{{ num }}</div>
+  <div class="album-play-wrapper">
+    <img
+      class="playlist-track-cover"
+      src="{{ cover }}"
+      alt="{{ name }}"
+      onerror="this.onerror=null; this.src='static/img/default-playlist.png';"
+    />
+    <button
+      class="play-album-track"
+      data-track-id="{{ id }}"
+      data-context="album-tracks"
+      data-album-id="{{../id}}"
+    >
+      <span class="play-icon">{{> play }}</span>
+      <span class="pause-icon">{{> pause }}</span>
+    </button>
+  </div>
+  <div class="tracks-duration-wrapper playlists">
+    <div class="album-track-info">
+      <div class="track-name">{{ name }}</div>
+      <p class="playlist-sub">
+        <a class="text href-decoration playlist-album" href="/album/{{ album_id }}">{{ album }}</a>
+        <span class="dot"></span>
+        {{#each artists}}
+          <a href="artist/{{ id }}" class="text href-decoration"> {{ name }}{{#unless @last}}, {{/unless}} </a>
+        {{/each}}
+      </p>
+    </div>
+    <div class="track-like-container">
+      <button class="like-btn-track album-like-size {{#if is_liked}}active{{/if}}" data-track-id="{{ id }}">{{> likeBtn }}</button>
+    </div>
+    <div class="track-duration">{{ duration }}</div>
+    <button class="delete-btn-track" data-track-id="{{ id }}">{{> delete }}</button>
+  </div>
+</div>

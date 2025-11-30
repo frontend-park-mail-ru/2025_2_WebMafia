@@ -8,11 +8,11 @@
   justify-content: space-between;
   margin-left: 23px;
   margin-top: 20px;
-  margin-right: 40px;
 }
 
 .best-result-container {
   display: flex;
+  margin-right: 10px;
   flex-direction: column;
 }
 
@@ -20,6 +20,7 @@
   width: 350px;
   height: 250px;
   margin-top: 10px;
+  margin-left: 20px;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -93,7 +94,7 @@
   display: grid;
   align-items: center;
   gap: 8px;
-  grid-template-columns: 65% 30% 5%;
+  grid-template-columns: 80% 10% 10%;
 }
 
 .search-alert-container {

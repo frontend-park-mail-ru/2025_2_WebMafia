@@ -11,7 +11,7 @@
         </a>
         <a class="track-artist"></a>
       </div>
-      <button class="like-btn">{{> likeBtn }}</button>
+      <button class="like-btn {{#if is_liked}}active{{/if}}" data-track-id="{{ id }}">{{> likeBtn }}</button>
     </div>
   </div>
 

@@ -1,8 +1,11 @@
-body {
+html, body {
   font-family: 'Montserrat', sans-serif;
   margin: 0;
   padding: 0;
-  overflow: hidden;
+  overflow: hidden !important;
+  max-height: 100svh;
+  max-width: 100svw;
+  position: relative;
 }
 
 .section {
@@ -84,16 +87,16 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgba(255, 255, 255, 0.7);
-  border: 2px solid #ddd;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  background-color: rgb(255, 255, 255, 0.7);
+  /* border: 2px solid #ddd; */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   transform: translateY(-50%);
   z-index: 10;
 }
 
 .slide-btn:hover {
   background-color: #f0f0f0;
-  border-color: #bbb;
+  border-color: #e9e4e4;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
   transform: translateY(-50%) scale(1.05);
 }
@@ -102,7 +105,7 @@ body {
   content: '';
   width: 10px;
   height: 10px;
-  border: solid #333;
+  border: solid #000000;
   border-width: 0 3px 3px 0;
   display: inline-block;
 }
@@ -266,12 +269,17 @@ body {
 
 .href-decoration {
   text-decoration: none;
+  border-bottom: 1px solid transparent;
   color: inherit;
-  cursor: pointer;
+  background: linear-gradient(#636363, #636363) no-repeat;
+  background-size: 0% 1px;
+  background-position: 0% 100%;
+  transition: background-size 0.3s ease;
+  display: inline;
 }
 
 .href-decoration:hover {
-  text-decoration: underline;
+  background-size: 100% 1px;
 }
 
 .card-sub .text {
@@ -406,16 +414,16 @@ body {
 @media (max-width: 800px) {
   body, html {
     -webkit-tap-highlight-color: transparent;
-    position: relative;
-    overflow-x: hidden;
   }
 
   .layout {
-    margin-bottom: 78px;
+    margin-bottom: 75px;
+    height: calc(100svh - 75px - 64px);
   }
 
   .layout.with_player {
     margin-bottom: 156px;
+    height: calc(100svh - 156px - 64px);
   }
 
   .page {

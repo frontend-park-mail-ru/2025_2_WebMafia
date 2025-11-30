@@ -45,3 +45,26 @@
     {{/if}}
   </div>
 </header>
+
+<div class="overlay" id="warningOverlayHeader">
+  <div class="window">
+    <div class="overlay-header">
+      <span class="album-title">Вы точно хотите выйти из профиля?</span>
+      <button id="closeWarningBtn" class="close-button" aria-label="Закрыть">{{> close }}</button>
+    </div>
+    <div class="header-divider"></div>
+    <div class="warning-btns-overlay">
+      <div class="save-overlay-button">
+      <button class="primary-button close-warning save-avatar-button-size" id="cancelAction">
+        Нет
+      </button>
+    </div>
+    <div class="save-overlay-button">
+      <button class="primary-button save-overlay-button-size" id="confirmActionHeader">
+        Выйти
+      </button>
+    </div>
+    </div>
+    
+  </div>
+</div>

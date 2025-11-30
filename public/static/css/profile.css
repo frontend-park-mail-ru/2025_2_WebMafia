@@ -204,6 +204,7 @@
   justify-content: center;
   gap: 12px;
   padding: 10px 15px 10px 15px;
+  cursor: pointer;
 }
 
 .secondary-button:hover {
@@ -269,7 +270,6 @@
 
 .marquee-text {
   white-space: nowrap;
-  padding-right: 70px;
 }
 
 @keyframes scroll-loop {
@@ -277,10 +277,10 @@
     transform: translateX(0);
   }
   90% {
-    transform: translateX(-50%);
+    transform: translateX(calc(-50% - 35px));
   }
   100% {
-    transform: translateX(-50%);
+    transform: translateX(calc(-50% - 35px));
   }
 }
 @media (max-width: 1000px) {

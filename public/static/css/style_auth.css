@@ -266,6 +266,29 @@ input[type='password']::placeholder {
   transform: translateY(-4px);
 }
 
+@media (max-width: 950px) {
+  .validation-message {
+    left: 0;
+    top: -8px;
+    transform: translateY(-100%);
+    max-width: 250px;
+    white-space: normal;
+    text-align: left;
+    padding: 8px 10px;
+    font-size: 14px;
+  }
+
+  .validation-message::after {
+    top: 100%;
+    left: 15px;
+    border-style: solid;
+    border-color: #d4d9d9 transparent transparent transparent;
+    right: auto;
+    transform: none;
+    bottom: auto;
+  }
+}
+
 @media (max-height: 800px) {
   .container {
     width: 90%;
@@ -325,27 +348,6 @@ input[type='password']::placeholder {
   .error-message {
     font-size: 13px;
     bottom: -16px;
-  }
-
-  .validation-message {
-    left: 0;
-    top: -8px;
-    transform: translateY(-100%);
-    max-width: 250px;
-    white-space: normal;
-    text-align: left;
-    padding: 8px 10px;
-    font-size: 14px;
-  }
-
-  .validation-message::after {
-    top: 100%;
-    left: 15px;
-    border-style: solid;
-    border-color: #d4d9d9 transparent transparent transparent;
-    right: auto;
-    transform: none;
-    bottom: auto;
   }
 
   .general-error {

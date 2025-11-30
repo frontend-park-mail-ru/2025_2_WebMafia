@@ -71,15 +71,13 @@
   font-size: 12px;
 }
 
-.album-artist-name:hover {
-  text-decoration: underline;
-}
 
 .album-cover {
   margin: 13px 0;
   width: 270px;
   height: 270px;
   border-radius: 20px;
+  object-fit: cover;
 }
 
 .album-card-title {
@@ -120,7 +118,7 @@
 }
 
 .play-button-album {
-  margin: 0 15px 0 23px;
+  margin: 0 23px;
 }
 
 .black svg {
@@ -131,7 +129,7 @@
   margin: 4dvh 50px 40px 40px;
   border-radius: 30px;
   flex-grow: 1;
-  z-index: 1;
+  z-index: 0;
   background-color: #fafafa;
   padding: 10px;
 }
@@ -144,11 +142,16 @@
 
 .album-row {
   display: flex;
-  padding: 10px 25px 10px 10px;
+  padding: 10px 20px 10px 10px;
   align-items: center;
   border-radius: 30px;
   transition: background-color 0.3s ease;
   height: 75px;
+}
+
+.album-row .track-duration {
+  width: 54px;
+  text-align: right;
 }
 
 .album-row.active,
@@ -161,8 +164,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   margin-right: 20px;
   cursor: pointer;
 }
@@ -172,6 +175,12 @@
   font-size: 22px;
   font-weight: 600;
   margin: 15px 0;
+}
+
+.album-track-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
 }
 
 .play-icon,
@@ -198,7 +207,7 @@
 
 .play-album-track.is-active:not(.paused) .play-icon,
 .play-album-track.is-active.paused .pause-icon {
-  display: block;
+  display: flex;
 }
 
 .album-row:hover .play-album-track,
@@ -219,7 +228,8 @@
 
 .tracks-duration-wrapper {
   flex: 1;
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 100px;
   align-items: center;
   justify-content: space-between;
   width: 100%;
@@ -271,6 +281,31 @@
   opacity: 1;
 }
 
+@media (hover: none) and (pointer: coarse) {
+  .like-btn-track {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 1250px) {
+  .album-play-wrapper {
+    margin-right: 0;
+  }
+
+  .album-card {
+    top: 20px;
+    margin: 20px;
+  }
+
+  .tracks-card {
+    margin: 20px 20px 40px 0;
+  }
+
+  .album-play-wrapper {
+    margin-right: 10px;
+  }
+}
+
 @media (max-width: 1000px) {
   .album-page {
     flex-direction: column;
@@ -299,6 +334,7 @@
   }
 
   .tracks-card {
+    padding: 10px 5px;
     margin: 20px 0 40px 0;
     width: 90%;
     box-sizing: border-box;
@@ -318,31 +354,13 @@
     height: 32px;
   }
 
-  .album-play-wrapper {
-    margin-right: 10px;
-    cursor: pointer;
-  }
-
   .album-row {
-    padding: 5px 10px 5px 0;
+    padding: 5px 0 5px 5px;
     height: 60px;
   }
 
-  .tracks-duration-wrapper {
-    position: relative;
-  }
-
-  .tracks-duration-wrapper .track-like-container {
-    right: 15%;
-  }
-
-  .tracks-duration-wrapper {
-    flex: 1;
-    display: grid;
-    grid-template-columns: 70% 15% 15%;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
+  .album-row .track-duration {
+    display: flex;
   }
 
   .album-artist-name {
@@ -352,13 +370,6 @@
   .album-artist-avatar {
     height: 18px;
     width: 18px;
-  }
-
-  .tracks-duration-wrapper .track-duration {
-    position: absolute;
-    right: 0;
-    top: calc(50% - 11px);
-    display: block;
   }
 }
 
