@@ -26,8 +26,9 @@ export function playTrack() {
         type: button.dataset.context || 'all-tracks',
         id: button.dataset.artistId || button.dataset.albumId || button.dataset.playlistId || null,
       };
-
-      if (!current || current.id !== trackId) {
+      const currentIdStr = current ? String(current.id).trim() : null;
+      const trackIdStr = trackId ? String(trackId).trim() : null;
+      if (!current || currentIdStr !== trackIdStr) {
         currentTrackId = trackId;
         try {
           if (isAuthenticated) {
@@ -58,15 +59,18 @@ export function playTrack() {
   }
 
   function updateButtons() {
-    const playerTrackId = player.currentTrack ? player.currentTrack.id : null;
+    const currentTrack = player.currentTrack;
+    const playerTrackId = currentTrack ? String(currentTrack.id).trim() : null;
 
     document
       .querySelectorAll(
         '.play-button-track, .play-button, .current-card-btn.play, .play-popular-track, .play-album-track, .play-all-artist-tracks, .play-button-album, .play-button-playlist'
       )
       .forEach((button) => {
-        const buttonTrackId = button.dataset.trackId;
-        const isCurrent = playerTrackId && buttonTrackId === playerTrackId;
+        // const buttonTrackId = button.dataset.trackId;
+        let rawButtonId = button.dataset.trackId;
+        const buttonTrackId = rawButtonId ? String(rawButtonId).trim() : null;
+        const isCurrent = playerTrackId && buttonTrackId && playerTrackId === buttonTrackId;
 
         if (button.classList.contains('play-button-album')) {
           const albumId = button.dataset.albumId;
@@ -122,8 +126,12 @@ export function playTrack() {
         card.querySelector('.play-all-artist-tracks') ||
         card.querySelector('.play-button-album') ||
         card.querySelector('.play-button-playlist');
-      const trackId = buttons ? buttons.dataset.trackId : null;
-      card.classList.toggle('active', trackId === playerTrackId);
+      const rawTrackId = buttons ? buttons.dataset.trackId : null;
+      const trackId = rawTrackId ? String(rawTrackId).trim() : null;
+
+      // Сравнение с trim()
+      const isActiveRow = playerTrackId && trackId && playerTrackId === trackId;
+      card.classList.toggle('active', isActiveRow);
     });
   }
 }

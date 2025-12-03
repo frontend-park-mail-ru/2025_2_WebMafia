@@ -133,6 +133,10 @@ export class ProfilePage {
           messageElement.classList.remove('show');
           messageElement.style.backgroundColor = '';
         }
+        const deleteAvatarbtn = document.getElementById('deleteAvatarButton');
+        if (deleteAvatarbtn) {
+          deleteAvatarbtn.remove();
+        }
 
         editProfileOverlay.classList.remove('active');
       });

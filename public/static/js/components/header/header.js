@@ -120,7 +120,7 @@ export class Header {
         searchToggle.classList.add('hidden');
         headLeft.style.visibility = 'hidden';
         searchContainer.classList.add('active');
-      }, 100)
+      }, 100);
 
       setTimeout(() => searchInput.focus(), 200);
     });

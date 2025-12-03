@@ -1,8 +1,10 @@
 <aside class="sidebar" id="sidebar">
   <nav class="menu">
     <a class="menu-item home" href="/">{{> homeIcon}} Главная</a>
-    <a class="menu-item profile" href="/profile">{{> profile}} Профиль</a>
-    <a class="menu-item library" href="/library">{{> libraryIcon}} Библиотека</a>
+    {{#if isAuthenticated}}
+      <a class="menu-item profile" href="/profile">{{> profile}} Профиль</a>
+      <a class="menu-item library" href="/library">{{> libraryIcon}} Библиотека</a>
+    {{/if}}
     <div class="header-divider"></div>
     <button class="secondary-button sidebar-secondary-button">{{> plus}} Создать</button>
     <!---<div class="library-items">
@@ -13,6 +15,29 @@
      </div>--->
   </nav>
 </aside>
+<div class="overlay" id="warningOverlaySidebar">
+  <div class="window">
+    <div class="overlay-header">
+      <span class="album-title">Чтобы создавать плейлисты вам нужно войти в аккаунт</span>
+      <button id="closeWarningBtnSidebar" class="close-button" aria-label="Закрыть">{{> close }}</button>
+    </div>
+    <div class="header-divider"></div>
+    <div class="warning-btns-overlay">
+      <div class="save-overlay-button">
+      <button class="primary-button login secondary-button save-overlay-button-size" id="loginBtnSidebar">
+        Войти
+      </button>
+    </div>
+    <div class="save-overlay-button">
+      <button class="primary-button register save-overlay-button-size" id="registerBtnSidebar">
+        Зарегистрироваться
+      </button>
+    </div>
+    </div>
+    
+  </div>
+</div>
+
 <div class="purple-background-circle sidebar-purple-position"></div>
 <div class="blue-background-circle sidebar-blue-position"></div>
     <div class="overlay" id="createPlaylistOverlay">

@@ -15,7 +15,6 @@ export class LibraryPage {
     const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
     if (!isAuthenticated) {
       router.navigate('/login');
-      return;
     }
 
     let pageData = {

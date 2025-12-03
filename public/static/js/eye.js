@@ -4,6 +4,7 @@ export function initPasswordShowing() {
 
     const eyeOpen = btn.querySelector('.eye-open');
     const eyeClosed = eyeOpen.nextElementSibling;
+    btn.setAttribute('tabindex', -1);
 
     btn.addEventListener('click', () => {
       if (input.type === 'password') {
