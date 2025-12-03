@@ -1,10 +1,11 @@
-const path = 'wave-music.ru';
+const apiPath = 'wave-music.ru';
+const minioPath = 'wave-music.ru';
 
-const API_BASE_URL = `https://${path}/api/v1`;
-const API_Data_URL = `https://${path}/api/v1`;
-const API_PLAYLIST_URL = `https://${path}/api/v1`;
-export const API_AVATARS_URL = 'https://217.16.17.173:8099/avatars';
-export const API_TRACKS_URL = 'https://217.16.17.173:8099/music/tracks';
+const API_BASE_URL = `https://${apiPath}/api/v1`;
+const API_Data_URL = `https://${apiPath}/api/v1`;
+const API_PLAYLIST_URL = `https://${apiPath}/api/v1`;
+export const API_AVATARS_URL = `https://${minioPath}/avatars`;
+export const API_TRACKS_URL = `https://${minioPath}/music/tracks`;
 
 export class apiServises {
   constructor() {
