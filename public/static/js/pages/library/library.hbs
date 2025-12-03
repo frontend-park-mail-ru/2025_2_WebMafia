@@ -2,6 +2,7 @@
   {{> header}}
   <div class="layout">
     {{> sidebar}}
+    {{#if isAuthenticated}}
     <div class="page" id="scrollContent">
       <div class="library-header">
         <div class="left-content">
@@ -46,6 +47,17 @@
         {{> libraryGrid}}
       </div>
     </div>
+    {{else}}
+      <div class="profile-wrapper" id="scrollContent">
+        <div class="search-alert-container">
+          <div class="search-alert-text">
+            <div class="search-alert-title">Библиотека</div>
+            <div class="search-alert-subtitle">Войдите, чтобы открыть доступ к вашим плейлистам, трекам и избранным артистам.</div>
+            <a href="/login" class="secondary-button login-secondary-button">Войти</a>
+          </div>
+        </div>
+      </div>
+    {{/if}}
     <div class="overlay" id="createPlaylistOverlay">
       <div class="window">
         <div class="overlay-header">

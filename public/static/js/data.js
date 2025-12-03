@@ -1,9 +1,9 @@
 const apiPath = 'wave-music.ru';
 const minioPath = 'wave-music.ru';
 
-const API_BASE_URL = `https://${apiPath}/api/v1`;
-const API_Data_URL = `https://${apiPath}/api/v1`;
-const API_PLAYLIST_URL = `https://${apiPath}/api/v1`;
+const API_BASE_URL = `http://localhost:8080/api/v1`;
+const API_Data_URL = `http://localhost:8081/api/v1`;
+const API_PLAYLIST_URL = `http://localhost:8082/api/v1`;
 export const API_AVATARS_URL = `https://${minioPath}/avatars`;
 export const API_TRACKS_URL = `https://${minioPath}/music/tracks`;
 
@@ -453,6 +453,7 @@ export class apiServises {
 
   async getFavoriteTrackIds() {
     try {
+      if (localStorage.getItem('isAuthenticated') !== 'true') return [];
       const favoriteTracks = await this.request('/playlists/favorite');
       if (!favoriteTracks || !Array.isArray(favoriteTracks.tracks)) {
         return [];
