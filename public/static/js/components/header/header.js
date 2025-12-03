@@ -8,6 +8,7 @@ export class Header {
     let pageData = {
       isAuthenticated: localStorage.getItem('isAuthenticated') === 'true',
       searchValue: searchValue,
+      logo: getValidImage('assets/logo-F_j9P4rl.png', 'static/img/logo.png'),
     };
 
     const contentTemplate = Handlebars.templates['header.hbs'];
