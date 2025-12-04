@@ -1,10 +1,8 @@
 <aside class="sidebar" id="sidebar">
   <nav class="menu">
     <a class="menu-item home" href="/">{{> homeIcon}} Главная</a>
-    {{#if isAuthenticated}}
-      <a class="menu-item profile" href="/profile">{{> profile}} Профиль</a>
-      <a class="menu-item library" href="/library">{{> libraryIcon}} Библиотека</a>
-    {{/if}}
+    <a class="menu-item profile" href="/profile">{{> profile}} Профиль</a>
+    <a class="menu-item library" href="/library">{{> libraryIcon}} Библиотека</a>
     <div class="header-divider"></div>
     <button class="secondary-button sidebar-secondary-button">{{> plus}} Создать</button>
     <!---<div class="library-items">

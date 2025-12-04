@@ -453,6 +453,7 @@ export class apiServises {
 
   async getFavoriteTrackIds() {
     try {
+      if (localStorage.getItem('isAuthenticated') !== 'true') return [];
       const favoriteTracks = await this.request('/playlists/favorite');
       if (!favoriteTracks || !Array.isArray(favoriteTracks.tracks)) {
         return [];

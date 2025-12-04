@@ -29,7 +29,7 @@ export class PlaylistPage {
 
   async render(id) {
     let pageData = {
-      isAuthenticated: true,
+      isAuthenticated: localStorage.getItem('isAuthenticated') === 'true',
       cover: 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7',
     };
 
@@ -41,19 +41,7 @@ export class PlaylistPage {
       const data = await apiServise.getPlaylistPageData(id);
       this.playlistData = data.playlist;
       const firstTrackId = data.tracks && data.tracks.length > 0 ? data.tracks[0].id : null;
-      if (data.playlist.is_favorite) {
-        pageData = {
-          favourite: true,
-          id: data.playlist.id,
-          title: data.playlist.title,
-          date: dateParser(data.playlist.created_at),
-          cover: 'static/img/liked_tracks.png',
-          description: data.playlist.description,
-          track_id: firstTrackId,
-          isAuthenticated: true,
-        };
-      } else {
-        pageData = {
+      pageData = {
           favourite: false,
           id: data.playlist.id,
           title: data.playlist.title,
@@ -62,37 +50,26 @@ export class PlaylistPage {
           isCover: data.playlist.avatar_url,
           description: data.playlist.description,
           track_id: firstTrackId,
-          isAuthenticated: true,
         };
+      if (data.playlist.is_favorite) {
+        pageData.favourite = true;
+        pageData.cover = 'static/img/liked_tracks.png';
+        pageData.description = 'В этот плейлист попадают треки, которым вы поставили отметку "Нравится"'
       }
       let totalDuration = 0;
       pageData.tracks = (data.tracks || []).map((track) => {
         totalDuration += track.duration_s;
-        if (data.playlist.is_favorite) {
-          return {
-            id: track.id,
-            name: track.title,
-            album: track.album.title,
-            album_id: track.album.id,
-            cover: getValidImage('albums/' + track.album.avatar_url, 'default-album.png'),
-            artists: track.artists,
-            plays: playsParser(track.play_count),
-            duration: durationParser(track.duration_s),
-            is_liked: track.is_liked,
-          };
-        } else {
-          return {
-            id: track.id,
-            name: track.title,
-            album: track.album.title,
-            album_id: track.album.id,
-            cover: getValidImage('albums/' + track.album.avatar_url, 'default-album.png'),
-            artists: track.artists,
-            plays: playsParser(track.play_count),
-            duration: durationParser(track.duration_s),
-            is_liked: track.is_liked,
-          };
-        }
+        return {
+          id: track.id,
+          name: track.title,
+          album: track.album.title,
+          album_id: track.album.id,
+          cover: getValidImage('albums/' + track.album.avatar_url, 'default-album.png'),
+          artists: track.artists,
+          plays: playsParser(track.play_count),
+          duration: durationParser(track.duration_s),
+          is_liked: track.is_liked,
+        };
       });
       pageData.totalDuration = totalDurationParser(totalDuration);
       this.totalDuration = totalDuration;
