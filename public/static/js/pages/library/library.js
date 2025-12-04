@@ -40,7 +40,7 @@ export class LibraryPage {
         image: 'static/img/liked_tracks.png',
         created_at: new Date(),
         sub: data.favourite.tracks ? tracksNumParser(data.favourite.tracks.length) : '0 треков',
-        href: 'playlist/' + data.favourite.id,
+        href: 'playlist/LM',
         type: 'Плейлист',
       };
       pageData.library.push(item);

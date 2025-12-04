@@ -28,7 +28,9 @@ export class PlaylistPage {
   }
 
   async render(id) {
-    let pageData = {};
+    let pageData = {
+      isAuthenticated: localStorage.getItem('isAuthenticated') === 'true',
+    };
 
     const contentTemplate = Handlebars.templates['playlist.hbs'];
     document.getElementById('app').innerHTML = contentTemplate(pageData);
@@ -38,55 +40,38 @@ export class PlaylistPage {
       const data = await apiServise.getPlaylistPageData(id);
       this.playlistData = data.playlist;
       const firstTrackId = data.tracks && data.tracks.length > 0 ? data.tracks[0].id : null;
-      if (data.playlist.is_favorite) {
-        pageData = {
-          favourite: true,
-          id: data.playlist.id,
-          title: data.playlist.title,
-          date: dateParser(data.playlist.created_at),
-          cover: 'static/img/liked_tracks.png',
-          description: data.playlist.description,
-          track_id: firstTrackId,
-        };
-      } else {
-        pageData = {
-          favourite: false,
-          id: data.playlist.id,
-          title: data.playlist.title,
-          date: dateParser(data.playlist.created_at),
-          cover: getValidImage(data.playlist.avatar_url ? data.playlist.avatar_url : '', 'default-playlist.png'),
-          description: data.playlist.description,
-          track_id: firstTrackId,
-        };
+      pageData = {
+        favourite: true,
+        date: 'Создан автоматически',
+        title: 'Понравившиеся треки',
+        cover: 'static/img/liked_tracks.png',
+        description: 'В этот плейлист попадают треки, которым вы поставили отметку "Нравится"',
+        track_id: firstTrackId,
+      };
+      if (id !== 'LM') {
+        pageData.favourite = false;
+        pageData.title = data.playlist.title;
+        pageData.id = data.playlist.id;
+        pageData.date = dateParser(data.playlist.created_at);
+        pageData.cover = getValidImage(data.playlist.avatar_url ? data.playlist.avatar_url : '', 'default-playlist.png');
+        pageData.isCover = data.playlist.avatar_url;
+        pageData.description = data.playlist.description;
       }
       let totalDuration = 0;
+      console.log(data.tracks);
       pageData.tracks = (data.tracks || []).map((track) => {
         totalDuration += track.duration_s;
-        if (data.playlist.is_favorite) {
-          return {
-            id: track.id,
-            name: track.title,
-            album: track.album.title,
-            album_id: track.album.id,
-            cover: getValidImage('albums/' + track.album.avatar_url, 'default-album.png'),
-            artists: track.artists,
-            plays: playsParser(track.play_count),
-            duration: durationParser(track.duration_s),
-            is_liked: track.is_liked,
-          };
-        } else {
-          return {
-            id: track.id,
-            name: track.title,
-            album: track.album.title,
-            album_id: track.album.id,
-            cover: getValidImage('albums/' + track.album.avatar_url, 'default-album.png'),
-            artists: track.artists,
-            plays: playsParser(track.play_count),
-            duration: durationParser(track.duration_s),
-            is_liked: track.is_liked,
-          };
-        }
+        return {
+          id: track.id,
+          name: track.title,
+          album: track.album.title,
+          album_id: track.album.id,
+          cover: getValidImage('albums/' + track.album.avatar_url, 'default-album.png'),
+          artists: track.artists,
+          plays: playsParser(track.play_count),
+          duration: durationParser(track.duration_s),
+          is_liked: pageData.favourite ? true : track.is_liked,
+        };
       });
       pageData.totalDuration = totalDurationParser(totalDuration);
       this.totalDuration = totalDuration;
@@ -114,14 +99,14 @@ export class PlaylistPage {
     await Promise.all([header.render(), sidebar.render()]);
     slider.sliderFunction();
     initScrollbar();
-    this.addEventListeners(this.playlistData.id);
+    this.addEventListeners();
     createPlaylis();
     setPlayButtonsOnAuth();
     likeTrackBtn();
     playTrack();
   }
 
-  addEventListeners(playlistId) {
+  addEventListeners() {
     const getDescriptionButton = document.getElementById('getDescription');
     const getDescriptionOverlay = document.getElementById('descriptionOverlay');
 
@@ -314,12 +299,12 @@ export class PlaylistPage {
 
         try {
           if (selectedAvatarFile) {
-            const response = await apiServise.uploadPlaylistAvatar(selectedAvatarFile, playlistId);
+            const response = await apiServise.uploadPlaylistAvatar(selectedAvatarFile, this.playlistData.id);
             const newAvatarUrl = getValidImage(response.avatar_url);
             updateAvatarContainer('playlistAvatarContainer', newAvatarUrl);
             selectedAvatarFile = null;
           } else if (deleteAvatar) {
-            await apiServise.deletePlaylistAvatar(playlistId);
+            await apiServise.deletePlaylistAvatar(this.playlistData.id);
             updateAvatarContainer('playlistAvatarContainer');
             deleteAvatar = false;
           }
@@ -328,7 +313,7 @@ export class PlaylistPage {
           const newDescription = document.getElementById('descriptionPlaylist').value;
           console.log(newTitle, newDescription);
           if (newTitle !== this.playlistData.title || newDescription !== this.playlistData.description) {
-            await apiServise.updatePlaylist(newTitle, newDescription, playlistId);
+            await apiServise.updatePlaylist(newTitle, newDescription, this.playlistData.id);
             const title = document.querySelector('.album-card-title');
             if (title) {
               title.textContent = newTitle;
@@ -375,7 +360,7 @@ export class PlaylistPage {
         if (confirmBtn) {
           confirmBtn.addEventListener('click', async (e) => {
             e.preventDefault();
-            await apiServise.deletePlaylist(playlistId);
+            await apiServise.deletePlaylist(this.playlistData.id);
             router.navigate('/library');
           });
         }
@@ -492,7 +477,7 @@ export class PlaylistPage {
             track.num = lastTrack ? Number(lastTrack.textContent) + 1 : 1;
             // track.is_liked = null;
 
-            apiServise.addTrackToPlaylist(button.dataset.trackId, playlistId);
+            apiServise.addTrackToPlaylist(button.dataset.trackId, this.playlistData.id);
 
             const trackRow = Handlebars.templates['trackRow.hbs'];
             tracksTable.insertAdjacentHTML('beforeend', trackRow(track));
@@ -522,7 +507,7 @@ export class PlaylistPage {
         const row = btn.closest('.album-row.playlist-unfav');
         const trackId = btn.dataset.trackId;
 
-        await apiServise.deleteTrackFromPlaylist(trackId, playlistId);
+        await apiServise.deleteTrackFromPlaylist(trackId, this.playlistData.id);
 
         const tracksNumElement = document.getElementById('tracksNum');
         const totalDurationElement = document.getElementById('totalDuration');
