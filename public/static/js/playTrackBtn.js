@@ -128,8 +128,6 @@ export function playTrack() {
         card.querySelector('.play-button-playlist');
       const rawTrackId = buttons ? buttons.dataset.trackId : null;
       const trackId = rawTrackId ? String(rawTrackId).trim() : null;
-
-      // Сравнение с trim()
       const isActiveRow = playerTrackId && trackId && playerTrackId === trackId;
       card.classList.toggle('active', isActiveRow);
     });
