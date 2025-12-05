@@ -28,14 +28,18 @@
             data-first-track-id="{{ track_id }}"
           ></button>
           {{#unless favourite}}
-          <button class="dots" id="playlistActions">{{> dots}}</button>
-          <div id="playlistMenu" class="actions-menu hidden">
-             <button class="actions-item edit">
-                <span class="pencil-svg">{{> pencil }}</span
-                >Редактировать
-              </button>
-            <button class="actions-item delete">
-              <span class="trash-svg">{{> trash}}</span
+          <button class="dots">{{> dots}}</button>
+          <div class="actions-menu hidden">
+            <button class="actions-item" id="editPlaylistButton">
+              <span class="actions-item-svg">{{> pencil }}</span
+              >Редактировать
+            </button>
+            <button class="actions-item" id="shareButton">
+              <span class="actions-item-svg">{{> share}}</span
+              >Поделиться
+            </button>
+            <button class="actions-item" id="deletePlaylistButton">
+              <span class="actions-item-svg">{{> trash}}</span
               >Удалить
             </button>
           </div>

@@ -17,9 +17,10 @@ import { playTrack } from '@/playTrackBtn.js';
 import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
 import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
 import { FormValidator } from '@/validation.js';
-import { likeChange, likeTrackBtn } from '../../utils/likeTrack';
-import { player } from '@/components/player/player';
+import { likeChange, likeTrackBtn } from '@/utils/likeTrack.js';
 import { createPlaylis } from '@/utils/initCreatePlaylist';
+import { albumPlaylistButtons } from "@/utils/albumPlaylistButtons.js";
+import {share} from "@/utils/shareBtn";
 
 export class PlaylistPage {
   constructor() {
@@ -104,25 +105,15 @@ export class PlaylistPage {
     setPlayButtonsOnAuth();
     likeTrackBtn();
     playTrack();
+    albumPlaylistButtons();
+    share();
   }
 
   addEventListeners() {
-    const getDescriptionButton = document.getElementById('getDescription');
-    const getDescriptionOverlay = document.getElementById('descriptionOverlay');
-
-    const editPlaylistButton = document.querySelector('.actions-item.edit');
-    const deletePlaylistButton = document.querySelector('.actions-item.delete');
+    const editPlaylistButton = document.getElementById('editPlaylistButton');
+    const deletePlaylistButton = document.getElementById('deletePlaylistButton');
     const editPlaylistOverlay = document.getElementById('editPlaylistOverlay');
     const closeOverlayButton = document.getElementById('closeOverlayButtonPlaylist');
-    const playlistShuffleBtn = document.querySelector('.album-buttons .control-btn.shuffle-album');
-    if (playlistShuffleBtn) {
-      if (player.isShaffle) {
-        playlistShuffleBtn.classList.add('active');
-      }
-      playlistShuffleBtn.addEventListener('click', () => {
-        player.handleShaffleClick();
-      });
-    }
 
     if (this.playlistData.is_favorite) {
       const appContainer = document.getElementById('app');
@@ -186,7 +177,6 @@ export class PlaylistPage {
     if (closeOverlayButton && editPlaylistOverlay) {
       closeOverlayButton.addEventListener('click', (e) => {
         e.preventDefault();
-
         editPlaylistOverlay.classList.remove('active');
       });
     }
@@ -366,7 +356,6 @@ export class PlaylistPage {
         }
       });
     }
-    const closeDescriptionButton = document.getElementById('closeDescriptionButton');
     const closeWarningBtn = document.getElementById('closeWarningBtnPlaylist');
 
     if (closeWarningBtn && warningOverlay) {
@@ -381,54 +370,6 @@ export class PlaylistPage {
       warningOverlay.addEventListener('click', (e) => {
         if (e.target === warningOverlay) {
           warningOverlay.classList.remove('active');
-        }
-      });
-    }
-
-    if (getDescriptionButton && getDescriptionOverlay) {
-      getDescriptionButton.addEventListener('click', (e) => {
-        e.preventDefault();
-        getDescriptionOverlay.classList.add('active');
-      });
-    }
-
-    if (closeDescriptionButton && getDescriptionOverlay) {
-      closeDescriptionButton.addEventListener('click', (e) => {
-        e.preventDefault();
-        getDescriptionOverlay.classList.remove('active');
-      });
-    }
-
-    if (getDescriptionOverlay) {
-      getDescriptionOverlay.addEventListener('click', (e) => {
-        e.preventDefault();
-        if (e.target === getDescriptionOverlay) {
-          getDescriptionOverlay.classList.remove('active');
-        }
-      });
-    }
-
-    const dotsBtn = document.getElementById('playlistActions');
-    const menu = document.getElementById('playlistMenu');
-
-    if (dotsBtn && menu) {
-      dotsBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        menu.classList.toggle('hidden');
-
-        const rect = dotsBtn.getBoundingClientRect();
-        const parentRect = dotsBtn.parentElement.getBoundingClientRect();
-
-        const top = rect.top - parentRect.top - menu.offsetHeight - 6;
-        const left = rect.left - parentRect.left - 10;
-
-        menu.style.top = `${top}px`;
-        menu.style.left = `${left}px`;
-      });
-
-      document.addEventListener('click', (e) => {
-        if (!menu.contains(e.target) && !dotsBtn.contains(e.target)) {
-          menu.classList.add('hidden');
         }
       });
     }

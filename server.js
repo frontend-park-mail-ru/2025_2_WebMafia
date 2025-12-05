@@ -8,8 +8,6 @@ const port = 8090;
 
 const app = express();
 
-app.use(express.static(`${__dirname}/public`));
-
 app.get(/^\/artist\/([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})$/, async (req, res) => {
   const id = req.params[0];
 
@@ -33,6 +31,8 @@ app.get(/^\/artist\/([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}
 
   res.send(htmlWithOG);
 });
+
+app.use(express.static(`${__dirname}/public`));
 
 app.use(/(.*)/, (req, res) => {
   res.sendFile(`${__dirname}/public/index.html`);
