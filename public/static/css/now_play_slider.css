@@ -16,30 +16,30 @@
 
 .hidden {
   opacity: 0 !important;
-  pointer-events: none !important;
-  transform: scale(0.8) !important;
-  visibility: hidden !important;
-  transition: opacity 0.5s ease, transform 0.5s ease;
-  box-shadow: none !important;
+  pointer-events: none;
+  transform: scale(0.8);
+  visibility: hidden;
+  transition:
+    opacity 0.5s ease,
+    transform 0.5s ease;
+  box-shadow: none;
 }
 
 .card-fade-out {
-  opacity: 0 !important;
-  transform: scale(0.8) !important;
+  opacity: 0;
+  transform: scale(0.8);
 }
 
 .card-reset {
-  transition: none !important;
+  transition: none;
 }
 
-/* Обёртка для слайдера */
 .card-slider {
   position: relative;
   width: 300px;
   height: 150px;
 }
 
-/* Общий стиль для ВСЕХ карточек */
 .now-playing-container-card {
   position: absolute;
   top: 0;
@@ -84,7 +84,9 @@
   opacity: 1;
 }
 
-.current-card-btn.play, .current-card-btn.play.pause {
+.current-card-btn.play,
+.current-card-btn.play.pause,
+.current-card-name {
   position: absolute;
   opacity: 0;
   transition: opacity 0.4s ease;
@@ -97,7 +99,6 @@
   position: absolute;
   top: 30%;
   left: 40%;
-  /* transform: translate(-50%, -50%); */
   width: 56px;
   height: 56px;
   border-radius: 50%;
@@ -132,7 +133,9 @@
   height: 20px;
   width: 16px;
   opacity: 1;
-  box-shadow: inset 5px 0 0 0 white, inset -5px 0 0 0 white;
+  box-shadow:
+    inset 5px 0 0 0 white,
+    inset -5px 0 0 0 white;
   margin: 0;
 }
 
@@ -158,7 +161,6 @@
   text-align: center;
 }
 
-/* Стили стрелок */
 .current-card-btn.prev,
 .current-card-btn.next {
   background: none;
@@ -187,4 +189,60 @@
   display: inline-block;
 }
 
-/*# sourceMappingURL=now_play_slider.css.map */
+.cards-marquee-limiter {
+  max-width: 300px;
+}
+
+@media (max-width: 1000px) {
+  .card-slider {
+    width: 180px;
+    height: 120px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .current-card-btn {
+    display: none;
+  }
+
+  .now-playing-container {
+    justify-content: center;
+  }
+
+  .now-playing-container-card {
+    width: 100%;
+    height: 100%;
+  }
+
+  .card-position-prev {
+    transform: translateX(-55%) scale(1);
+  }
+
+  .card-position-current {
+    transform: translateX(0) scale(1.2);
+    transition: transform 0.3s ease;
+  }
+
+  .card-position-current:active {
+    transform: translateX(0) scale(1.1);
+  }
+
+  .card-position-next {
+    transform: translateX(55%) scale(1);
+  }
+
+  .current-card-btn.play {
+    width: 44px;
+    height: 44px;
+    font-size: 16px;
+  }
+
+  .current-card-name {
+    font-size: 18px;
+    bottom: 10px;
+  }
+
+  .cards-marquee-limiter {
+    max-width: 200px;
+  }
+}

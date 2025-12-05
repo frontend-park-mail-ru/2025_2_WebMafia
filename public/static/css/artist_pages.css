@@ -61,4 +61,26 @@
   opacity: 1;
 }
 
-/*# sourceMappingURL=artist_pages.css.map */
+.play-all-artist-tracks.is-active {
+  opacity: 1;
+}
+
+@media (max-width: 560px) {
+  .grid-layout {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(163px, 1fr));
+    gap: 10px;
+    padding: 20px 18px;
+  }
+
+  .title-name-track-by-artist {
+    font-weight: 700;
+    font-size: 32px;
+    margin-top: 5px;
+  }
+
+  .tracks-table-track-by-artist {
+    padding-right: 10px;
+    margin: 10px 0;
+  }
+}

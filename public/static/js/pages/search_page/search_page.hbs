@@ -57,20 +57,27 @@
                 </button>
               </div>
               <div class="right-row-content-search">
-                <div class="track-name">{{ name }}</div>
-                <div class="track-performers">
-                  {{#each artists}}
-                  <a href="artist/{{ id }}" class="track-performer href-decoration">
-                    {{ name }}{{#unless @last}}, {{/unless}}
-                  </a>
-                  {{/each}}
+                <div class="track-name-artists-container">
+                  <div class="track-name">{{ name }}</div>
+                  <div class="track-performers">
+                    {{!-- {{#each @root.artists}} --}}
+                    <a href="artist/{{ artist_id }}" class="text href-decoration">
+                      {{!-- {{ name }}{{#unless @last}}, {{/unless}} --}}
+                      {{artist}}
+                    </a>
+                    {{!-- {{/each}} --}}
+                  </div>
+                </div>
+                
+                <div class="track-like-container">
+                  <button class="like-btn-track artist-like-size {{#if is_liked}}active{{/if}}" data-track-id="{{ id }}">{{> likeBtn }}</button>
                 </div>
                 <div class="track-duration">{{ duration }}</div>
               </div>
             </div>
             {{/each}}
           </div>
-          <a class="secondary-button show-tracks-button" href="/artist/{{ id }}/tracks">Показать все</a>
+          {{!-- <a class="secondary-button show-tracks-button" href="/artist/{{ id }}/tracks">Показать все</a> --}}
         </div>
 
         {{/if}}

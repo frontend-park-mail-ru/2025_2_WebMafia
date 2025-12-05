@@ -9,6 +9,8 @@ import { playTrack } from '@/playTrackBtn.js';
 import { getValidImage, playsParser } from '@/parsers.js';
 import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
 import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
+import { setupMarquees } from '@/marquee.js';
+import { createPlaylis } from '@/utils/initCreatePlaylist';
 
 export class MainPage {
   async render() {
@@ -73,6 +75,7 @@ export class MainPage {
     initScrollbar();
     this.addEventListeners();
     setPlayButtonsOnAuth();
+    createPlaylis();
     this.nowPlayingCardSlider();
     playTrack();
   }
@@ -105,23 +108,34 @@ export class MainPage {
 
     let isAnimating = false;
     const animationDuration = 500;
+    let pendingTrackData = null;
 
-    function playerSliderDataSync({ prev, current, next }) {
+    function playerSliderDataSync(data) {
+      if (isAnimating) {
+        pendingTrackData = data;
+        return;
+      }
+
+      applyDataToCards(data);
+    }
+
+    function applyDataToCards({ prev, current, next }) {
       const prevCard = document.querySelector('.card-position-prev');
       const nextCard = document.querySelector('.card-position-next');
+
       if (next) {
-        nextBtn.classList.remove('hidden');
+        if (nextBtn) nextBtn.classList.remove('hidden');
         if (nextCard) nextCard.classList.remove('hidden');
       } else {
-        nextBtn.classList.add('hidden');
+        if (nextBtn) nextBtn.classList.add('hidden');
         if (nextCard) nextCard.classList.add('hidden');
       }
 
       if (prev) {
-        prevBtn.classList.remove('hidden');
+        if (prevBtn) prevBtn.classList.remove('hidden');
         if (prevCard) prevCard.classList.remove('hidden');
       } else {
-        prevBtn.classList.add('hidden');
+        if (prevBtn) prevBtn.classList.add('hidden');
         if (prevCard) prevCard.classList.add('hidden');
       }
 
@@ -180,10 +194,14 @@ export class MainPage {
         playButton.className = 'current-card-btn play';
         playButton.dataset.trackId = data.id;
         const nameP = document.createElement('p');
-        nameP.className = 'current-card-name';
-        nameP.textContent = data.name;
+        nameP.innerHTML = `
+            <div class="marquee-inner">
+              <span class="marquee-text">${data.name}</span>
+            </div>`;
+        nameP.className = 'marquee current-card-name cards-marquee-limiter';
         card.appendChild(playButton);
         card.appendChild(nameP);
+        setupMarquees();
       }
     }
 
@@ -210,39 +228,81 @@ export class MainPage {
       nextCard.classList.remove('card-position-next');
 
       if (direction === 'next') {
-        prevCard.classList.add('hidden');
-        currentCard.classList.add('hidden');
-        prevCard.classList.remove('hidden');
-        prevCard.classList.add('card-position-next');
-        currentCard.classList.remove('hidden');
+        currentCard.classList.remove('card-position-current');
         currentCard.classList.add('card-position-prev');
+        nextCard.classList.remove('card-position-next');
         nextCard.classList.add('card-position-current');
+        prevCard.classList.remove('card-position-prev');
+        prevCard.style.transition = 'none';
+        prevCard.classList.add('card-position-next');
+        void prevCard.offsetWidth;
+        prevCard.style.transition = '';
       } else {
-        nextCard.classList.add('hidden');
-        currentCard.classList.add('hidden');
-        nextCard.classList.remove('hidden');
-        nextCard.classList.add('card-position-prev');
-        currentCard.classList.remove('hidden');
+        currentCard.classList.remove('card-position-current');
         currentCard.classList.add('card-position-next');
+        prevCard.classList.remove('card-position-prev');
         prevCard.classList.add('card-position-current');
+        nextCard.classList.remove('card-position-next');
+        nextCard.style.transition = 'none';
+        nextCard.classList.add('card-position-prev');
+        void nextCard.offsetWidth;
+        nextCard.style.transition = '';
       }
 
       setTimeout(() => {
         isAnimating = false;
-        updateAllCardsUI();
+        if (typeof pendingTrackData !== 'undefined' && pendingTrackData) {
+          applyDataToCards(pendingTrackData);
+          pendingTrackData = null;
+        } else {
+          updateAllCardsUI();
+        }
       }, animationDuration);
     }
 
-    nextBtn.addEventListener('click', async () => {
-      if (isAnimating) return;
-      shiftCards('next');
-      await player.nextTrack();
-    });
-    prevBtn.addEventListener('click', async () => {
-      if (isAnimating) return;
-      shiftCards('prev');
-      await player.prevTrack();
-    });
+    if (nextBtn || prevBtn) {
+      nextBtn.addEventListener('click', async () => {
+        if (isAnimating) return;
+        shiftCards('next');
+        await player.nextTrack();
+      });
+      prevBtn.addEventListener('click', async () => {
+        if (isAnimating) return;
+        shiftCards('prev');
+        await player.prevTrack();
+      });
+    }
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    function handleGesture() {
+      if (touchEndX - touchStartX > 50) {
+        if (!isAnimating) {
+          shiftCards('prev');
+          player.prevTrack();
+        }
+      }
+
+      if (touchStartX - touchEndX > 50) {
+        if (!isAnimating) {
+          shiftCards('next');
+          player.nextTrack();
+        }
+      }
+    }
+
+    const slider = document.querySelector('.card-slider');
+
+    if (slider) {
+      slider.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].clientX;
+      });
+
+      slider.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].clientX;
+        handleGesture();
+      });
+    }
 
     if (player.currentTrack) {
       await player.getPrevAndNextTracks();

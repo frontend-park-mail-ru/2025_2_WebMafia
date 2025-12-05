@@ -11,6 +11,8 @@ import { FormValidator } from '@/validation.js';
 import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
 import { playTrack } from '@/playTrackBtn.js';
 import { likeTrackBtn } from '@/utils/likeTrack.js';
+import { setupMarquees } from '@/marquee.js';
+import { createPlaylis } from '@/utils/initCreatePlaylist';
 
 export class ProfilePage {
   async render() {
@@ -54,6 +56,7 @@ export class ProfilePage {
         duration: durationParser(track.duration_s),
         cover: getValidImage('albums/' + track.album.avatar_url, 'default-album.png'),
         artists: track.artists,
+        is_liked: track.is_liked,
       }));
       pageData.recent = (data.recent || []).map((artist) => ({
         id: artist.id,
@@ -72,7 +75,7 @@ export class ProfilePage {
     document.querySelector('head title').textContent = pageData.profile.nickname;
     playerOnlyOnPlay();
     await Promise.all([header.render(), sidebar.render()]);
-
+    createPlaylis();
     slider.sliderFunction();
     this.addEventListeners(pageData.profile);
     initPasswordShowing();
@@ -80,6 +83,7 @@ export class ProfilePage {
     setPlayButtonsOnAuth();
     likeTrackBtn();
     playTrack();
+    setupMarquees();
   }
 
   addEventListeners(profile) {
@@ -103,7 +107,7 @@ export class ProfilePage {
         document.getElementById('password').value = '';
         document.getElementById('passwordConfirm').value = '';
 
-        updateAvatarContainer('avatarEditContainer', profile.avatar, profile.letter, 'edit-avatar');
+        updateAvatarContainer('avatarEditContainer', profile.avatar, profile.letter, 'profile-edit-avatar');
 
         selectedAvatarFile = null;
         deleteAvatar = false;
@@ -283,7 +287,10 @@ export class ProfilePage {
       },
     };
 
-    const editValidator = new FormValidator('editProfileForm', editValidators, editInformation, '.primary-button');
+    const editValidator = new FormValidator('editProfileForm', editValidators, editInformation, {
+      submitButtonSelector: '.general-error',
+      messageSelector: '#generalErrorProfile',
+    });
 
     editValidator.init();
 
@@ -322,6 +329,8 @@ export class ProfilePage {
           if (email !== profile.email || login !== profile.nickname || password) {
             if (!password) password = '';
             const data = await apiServise.editUser(login, email, password);
+            profile.nickname = data.Login;
+            profile.email = data.Email;
             const newLogin = data.Login;
 
             const headerUsername = document.querySelector('.header-username');
@@ -329,10 +338,9 @@ export class ProfilePage {
               headerUsername.textContent = newLogin;
             }
 
-            const profileUsername = document.querySelector('.profile-username');
-            if (profileUsername) {
-              profileUsername.textContent = newLogin;
-            }
+            const profileUsername = document.querySelectorAll('.profile-username');
+            profileUsername.forEach((username) => (username.textContent = newLogin));
+            setupMarquees();
 
             const newLetter = newLogin[0] ? newLogin[0].toUpperCase() : '?';
             document.querySelectorAll('.default-avatar').forEach((el) => {
@@ -343,7 +351,7 @@ export class ProfilePage {
           editValidator.showMessage('Изменения успешно сохранены!', true);
 
           setTimeout(() => {
-            const messageElement = document.getElementById('generalError');
+            const messageElement = document.getElementById('generalErrorProfile');
             if (messageElement) {
               messageElement.textContent = '';
               messageElement.classList.remove('show');

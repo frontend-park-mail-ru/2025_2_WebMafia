@@ -28,6 +28,10 @@ handlebars public/static/js/components/sidebar/sidebar.hbs -f public/static/js/c
 
 handlebars public/static/js/components/player/player.hbs -f public/static/js/components/player/player.tmpl.js
 
+handlebars public/static/js/components/searched_tracks/searchedTracks.hbs -f public/static/js/components/searched_tracks/searchedTracks.tmpl.js
+
+handlebars public/static/js/components/tracks_row/trackRow.hbs -f public/static/js/components/tracks_row/trackRow.tmpl.js
+
 handlebars public/static/js/pages/album/album.hbs -f public/static/js/pages/album/album.tmpl.js
 
 handlebars public/static/js/pages/playlist/playlist.hbs -f public/static/js/pages/playlist/playlist.tmpl.js
@@ -49,8 +53,6 @@ handlebars public/static/js/partials/play.hbs -f public/static/js/partials/play.
 handlebars public/static/js/partials/playBtn.hbs -f public/static/js/partials/playBtn.tmpl.js
 
 handlebars public/static/js/partials/nextTrack.hbs -f public/static/js/partials/nextTrack.tmpl.js
-
-handlebars public/static/js/partials/prevTrack.hbs -f public/static/js/partials/prevTrack.tmpl.js
 
 handlebars public/static/js/partials/shuffle.hbs -f public/static/js/partials/shuffle.tmpl.js
 
@@ -75,3 +77,9 @@ handlebars public/static/js/partials/pause.hbs -f public/static/js/partials/paus
 handlebars public/static/js/partials/dots.hbs -f public/static/js/partials/dots.tmpl.js
 
 handlebars public/static/js/partials/trash.hbs -f public/static/js/partials/trash.tmpl.js
+
+handlebars public/static/js/partials/delete.hbs -f public/static/js/partials/delete.tmpl.js
+
+handlebars public/static/js/partials/repeatOne.hbs -f public/static/js/partials/repeatOne.tmpl.js
+
+

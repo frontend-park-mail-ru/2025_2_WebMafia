@@ -1,3 +1,12 @@
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker
+      .register('/sw.js')
+      .then((reg) => console.log('Service Worker зарегистрирован!', reg))
+      .catch((err) => console.error('Ошибка регистрации Service Worker:', err));
+  });
+}
+
 import { player } from '@/components/player/player.js';
 import { router } from '@/routing.js';
 import { persistence } from '@/utils/persistence.js';
@@ -32,6 +41,10 @@ function initializePage() {
   registerPartials();
   persistence();
   spaceToggle();
-  player.init();
+  const currentTrack = localStorage.getItem('currentTrackId');
+  const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+  if (currentTrack && isAuthenticated) {
+    player.init();
+  }
   router.init();
 }
