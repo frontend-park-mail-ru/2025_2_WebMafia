@@ -203,7 +203,7 @@
   transition: opacity 0.3s ease;
 }
 
-.play-popular-track .pause-icon {
+.play-popular-track .pause-icon{
   display: none;
 }
 
@@ -216,15 +216,14 @@
 }
 
 .play-popular-track.is-active.paused .pause-icon {
-  display: block;
+  display: block !important;
 }
 
 .play-popular-track.is-active.paused .play-icon {
-  display: none;
+  display: none !important;
 }
 
 .play-popular-track svg {
-  fill: #fafafa;
   height: 18px;
   width: 18px;
 }

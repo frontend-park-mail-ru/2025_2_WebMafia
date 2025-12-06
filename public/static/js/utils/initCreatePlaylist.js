@@ -11,6 +11,10 @@ export function createPlaylis() {
   if (sidebarButton) {
     allCreateButtons.push(sidebarButton);
   }
+  const warningOverlay = document.getElementById('warningOverlaySidebar');
+  const closeWarningBtn = document.getElementById('closeWarningBtnSidebar');
+  const loginBtn = document.getElementById('loginBtnSidebar');
+  const registerBtn = document.getElementById('registerBtnSidebar');
   if (createPlaylistOverlay && allCreateButtons.length > 0) {
     allCreateButtons.forEach((button) => {
       button.addEventListener('click', (e) => {
@@ -18,9 +22,37 @@ export function createPlaylis() {
         if (isAuthenticated) {
           createPlaylistOverlay.classList.add('active');
         } else {
-          router.navigate('/login');
+          warningOverlay.classList.add('active');
         }
       });
+    });
+  }
+  if (closeWarningBtn && warningOverlay) {
+    closeWarningBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      warningOverlay.classList.remove('active');
+    });
+  }
+
+  if (warningOverlay) {
+    warningOverlay.addEventListener('click', (e) => {
+      if (e.target === warningOverlay) {
+        warningOverlay.classList.remove('active');
+      }
+    });
+  }
+
+  if (loginBtn) {
+    loginBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      router.navigate('/login');
+    });
+  }
+
+  if (registerBtn) {
+    registerBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      router.navigate('/register');
     });
   }
 
