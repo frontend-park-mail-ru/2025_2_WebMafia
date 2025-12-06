@@ -1,9 +1,9 @@
-const apiPath = 'localhost';
+export const apiPath = 'wave-music.ru';
 const minioPath = 'wave-music.ru';
 
-const API_BASE_URL = `http://${apiPath}:8080/api/v1`;
-const API_Data_URL = `http://${apiPath}:8081/api/v1`;
-const API_PLAYLIST_URL = `http://${apiPath}:8082/api/v1`;
+const API_BASE_URL = `https://${apiPath}/api/v1`;
+const API_Data_URL = `https://${apiPath}/api/v1`;
+const API_PLAYLIST_URL = `https://${apiPath}/api/v1`;
 export const API_AVATARS_URL = `https://${minioPath}/avatars`;
 export const API_TRACKS_URL = `https://217.16.17.173:8099/music/tracks`;
 
