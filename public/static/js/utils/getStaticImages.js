@@ -1,6 +1,6 @@
 export function getStaticImagePath(apiPath) {
   const logoImage = document.querySelector('.wave-icon');
-  const defaultPlaylist = document.querySelector('.profile-image');
+  const defaultPlaylist = document.querySelector('.profile-image.create-playlist');
   console.log(apiPath);
   if (logoImage) {
     if (apiPath == 'wave-music.ru') {
