@@ -36,4 +36,6 @@ export const playlistRoutes = [
   '/playlists/:id/tracks',
   '/favorite/artists',
   '/favorite/artists/:id',
+  '/favorite/albums',
+  '/favorite/albums/:id'
 ];

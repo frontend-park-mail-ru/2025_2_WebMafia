@@ -30,7 +30,6 @@ export class PlaylistPage {
   async render(id) {
     let pageData = {
       isAuthenticated: localStorage.getItem('isAuthenticated') === 'true',
-      cover: 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7',
     };
 
     if (!pageData.isAuthenticated && id === 'LM')

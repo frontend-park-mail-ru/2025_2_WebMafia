@@ -16,7 +16,6 @@ export class AlbumPage {
   async render(id) {
     let pageData = {
       isAuthenticated: localStorage.getItem('isAuthenticated') === 'true',
-      cover: getValidImage('', 'default-album.png'),
     };
 
     const contentTemplate = Handlebars.templates['album.hbs'];
@@ -30,6 +29,7 @@ export class AlbumPage {
         id: data.album.id,
         title: data.album.title,
         type: data.album.type,
+        is_liked: data.album.is_liked,
         year: data.album.release_date ? data.album.release_date.slice(0, 4) : '',
         cover: getValidImage('albums/' + data.album.avatar_url, 'default-album.png'),
         artist: {
@@ -116,6 +116,30 @@ export class AlbumPage {
         e.preventDefault();
         if (e.target === getDescriptionOverlay) {
           getDescriptionOverlay.classList.remove('active');
+        }
+      });
+    }
+
+    const likeButton = document.getElementById('albumLikeButton');
+    if (likeButton) {
+      likeButton.addEventListener('click', async () => {
+        const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+        if (!isAuthenticated) {
+            router.navigate('/login');
+            return;
+        }
+
+        const albumId = likeButton.dataset.albumId;
+        const isLiked = likeButton.classList.contains('active');
+        likeButton.disabled = true;
+
+        try {
+          await apiServise.toggleAlbumLike(albumId, !isLiked);
+          likeButton.classList.toggle('active');
+        } catch (error) {
+          console.error('Failed to like album:', error);
+        } finally {
+          likeButton.disabled = false;
         }
       });
     }

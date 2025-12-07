@@ -38,7 +38,7 @@ export class LibraryPage {
         name: 'Понравившиеся треки',
         image: 'static/img/liked_tracks.png',
         created_at: new Date(),
-        sub: data.favourite.tracks ? tracksNumParser(data.favourite.tracks.length) : '0 треков',
+        sub: data.favourite_tracks ? tracksNumParser(data.favourite_tracks.length) : '0 треков',
         href: 'playlist/LM',
         type: 'Плейлист',
       };
@@ -47,7 +47,6 @@ export class LibraryPage {
       data.artists.forEach((artist) => {
         const item = {
           name: artist.name,
-          default_avatar: 'default-artist.png',
           image: getValidImage('artists/' + artist.avatar_url, 'default-artist.png'),
           created_at: new Date(artist.created_at),
           type: 'Артист',
@@ -57,19 +56,18 @@ export class LibraryPage {
         pageData.library.push(item);
         pageData.artists.push(item);
       });
-      // data.albums.forEach((album) => {
-      //   const item = {
-      //     name: album.title,
-      //     default_avatar: 'default-album.png',
-      //     image: getValidImage('albums/' + album.avatar_url, 'default-album.png'),
-      //     sub: album.artists ? album.artists[0].name : 'Unknown Artist',
-      //     created_at: new Date(album.created_at),
-      //     type: album.type,
-      //     href: 'album/' + album.id,
-      //   };
-      //   pageData.library.push(item);
-      //   pageData.albums.push(item);
-      // });
+      data.albums.forEach((album) => {
+        const item = {
+          name: album.title,
+          image: getValidImage('albums/' + album.avatar_url, 'default-album.png'),
+          sub: album.artists ? album.artists[0].name : 'Unknown Artist',
+          created_at: new Date(album.created_at),
+          type: album.type,
+          href: 'album/' + album.id,
+        };
+        pageData.library.push(item);
+        pageData.albums.push(item);
+      });
       data.playlists.forEach((playlist) => {
         if (!playlist.is_favorite) {
           const item = {

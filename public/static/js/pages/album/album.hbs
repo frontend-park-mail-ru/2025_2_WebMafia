@@ -9,7 +9,7 @@
           <img class="album-artist-avatar" src="{{ artist.avatar }}" alt="{{ artist.name }}" />
           <a href="artist/{{ artist.id }}" title="{{ artist.name }}" class="album-artist-name href-decoration">{{ artist.name }}</a>
         </div>
-        <img class="album-cover" src="{{ cover }}" alt="{{ title }}" />
+        <img class="album-cover {{#unless cover}}loading{{/unless}}" src="{{ cover }}" alt="{{ title }}" />
         <div class="album-card-title">{{ title }}</div>
         <div class="album-card-info">
           <div class="card-sub">{{ type }}<span class="dot"></span>{{ year }}</div>
@@ -19,7 +19,7 @@
         <div class="card-sub album-description" id="getDescription">{{ description }}</div>
         {{/if}}
         <div class="album-buttons">
-          <button class="like-btn black">{{> likeBtn }}</button>
+          <button class="like-btn black {{#if is_liked}}active{{/if}}" data-album-id="{{ id }}" id="albumLikeButton">{{> likeBtn }}</button>
           <button class="play-button play-button-album" data-album-id="{{ id }}" data-context="album-tracks" data-track-id="{{ track_id }}" data-first-track-id="{{ track_id }}"></button>
           <button class="control-btn shuffle-album black">{{> shuffle}}</button>
         </div>

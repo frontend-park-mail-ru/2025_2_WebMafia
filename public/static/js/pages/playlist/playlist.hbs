@@ -5,7 +5,7 @@
       <div class="blue-background-circle album-blue-position"></div>
       <div class="purple-background-circle album-purple-position"></div>
       <div class="album-card">
-        <div id="playlistAvatarContainer"><img class="album-cover" src="{{ cover }}" alt="{{ title }}"  /></div>
+        <div id="playlistAvatarContainer"><img class="album-cover {{#unless cover}}loading{{/unless}}" src="{{ cover }}" alt="{{ title }}"/></div>
         <div class="album-card-title">{{ title }}</div>
         <div class="album-card-info">
           <div class="card-sub">Плейлист<span class="dot"></span>{{ date }}</div>
@@ -78,10 +78,10 @@
               <div class="track-like-container">
                 <button class="like-btn-track album-like-size {{#if is_liked}}active{{/if}}" data-track-id="{{ id }}">{{> likeBtn }}</button>
                 <div class="track-duration">{{ duration }}</div>
+                {{#unless @root.favourite}}
+                <button class="delete-btn-track" data-track-id="{{ id }}">{{> delete }}</button>
+                {{/unless}}
               </div>
-              {{#unless @root.favourite}}
-              <button class="delete-btn-track" data-track-id="{{ id }}">{{> delete }}</button>
-              {{/unless}}
             </div>
           </div>
           {{/each}}

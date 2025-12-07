@@ -31,7 +31,7 @@ export class ArtistPage {
       pageData.name = data.artist ? data.artist.name : 'Unknown Artist';
       pageData.artist_header = getValidImage('artists/' + data.artist.header_url, 'default-artist.png');
       pageData.description = data.artist.description;
-      pageData.isSubscribed = pageData.isAuthenticated ? data.artist.isSubscribed : false;
+      pageData.isSubscribed = data.artist.isSubscribed;
       pageData.listeners = playsParser(data.artist.play_count) || 0;
       pageData.similar_artists = (data.similar_artists || []).map((artist) => ({
         id: artist.id,
@@ -136,23 +136,22 @@ export class ArtistPage {
 
         const artistId = subscribeButton.dataset.artistId;
         const isSubscribed = subscribeButton.dataset.isSubscribed === 'true';
-        const newSubscriptionState = !isSubscribed;
         subscribeButton.disabled = true;
 
         try {
-          await apiServise.toggleSubscribeToArtist(artistId, newSubscriptionState);
+          await apiServise.toggleSubscribeToArtist(artistId, !isSubscribed);
 
-          subscribeButton.dataset.isSubscribed = newSubscriptionState ? 'true' : 'false';
-          if (newSubscriptionState)
-            subscribeButton.innerText = 'Отписаться';
-          else
+          subscribeButton.dataset.isSubscribed = isSubscribed ? 'false' : 'true';
+          if (isSubscribed)
             subscribeButton.innerText = 'Подписаться';
+          else
+            subscribeButton.innerText = 'Отписаться';
         } catch (error) {
-          console.error('Network error:', error);
+          console.error('Failed to subscribe to artist:', error);
         } finally {
           subscribeButton.disabled = false;
         }
-      })
+      });
     }
   }
 }

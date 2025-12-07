@@ -356,12 +356,18 @@ export class apiServises {
       if (!isAuthenticated)
         return result;
 
-      const likedTrackIds = await this.getFavoriteTrackIds();
+      const [favorite_tracks, favorite_albums] = await Promise.all([
+        this.getFavoriteTrackIds(),
+        this.request('/favorite/albums').catch(() => []),
+      ]);
 
-      if (likedTrackIds) {
+      const subscribedAlbumsIds = new Set(favorite_albums.map(a => a.id));
+      result.album.is_liked = subscribedAlbumsIds.has(album.id);
+
+      if (favorite_tracks) {
         result.tracks = (tracks || []).map((track) => ({
           ...track,
-          is_liked: likedTrackIds.has(track.id),
+          is_liked: favorite_tracks.has(track.id),
         }));
       }
 
@@ -399,16 +405,18 @@ export class apiServises {
 
   async getLibraryPageData() {
     try {
-      const [playlists, artists, favourite] = await Promise.all([
+      const [playlists, artists, albums, favourite] = await Promise.all([
         this.request(`/playlists/my`).catch(() => []),
         this.request('/favorite/artists').catch(() => []),
+        this.request('/favorite/albums').catch(() => []),
         this.request('/playlists/favorite').catch(() => []),
       ]);
 
       return {
         playlists: playlists || [],
         artists: artists || [],
-        favourite: favourite || {},
+        albums: albums || [],
+        favourite_tracks: favourite.tracks || {},
       };
     } catch (error) {
       console.error('Failed to load artist page data:', error);
@@ -604,6 +612,22 @@ export class apiServises {
 
       return this.request(`/favorite/artists/${id}`, {
         method: subscribe ? 'POST' : 'DELETE',
+        headers: {
+          'X-CSRF-Token': csrfToken,
+        },
+      });
+    } catch {
+      console.error('Failed to subscribe to artist');
+      return [];
+    }
+  }
+
+  async toggleAlbumLike(id, like) {
+    try {
+      const csrfToken = await this.getCSRFToken();
+
+      return this.request(`/favorite/albums/${id}`, {
+        method: like ? 'POST' : 'DELETE',
         headers: {
           'X-CSRF-Token': csrfToken,
         },
