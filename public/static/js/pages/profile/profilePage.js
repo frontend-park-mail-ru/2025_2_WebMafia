@@ -16,14 +16,8 @@ import { createPlaylis } from '@/utils/initCreatePlaylist';
 
 export class ProfilePage {
   async render() {
-    const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
-    if (!isAuthenticated) {
-      router.navigate('/login');
-      return;
-    }
-
     let pageData = {
-      isAuthenticated: true,
+      isAuthenticated: localStorage.getItem('isAuthenticated') === 'true',
       top_artists: [],
       top_tracks: [],
       recent: [],
@@ -32,7 +26,11 @@ export class ProfilePage {
 
     const contentTemplate = Handlebars.templates['profilePage.hbs'];
     document.getElementById('app').innerHTML = contentTemplate(pageData);
-    document.querySelector('head title').textContent = 'Wave music';
+    document.querySelector('head title').textContent = 'Wave Music';
+    if (!pageData.isAuthenticated) {
+      await Promise.all([header.render(), sidebar.render()]);
+      return;
+    }
 
     try {
       const data = await apiServise.getProfilePageData();
@@ -132,6 +130,10 @@ export class ProfilePage {
           messageElement.textContent = '';
           messageElement.classList.remove('show');
           messageElement.style.backgroundColor = '';
+        }
+        const deleteAvatarbtn = document.getElementById('deleteAvatarButton');
+        if (deleteAvatarbtn) {
+          deleteAvatarbtn.remove();
         }
 
         editProfileOverlay.classList.remove('active');

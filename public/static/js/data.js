@@ -1,8 +1,8 @@
-const API_BASE_URL = 'https://wave-music.ruapi/v1';
-const API_Data_URL = 'https://wave-music.ru/api/v1';
-const API_PLAYLIST_URL = 'https://wave-music.ru/api/v1';
+const API_BASE_URL = 'http://217.16.17.173:8080/api/v1';
+const API_Data_URL = 'http://217.16.17.173:8081/api/v1';
+const API_PLAYLIST_URL = 'http://217.16.17.173:8082/api/v1';
 export const API_AVATARS_URL = 'https://wave-music.ru/avatars';
-export const API_TRACKS_URL = `https://217.16.17.173:8099/music/tracks`;
+export const API_TRACKS_URL = 'https://wave-music.ru/music/tracks';
 
 export class apiServises {
   constructor() {
@@ -455,6 +455,7 @@ export class apiServises {
 
   async getFavoriteTrackIds() {
     try {
+      if (localStorage.getItem('isAuthenticated') !== 'true') return [];
       const favoriteTracks = await this.request('/playlists/favorite');
       if (!favoriteTracks || !Array.isArray(favoriteTracks.tracks)) {
         return [];

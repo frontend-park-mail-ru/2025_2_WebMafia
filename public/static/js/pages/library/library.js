@@ -12,14 +12,8 @@ import { createPlaylis } from '@/utils/initCreatePlaylist';
 
 export class LibraryPage {
   async render() {
-    const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
-    if (!isAuthenticated) {
-      router.navigate('/login');
-      return;
-    }
-
     let pageData = {
-      isAuthenticated: true,
+      isAuthenticated: localStorage.getItem('isAuthenticated') === 'true',
       library: [],
       playlists: [],
       artists: [],
@@ -28,10 +22,15 @@ export class LibraryPage {
     };
 
     const contentTemplate = Handlebars.templates['library.hbs'];
-    document.getElementById('app').innerHTML = contentTemplate();
+    document.getElementById('app').innerHTML = contentTemplate(pageData);
+
+    if (!pageData.isAuthenticated) {
+      await Promise.all([header.render(), sidebar.render()]);
+      return;
+    }
+
     const gridTemplate = Handlebars.templates['libraryGrid.hbs'];
-    document.querySelector('.grid-layout').innerHTML = gridTemplate();
-    document.querySelector('head title').textContent = 'Библиотека';
+    document.querySelector('head title').textContent = 'Wave Music';
 
     try {
       const data = await apiServise.getLibraryPageData();

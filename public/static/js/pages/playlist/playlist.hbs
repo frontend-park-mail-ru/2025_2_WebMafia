@@ -92,7 +92,7 @@
         </div>
         {{#unless favourite}}
         {{#if tracks}}
-          <div class="header-divider"></div>
+          <div class="header-divider" id="playlistTracksDivider"></div>
         {{/if}}
         <div class="playlist-search-title">Давай добавим что-нибудь в твой плейлист</div>
         <div class="playlist-search-container">
@@ -117,7 +117,7 @@
           <button id="closeDescriptionButton" class="close-button" aria-label="Закрыть">{{> close }}</button>
         </div>
         <div class="header-divider"></div>
-        <div class="card-sub all-description">{{ description }}</div>
+        <div class="card-sub all-description" id="allDescription">{{ description }}</div>
       </div>
     </div>
     <div class="overlay" id="editPlaylistOverlay">
@@ -131,15 +131,11 @@
           <div class="edit-profile-info">
             <div class="edit-avatar">
               <div class="edit-avatar-placement user-avatar" id="playlistAvatarEditContainer">
-                {{#if cover}}
-                <img src="{{ cover }}" alt="Ваш аватар" class="profile-image" />
-                {{else}}
-                <div class="default-avatar profile-edit-avatar"><img src="{{ cover }}" alt="Аватар плейлиста" class="profile-image" /></div>
-                {{/if}}
+                <img src="{{ cover }}" alt="Аватар плейлиста" class="profile-image" />
               </div>
               <div class="edit-avatar-buttons" id="editPlaylistAvatarButtons">
                 <button id="setPlaylistAvatarButton" class="secondary-button save-avatar-button-size">Выбрать фото</button>
-                {{#if cover}}
+                {{#if isCover}}
                 <button id="deletePlaylistAvatarButton" class="secondary-button save-avatar-button-size">Удалить фото</button>
                 {{/if}}
               </div>
