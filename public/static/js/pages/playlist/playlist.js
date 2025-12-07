@@ -33,28 +33,33 @@ export class PlaylistPage {
       cover: 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7',
     };
 
+    if (!pageData.isAuthenticated && id === 'LM')
+      router.navigate('/not-found');
+
     const contentTemplate = Handlebars.templates['playlist.hbs'];
     document.getElementById('app').innerHTML = contentTemplate(pageData);
     document.querySelector('head title').textContent = 'Wave Music';
 
     try {
-      const data = await apiServise.getPlaylistPageData(id);
-      this.playlistData = data.playlist;
+      const data = await apiServise.getPlaylistPageData(id, pageData.isAuthenticated);
+      this.playlistData = data;
       const firstTrackId = data.tracks && data.tracks.length > 0 ? data.tracks[0].id : null;
       pageData = {
-          favourite: false,
-          id: data.playlist.id,
-          title: data.playlist.title,
-          date: dateParser(data.playlist.created_at),
-          cover: getValidImage(data.playlist.avatar_url ? data.playlist.avatar_url : '', 'default-playlist.png'),
-          isCover: data.playlist.avatar_url,
-          description: data.playlist.description,
-          track_id: firstTrackId,
-        };
-      if (data.playlist.is_favorite) {
-        pageData.favourite = true;
-        pageData.cover = 'static/img/liked_tracks.png';
-        pageData.description = 'В этот плейлист попадают треки, которым вы поставили отметку "Нравится"'
+        favourite: true,
+        date: 'Создан автоматически',
+        title: 'Понравившиеся треки',
+        cover: 'static/img/liked_tracks.png',
+        description: 'В этот плейлист попадают треки, которым вы поставили отметку "Нравится"',
+        track_id: firstTrackId,
+      };
+      if (id !== 'LM') {
+        pageData.favourite = false;
+        pageData.title = data.title;
+        pageData.id = data.id;
+        pageData.date = dateParser(data.created_at);
+        pageData.cover = getValidImage(data.avatar_url ? data.avatar_url : '', 'default-playlist.png');
+        pageData.isCover = data.avatar_url;
+        pageData.description = data.description;
       }
       let totalDuration = 0;
       pageData.tracks = (data.tracks || []).map((track) => {
@@ -68,7 +73,7 @@ export class PlaylistPage {
           artists: track.artists,
           plays: playsParser(track.play_count),
           duration: durationParser(track.duration_s),
-          is_liked: track.is_liked,
+          is_liked: pageData.favourite ? true : track.is_liked,
         };
       });
       pageData.totalDuration = totalDurationParser(totalDuration);

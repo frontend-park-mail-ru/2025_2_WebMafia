@@ -114,7 +114,7 @@ export class Player extends EventTarget {
               tracks = await apiServise.request(`/artists/${context.id}/tracks`);
               break;
             case 'playlist-tracks':
-              result = await apiServise.getPlaylistPageData(context.id);
+              result = await apiServise.getPlaylistPageData(context.id, true);
               tracks = result.tracks;
               break;
             case 'all-tracks':

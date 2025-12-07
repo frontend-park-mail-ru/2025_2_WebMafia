@@ -31,7 +31,7 @@ export class SearchPage {
 
     try {
       const [searchTracktData, searchAlbumData, searchArtistData] = await Promise.all([
-        apiServise.searchTrack(name),
+        apiServise.searchTrack(name, pageData.isAuthenticated),
         apiServise.searchAlbum(name),
         apiServise.searchArtist(name),
       ]);

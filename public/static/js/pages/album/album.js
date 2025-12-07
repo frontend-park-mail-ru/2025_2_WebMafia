@@ -14,10 +14,9 @@ import { createPlaylis } from '@/utils/initCreatePlaylist';
 
 export class AlbumPage {
   async render(id) {
-    const isAuthenticated = localStorage.getItem('isAuthenticated');
     let pageData = {
+      isAuthenticated: localStorage.getItem('isAuthenticated') === 'true',
       cover: getValidImage('', 'default-album.png'),
-      isAuthenticated: isAuthenticated,
     };
 
     const contentTemplate = Handlebars.templates['album.hbs'];
@@ -25,7 +24,7 @@ export class AlbumPage {
     document.querySelector('head title').textContent = 'Wave Music';
 
     try {
-      const data = await apiServise.getAlbumPageData(id);
+      const data = await apiServise.getAlbumPageData(id, pageData.isAuthenticated);
       const firstTrackId = data.tracks.length > 0 ? data.tracks[0].id : false;
       pageData = {
         id: data.album.id,
@@ -40,7 +39,6 @@ export class AlbumPage {
         },
         description: data.album.description,
         track_id: firstTrackId,
-        isAuthenticated: isAuthenticated,
       };
       let totalDuration = 0;
       pageData.tracks = (data.tracks || []).map((track) => {

@@ -41,12 +41,12 @@
   position: sticky;
   top: 4dvh;
   background-color: #fafafa;
-  width: 300px;
+  width: 320px;
   display: flex;
   flex-direction: column;
   align-items: center;
   border-radius: 30px;
-  padding: 25px 30px;
+  padding: 25px;
   z-index: 1;
   margin: 4dvh 0 0 4dvh;
 }

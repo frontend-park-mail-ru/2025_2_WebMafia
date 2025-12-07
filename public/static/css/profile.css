@@ -15,7 +15,7 @@
 .profile-page {
   box-sizing: content-box;
   background-color: #ffffff;
-  padding: 23px 0 0 23px;
+  padding: 23px 0 23px 23px;
   color: black;
   flex: 1;
   transition: overflow-y 0.3s ease;

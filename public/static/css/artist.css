@@ -100,6 +100,10 @@
   height: 15px;
 }
 
+.artist-subscription.loading {
+  opacity: 0;
+}
+
 .artist-description {
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -178,7 +182,7 @@
 .right-row-content {
   flex: 1;
   display: grid;
-  grid-template-columns: 31% 20% 18% 17% 6% 8%;
+  grid-template-columns: 30% 20% 20% 20% 10%;
   align-items: center;
   gap: 8px;
 }

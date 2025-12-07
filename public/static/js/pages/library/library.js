@@ -39,24 +39,24 @@ export class LibraryPage {
         image: 'static/img/liked_tracks.png',
         created_at: new Date(),
         sub: data.favourite.tracks ? tracksNumParser(data.favourite.tracks.length) : '0 треков',
-        href: 'playlist/' + data.favourite.id,
+        href: 'playlist/LM',
         type: 'Плейлист',
       };
       pageData.library.push(item);
       pageData.playlists.push(item);
-      // data.artists.forEach((artist) => {
-      //   const item = {
-      //     name: artist.name,
-      //     default_avatar: 'default-artist.png',
-      //     image: getValidImage('artists/' + artist.avatar_url, 'default-artist.png'),
-      //     created_at: new Date(artist.created_at),
-      //     type: 'Артист',
-      //     sub: playsParser(artist.play_count),
-      //     href: 'artist/' + artist.id,
-      //   };
-      //   pageData.library.push(item);
-      //   pageData.artists.push(item);
-      // });
+      data.artists.forEach((artist) => {
+        const item = {
+          name: artist.name,
+          default_avatar: 'default-artist.png',
+          image: getValidImage('artists/' + artist.avatar_url, 'default-artist.png'),
+          created_at: new Date(artist.created_at),
+          type: 'Артист',
+          sub: playsParser(artist.play_count || 0),
+          href: 'artist/' + artist.id,
+        };
+        pageData.library.push(item);
+        pageData.artists.push(item);
+      });
       // data.albums.forEach((album) => {
       //   const item = {
       //     name: album.title,
