@@ -19,6 +19,18 @@ export class Player extends EventTarget {
     this.originalQueue = [];
     this.playQueue = [];
     this.currentContext = null;
+
+    this.channel = new BroadcastChannel('music_channel_api');
+
+    this.channel.onmessage = (event) => {
+      const { type } = event.data;
+
+      if (type === 'PLAYING') {
+        this.audio.pause();
+        this.togglePlayPauseSwitch(false);
+        localStorage.setItem('isPLaying', 'false');
+      }
+    };
   }
 
   async init() {
@@ -53,6 +65,10 @@ export class Player extends EventTarget {
       const likeBtn = playerElement.querySelector('.like-btn');
       if (likeBtn && this.onLikeClickBound) {
         likeBtn.removeEventListener('click', this.onLikeClickBound);
+      }
+      if (this.channel) {
+        this.channel.close();
+        this.channel = null;
       }
       playerElement.remove();
     }
@@ -223,6 +239,8 @@ export class Player extends EventTarget {
     }
 
     await Promise.all([this.loadTrack(trackData, context), this.audio.play()]);
+
+    this.channel.postMessage({ type: 'PLAYING' });
 
     this.togglePlayPauseSwitch(true);
     localStorage.setItem('isPlaying', 'true');
@@ -564,6 +582,9 @@ export class Player extends EventTarget {
     pauseBtn.classList.add('disactive');
     playBtn.addEventListener('click', async () => {
       await this.audio.play();
+
+      this.channel.postMessage({ type: 'PLAYING' });
+
       localStorage.setItem('isPlaying', 'true');
       localStorage.setItem('currentTrackId', this.currentTrack.id);
       this.togglePlayPauseSwitch(true);
@@ -578,6 +599,9 @@ export class Player extends EventTarget {
   async togglePlayPause() {
     if (this.audio.paused) {
       await this.audio.play();
+
+      this.channel.postMessage({ type: 'PLAYING' });
+
       localStorage.setItem('isPlaying', 'true');
       this.togglePlayPauseSwitch(true);
     } else {

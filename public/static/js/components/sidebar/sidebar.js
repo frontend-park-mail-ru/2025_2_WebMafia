@@ -1,4 +1,4 @@
-import { getStaticImagePath } from '../../utils/getStaticImages.js';
+import { getStaticImagePath } from '@/utils/getStaticImages.js';
 
 export class Sidebar {
   async render() {
