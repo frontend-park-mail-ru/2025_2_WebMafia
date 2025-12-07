@@ -23,7 +23,7 @@ export class ArtistTracksPage {
     document.getElementById('app').innerHTML = contentTemplate(pageData);
 
     try {
-      const data = await apiServise.getArtistTracks(artistId);
+      const data = await apiServise.getArtistTracks(artistId, pageData.isAuthenticated);
       if (data) {
         pageData.artistName = data.artist.name;
         pageData.artistId = data.artist.id;

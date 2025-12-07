@@ -1,3 +1,5 @@
+import { getStaticImagePath } from '@/utils/getStaticImages.js';
+
 export class Sidebar {
   async render() {
     const contentTemplate = Handlebars.templates['sidebar.hbs'];
@@ -7,7 +9,7 @@ export class Sidebar {
     if (layout && !document.getElementById('sidebar')) {
       layout.insertAdjacentHTML('afterbegin', headerHTML);
     }
-
+    getStaticImagePath();
     this.activePath();
   }
 

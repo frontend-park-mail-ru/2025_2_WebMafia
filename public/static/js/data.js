@@ -112,15 +112,20 @@ export class apiServises {
         return result;
 
       const [favorite_tracks, favorite_artists] = await Promise.all([
-        this.getFavoriteTrackIds().catch(() => []),
+        this.request('/playlists/favorite').catch(() => []),
         this.request('/favorite/artists').catch(() => []),
       ]);
 
-      result.popular_tracks = (popular_tracks || []).map((track) => ({
-        ...track,
-        is_liked: Array.isArray(favorite_tracks) ? favorite_tracks.includes(track.id) : false,
-      }));
-      result.artist.isSubscribed = favorite_artists.map(a => a.id).includes(artist.id);
+      const subscribedArtistIds = new Set(favorite_artists.map(a => a.id));
+      result.artist.isSubscribed = subscribedArtistIds.has(artist.id);
+
+      if (favorite_tracks.tracks) {
+        const likedTrackIds = new Set(favorite_tracks.tracks.map(t => t.id));
+        result.popular_tracks = (popular_tracks || []).map((track) => ({
+          ...track,
+          is_liked: likedTrackIds.has(track.id),
+        }));
+      }
 
       return result;
     } catch (error) {
@@ -142,25 +147,27 @@ export class apiServises {
     }
   }
 
-  async getArtistTracks(id) {
+  async getArtistTracks(id, isAuthenticated) {
     try {
-      const [tracks, artist, favorite_tracks] = await Promise.all([
+      const [tracks, artist] = await Promise.all([
         this.request(`/artists/${id}/tracks`).catch(() => []),
         this.request(`/artists/${id}`).catch(() => []),
-        this.getFavoriteTrackIds().catch(() => []),
       ]);
-      let tracks_with_likes;
-      if (favorite_tracks) {
-        tracks_with_likes = (tracks || []).map((track) => ({
+
+      const result = { tracks: tracks || [], artist: artist || {} }
+      if (!isAuthenticated)
+        return result;
+
+      const favorite_tracks = await this.request('/playlists/favorite').catch(() => []);
+
+      if (favorite_tracks.tracks) {
+        const likedTrackIds = new Set(favorite_tracks.tracks.map(t => t.id));
+        result.tracks = (tracks || []).map((track) => ({
           ...track,
-          is_liked: favorite_tracks.includes(track.id),
-        }));
-      } else {
-        tracks_with_likes = (tracks || []).map((track) => ({
-          ...track,
+          is_liked: likedTrackIds.has(track.id),
         }));
       }
-      return { tracks: tracks_with_likes, artist: artist };
+      return result;
     } catch (error) {
       console.error('Failed to load artist albums page data:', error);
       throw error;
@@ -172,25 +179,24 @@ export class apiServises {
       const [artists, top_tracks, favorite_tracks] = await Promise.all([
         this.request('/artists?limit=10').catch(() => []),
         this.request(`/tracks?limit=5`).catch(() => []),
-        this.getFavoriteTrackIds().catch(() => []),
+        this.request('/playlists/favorite').catch(() => []),
       ]);
-      let tracks_with_likes;
-      if (favorite_tracks) {
-        tracks_with_likes = (top_tracks || []).map((track) => ({
+
+      const result = {
+        top_artists: artists || [],
+        top_tracks: top_tracks || [],
+        recent: artists || [],
+      }
+
+      if (favorite_tracks.tracks) {
+        const likedTrackIds = new Set(favorite_tracks.tracks.map(t => t.id));
+        result.top_tracks = (top_tracks || []).map((track) => ({
           ...track,
-          is_liked: favorite_tracks.includes(track.id),
-        }));
-      } else {
-        tracks_with_likes = (top_tracks || []).map((track) => ({
-          ...track,
+          is_liked: likedTrackIds.has(track.id),
         }));
       }
 
-      return {
-        top_artists: artists || [],
-        top_tracks: tracks_with_likes || [],
-        recent: artists || [],
-      };
+      return result;
     } catch (error) {
       console.error('Failed to load profile page data:', error);
       throw error;
@@ -448,6 +454,7 @@ export class apiServises {
 
   async getFavoriteTrackIds() {
     try {
+      if (localStorage.getItem('isAuthenticated') !== 'true') return [];
       const favoriteTracks = await this.request('/playlists/favorite');
       if (!favoriteTracks || !Array.isArray(favoriteTracks.tracks)) {
         return [];

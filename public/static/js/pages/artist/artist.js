@@ -12,10 +12,6 @@ import { likeTrackBtn } from '@/utils/likeTrack.js';
 import { createPlaylis } from '@/utils/initCreatePlaylist';
 
 export class ArtistPage {
-  constructor() {
-    this.isSubscribed = false;
-  }
-
   async render(id) {
     let pageData = {
       isAuthenticated: localStorage.getItem('isAuthenticated') === 'true',

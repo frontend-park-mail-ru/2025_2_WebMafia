@@ -669,11 +669,15 @@ export class Player extends EventTarget {
     if (!player) return;
 
     const minHeight = 60;
-    const maxHeight = window.innerHeight - 80 - 64 + 4;
+    let maxHeight = calcMaxHeight();
     let isDraggingSlider = false;
     const closeThreshold = 100;
     let startY = 0;
     let startHeight = 0;
+
+    function calcMaxHeight() {
+      return window.innerHeight - 80 - 64 + 4;
+    }
 
     player.addEventListener('click', (e) => {
       if (window.innerWidth > 800 || player.classList.contains('expanded')) return;

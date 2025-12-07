@@ -2,6 +2,7 @@ import { apiServise } from '@/data.js';
 import { router } from '@/routing.js';
 import { getValidImage } from '@/parsers.js';
 import { player } from '@/components/player/player.js';
+import { getStaticImagePath } from '@/utils/getStaticImages.js';
 
 export class Header {
   async render(searchValue) {
@@ -18,7 +19,7 @@ export class Header {
       section.insertAdjacentHTML('afterbegin', headerHTML);
     }
     this.addEventListeners();
-
+    getStaticImagePath();
     if (!pageData.isAuthenticated) return;
 
     try {
@@ -34,6 +35,7 @@ export class Header {
     }
 
     document.getElementById('header').outerHTML = contentTemplate(pageData);
+    getStaticImagePath();
 
     this.addEventListeners();
     this.profileDropdown();
@@ -120,7 +122,7 @@ export class Header {
         searchToggle.classList.add('hidden');
         headLeft.style.visibility = 'hidden';
         searchContainer.classList.add('active');
-      }, 100)
+      }, 100);
 
       setTimeout(() => searchInput.focus(), 200);
     });

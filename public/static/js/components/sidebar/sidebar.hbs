@@ -13,6 +13,29 @@
      </div>--->
   </nav>
 </aside>
+<div class="overlay" id="warningOverlaySidebar">
+  <div class="window">
+    <div class="overlay-header">
+      <span class="album-title">Чтобы создавать плейлисты вам нужно войти в аккаунт</span>
+      <button id="closeWarningBtnSidebar" class="close-button" aria-label="Закрыть">{{> close }}</button>
+    </div>
+    <div class="header-divider"></div>
+    <div class="warning-btns-overlay">
+      <div class="save-overlay-button">
+      <button class="primary-button login secondary-button save-overlay-button-size" id="loginBtnSidebar">
+        Войти
+      </button>
+    </div>
+    <div class="save-overlay-button">
+      <button class="primary-button register save-overlay-button-size" id="registerBtnSidebar">
+        Зарегистрироваться
+      </button>
+    </div>
+    </div>
+    
+  </div>
+</div>
+
 <div class="purple-background-circle sidebar-purple-position"></div>
 <div class="blue-background-circle sidebar-blue-position"></div>
     <div class="overlay" id="createPlaylistOverlay">
@@ -27,9 +50,9 @@
             <div class="edit-avatar">
               <div class="edit-avatar-placement">
                 <img
-                  src="static/img/default-playlist.png"
+                  src=""
                   alt="Аватар плейлиста"
-                  class="profile-image"
+                  class="profile-image create-playlist"
                   id="playlistAvatar"
                 />
               </div>

@@ -3,6 +3,7 @@
   <div class="layout">
     {{> sidebar}}
     <div class="profile-wrapper" id="scrollContent">
+      {{#if isAuthenticated}}
       <div class="profile-container">
         <div class="blue-background-circle profile-blue-position"></div>
         <div class="purple-background-circle profile-purple-position"></div>
@@ -104,6 +105,15 @@
           <p><i class="slide-btn right"></i></p>
         </div>
       </div>
+      {{else}}
+        <div class="search-alert-container">
+          <div class="search-alert-text">
+            <div class="search-alert-title">Профиль</div>
+            <div class="search-alert-subtitle">Войдите, чтобы перейти к персональным настройкам.</div>
+            <a href="/login" class="secondary-button login-secondary-button">Войти</a>
+          </div>
+        </div>
+      {{/if}}
     </div>
     <div class="overlay" id="editProfileOverlay">
       <div class="window">
