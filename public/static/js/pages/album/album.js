@@ -14,7 +14,11 @@ import { createPlaylis } from '@/utils/initCreatePlaylist';
 
 export class AlbumPage {
   async render(id) {
-    let pageData = {};
+    const isAuthenticated = localStorage.getItem('isAuthenticated');
+    let pageData = {
+      cover: getValidImage('', 'default-album.png'),
+      isAuthenticated: isAuthenticated,
+    };
 
     const contentTemplate = Handlebars.templates['album.hbs'];
     document.getElementById('app').innerHTML = contentTemplate(pageData);
@@ -36,6 +40,7 @@ export class AlbumPage {
         },
         description: data.album.description,
         track_id: firstTrackId,
+        isAuthenticated: isAuthenticated,
       };
       let totalDuration = 0;
       pageData.tracks = (data.tracks || []).map((track) => {

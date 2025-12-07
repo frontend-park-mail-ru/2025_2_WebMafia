@@ -2,6 +2,8 @@ import { apiServise } from '@/data.js';
 import { router } from '@/routing.js';
 import { getValidImage } from '@/parsers.js';
 import { player } from '@/components/player/player.js';
+import { apiPath } from '../../data.js';
+import { getStaticImagePath } from '../../utils/getStaticImages.js';
 
 export class Header {
   async render(searchValue) {
@@ -18,7 +20,7 @@ export class Header {
       section.insertAdjacentHTML('afterbegin', headerHTML);
     }
     this.addEventListeners();
-
+    getStaticImagePath(apiPath);
     if (!pageData.isAuthenticated) return;
 
     try {
@@ -34,6 +36,7 @@ export class Header {
     }
 
     document.getElementById('header').outerHTML = contentTemplate(pageData);
+    getStaticImagePath(apiPath);
 
     this.addEventListeners();
     this.profileDropdown();

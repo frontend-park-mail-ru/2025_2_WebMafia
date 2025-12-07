@@ -285,6 +285,13 @@
   }
 }
 
+.login-secondary-button {
+  width: 100px;
+  height: 20px;
+  margin-top: 10px;
+  font-size: 18px;
+}
+
 @media (max-width: 900px) {
   .profile-avatar {
     height: 150px;

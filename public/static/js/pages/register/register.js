@@ -8,10 +8,11 @@ export class RegistrationPage {
   async render() {
     const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
     if (isAuthenticated) {
-      router.navigate('/');
+      router.navigate('/profile');
     }
     const contentTemplate = Handlebars.templates['register.hbs'];
     document.getElementById('app').innerHTML = contentTemplate();
+    document.querySelector('head title').textContent = 'Wave Music';
     initPasswordShowing();
     this.initValidation();
   }
@@ -102,7 +103,7 @@ export class RegistrationPage {
 
         localStorage.setItem('isAuthenticated', 'true');
 
-        router.navigate('/');
+        window.location.replace('/');
         await player.init();
       } catch (error) {
         let msg = 'Ошибка регистрации';

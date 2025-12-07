@@ -12,6 +12,14 @@
   margin-left: 10px;
 }
 
+.primary-button.login {
+  color: #0a0a0a;
+  font-size: 20px;
+  padding: 10px 15px;
+  transition: color 0.3s ease;
+  font-weight: 600;
+}
+
 .menu {
   margin-top: 15px;
   display: flex;

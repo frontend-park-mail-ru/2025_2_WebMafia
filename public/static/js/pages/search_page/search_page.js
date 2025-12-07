@@ -81,10 +81,7 @@ export class SearchPage {
     await Promise.all([header.render(searchValue), sidebar.render()]);
 
     const searchInput = document.getElementById('searchInput');
-
-    if (searchInput && searchInput.value) {
-      searchInput.classList.add('is-highlighted');
-    }
+    searchInput.value = decodedName;
 
     slider.sliderFunction();
     initScrollbar();
