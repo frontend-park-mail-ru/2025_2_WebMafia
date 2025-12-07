@@ -12,6 +12,10 @@ import { likeTrackBtn } from '@/utils/likeTrack.js';
 import { createPlaylis } from '@/utils/initCreatePlaylist';
 
 export class ArtistPage {
+  constructor() {
+    this.isSubscribed = false;
+  }
+
   async render(id) {
     let pageData = {
       isAuthenticated: localStorage.getItem('isAuthenticated') === 'true',
@@ -26,11 +30,12 @@ export class ArtistPage {
     document.querySelector('head title').textContent = 'Wave music';
 
     try {
-      const data = await apiServise.getArtistPageData(id);
+      const data = await apiServise.getArtistPageData(id, pageData.isAuthenticated);
       pageData.id = data.artist.id;
       pageData.name = data.artist ? data.artist.name : 'Unknown Artist';
       pageData.artist_header = getValidImage('artists/' + data.artist.header_url, 'default-artist.png');
       pageData.description = data.artist.description;
+      pageData.isSubscribed = pageData.isAuthenticated ? data.artist.isSubscribed : false;
       pageData.listeners = playsParser(data.artist.play_count) || 0;
       pageData.similar_artists = (data.similar_artists || []).map((artist) => ({
         id: artist.id,
@@ -122,6 +127,36 @@ export class ArtistPage {
 
         container.classList.toggle('expanded');
       });
+    }
+
+    const subscribeButton = document.getElementById('artistSubscribeButton');
+    if (subscribeButton) {
+      subscribeButton.addEventListener('click', async () => {
+        const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+        if (!isAuthenticated) {
+            router.navigate('/login');
+            return;
+        }
+
+        const artistId = subscribeButton.dataset.artistId;
+        const isSubscribed = subscribeButton.dataset.isSubscribed === 'true';
+        const newSubscriptionState = !isSubscribed;
+        subscribeButton.disabled = true;
+
+        try {
+          await apiServise.toggleSubscribeToArtist(artistId, newSubscriptionState);
+
+          subscribeButton.dataset.isSubscribed = newSubscriptionState ? 'true' : 'false';
+          if (newSubscriptionState)
+            subscribeButton.innerText = 'Отписаться';
+          else
+            subscribeButton.innerText = 'Подписаться';
+        } catch (error) {
+          console.error('Network error:', error);
+        } finally {
+          subscribeButton.disabled = false;
+        }
+      })
     }
   }
 }

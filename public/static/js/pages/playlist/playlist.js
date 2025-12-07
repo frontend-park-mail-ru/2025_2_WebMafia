@@ -17,7 +17,7 @@ import { playTrack } from '@/playTrackBtn.js';
 import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
 import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
 import { FormValidator } from '@/validation.js';
-import { likeChange, likeTrackBtn } from '../../utils/likeTrack';
+import { likeChange, likeTrackBtn } from '@/utils/likeTrack';
 import { player } from '@/components/player/player';
 import { createPlaylis } from '@/utils/initCreatePlaylist';
 

@@ -14,7 +14,18 @@
         <div class="artist-name">{{ name }}</div>
         <div class="artist-interaction">
           <div class="listeners-num">{{ listeners }}</div>
-          <button class="primary-outline-button artist-subscription">Подписаться</button>
+          <button
+            class="primary-outline-button artist-subscription"
+            id="artistSubscribeButton"
+            data-artist-id="{{ id }}"
+            data-is-subscribed="{{ isSubscribed }}">
+
+            {{#if isSubscribed}}
+                Отписаться
+            {{else}}
+                Подписаться
+            {{/if}}
+        </button>
         </div>
         {{#if description}}
         <p class="artist-description">{{ description }}</p>

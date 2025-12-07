@@ -1,64 +1,47 @@
-const API_BASE_URL = 'http://217.16.17.173:8080/api/v1';
-const API_Data_URL = 'http://217.16.17.173:8081/api/v1';
-const API_PLAYLIST_URL = 'http://217.16.17.173:8082/api/v1';
-export const API_AVATARS_URL = 'http://217.16.17.173:8099/avatars';
-export const API_TRACKS_URL = 'http://217.16.17.173:8099/music/tracks';
+export const API_AVATARS_URL = 'https://wave-music.ru/avatars';
+export const API_TRACKS_URL = `https://wave-music.ru/music/tracks`;
+import { userRoutes, tracksArtistAlbumRoutes, playlistRoutes } from '@/devRoutesConfig.js';
 
 export class apiServises {
   constructor() {
-    this.baseURL = API_BASE_URL;
-    this.dataURL = API_Data_URL;
-    this.playlistURL = API_PLAYLIST_URL;
+    this.baseURL = import.meta.env.VITE_API_BASE_URL;
+    this.dataURL = import.meta.env.VITE_API_DATA_URL;
+    this.playlistURL = import.meta.env.VITE_API_PLAYLIST_URL;
     this.csrfToken = null;
-    this.userRoutes = ['/login', '/register', '/csrf-token', '/logout', '/avatar', '/profile', '/me'];
-    this.tracksArtistAlbumRoutes = [
-      '/artists/search',
-      '/artists',
-      '/artists/:id',
-      '/albums/search',
-      '/albums',
-      '/albums/:id',
-      '/artists/:id/albums',
-      '/tracks/search',
-      '/tracks',
-      '/tracks/:id',
-      '/artists/:id/tracks',
-      '/albums/:id/tracks',
-      '/genres/:id/tracks',
-      '/tracks/:id/listen',
-    ];
-    this.playlistRoutes = [
-      '/playlists/favorite',
-      '/playlists/favorite/add-track',
-      '/playlists/:id',
-      '/users/:id/playlists',
-      '/playlists',
-      '/playlists/:id',
-      '/playlists/:id',
-      '/playlists/:id/avatar',
-      '/playlists/:id/avatar',
-      '/playlists/my',
-      '/playlists/:id/tracks',
-      '/playlists/:id/tracks',
-    ];
     this.PlaylistId = null;
+
+    this.userRoutes = [];
+    this.tracksArtistAlbumRoutes = [];
+    this.playlistRoutes = [];
+
+    if (import.meta.env.DEV) {
+       this.userRoutes = userRoutes;
+       this.tracksArtistAlbumRoutes = tracksArtistAlbumRoutes;
+       this.playlistRoutes = playlistRoutes;
+    }
   }
 
   async request(endpoint, options = {}) {
     let url = '';
-    const endpointWithoutQuery = endpoint.split('?')[0];
-    const endpointPattern = endpointWithoutQuery.replace(/[a-fA-F0-9-]{36}/g, ':id');
 
-    if (this.userRoutes.includes(endpointPattern)) {
-      url = `${this.baseURL}${endpoint}`;
-    } else if (this.tracksArtistAlbumRoutes.includes(endpointPattern)) {
-      url = `${this.dataURL}${endpoint}`;
-    } else if (this.playlistRoutes.includes(endpointPattern)) {
-      url = `${this.playlistURL}${endpoint}`;
+    if (import.meta.env.DEV) {
+      const endpointWithoutQuery = endpoint.split('?')[0];
+      const endpointPattern = endpointWithoutQuery.replace(/[a-fA-F0-9-]{36}/g, ':id');
+
+      if (this.userRoutes.includes(endpointPattern)) {
+        url = `${this.baseURL}${endpoint}`;
+      } else if (this.tracksArtistAlbumRoutes.includes(endpointPattern)) {
+        url = `${this.dataURL}${endpoint}`;
+      } else if (this.playlistRoutes.includes(endpointPattern)) {
+        url = `${this.playlistURL}${endpoint}`;
+      } else {
+        console.warn(`Роут ${endpoint} не найден в доступных маршрутах (DEV mode)`);
+        throw new Error(`Unknown route: ${endpoint}`);
+      }
     } else {
-      console.warn(`Роут ${endpoint} не найден в доступных маршрутах`);
-      throw new Error(`Unknown route: ${endpoint}`);
+      url = `${this.baseURL}${endpoint}`;
     }
+
     const isFormData = options.body instanceof FormData;
 
     const config = {
@@ -109,27 +92,37 @@ export class apiServises {
     }
   }
 
-  async getArtistPageData(id) {
+  async getArtistPageData(id, isAuthenticated) {
     try {
-      const [albums, popular_tracks, artist, similar_artists, favorite_tracks] = await Promise.all([
+      const [albums, popular_tracks, artist, similar_artists] = await Promise.all([
         this.request(`/artists/${id}/albums?limit=10`).catch(() => []),
         this.request(`/artists/${id}/tracks?limit=5`).catch(() => []),
         this.request(`/artists/${id}`).catch(() => []),
         this.request('/artists?limit=10').catch(() => []),
-        this.getFavoriteTrackIds().catch(() => []),
       ]);
 
-      const popular_tracks_with_likes = (popular_tracks || []).map((track) => ({
+      const result = {
+        albums: albums || [],
+        popular_tracks: popular_tracks || [],
+        artist: artist || {},
+        similar_artists: similar_artists || [],
+      }
+
+      if (!isAuthenticated)
+        return result;
+
+      const [favorite_tracks, favorite_artists] = await Promise.all([
+        this.getFavoriteTrackIds().catch(() => []),
+        this.request('/favorite/artists').catch(() => []),
+      ]);
+
+      result.popular_tracks = (popular_tracks || []).map((track) => ({
         ...track,
         is_liked: Array.isArray(favorite_tracks) ? favorite_tracks.includes(track.id) : false,
       }));
+      result.artist.isSubscribed = favorite_artists.map(a => a.id).includes(artist.id);
 
-      return {
-        albums: albums || [],
-        popular_tracks: popular_tracks_with_likes,
-        artist: artist || {},
-        similar_artists: similar_artists || [],
-      };
+      return result;
     } catch (error) {
       console.error('Failed to load artist page data:', error);
       throw error;
@@ -366,6 +359,11 @@ export class apiServises {
 
   async getPlaylistPageData(id) {
     try {
+      if (id === 'LM') {
+        const favourite = await this.request('/playlists/favorite').catch(() => []);
+        return {playlist: {}, tracks: favourite.tracks || []};
+      }
+
       const [playlist, favorite_tracks] = await Promise.all([
         this.request(`/playlists/${id}`).catch(() => []),
         this.getFavoriteTrackIds().catch(() => []),
@@ -583,6 +581,22 @@ export class apiServises {
   async searchArtist(name) {
     const artist = this.request(`/artists/search?q=${name}&limit=5`).catch(() => []);
     return artist;
+  }
+
+  async toggleSubscribeToArtist(id, subscribe) {
+    try {
+      const csrfToken = await this.getCSRFToken();
+
+      return this.request(`/favorite/artists/${id}`, {
+        method: subscribe ? 'POST' : 'DELETE',
+        headers: {
+          'X-CSRF-Token': csrfToken,
+        },
+      });
+    } catch {
+      console.error('Failed to subscribe to artist');
+      return [];
+    }
   }
 }
 
