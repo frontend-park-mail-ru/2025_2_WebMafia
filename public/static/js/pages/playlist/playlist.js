@@ -20,6 +20,7 @@ import { FormValidator } from '@/validation.js';
 import { likeChange, likeTrackBtn } from '@/utils/likeTrack';
 import { player } from '@/components/player/player';
 import { createPlaylis } from '@/utils/initCreatePlaylist';
+import { getStaticImagePath } from '@/utils/getStaticImages.js';
 
 export class PlaylistPage {
   constructor() {
@@ -32,8 +33,7 @@ export class PlaylistPage {
       isAuthenticated: localStorage.getItem('isAuthenticated') === 'true',
     };
 
-    if (!pageData.isAuthenticated && id === 'LM')
-      router.navigate('/not-found');
+    if (!pageData.isAuthenticated && id === 'LM') router.navigate('/not-found');
 
     const contentTemplate = Handlebars.templates['playlist.hbs'];
     document.getElementById('app').innerHTML = contentTemplate(pageData);
@@ -98,6 +98,7 @@ export class PlaylistPage {
     document.getElementById('app').innerHTML = contentTemplate(pageData);
     document.querySelector('head title').textContent = pageData.title;
     playerOnlyOnPlay();
+    getStaticImagePath(pageData);
     await Promise.all([header.render(), sidebar.render()]);
     slider.sliderFunction();
     initScrollbar();

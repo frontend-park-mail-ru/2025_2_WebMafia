@@ -9,6 +9,7 @@ import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
 import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
 import { FormValidator } from '@/validation.js';
 import { createPlaylis } from '@/utils/initCreatePlaylist';
+import { getStaticImagePath } from '@/utils/getStaticImages.js';
 
 export class LibraryPage {
   async render() {
@@ -104,6 +105,7 @@ export class LibraryPage {
     document.getElementById('app').innerHTML = contentTemplate(pageData);
     document.querySelector('.grid-layout').innerHTML = gridTemplate(pageData);
     playerOnlyOnPlay();
+    getStaticImagePath(pageData);
 
     await Promise.all([header.render(), sidebar.render()]);
 
