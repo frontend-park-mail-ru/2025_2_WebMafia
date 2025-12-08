@@ -225,7 +225,8 @@
 }
 
 .save-overlay-button-size {
-  height: 30px;
+  height: 25px;
+  font-size: 20px;
 }
 
 .edit-profile-info {

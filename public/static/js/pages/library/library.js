@@ -115,6 +115,7 @@ export class LibraryPage {
     playTrack();
     setPlayButtonsOnAuth();
     this.addEventListeners(pageData);
+    this.initContextMenu();
   }
 
   addEventListeners(data) {
@@ -206,6 +207,119 @@ export class LibraryPage {
           document.querySelector('.grid-layout').innerHTML = gridTemplate(data);
         }
       });
+    });
+  }
+
+  initContextMenu() {
+    let activeMenu = null;
+    let longPressTimer;
+
+    const menuConfig = {
+      'Плейлист': [
+        { text: 'Редактировать', icon: 'pencil', action: 'edit' },
+        { text: 'Удалить', icon: 'trash', action: 'delete' }
+      ],
+      'Артист': [
+        { text: 'Отписаться', icon: 'close', action: 'unsubscribe' }
+      ],
+      'default': [
+        { text: 'Удалить из библиотеки', icon: 'close', action: 'deleteFromLibrary' }
+      ]
+    };
+
+    const createAndShowMenu = (x, y, type) => {
+      removeMenu();
+
+      const items = menuConfig[type] || menuConfig['default'];
+
+      const menuTemplate = Handlebars.templates['contextMenu.hbs'];
+
+      const tempDiv = document.createElement('div');
+      tempDiv.innerHTML = menuTemplate({ items: items });
+      const menuElement = tempDiv.firstElementChild;
+
+      document.body.appendChild(menuElement);
+      activeMenu = menuElement;
+
+      const menuRect = menuElement.getBoundingClientRect();
+      const winWidth = window.innerWidth;
+      const winHeight = window.innerHeight;
+
+      let posX = x;
+      let posY = y;
+
+      if (x + menuRect.width > winWidth) {
+        posX = x - menuRect.width;
+      }
+      if (y + menuRect.height > winHeight) {
+        posY = y - menuRect.height;
+      }
+
+      menuElement.style.left = `${posX}px`;
+      menuElement.style.top = `${posY}px`;
+
+      menuElement.addEventListener('click', (e) => {
+        const btn = e.target.closest('.actions-item');
+        if (btn) {
+           e.stopPropagation();
+           const action = btn.dataset.action;
+
+           handleMenuAction(action);
+           removeMenu();
+        }
+      });
+    };
+
+    const removeMenu = () => {
+      if (activeMenu) {
+        activeMenu.remove();
+        activeMenu = null;
+      }
+    };
+
+    const handleMenuAction = (action, href) => {
+      switch (action) {
+        case 'delete':
+           // apiServise.deletePlaylist(href)...
+           break;
+        case 'edit':
+           // router.navigate(...)
+           break;
+        // ... другие действия
+      }
+    };
+
+    const handleTrigger = (e, clientX, clientY) => {
+      const card = e.target.closest('.card');
+      if (card) {
+        e.preventDefault();
+        const type = card.dataset.type;
+        createAndShowMenu(clientX, clientY, type);
+      }
+    };
+
+    document.addEventListener('contextmenu', (e) => {
+      if (e.target.closest('.grid-layout')) {
+        handleTrigger(e, e.clientX, e.clientY);
+      }
+    });
+
+    document.addEventListener('touchstart', (e) => {
+      if (!e.target.closest('.grid-layout')) return;
+      longPressTimer = setTimeout(() => {
+        const touch = e.touches[0];
+        handleTrigger(e, touch.clientX, touch.clientY);
+      }, 500);
+    }, { passive: false });
+
+    const cancelLongPress = () => clearTimeout(longPressTimer);
+    document.addEventListener('touchmove', cancelLongPress);
+    document.addEventListener('touchend', cancelLongPress);
+
+    document.addEventListener('click', (e) => {
+      if (activeMenu && !activeMenu.contains(e.target)) {
+        removeMenu();
+      }
     });
   }
 }

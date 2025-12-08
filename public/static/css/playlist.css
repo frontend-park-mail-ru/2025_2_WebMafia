@@ -1,11 +1,9 @@
-.dots,
-.pencil {
+.dots {
   all: unset;
   cursor: pointer;
 }
 
-.dots svg,
-.pencil svg {
+.dots svg {
   transition: all 0.3s ease;
 }
 
@@ -19,8 +17,7 @@
   height: 22px;
 }
 
-.dots:hover svg,
-.pencil:hover svg {
+.dots:hover svg {
   fill: #a766ff;
 }
 
@@ -30,6 +27,7 @@
 
 .actions-menu {
   position: absolute;
+  width: max-content;
   background: #e6e9f5;
   color: black;
   border: #d0bbbb solid 2px;
@@ -55,14 +53,23 @@
   font-size: 18px;
   font-weight: 500;
   box-sizing: border-box;
+  color: #1e1e1e;
 }
 
-.pencil-svg {
-  transition: fill 0.3s ease;
+.actions-item-svg {
+  display: flex;
+  align-items: center;
 }
 
-.actions-item:hover .pencil-svg {
-  fill: #9c58e0;
+.actions-item-svg svg {
+  stroke: #1e1e1e;
+  width: 22px;
+  height: 22px;
+  transition: stroke 0.3s ease;
+}
+
+.actions-item:hover .actions-item-svg svg {
+  stroke: #9c58e0;
 }
 
 .actions-item:hover {
@@ -154,14 +161,16 @@
   gap: 15px;
 }
 
-.primary-button.close-warning {
-  background: #e6e8ef;
-  height: 30px;
-  color: #000;
+.warning-sub {
+  gap: 6px;
+  margin-top: 25px;
+  font-size: 20px;
+  font-weight: 400;
 }
 
-.primary-button.close-warning:hover {
- background: #c7cad3;
+.warning-title {
+  font-weight: 600;
+  font-size: 28px;
 }
 
 .tracks-duration-wrapper.playlists {
