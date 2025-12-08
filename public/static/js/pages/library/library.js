@@ -7,9 +7,12 @@ import { getValidImage, playsParser, tracksNumParser } from '@/parsers.js';
 import { playTrack } from '@/playTrackBtn.js';
 import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
 import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
-import { FormValidator } from '@/validation.js';
 import { createPlaylis } from '@/utils/initCreatePlaylist';
 import { getStaticImagePath } from '@/utils/getStaticImages.js';
+import { copyToClipboard } from "@/utils/shareBtn.js";
+import { deletePlaylistLogic } from "@/utils/deletePlaylist.js";
+import { confirmation } from "@/components/confirmation_modal/confirmationModal.js";
+import { showInfoMessage } from "@/utils/showInfoMessage.js";
 
 export class LibraryPage {
   async render() {
@@ -47,6 +50,7 @@ export class LibraryPage {
       pageData.playlists.push(item);
       data.artists.forEach((artist) => {
         const item = {
+          id: artist.id,
           name: artist.name,
           image: getValidImage('artists/' + artist.avatar_url, 'default-artist.png'),
           created_at: new Date(artist.created_at),
@@ -59,6 +63,7 @@ export class LibraryPage {
       });
       data.albums.forEach((album) => {
         const item = {
+          id: album.id,
           name: album.title,
           image: getValidImage('albums/' + album.avatar_url, 'default-album.png'),
           sub: album.artists ? album.artists[0].name : 'Unknown Artist',
@@ -72,6 +77,7 @@ export class LibraryPage {
       data.playlists.forEach((playlist) => {
         if (!playlist.is_favorite) {
           const item = {
+            id: playlist.id,
             name: playlist.title,
             default_avatar: 'default-playlist.png',
             image: getValidImage(playlist.avatar_url, 'default-album.png'),
@@ -217,18 +223,39 @@ export class LibraryPage {
     const menuConfig = {
       'Плейлист': [
         { text: 'Редактировать', icon: 'pencil', action: 'edit' },
+        { text: 'Поделиться', icon: 'share', action: 'share' },
         { text: 'Удалить', icon: 'trash', action: 'delete' }
       ],
       'Артист': [
-        { text: 'Отписаться', icon: 'close', action: 'unsubscribe' }
+        { text: 'Отписаться', icon: 'close', action: 'unsubscribe' },
+        { text: 'Поделиться', icon: 'share', action: 'share' },
       ],
       'default': [
-        { text: 'Удалить из библиотеки', icon: 'close', action: 'deleteFromLibrary' }
+        { text: 'Удалить из библиотеки', icon: 'close', action: 'deleteFromLibrary' },
+        { text: 'Поделиться', icon: 'share', action: 'share' },
       ]
     };
 
-    const createAndShowMenu = (x, y, type) => {
+    const removeMenu = () => {
+      if (activeMenu) {
+        activeMenu.remove();
+        activeMenu = null;
+      }
+    };
+
+    const createAndShowMenu = (e, x, y) => {
+      const card = e.target.closest('.card');
+
+      if (!card) return;
+      e.preventDefault();
+
+      const type = card.dataset.type;
+      const name = card.dataset.name;
+      const id = card.dataset.id;
+      const href = card.href;
+
       removeMenu();
+      if (!id) return;
 
       const items = menuConfig[type] || menuConfig['default'];
 
@@ -260,47 +287,49 @@ export class LibraryPage {
 
       menuElement.addEventListener('click', (e) => {
         const btn = e.target.closest('.actions-item');
-        if (btn) {
-           e.stopPropagation();
-           const action = btn.dataset.action;
+        if (!btn) return;
+        e.stopPropagation();
+        const action = btn.dataset.action;
 
-           handleMenuAction(action);
-           removeMenu();
+        switch (action) {
+          case 'delete':
+            deletePlaylistLogic(id, name, () => {
+              card.remove();
+            });
+            break;
+          case 'unsubscribe':
+            confirmation.showConfirm({
+              title: 'Ты точно хочешь отписаться от артиста?',
+              description: `Исполнитель <b>«${name || ''}»</b> будет удалён из твоей библиотеки, но ты всё ещё сможешь найти его на <b>Wave Music</b>`,
+              confirmText: 'Отписаться',
+              cancelText: 'Отмена',
+              onConfirm: async () => {
+                try {
+                  await apiServise.toggleSubscribeToArtist(id, false);
+                  card.remove();
+                  showInfoMessage(`Вы отписались от «${name || ''}»`);
+                } catch (error) {
+                  console.error('Ошибка при удалении плейлиста:', error);
+                  showInfoMessage(`Не удалось отписаться от «${name || ''}»`);
+                }
+              }
+            });
+            break;
+          case 'edit':
+                 // router.navigate(...)
+            break;
+          case 'share':
+            copyToClipboard(href);
+            break;
         }
-      });
-    };
 
-    const removeMenu = () => {
-      if (activeMenu) {
-        activeMenu.remove();
-        activeMenu = null;
-      }
-    };
-
-    const handleMenuAction = (action, href) => {
-      switch (action) {
-        case 'delete':
-           // apiServise.deletePlaylist(href)...
-           break;
-        case 'edit':
-           // router.navigate(...)
-           break;
-        // ... другие действия
-      }
-    };
-
-    const handleTrigger = (e, clientX, clientY) => {
-      const card = e.target.closest('.card');
-      if (card) {
-        e.preventDefault();
-        const type = card.dataset.type;
-        createAndShowMenu(clientX, clientY, type);
-      }
+        removeMenu();
+        });
     };
 
     document.addEventListener('contextmenu', (e) => {
       if (e.target.closest('.grid-layout')) {
-        handleTrigger(e, e.clientX, e.clientY);
+        createAndShowMenu(e, e.clientX, e.clientY);
       }
     });
 
@@ -308,7 +337,7 @@ export class LibraryPage {
       if (!e.target.closest('.grid-layout')) return;
       longPressTimer = setTimeout(() => {
         const touch = e.touches[0];
-        handleTrigger(e, touch.clientX, touch.clientY);
+        createAndShowMenu(e, touch.clientX, touch.clientY);
       }, 500);
     }, { passive: false });
 

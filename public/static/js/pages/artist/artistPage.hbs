@@ -18,6 +18,7 @@
             class="primary-outline-button artist-subscription {{#unless id}}loading{{/unless}}"
             id="artistSubscribeButton"
             data-artist-id="{{ id }}"
+            data-artist-name="{{ name }}"
             data-is-subscribed="{{ isSubscribed }}">
             {{#if isSubscribed}}
                 Отписаться

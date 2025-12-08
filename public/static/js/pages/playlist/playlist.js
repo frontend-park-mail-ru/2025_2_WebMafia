@@ -23,6 +23,7 @@ import { confirmation } from "@/components/confirmation_modal/confirmationModal.
 import { getStaticImagePath } from '@/utils/getStaticImages.js';
 import { albumPlaylistButtons } from "@/utils/albumPlaylistButtons.js";
 import { share } from "@/utils/shareBtn";
+import {deletePlaylistLogic} from "@/utils/deletePlaylist";
 
 export class PlaylistPage {
   constructor() {
@@ -366,22 +367,9 @@ export class PlaylistPage {
     if (deletePlaylistButton) {
       deletePlaylistButton.addEventListener('click', (e) => {
         e.preventDefault();
-
-        confirmation.showConfirm({
-          title: 'Вы точно хотите удалить плейлист?',
-          description: `Плейлист <b>${this.playlistData.title}</b> будет удалён <b>безвозвратно</b>`,
-          confirmText: 'Удалить',
-          cancelText: 'Закрыть',
-          onConfirm: async () => {
-            try {
-              await apiServise.deletePlaylist(this.playlistData.id);
-              router.navigate('/library');
-            } catch (error) {
-              console.error('Ошибка при удалении плейлиста:', error);
-            }
-          }
+        deletePlaylistLogic(this.playlistData.id, this.playlistData.title, () => {
+          router.navigate('/library');
         });
-
       });
     }
 

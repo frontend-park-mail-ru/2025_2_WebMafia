@@ -167,31 +167,24 @@
   font-size: 28px;
 }
 
-.tracks-duration-wrapper.playlists {
-  flex: 1;
-  display: grid;
-  grid-template-columns: 70% 15% 10% 5%;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-}
-
 .delete-btn-track {
   background: none;
   border: none;
   cursor: pointer;
   padding: 0;
+  opacity: 0;
 }
 
 .delete-btn-track svg {
   stroke: #555;
   width: 26px;
   height: 26px;
+  transition: stroke 0.3s ease, transform 0.3s ease;
 }
 
 .delete-btn-track:hover svg {
-  transform: scale(1.03);
-  stroke: #a766ff;
+  transform: scale(1.1);
+  stroke: url(#menuGradient);
 }
 
 .add-button-toggle {
@@ -206,10 +199,6 @@
 }
 
 @media (max-width: 1000px) {
-  .tracks-duration-wrapper.playlists {
-    grid-template-columns: 74% 13% 13%;
-  }
-
   .right-row-content-playlist {
     display: grid;
     grid-template-columns: 80% 20%;
@@ -254,7 +243,7 @@
   }
 
   .playlist, .playlist-unfav {
-    padding: 5px;
+    padding: 5px 20px 5px 5px;
   }
 
   .playlist-track-cover {

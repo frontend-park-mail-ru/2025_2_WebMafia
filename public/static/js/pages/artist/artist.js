@@ -11,6 +11,7 @@ import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
 import { likeTrackBtn } from '@/utils/likeTrack.js';
 import { createPlaylis } from '@/utils/initCreatePlaylist';
 import { share } from "@/utils/shareBtn.js";
+import {showInfoMessage} from "@/utils/showInfoMessage";
 
 export class ArtistPage {
   async render(id) {
@@ -137,6 +138,7 @@ export class ArtistPage {
         }
 
         const artistId = subscribeButton.dataset.artistId;
+        const artistName = subscribeButton.dataset.artistName;
         const isSubscribed = subscribeButton.dataset.isSubscribed === 'true';
         subscribeButton.disabled = true;
 
@@ -144,10 +146,14 @@ export class ArtistPage {
           await apiServise.toggleSubscribeToArtist(artistId, !isSubscribed);
 
           subscribeButton.dataset.isSubscribed = isSubscribed ? 'false' : 'true';
-          if (isSubscribed)
+          if (isSubscribed) {
             subscribeButton.innerText = 'Подписаться';
-          else
+            showInfoMessage(`Вы отписались от «${artistName || ''}»`);
+          }
+          else {
             subscribeButton.innerText = 'Отписаться';
+            showInfoMessage(`Вы подписались на «${artistName || ''}»`);
+          }
         } catch (error) {
           console.error('Failed to subscribe to artist:', error);
         } finally {
