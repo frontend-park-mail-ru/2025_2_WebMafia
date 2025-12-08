@@ -28,14 +28,14 @@
             data-first-track-id="{{ track_id }}"
           ></button>
           {{#unless favourite}}
-          <button class="dots" id="playlistActions">{{> dots}}</button>
-          <div id="playlistMenu" class="actions-menu hidden">
-             <button class="actions-item edit">
-                <span class="pencil-svg">{{> pencil }}</span
-                >Редактировать
-              </button>
-            <button class="actions-item delete">
-              <span class="trash-svg">{{> trash}}</span
+          <button class="dots">{{> dots}}</button>
+          <div class="actions-menu hidden">
+            <button class="actions-item" id="editPlaylistButton">
+              <span class="actions-item-svg">{{> pencil }}</span
+              >Редактировать
+            </button>
+            <button class="actions-item" id="deletePlaylistButton">
+              <span class="actions-item-svg">{{> trash}}</span
               >Удалить
             </button>
           </div>
@@ -168,28 +168,6 @@
             </button>
           </div>
         </div>
-      </div>
-    </div>
-    <div class="overlay" id="warningOverlayPlayer">
-      <div class="window">
-        <div class="overlay-header">
-          <span class="album-title">Вы точно хотите удалить плейлист?</span>
-          <button id="closeWarningBtnPlaylist" class="close-button" aria-label="Закрыть">{{> close }}</button>
-        </div>
-        <div class="card-sub all-description">Плейлист {{title}} будет удалён из библиотеки</div>
-        <div class="warning-btns-overlay">
-          <div class="save-overlay-button">
-          <button class="primary-button close-warning save-avatar-button-size" id="cancelActionPlaylist">
-            Закрыть
-          </button>
-        </div>
-        <div class="save-overlay-button">
-          <button class="primary-button save-overlay-button-size" id="confirmActionPlaylist">
-            Удалить
-          </button>
-        </div>
-        </div>
-        
       </div>
     </div>
   </div>

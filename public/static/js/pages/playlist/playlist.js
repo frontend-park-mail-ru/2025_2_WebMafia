@@ -20,6 +20,7 @@ import { FormValidator } from '@/validation.js';
 import { likeChange, likeTrackBtn } from '@/utils/likeTrack';
 import { player } from '@/components/player/player';
 import { createPlaylis } from '@/utils/initCreatePlaylist';
+import { confirmation } from "@/components/confirmation_modal/confirmationModal.js";
 
 export class PlaylistPage {
   constructor() {
@@ -371,46 +372,29 @@ export class PlaylistPage {
       });
     }
 
-    const warningOverlay = document.getElementById('warningOverlayPlayer');
     if (deletePlaylistButton) {
-      deletePlaylistButton.addEventListener('click', async (e) => {
+      deletePlaylistButton.addEventListener('click', (e) => {
         e.preventDefault();
-        warningOverlay.classList.add('active');
-        const closeBtn = document.getElementById('cancelActionPlaylist');
-        const confirmBtn = document.getElementById('confirmActionPlaylist');
-        if (closeBtn) {
-          closeBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            warningOverlay.classList.remove('active');
-          });
-        }
-        if (confirmBtn) {
-          confirmBtn.addEventListener('click', async (e) => {
-            e.preventDefault();
-            await apiServise.deletePlaylist(playlistId);
-            router.navigate('/library');
-          });
-        }
+
+        confirmation.showConfirm({
+          title: 'Вы точно хотите удалить плейлист?',
+          description: `Плейлист <b>${this.playlistData.title}</b> будет удалён <b>безвозвратно</b>`,
+          confirmText: 'Удалить',
+          cancelText: 'Закрыть',
+          onConfirm: async () => {
+            try {
+              await apiServise.deletePlaylist(playlistId);
+              router.navigate('/library');
+            } catch (error) {
+              console.error('Ошибка при удалении плейлиста:', error);
+            }
+          }
+        });
+
       });
     }
+
     const closeDescriptionButton = document.getElementById('closeDescriptionButton');
-    const closeWarningBtn = document.getElementById('closeWarningBtnPlaylist');
-
-    if (closeWarningBtn && warningOverlay) {
-      closeWarningBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-
-        warningOverlay.classList.remove('active');
-      });
-    }
-
-    if (warningOverlay) {
-      warningOverlay.addEventListener('click', (e) => {
-        if (e.target === warningOverlay) {
-          warningOverlay.classList.remove('active');
-        }
-      });
-    }
 
     if (getDescriptionButton && getDescriptionOverlay) {
       getDescriptionButton.addEventListener('click', (e) => {

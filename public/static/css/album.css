@@ -237,7 +237,7 @@
 
 .overlay-header {
   display: flex;
-  align-items: center;
+  align-items: end;
   justify-content: space-between;
 }
 
@@ -258,15 +258,16 @@
   background: none;
   border: none;
   cursor: pointer;
-  transition: color 0.2s ease;
 }
 
 .close-button svg {
-  fill: #666;
+  stroke: #666;
+  stroke-width: 2;
+  transition: stroke 0.2s ease;
 }
 
 .close-button:hover svg {
-  fill: #000;
+  stroke: #000;
 }
 
 .header-divider {
