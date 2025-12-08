@@ -237,7 +237,7 @@
 
 .overlay-header {
   display: flex;
-  align-items: end;
+  align-items: center;
   justify-content: space-between;
 }
 
@@ -308,6 +308,11 @@
 }
 
 @media (max-width: 1000px) {
+  .close-button svg {
+    width: 32px;
+    height: 32px;
+  }
+
   .album-page {
     flex-direction: column;
     align-items: center;

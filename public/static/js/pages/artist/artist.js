@@ -10,6 +10,7 @@ import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
 import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
 import { likeTrackBtn } from '@/utils/likeTrack.js';
 import { createPlaylis } from '@/utils/initCreatePlaylist';
+import { share } from "@/utils/shareBtn.js";
 
 export class ArtistPage {
   async render(id) {
@@ -94,6 +95,7 @@ export class ArtistPage {
     setPlayButtonsOnAuth();
     likeTrackBtn();
     playTrack();
+    share();
   }
 
   addEventListeners() {
@@ -117,7 +119,7 @@ export class ArtistPage {
           }, 600);
         } else {
           wrapper.style.setProperty('-webkit-line-clamp', 'unset');
-          wrapper.style.maxHeight = wrapper.scrollHeight + 48 + 'px';
+          wrapper.style.maxHeight = wrapper.scrollHeight + 52 + 'px';
           container.style.minHeight = height + wrapper.scrollHeight - 35 + 'px';
         }
 
