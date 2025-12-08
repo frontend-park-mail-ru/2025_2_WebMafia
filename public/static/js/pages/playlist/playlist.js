@@ -20,6 +20,7 @@ import { FormValidator } from '@/validation.js';
 import { likeChange, likeTrackBtn } from '@/utils/likeTrack';
 import { createPlaylis } from '@/utils/initCreatePlaylist';
 import { confirmation } from "@/components/confirmation_modal/confirmationModal.js";
+import { getStaticImagePath } from '@/utils/getStaticImages.js';
 import { albumPlaylistButtons } from "@/utils/albumPlaylistButtons.js";
 import { share } from "@/utils/shareBtn";
 
@@ -34,8 +35,7 @@ export class PlaylistPage {
       isAuthenticated: localStorage.getItem('isAuthenticated') === 'true',
     };
 
-    if (!pageData.isAuthenticated && id === 'LM')
-      router.navigate('/not-found');
+    if (!pageData.isAuthenticated && id === 'LM') router.navigate('/not-found');
 
     const contentTemplate = Handlebars.templates['playlist.hbs'];
     document.getElementById('app').innerHTML = contentTemplate(pageData);
@@ -100,6 +100,7 @@ export class PlaylistPage {
     document.getElementById('app').innerHTML = contentTemplate(pageData);
     document.querySelector('head title').textContent = pageData.title;
     playerOnlyOnPlay();
+    getStaticImagePath(pageData);
     await Promise.all([header.render(), sidebar.render()]);
     slider.sliderFunction();
     initScrollbar();
@@ -333,7 +334,6 @@ export class PlaylistPage {
 
               container.insertBefore(newDescEl, buttons);
 
-              const getDescriptionOverlay = document.getElementById('descriptionOverlay');
               if (getDescriptionOverlay) {
                 newDescEl.addEventListener('click', (e) => {
                   e.preventDefault();
