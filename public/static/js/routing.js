@@ -45,6 +45,7 @@ export class Router {
         pattern: /^\/playlist\/([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})$/,
         component: new PlaylistPage(),
       },
+      { pattern: /^\/playlist\/(LM)$/, component: new PlaylistPage() },
     ];
     this.handleLocation = this.handleLocation.bind(this);
   }

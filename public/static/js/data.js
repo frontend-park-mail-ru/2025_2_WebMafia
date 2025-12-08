@@ -1,11 +1,10 @@
-export const apiPath = 'wave-music.ru';
-const minioPath = 'wave-music.ru';
+export const apiPath = 'ы';
 
-const API_BASE_URL = `https://${apiPath}/api/v1`;
-const API_Data_URL = `https://${apiPath}/api/v1`;
-const API_PLAYLIST_URL = `https://${apiPath}/api/v1`;
-export const API_AVATARS_URL = `https://${minioPath}/avatars`;
-export const API_TRACKS_URL = `https://217.16.17.173:8099/music/tracks`;
+const API_BASE_URL = 'http://localhost:8080/api/v1';
+const API_Data_URL = 'http://localhost:8081/api/v1';
+const API_PLAYLIST_URL = 'http://localhost:8082/api/v1';
+export const API_AVATARS_URL = 'https://wave-music.ru/avatars';
+export const API_TRACKS_URL = 'https://wave-music.ru/music/tracks';
 
 export class apiServises {
   constructor() {
@@ -369,6 +368,11 @@ export class apiServises {
 
   async getPlaylistPageData(id) {
     try {
+      if (id === 'LM') {
+        const favourite = await this.request('/playlists/favorite').catch(() => []);
+        return {playlist: {}, tracks: favourite.tracks || []};
+      }
+
       const [playlist, favorite_tracks] = await Promise.all([
         this.request(`/playlists/${id}`).catch(() => []),
         this.getFavoriteTrackIds().catch(() => []),

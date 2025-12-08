@@ -17,9 +17,10 @@ import { playTrack } from '@/playTrackBtn.js';
 import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
 import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
 import { FormValidator } from '@/validation.js';
-import { likeChange, likeTrackBtn } from '../../utils/likeTrack';
-import { player } from '@/components/player/player';
+import { likeChange, likeTrackBtn } from '@/utils/likeTrack.js';
 import { createPlaylis } from '@/utils/initCreatePlaylist';
+import { albumPlaylistButtons } from "@/utils/albumPlaylistButtons.js";
+import { share } from "@/utils/shareBtn";
 
 export class PlaylistPage {
   constructor() {
@@ -42,19 +43,21 @@ export class PlaylistPage {
       this.playlistData = data.playlist;
       const firstTrackId = data.tracks && data.tracks.length > 0 ? data.tracks[0].id : null;
       pageData = {
-          favourite: false,
-          id: data.playlist.id,
-          title: data.playlist.title,
-          date: dateParser(data.playlist.created_at),
-          cover: getValidImage(data.playlist.avatar_url ? data.playlist.avatar_url : '', 'default-playlist.png'),
-          isCover: data.playlist.avatar_url,
-          description: data.playlist.description,
-          track_id: firstTrackId,
-        };
-      if (data.playlist.is_favorite) {
-        pageData.favourite = true;
-        pageData.cover = 'static/img/liked_tracks.png';
-        pageData.description = 'В этот плейлист попадают треки, которым вы поставили отметку "Нравится"'
+        favourite: true,
+        date: 'Создан автоматически',
+        title: 'Понравившиеся треки',
+        cover: 'static/img/liked_tracks.png',
+        description: 'В этот плейлист попадают треки, которым вы поставили отметку "Нравится"',
+        track_id: firstTrackId,
+      };
+      if (id !== 'LM') {
+        pageData.favourite = false;
+        pageData.title = data.playlist.title;
+        pageData.id = data.playlist.id;
+        pageData.date = dateParser(data.playlist.created_at);
+        pageData.cover = getValidImage(data.playlist.avatar_url ? data.playlist.avatar_url : '', 'default-playlist.png');
+        pageData.isCover = data.playlist.avatar_url;
+        pageData.description = data.playlist.description;
       }
       let totalDuration = 0;
       pageData.tracks = (data.tracks || []).map((track) => {
@@ -68,7 +71,7 @@ export class PlaylistPage {
           artists: track.artists,
           plays: playsParser(track.play_count),
           duration: durationParser(track.duration_s),
-          is_liked: track.is_liked,
+          is_liked: pageData.favourite ? true : track.is_liked,
         };
       });
       pageData.totalDuration = totalDurationParser(totalDuration);
@@ -97,30 +100,20 @@ export class PlaylistPage {
     await Promise.all([header.render(), sidebar.render()]);
     slider.sliderFunction();
     initScrollbar();
-    this.addEventListeners(this.playlistData.id);
+    this.addEventListeners();
     createPlaylis();
     setPlayButtonsOnAuth();
     likeTrackBtn();
     playTrack();
+    albumPlaylistButtons();
+    share();
   }
 
-  addEventListeners(playlistId) {
-    const getDescriptionButton = document.getElementById('getDescription');
-    const getDescriptionOverlay = document.getElementById('descriptionOverlay');
-
-    const editPlaylistButton = document.querySelector('.actions-item.edit');
-    const deletePlaylistButton = document.querySelector('.actions-item.delete');
+  addEventListeners() {
+    const editPlaylistButton = document.getElementById('editPlaylistButton');
+    const deletePlaylistButton = document.getElementById('deletePlaylistButton');
     const editPlaylistOverlay = document.getElementById('editPlaylistOverlay');
     const closeOverlayButton = document.getElementById('closeOverlayButtonPlaylist');
-    const playlistShuffleBtn = document.querySelector('.album-buttons .control-btn.shuffle-album');
-    if (playlistShuffleBtn) {
-      if (player.isShaffle) {
-        playlistShuffleBtn.classList.add('active');
-      }
-      playlistShuffleBtn.addEventListener('click', () => {
-        player.handleShaffleClick();
-      });
-    }
 
     if (this.playlistData.is_favorite) {
       const appContainer = document.getElementById('app');
@@ -184,7 +177,6 @@ export class PlaylistPage {
     if (closeOverlayButton && editPlaylistOverlay) {
       closeOverlayButton.addEventListener('click', (e) => {
         e.preventDefault();
-
         editPlaylistOverlay.classList.remove('active');
       });
     }
@@ -297,12 +289,12 @@ export class PlaylistPage {
 
         try {
           if (selectedAvatarFile) {
-            const response = await apiServise.uploadPlaylistAvatar(selectedAvatarFile, playlistId);
+            const response = await apiServise.uploadPlaylistAvatar(selectedAvatarFile, this.playlistData.id);
             const newAvatarUrl = getValidImage(response.avatar_url);
             updateAvatarContainer('playlistAvatarContainer', newAvatarUrl);
             selectedAvatarFile = null;
           } else if (deleteAvatar) {
-            await apiServise.deletePlaylistAvatar(playlistId);
+            await apiServise.deletePlaylistAvatar(this.playlistData.id);
             updateAvatarContainer('playlistAvatarContainer');
             deleteAvatar = false;
           }
@@ -312,7 +304,7 @@ export class PlaylistPage {
           if (newTitle !== this.playlistData.title || newDescription !== this.playlistData.description) {
             this.playlistData.title = newTitle;
             this.playlistData.description = newDescription;
-            await apiServise.updatePlaylist(newTitle, newDescription, playlistId);
+            await apiServise.updatePlaylist(newTitle, newDescription, this.playlistData.id);
             const title = document.querySelector('.album-card-title');
             if (title) {
               title.textContent = newTitle;
@@ -338,6 +330,7 @@ export class PlaylistPage {
 
               container.insertBefore(newDescEl, buttons);
 
+              const getDescriptionOverlay = document.getElementById('descriptionOverlay');
               if (getDescriptionOverlay) {
                 newDescEl.addEventListener('click', (e) => {
                   e.preventDefault();
@@ -383,13 +376,12 @@ export class PlaylistPage {
         if (confirmBtn) {
           confirmBtn.addEventListener('click', async (e) => {
             e.preventDefault();
-            await apiServise.deletePlaylist(playlistId);
+            await apiServise.deletePlaylist(this.playlistData.id);
             router.navigate('/library');
           });
         }
       });
     }
-    const closeDescriptionButton = document.getElementById('closeDescriptionButton');
     const closeWarningBtn = document.getElementById('closeWarningBtnPlaylist');
 
     if (closeWarningBtn && warningOverlay) {
@@ -404,54 +396,6 @@ export class PlaylistPage {
       warningOverlay.addEventListener('click', (e) => {
         if (e.target === warningOverlay) {
           warningOverlay.classList.remove('active');
-        }
-      });
-    }
-
-    if (getDescriptionButton && getDescriptionOverlay) {
-      getDescriptionButton.addEventListener('click', (e) => {
-        e.preventDefault();
-        getDescriptionOverlay.classList.add('active');
-      });
-    }
-
-    if (closeDescriptionButton && getDescriptionOverlay) {
-      closeDescriptionButton.addEventListener('click', (e) => {
-        e.preventDefault();
-        getDescriptionOverlay.classList.remove('active');
-      });
-    }
-
-    if (getDescriptionOverlay) {
-      getDescriptionOverlay.addEventListener('click', (e) => {
-        e.preventDefault();
-        if (e.target === getDescriptionOverlay) {
-          getDescriptionOverlay.classList.remove('active');
-        }
-      });
-    }
-
-    const dotsBtn = document.getElementById('playlistActions');
-    const menu = document.getElementById('playlistMenu');
-
-    if (dotsBtn && menu) {
-      dotsBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        menu.classList.toggle('hidden');
-
-        const rect = dotsBtn.getBoundingClientRect();
-        const parentRect = dotsBtn.parentElement.getBoundingClientRect();
-
-        const top = rect.top - parentRect.top - menu.offsetHeight - 6;
-        const left = rect.left - parentRect.left - 10;
-
-        menu.style.top = `${top}px`;
-        menu.style.left = `${left}px`;
-      });
-
-      document.addEventListener('click', (e) => {
-        if (!menu.contains(e.target) && !dotsBtn.contains(e.target)) {
-          menu.classList.add('hidden');
         }
       });
     }
@@ -521,7 +465,7 @@ export class PlaylistPage {
 
         track.num = lastTrack ? Number(lastTrack.textContent) + 1 : 1;
 
-        apiServise.addTrackToPlaylist(button.dataset.trackId, playlistId);
+        apiServise.addTrackToPlaylist(button.dataset.trackId, this.playlistData.id);
 
         const trackRow = Handlebars.templates['trackRow.hbs'];
         tracksTable.insertAdjacentHTML('beforeend', trackRow(track));
@@ -560,7 +504,7 @@ export class PlaylistPage {
         const row = btn.closest('.album-row.playlist-unfav');
         const trackId = btn.dataset.trackId;
 
-        await apiServise.deleteTrackFromPlaylist(trackId, playlistId);
+        await apiServise.deleteTrackFromPlaylist(trackId, this.playlistData.id);
 
         const tracksNumElement = document.getElementById('tracksNum');
         const totalDurationElement = document.getElementById('totalDuration');
