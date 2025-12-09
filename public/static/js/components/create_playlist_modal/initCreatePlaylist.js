@@ -103,6 +103,7 @@ class CreatePlaylistService {
 
       try {
         submitBtn.disabled = true;
+        submitBtn.textContent = 'Создание...';
 
         const title = titleInput.value;
         const description = descInput.value;
@@ -119,6 +120,7 @@ class CreatePlaylistService {
       } catch (err) {
         console.error('Ошибка создания:', err);
         submitBtn.disabled = false;
+        submitBtn.textContent = 'Создать';
 
         let msg = 'Произошла ошибка. Попробуйте позже';
         if (err.message === 'bad request') {

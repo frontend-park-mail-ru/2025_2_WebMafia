@@ -284,7 +284,7 @@
   }
 
   .delete-btn-track {
-    opacity: 1;
+    opacity: 1 !important;
   }
 }
 
@@ -361,7 +361,7 @@
   }
 
   .album-row {
-    padding: 5px 0 5px 5px;
+    padding: 5px 15px 5px 5px;
     height: 60px;
   }
 
