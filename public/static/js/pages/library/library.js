@@ -9,7 +9,8 @@ import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
 import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
 import { FormValidator } from '@/validation.js';
 import { createPlaylis } from '@/utils/initCreatePlaylist';
-import { getStaticImagePath } from '@/utils/getStaticImages.js';
+import { images } from '@/assets';
+
 
 export class LibraryPage {
   async render() {
@@ -24,6 +25,7 @@ export class LibraryPage {
 
     const contentTemplate = Handlebars.templates['library.hbs'];
     document.getElementById('app').innerHTML = contentTemplate(pageData);
+    await Promise.all([header.render(), sidebar.render()]);
 
     if (!pageData.isAuthenticated) {
       await Promise.all([header.render(), sidebar.render()]);
@@ -37,7 +39,7 @@ export class LibraryPage {
       const data = await apiServise.getLibraryPageData();
       const item = {
         name: 'Понравившиеся треки',
-        image: 'static/img/liked_tracks.png',
+        image: images.likedTracksPath,
         created_at: new Date(),
         sub: data.favourite_tracks ? tracksNumParser(data.favourite_tracks.length) : '0 треков',
         href: 'playlist/LM',
@@ -48,7 +50,7 @@ export class LibraryPage {
       data.artists.forEach((artist) => {
         const item = {
           name: artist.name,
-          image: getValidImage('artists/' + artist.avatar_url, 'default-artist.png'),
+          image: getValidImage('artists/' + artist.avatar_url, images.defaultArtistPath),
           created_at: new Date(artist.created_at),
           type: 'Артист',
           sub: playsParser(artist.play_count || 0),
@@ -60,7 +62,7 @@ export class LibraryPage {
       data.albums.forEach((album) => {
         const item = {
           name: album.title,
-          image: getValidImage('albums/' + album.avatar_url, 'default-album.png'),
+          image: getValidImage('albums/' + album.avatar_url, images.defaultAlbumPath),
           sub: album.artists ? album.artists[0].name : 'Unknown Artist',
           created_at: new Date(album.created_at),
           type: album.type,
@@ -74,7 +76,7 @@ export class LibraryPage {
           const item = {
             name: playlist.title,
             default_avatar: 'default-playlist.png',
-            image: getValidImage(playlist.avatar_url, 'default-album.png'),
+            image: getValidImage(playlist.avatar_url, images.defaultPlaylistPath),
             created_at: new Date(playlist.created_at),
             sub: playlist.tracks ? tracksNumParser(playlist.tracks.length) : '0 треков',
             type: 'Плейлист',
@@ -105,7 +107,6 @@ export class LibraryPage {
     document.getElementById('app').innerHTML = contentTemplate(pageData);
     document.querySelector('.grid-layout').innerHTML = gridTemplate(pageData);
     playerOnlyOnPlay();
-    getStaticImagePath(pageData);
 
     await Promise.all([header.render(), sidebar.render()]);
 

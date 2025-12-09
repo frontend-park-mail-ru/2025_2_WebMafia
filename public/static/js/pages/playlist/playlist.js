@@ -20,8 +20,8 @@ import { FormValidator } from '@/validation.js';
 import { likeChange, likeTrackBtn } from '@/utils/likeTrack';
 import { player } from '@/components/player/player';
 import { createPlaylis } from '@/utils/initCreatePlaylist';
-import { getStaticImagePath } from '@/utils/getStaticImages.js';
 import { confirmation } from '@/components/confirmation_modal/confirmationModal.js';
+import { images } from '@/assets';
 
 export class PlaylistPage {
   constructor() {
@@ -39,6 +39,7 @@ export class PlaylistPage {
     const contentTemplate = Handlebars.templates['playlist.hbs'];
     document.getElementById('app').innerHTML = contentTemplate(pageData);
     document.querySelector('head title').textContent = 'Wave Music';
+    await Promise.all([header.render(), sidebar.render()]);
 
     try {
       const data = await apiServise.getPlaylistPageData(id, pageData.isAuthenticated);
@@ -48,7 +49,7 @@ export class PlaylistPage {
         favourite: true,
         date: 'Создан автоматически',
         title: 'Понравившиеся треки',
-        cover: 'static/img/liked_tracks.png',
+        cover: images.likedTracksPath,
         description: 'В этот плейлист попадают треки, которым вы поставили отметку "Нравится"',
         track_id: firstTrackId,
       };
@@ -57,7 +58,7 @@ export class PlaylistPage {
         pageData.title = data.title;
         pageData.id = data.id;
         pageData.date = dateParser(data.created_at);
-        pageData.cover = getValidImage(data.avatar_url ? data.avatar_url : '', 'default-playlist.png');
+        pageData.cover = getValidImage(data.avatar_url ? data.avatar_url : '', images.defaultPlaylistPath);
         pageData.isCover = data.avatar_url;
         pageData.description = data.description;
       }
@@ -69,7 +70,7 @@ export class PlaylistPage {
           name: track.title,
           album: track.album.title,
           album_id: track.album.id,
-          cover: getValidImage('albums/' + track.album.avatar_url, 'default-album.png'),
+          cover: getValidImage('albums/' + track.album.avatar_url, images.defaultAlbumPath),
           artists: track.artists,
           plays: playsParser(track.play_count),
           duration: durationParser(track.duration_s),
@@ -99,7 +100,6 @@ export class PlaylistPage {
     document.getElementById('app').innerHTML = contentTemplate(pageData);
     document.querySelector('head title').textContent = pageData.title;
     playerOnlyOnPlay();
-    getStaticImagePath(pageData);
     await Promise.all([header.render(), sidebar.render()]);
     slider.sliderFunction();
     initScrollbar();
@@ -389,9 +389,8 @@ export class PlaylistPage {
             } catch (error) {
               console.error('Ошибка при удалении плейлиста:', error);
             }
-          }
+          },
         });
-
       });
     }
 
@@ -465,7 +464,7 @@ export class PlaylistPage {
           name: track.title,
           album: track.album.title,
           album_id: track.album.id,
-          cover: getValidImage('albums/' + track.album.avatar_url, 'default-album.png'),
+          cover: getValidImage('albums/' + track.album.avatar_url, images.defaultPlaylistPath),
           artists: track.artists,
           plays: playsParser(track.play_count),
           duration: durationParser(track.duration_s),

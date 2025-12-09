@@ -24,6 +24,7 @@ export class ArtistPage {
     const contentTemplateWithoutData = Handlebars.templates['artistPage.hbs'];
     document.getElementById('app').innerHTML = contentTemplateWithoutData(pageData);
     document.querySelector('head title').textContent = 'Wave music';
+    await Promise.all([header.render(), sidebar.render()]);
 
     try {
       const data = await apiServise.getArtistPageData(id, pageData.isAuthenticated);

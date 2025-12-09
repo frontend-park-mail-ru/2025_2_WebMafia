@@ -82,6 +82,10 @@ export function createPlaylis() {
         messageElement.classList.remove('show');
         messageElement.style.backgroundColor = '';
       }
+      const deleteAvatarbtn = document.getElementById('deleteAvatarButtonPlaylist');
+      if (deleteAvatarbtn) {
+        deleteAvatarbtn.remove();
+      }
 
       createPlaylistOverlay.classList.remove('active');
     });
@@ -111,6 +115,10 @@ export function createPlaylis() {
           messageElement.textContent = '';
           messageElement.classList.remove('show');
           messageElement.style.backgroundColor = '';
+        }
+        const deleteAvatarbtn = document.getElementById('deleteAvatarButtonPlaylist');
+        if (deleteAvatarbtn) {
+          deleteAvatarbtn.remove();
         }
         createPlaylistOverlay.classList.remove('active');
       }

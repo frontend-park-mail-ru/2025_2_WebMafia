@@ -21,6 +21,7 @@ export class ArtistTracksPage {
 
     const contentTemplate = Handlebars.templates['artistTracksPage.hbs'];
     document.getElementById('app').innerHTML = contentTemplate(pageData);
+    await Promise.all([header.render(), sidebar.render()]);
 
     try {
       const data = await apiServise.getArtistTracks(artistId, pageData.isAuthenticated);

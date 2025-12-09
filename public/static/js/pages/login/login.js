@@ -3,6 +3,7 @@ import { apiServise } from '@/data.js';
 import { router } from '@/routing.js';
 import { initPasswordShowing } from '@/eye.js';
 import { player } from '@/components/player/player.js';
+import { images } from '@/assets';
 
 export class LoginPage {
   async render() {
@@ -10,8 +11,11 @@ export class LoginPage {
     if (isAuthenticated) {
       router.navigate('/profile');
     }
+    let pageData = {
+      logo: images.wavePath,
+    };
     const contentTemplate = Handlebars.templates['login.hbs'];
-    document.getElementById('app').innerHTML = contentTemplate();
+    document.getElementById('app').innerHTML = contentTemplate(pageData);
     document.querySelector('head title').textContent = 'Wave Music';
     initPasswordShowing();
     this.initValidation();

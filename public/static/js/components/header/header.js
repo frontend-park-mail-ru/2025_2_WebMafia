@@ -2,14 +2,15 @@ import { apiServise } from '@/data.js';
 import { router } from '@/routing.js';
 import { getValidImage } from '@/parsers.js';
 import { player } from '@/components/player/player.js';
-import { getStaticImagePath } from '@/utils/getStaticImages.js';
-import { confirmation } from "@/components/confirmation_modal/confirmationModal.js";
+import { confirmation } from '@/components/confirmation_modal/confirmationModal.js';
+import { images } from '@/assets';
 
 export class Header {
   async render(searchValue) {
     let pageData = {
       isAuthenticated: localStorage.getItem('isAuthenticated') === 'true',
       searchValue: searchValue,
+      logoImage: images.logoPath,
     };
 
     const contentTemplate = Handlebars.templates['header.hbs'];
@@ -20,7 +21,6 @@ export class Header {
       section.insertAdjacentHTML('afterbegin', headerHTML);
     }
     this.addEventListeners();
-    getStaticImagePath();
     if (!pageData.isAuthenticated) return;
 
     try {
@@ -36,7 +36,6 @@ export class Header {
     }
 
     document.getElementById('header').outerHTML = contentTemplate(pageData);
-    getStaticImagePath();
 
     this.addEventListeners();
     this.profileDropdown();
@@ -81,7 +80,7 @@ export class Header {
               player.destroy();
               router.navigate('/');
             }
-          }
+          },
         });
       });
     }

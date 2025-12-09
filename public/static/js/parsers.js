@@ -67,7 +67,7 @@ export function tracksNumParser(count) {
 export function getValidImage(url, defaultImage) {
   if (!url || url === '') {
     if (!defaultImage) return url;
-    return `static/img/${defaultImage}`;
+    return defaultImage || '';
   }
   return `${API_AVATARS_URL}/${url}`;
 }

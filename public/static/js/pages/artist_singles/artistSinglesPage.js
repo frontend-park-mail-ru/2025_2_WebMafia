@@ -17,6 +17,7 @@ export class ArtistSinglesPage {
 
     const contentTemplate = Handlebars.templates['artistSinglesPage.hbs'];
     document.getElementById('app').innerHTML = contentTemplate(pageData);
+    await Promise.all([header.render(), sidebar.render()]);
 
     try {
       const data = await apiServise.getArtistAlbums(artistId);

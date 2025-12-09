@@ -1,15 +1,19 @@
-import { getStaticImagePath } from '@/utils/getStaticImages.js';
+import { images } from '@/assets';
 
 export class Sidebar {
   async render() {
+    let pageData = {
+      playlistImage: images.defaultPlaylistPath,
+    };
     const contentTemplate = Handlebars.templates['sidebar.hbs'];
-    const headerHTML = contentTemplate();
+    const sidebarHTML = contentTemplate();
 
     const layout = document.getElementById('layout');
     if (layout && !document.getElementById('sidebar')) {
-      layout.insertAdjacentHTML('afterbegin', headerHTML);
+      layout.insertAdjacentHTML('afterbegin', sidebarHTML);
     }
-    getStaticImagePath();
+    document.getElementById('sidebar').outerHTML = contentTemplate(pageData);
+
     this.activePath();
   }
 
