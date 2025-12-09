@@ -18,8 +18,6 @@ import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
 import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
 import { FormValidator } from '@/validation.js';
 import { likeChange, likeTrackBtn } from '@/utils/likeTrack';
-import { createPlaylis } from '@/utils/initCreatePlaylist';
-import { confirmation } from '@/components/confirmation_modal/confirmationModal.js';
 import { images } from '@/assets';
 import { albumPlaylistButtons } from '@/utils/albumPlaylistButtons.js';
 import { share } from '@/utils/shareBtn';
@@ -106,7 +104,6 @@ export class PlaylistPage {
     slider.sliderFunction();
     initScrollbar();
     this.addEventListeners();
-    createPlaylis();
     setPlayButtonsOnAuth();
     likeTrackBtn();
     playTrack();

@@ -63,6 +63,11 @@
   transition: stroke 0.3s ease;
 }
 
+.actions-item-svg.active svg {
+  stroke: url(#menuGradient);
+  fill: url(#menuGradient);
+}
+
 .actions-item:hover .actions-item-svg svg {
   stroke: #9c58e0;
 }

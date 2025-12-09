@@ -7,12 +7,12 @@ import { getValidImage, playsParser, tracksNumParser } from '@/parsers.js';
 import { playTrack } from '@/playTrackBtn.js';
 import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
 import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
-import { createPlaylis } from '@/utils/initCreatePlaylist';
-import { images } from '@/assets';
+import { images } from '@/assets.js';
 import { copyToClipboard } from '@/utils/shareBtn.js';
 import { deletePlaylistLogic } from '@/utils/deletePlaylist.js';
 import { confirmation } from '@/components/confirmation_modal/confirmationModal.js';
 import { showInfoMessage } from '@/utils/showInfoMessage.js';
+import { createPlaylistModal } from "@/components/create_playlist_modal/initCreatePlaylist.js";
 
 export class LibraryPage {
   async render() {
@@ -115,23 +115,29 @@ export class LibraryPage {
 
     await Promise.all([header.render(), sidebar.render()]);
 
-    createPlaylis();
-
     initScrollbar();
     playTrack();
     setPlayButtonsOnAuth();
     this.addEventListeners(pageData);
-    this.initContextMenu();
+    this.initContextMenu(pageData);
   }
 
   addEventListeners(data) {
     const searchToggle = document.getElementById('librarySearchToggle');
+    const createPlaylistButtons = document.querySelectorAll('.create-playlist-button');
     const libraryHeaderContainer = document.querySelector('.library-header-container');
     const titleName = document.querySelector('.title-name');
     const createPlaylistToggle = document.querySelector('.create-playlist-toggle');
     const rightSearchContainer = document.querySelector('.library-search-container');
     const closeButton = rightSearchContainer.querySelector('.input-close-button');
     const originalParent = rightSearchContainer.parentElement;
+
+    createPlaylistButtons.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        createPlaylistModal.show();
+      });
+    });
 
     searchToggle.addEventListener('click', (e) => {
       e.preventDefault();
@@ -216,7 +222,7 @@ export class LibraryPage {
     });
   }
 
-  initContextMenu() {
+  initContextMenu(pageData) {
     let activeMenu = null;
     let longPressTimer;
 
@@ -234,6 +240,36 @@ export class LibraryPage {
         { text: 'Удалить из библиотеки', icon: 'close', action: 'deleteFromLibrary' },
         { text: 'Поделиться', icon: 'share', action: 'share' },
       ]
+    };
+
+    const removeFromDataAndUI = (id, typeInCard, cardElement) => {
+      cardElement.remove();
+
+      let categoryKey = 'albums';
+      if (typeInCard === 'Плейлист') categoryKey = 'playlists';
+      else if (typeInCard === 'Артист') categoryKey = 'artists';
+
+      const libIndex = pageData.library.findIndex(item => item.id === id);
+      if (libIndex !== -1) {
+        pageData.library.splice(libIndex, 1);
+      }
+
+      const categoryArray = pageData[categoryKey];
+      if (categoryArray) {
+        const catIndex = categoryArray.findIndex(item => item.id === id);
+        if (catIndex !== -1) {
+          categoryArray.splice(catIndex, 1);
+        }
+
+        if (categoryArray.length === 0) {
+          const sortButton = document.querySelector(`.sort-buttons button[data-name="${categoryKey}"]`);
+          if (sortButton.classList.contains('primary-button')) {
+            const disableSortBtn = document.getElementById('disableSort');
+            if (disableSortBtn) disableSortBtn.click();
+          }
+          sortButton.remove();
+        }
+      }
     };
 
     const removeMenu = () => {
@@ -294,7 +330,25 @@ export class LibraryPage {
         switch (action) {
           case 'delete':
             deletePlaylistLogic(id, name, () => {
-              card.remove();
+              removeFromDataAndUI(id, type, card);
+            });
+            break;
+          case 'deleteFromLibrary':
+            confirmation.showConfirm({
+              title: 'Ты точно хочешь удалить этот альбом из библиотеки?',
+              description: `Альбом <b>«${name || ''}»</b> будет удалён из твоей библиотеки, но ты всё ещё сможешь найти его на <b>Wave Music</b>`,
+              confirmText: 'Удалить',
+              cancelText: 'Отмена',
+              onConfirm: async () => {
+                try {
+                  await apiServise.toggleAlbumLike(id, false);
+                  removeFromDataAndUI(id, type, card);
+                  showInfoMessage(`Вы удалили «${name || ''}» из библиотеки`);
+                } catch (error) {
+                  console.error('Ошибка при удалении альбома:', error);
+                  showInfoMessage(`Не удалось удалить «${name || ''}» из библиотеки`);
+                }
+              }
             });
             break;
           case 'unsubscribe':
@@ -306,10 +360,10 @@ export class LibraryPage {
               onConfirm: async () => {
                 try {
                   await apiServise.toggleSubscribeToArtist(id, false);
-                  card.remove();
+                  removeFromDataAndUI(id, type, card);
                   showInfoMessage(`Вы отписались от «${name || ''}»`);
                 } catch (error) {
-                  console.error('Ошибка при удалении плейлиста:', error);
+                  console.error('Ошибка при отписки от артиста:', error);
                   showInfoMessage(`Не удалось отписаться от «${name || ''}»`);
                 }
               }

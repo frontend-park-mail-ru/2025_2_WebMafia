@@ -28,6 +28,8 @@ handlebars public/static/js/components/context_menu/contextMenu.hbs -f public/st
 
 handlebars public/static/js/components/confirmation_modal/confirmationModal.hbs -f public/static/js/components/confirmation_modal/confirmationModal.tmpl.js
 
+handlebars public/static/js/components/create_playlist_modal/createPlaylistModal.hbs -f public/static/js/components/create_playlist_modal/createPlaylistModal.tmpl.js
+
 handlebars public/static/js/components/sidebar/sidebar.hbs -f public/static/js/components/sidebar/sidebar.tmpl.js
 
 handlebars public/static/js/components/player/player.hbs -f public/static/js/components/player/player.tmpl.js

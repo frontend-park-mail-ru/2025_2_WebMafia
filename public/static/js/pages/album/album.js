@@ -9,9 +9,9 @@ import { playTrack } from '@/playTrackBtn.js';
 import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
 import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
 import { likeTrackBtn } from '@/utils/likeTrack.js';
-import { createPlaylis } from '@/utils/initCreatePlaylist';
 import { albumPlaylistButtons } from "@/utils/albumPlaylistButtons.js";
 import { share } from "@/utils/shareBtn.js";
+import { showInfoMessage } from "@/utils/showInfoMessage.js";
 
 export class AlbumPage {
   async render(id) {
@@ -75,7 +75,6 @@ export class AlbumPage {
     document.querySelector('head title').textContent = pageData.title;
     playerOnlyOnPlay();
     await Promise.all([header.render(), sidebar.render()]);
-    createPlaylis();
     slider.sliderFunction();
     initScrollbar();
     this.addEventListeners();
@@ -97,12 +96,22 @@ export class AlbumPage {
         }
 
         const albumId = likeButton.dataset.albumId;
+        const albumName = likeButton.dataset.albumName;
         const isLiked = likeButton.classList.contains('active');
         likeButton.disabled = true;
 
         try {
           await apiServise.toggleAlbumLike(albumId, !isLiked);
           likeButton.classList.toggle('active');
+
+          if (isLiked) {
+            likeButton.innerText = 'Добавить в библиотеку';
+            showInfoMessage(`Вы удалили альбом «${albumName || ''}» из библиотеки`);
+          }
+          else {
+            likeButton.innerText = 'Удалить из библиотеки';
+            showInfoMessage(`Альбом «${albumName || ''}» добавлен в библиотеку`);
+          }
         } catch (error) {
           console.error('Failed to like album:', error);
         } finally {

@@ -274,7 +274,6 @@
   font-size: 18px;
   font-weight: 600;
   text-decoration: none;
-  text-align: right;
 }
 
 .track-performers,
@@ -313,6 +312,7 @@
   gap: 10px;
   display: flex;
   align-items: center;
+  justify-content: center;
 }
 
 .like-btn-track {

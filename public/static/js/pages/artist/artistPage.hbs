@@ -26,7 +26,7 @@
                 Подписаться
             {{/if}}
           </button>
-          <button class="share-button" id="shareButton">{{> share }}</button>
+          <button class="share-button {{#unless id}}loading{{/unless}}" id="shareButton">{{> share }}</button>
         </div>
         {{#if description}}
         <p class="artist-description">{{ description }}</p>
@@ -74,8 +74,8 @@
                 
                 <div class="track-like-container">
                   <button class="like-btn-track artist-like-size {{#if is_liked}}active{{/if}}" data-track-id="{{ id }}">{{> likeBtn }}</button>
+                  <div class="track-duration">{{ duration }}</div>
                 </div>
-                <div class="track-duration">{{ duration }}</div>
               </div>
             </div>
             {{/each}}

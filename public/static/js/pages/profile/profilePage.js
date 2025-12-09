@@ -12,7 +12,6 @@ import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
 import { playTrack } from '@/playTrackBtn.js';
 import { likeTrackBtn } from '@/utils/likeTrack.js';
 import { setupMarquees } from '@/marquee.js';
-import { createPlaylis } from '@/utils/initCreatePlaylist';
 import { images } from '@/assets';
 
 export class ProfilePage {
@@ -75,7 +74,6 @@ export class ProfilePage {
     document.querySelector('head title').textContent = pageData.profile.nickname;
     playerOnlyOnPlay();
     await Promise.all([header.render(), sidebar.render()]);
-    createPlaylis();
     slider.sliderFunction();
     this.addEventListeners(pageData.profile);
     initPasswordShowing();
