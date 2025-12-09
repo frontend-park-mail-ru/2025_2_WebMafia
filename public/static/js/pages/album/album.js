@@ -9,8 +9,9 @@ import { playTrack } from '@/playTrackBtn.js';
 import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
 import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
 import { likeTrackBtn } from '@/utils/likeTrack.js';
-import { player } from '@/components/player/player';
 import { createPlaylis } from '@/utils/initCreatePlaylist';
+import { albumPlaylistButtons } from "@/utils/albumPlaylistButtons.js";
+import { share } from "@/utils/shareBtn.js";
 
 export class AlbumPage {
   async render(id) {
@@ -81,45 +82,11 @@ export class AlbumPage {
     setPlayButtonsOnAuth();
     likeTrackBtn();
     playTrack();
+    albumPlaylistButtons();
+    share();
   }
 
   addEventListeners() {
-    const getDescriptionButton = document.getElementById('getDescription');
-    const getDescriptionOverlay = document.getElementById('albumDescriptionOverlay');
-    const albumShuffleBtn = document.querySelector('.album-buttons .control-btn.shuffle-album');
-    if (albumShuffleBtn) {
-      if (player.isShaffle) {
-        albumShuffleBtn.classList.add('active');
-      }
-      albumShuffleBtn.addEventListener('click', () => {
-        player.handleShaffleClick();
-      });
-    }
-
-    if (getDescriptionButton && getDescriptionOverlay) {
-      getDescriptionButton.addEventListener('click', (e) => {
-        e.preventDefault();
-        getDescriptionOverlay.classList.add('active');
-      });
-    }
-
-    const closeDescriptionButton = document.getElementById('closeDescriptionButton');
-    if (closeDescriptionButton && getDescriptionOverlay) {
-      closeDescriptionButton.addEventListener('click', (e) => {
-        e.preventDefault();
-        getDescriptionOverlay.classList.remove('active');
-      });
-    }
-
-    if (getDescriptionOverlay) {
-      getDescriptionOverlay.addEventListener('click', (e) => {
-        e.preventDefault();
-        if (e.target === getDescriptionOverlay) {
-          getDescriptionOverlay.classList.remove('active');
-        }
-      });
-    }
-
     const likeButton = document.getElementById('albumLikeButton');
     if (likeButton) {
       likeButton.addEventListener('click', async () => {

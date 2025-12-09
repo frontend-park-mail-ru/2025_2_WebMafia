@@ -86,4 +86,4 @@ handlebars public/static/js/partials/delete.hbs -f public/static/js/partials/del
 
 handlebars public/static/js/partials/repeatOne.hbs -f public/static/js/partials/repeatOne.tmpl.js
 
-
+handlebars public/static/js/partials/share.hbs -f public/static/js/partials/share.tmpl.js

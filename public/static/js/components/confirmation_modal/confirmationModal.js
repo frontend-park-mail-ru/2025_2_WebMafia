@@ -31,7 +31,6 @@ class ModalService {
 
     const confirmBtn = overlay.querySelector('.modal-confirm-btn');
     const cancelBtn = overlay.querySelector('.modal-cancel-btn');
-    const closeIcon = overlay.querySelector('.modal-close-btn');
 
     confirmBtn.onclick = () => {
       if (onConfirm) onConfirm();
@@ -39,7 +38,6 @@ class ModalService {
     };
 
     cancelBtn.onclick = close;
-    closeIcon.onclick = close;
     overlay.onclick = (e) => {
       if (e.target === overlay) close();
     };
