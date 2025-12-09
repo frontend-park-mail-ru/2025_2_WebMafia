@@ -17,10 +17,13 @@ import { playTrack } from '@/playTrackBtn.js';
 import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
 import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
 import { FormValidator } from '@/validation.js';
-import { likeChange, likeTrackBtn } from '@/utils/likeTrack.js';
+import { likeChange, likeTrackBtn } from '@/utils/likeTrack';
 import { createPlaylis } from '@/utils/initCreatePlaylist';
-import { albumPlaylistButtons } from "@/utils/albumPlaylistButtons.js";
-import { share } from "@/utils/shareBtn";
+import { confirmation } from '@/components/confirmation_modal/confirmationModal.js';
+import { images } from '@/assets';
+import { albumPlaylistButtons } from '@/utils/albumPlaylistButtons.js';
+import { share } from '@/utils/shareBtn';
+import { deletePlaylistLogic } from '@/utils/deletePlaylist';
 
 export class PlaylistPage {
   constructor() {
@@ -31,33 +34,35 @@ export class PlaylistPage {
   async render(id) {
     let pageData = {
       isAuthenticated: localStorage.getItem('isAuthenticated') === 'true',
-      cover: 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7',
     };
+
+    if (!pageData.isAuthenticated && id === 'LM') router.navigate('/not-found');
 
     const contentTemplate = Handlebars.templates['playlist.hbs'];
     document.getElementById('app').innerHTML = contentTemplate(pageData);
     document.querySelector('head title').textContent = 'Wave Music';
+    await Promise.all([header.render(), sidebar.render()]);
 
     try {
-      const data = await apiServise.getPlaylistPageData(id);
-      this.playlistData = data.playlist;
+      const data = await apiServise.getPlaylistPageData(id, pageData.isAuthenticated);
+      this.playlistData = data;
       const firstTrackId = data.tracks && data.tracks.length > 0 ? data.tracks[0].id : null;
       pageData = {
         favourite: true,
         date: 'Создан автоматически',
         title: 'Понравившиеся треки',
-        cover: 'static/img/liked_tracks.png',
+        cover: images.likedTracksPath,
         description: 'В этот плейлист попадают треки, которым вы поставили отметку "Нравится"',
         track_id: firstTrackId,
       };
       if (id !== 'LM') {
         pageData.favourite = false;
-        pageData.title = data.playlist.title;
-        pageData.id = data.playlist.id;
-        pageData.date = dateParser(data.playlist.created_at);
-        pageData.cover = getValidImage(data.playlist.avatar_url ? data.playlist.avatar_url : '', 'default-playlist.png');
-        pageData.isCover = data.playlist.avatar_url;
-        pageData.description = data.playlist.description;
+        pageData.title = data.title;
+        pageData.id = data.id;
+        pageData.date = dateParser(data.created_at);
+        pageData.cover = getValidImage(data.avatar_url ? data.avatar_url : '', images.defaultPlaylistPath);
+        pageData.isCover = data.avatar_url;
+        pageData.description = data.description;
       }
       let totalDuration = 0;
       pageData.tracks = (data.tracks || []).map((track) => {
@@ -67,7 +72,7 @@ export class PlaylistPage {
           name: track.title,
           album: track.album.title,
           album_id: track.album.id,
-          cover: getValidImage('albums/' + track.album.avatar_url, 'default-album.png'),
+          cover: getValidImage('albums/' + track.album.avatar_url, images.defaultAlbumPath),
           artists: track.artists,
           plays: playsParser(track.play_count),
           duration: durationParser(track.duration_s),
@@ -330,7 +335,6 @@ export class PlaylistPage {
 
               container.insertBefore(newDescEl, buttons);
 
-              const getDescriptionOverlay = document.getElementById('descriptionOverlay');
               if (getDescriptionOverlay) {
                 newDescEl.addEventListener('click', (e) => {
                   e.preventDefault();
@@ -360,43 +364,12 @@ export class PlaylistPage {
       });
     }
 
-    const warningOverlay = document.getElementById('warningOverlayPlayer');
     if (deletePlaylistButton) {
-      deletePlaylistButton.addEventListener('click', async (e) => {
+      deletePlaylistButton.addEventListener('click', (e) => {
         e.preventDefault();
-        warningOverlay.classList.add('active');
-        const closeBtn = document.getElementById('cancelActionPlaylist');
-        const confirmBtn = document.getElementById('confirmActionPlaylist');
-        if (closeBtn) {
-          closeBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            warningOverlay.classList.remove('active');
-          });
-        }
-        if (confirmBtn) {
-          confirmBtn.addEventListener('click', async (e) => {
-            e.preventDefault();
-            await apiServise.deletePlaylist(this.playlistData.id);
-            router.navigate('/library');
-          });
-        }
-      });
-    }
-    const closeWarningBtn = document.getElementById('closeWarningBtnPlaylist');
-
-    if (closeWarningBtn && warningOverlay) {
-      closeWarningBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-
-        warningOverlay.classList.remove('active');
-      });
-    }
-
-    if (warningOverlay) {
-      warningOverlay.addEventListener('click', (e) => {
-        if (e.target === warningOverlay) {
-          warningOverlay.classList.remove('active');
-        }
+        deletePlaylistLogic(this.playlistData.id, this.playlistData.title, () => {
+          router.navigate('/library');
+        });
       });
     }
 
@@ -420,7 +393,7 @@ export class PlaylistPage {
           name: track.title,
           album: track.album.title,
           album_id: track.album.id,
-          cover: getValidImage('albums/' + track.album.avatar_url, 'default-album.png'),
+          cover: getValidImage('albums/' + track.album.avatar_url, images.defaultPlaylistPath),
           artists: track.artists,
           plays: playsParser(track.play_count),
           duration: durationParser(track.duration_s),
@@ -451,7 +424,7 @@ export class PlaylistPage {
     }
 
     if (searchedTracksContainer) {
-      searchedTracksContainer.addEventListener('click', (e) => {
+      searchedTracksContainer.addEventListener('click', async (e) => {
         const button = e.target.closest('.add-track-size');
         if (!button) return;
         e.stopPropagation();
@@ -465,7 +438,7 @@ export class PlaylistPage {
 
         track.num = lastTrack ? Number(lastTrack.textContent) + 1 : 1;
 
-        apiServise.addTrackToPlaylist(button.dataset.trackId, this.playlistData.id);
+        await apiServise.addTrackToPlaylist(button.dataset.trackId, this.playlistData.id);
 
         const trackRow = Handlebars.templates['trackRow.hbs'];
         tracksTable.insertAdjacentHTML('beforeend', trackRow(track));

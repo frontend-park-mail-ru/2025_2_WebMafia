@@ -28,10 +28,11 @@ export class SearchPage {
     const contentTemplateWithoutData = Handlebars.templates['search_page.hbs'];
     document.getElementById('app').innerHTML = contentTemplateWithoutData(pageData);
     document.querySelector('head title').textContent = 'Wave music';
+    await Promise.all([header.render(), sidebar.render()]);
 
     try {
       const [searchTracktData, searchAlbumData, searchArtistData] = await Promise.all([
-        apiServise.searchTrack(name),
+        apiServise.searchTrack(name, pageData.isAuthenticated),
         apiServise.searchAlbum(name),
         apiServise.searchArtist(name),
       ]);

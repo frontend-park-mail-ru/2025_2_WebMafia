@@ -13,6 +13,7 @@ import { playTrack } from '@/playTrackBtn.js';
 import { likeTrackBtn } from '@/utils/likeTrack.js';
 import { setupMarquees } from '@/marquee.js';
 import { createPlaylis } from '@/utils/initCreatePlaylist';
+import { images } from '@/assets';
 
 export class ProfilePage {
   async render() {
@@ -27,6 +28,7 @@ export class ProfilePage {
     const contentTemplate = Handlebars.templates['profilePage.hbs'];
     document.getElementById('app').innerHTML = contentTemplate(pageData);
     document.querySelector('head title').textContent = 'Wave Music';
+    await Promise.all([header.render(), sidebar.render()]);
     if (!pageData.isAuthenticated) {
       await Promise.all([header.render(), sidebar.render()]);
       return;
@@ -43,7 +45,7 @@ export class ProfilePage {
         id: artist.id,
         name: artist.name,
         listeners: playsParser(artist.play_count) || 0,
-        image: getValidImage('artists/' + artist.avatar_url, 'default-artist.png'),
+        image: getValidImage('artists/' + artist.avatar_url, images.defaultArtistPath),
       }));
       pageData.top_tracks = (data.top_tracks || []).map((track) => ({
         id: track.id,
@@ -52,7 +54,7 @@ export class ProfilePage {
         album: track.album.title,
         album_id: track.album.id,
         duration: durationParser(track.duration_s),
-        cover: getValidImage('albums/' + track.album.avatar_url, 'default-album.png'),
+        cover: getValidImage('albums/' + track.album.avatar_url, images.defaultAlbumPath),
         artists: track.artists,
         is_liked: track.is_liked,
       }));
@@ -60,7 +62,7 @@ export class ProfilePage {
         id: artist.id,
         name: artist.name,
         listeners: playsParser(artist.play_count) || 0,
-        image: getValidImage('artists/' + artist.avatar_url, 'default-artist.png'),
+        image: getValidImage('artists/' + artist.avatar_url, images.defaultArtistPath),
       }));
     } catch (error) {
       console.error('Failed to load profile page data:', error);

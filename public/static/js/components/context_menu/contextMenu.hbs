@@ -1,0 +1,10 @@
+<div class="actions-menu">
+  {{#each items}}
+    <button class="actions-item" data-action="{{ action }}">
+      <span class="actions-item-svg">
+        {{> (lookup . 'icon') }}
+      </span>
+      {{ text }}
+    </button>
+  {{/each}}
+</div>

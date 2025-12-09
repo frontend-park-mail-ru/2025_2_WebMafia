@@ -15,10 +15,8 @@ import { share } from "@/utils/shareBtn.js";
 
 export class AlbumPage {
   async render(id) {
-    const isAuthenticated = localStorage.getItem('isAuthenticated');
     let pageData = {
-      cover: getValidImage('', 'default-album.png'),
-      isAuthenticated: isAuthenticated,
+      isAuthenticated: localStorage.getItem('isAuthenticated') === 'true',
     };
 
     const contentTemplate = Handlebars.templates['album.hbs'];
@@ -26,12 +24,13 @@ export class AlbumPage {
     document.querySelector('head title').textContent = 'Wave Music';
 
     try {
-      const data = await apiServise.getAlbumPageData(id);
+      const data = await apiServise.getAlbumPageData(id, pageData.isAuthenticated);
       const firstTrackId = data.tracks.length > 0 ? data.tracks[0].id : false;
       pageData = {
         id: data.album.id,
         title: data.album.title,
         type: data.album.type,
+        is_liked: data.album.is_liked,
         year: data.album.release_date ? data.album.release_date.slice(0, 4) : '',
         cover: getValidImage('albums/' + data.album.avatar_url, 'default-album.png'),
         artist: {
@@ -41,7 +40,6 @@ export class AlbumPage {
         },
         description: data.album.description,
         track_id: firstTrackId,
-        isAuthenticated: isAuthenticated,
       };
       let totalDuration = 0;
       pageData.tracks = (data.tracks || []).map((track) => {
@@ -80,10 +78,37 @@ export class AlbumPage {
     createPlaylis();
     slider.sliderFunction();
     initScrollbar();
+    this.addEventListeners();
     setPlayButtonsOnAuth();
     likeTrackBtn();
     playTrack();
     albumPlaylistButtons();
     share();
+  }
+
+  addEventListeners() {
+    const likeButton = document.getElementById('albumLikeButton');
+    if (likeButton) {
+      likeButton.addEventListener('click', async () => {
+        const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+        if (!isAuthenticated) {
+            router.navigate('/login');
+            return;
+        }
+
+        const albumId = likeButton.dataset.albumId;
+        const isLiked = likeButton.classList.contains('active');
+        likeButton.disabled = true;
+
+        try {
+          await apiServise.toggleAlbumLike(albumId, !isLiked);
+          likeButton.classList.toggle('active');
+        } catch (error) {
+          console.error('Failed to like album:', error);
+        } finally {
+          likeButton.disabled = false;
+        }
+      });
+    }
   }
 }

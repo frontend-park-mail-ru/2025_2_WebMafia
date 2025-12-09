@@ -24,6 +24,10 @@ handlebars public/static/js/pages/library/library.hbs -f public/static/js/pages/
 
 handlebars public/static/js/components/header/header.hbs -f public/static/js/components/header/header.tmpl.js
 
+handlebars public/static/js/components/context_menu/contextMenu.hbs -f public/static/js/components/context_menu/contextMenu.tmpl.js
+
+handlebars public/static/js/components/confirmation_modal/confirmationModal.hbs -f public/static/js/components/confirmation_modal/confirmationModal.tmpl.js
+
 handlebars public/static/js/components/sidebar/sidebar.hbs -f public/static/js/components/sidebar/sidebar.tmpl.js
 
 handlebars public/static/js/components/player/player.hbs -f public/static/js/components/player/player.tmpl.js

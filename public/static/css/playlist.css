@@ -1,4 +1,4 @@
-.dots{
+.dots {
   all: unset;
   cursor: pointer;
 }
@@ -156,23 +156,15 @@
   gap: 15px;
 }
 
-.primary-button.close-warning {
-  background: #e6e8ef;
-  height: 30px;
-  color: #000;
+.warning-sub {
+  margin-top: 20px;
+  font-size: 20px;
+  font-weight: 400;
 }
 
-.primary-button.close-warning:hover {
- background: #c7cad3;
-}
-
-.tracks-duration-wrapper.playlists {
-  flex: 1;
-  display: grid;
-  grid-template-columns: 70% 15% 10% 5%;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
+.warning-title {
+  font-weight: 600;
+  font-size: 28px;
 }
 
 .delete-btn-track {
@@ -180,17 +172,19 @@
   border: none;
   cursor: pointer;
   padding: 0;
+  opacity: 0;
 }
 
 .delete-btn-track svg {
   stroke: #555;
   width: 26px;
   height: 26px;
+  transition: stroke 0.3s ease, transform 0.3s ease;
 }
 
 .delete-btn-track:hover svg {
-  transform: scale(1.03);
-  stroke: #a766ff;
+  transform: scale(1.1);
+  stroke: url(#menuGradient);
 }
 
 .add-button-toggle {
@@ -205,10 +199,6 @@
 }
 
 @media (max-width: 1000px) {
-  .tracks-duration-wrapper.playlists {
-    grid-template-columns: 74% 13% 13%;
-  }
-
   .right-row-content-playlist {
     display: grid;
     grid-template-columns: 80% 20%;
@@ -253,7 +243,7 @@
   }
 
   .playlist, .playlist-unfav {
-    padding: 5px;
+    padding: 5px 20px 5px 5px;
   }
 
   .playlist-track-cover {
@@ -263,5 +253,14 @@
 
   .playlist-sub {
     margin-top: 0;
+  }
+
+  .warning-sub {
+    margin-top: 8px;
+    font-size: 18px;
+  }
+
+  .warning-title {
+    font-size: 24px;
   }
 }

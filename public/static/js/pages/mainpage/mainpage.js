@@ -27,6 +27,7 @@ export class MainPage {
     const contentTemplate = Handlebars.templates['MainPage.hbs'];
     document.getElementById('app').innerHTML = contentTemplate(pageData);
     document.querySelector('head title').textContent = 'Wave Music';
+    await Promise.all([header.render(), sidebar.render()]);
 
     try {
       const data = await apiServise.getMainPageData();

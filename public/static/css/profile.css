@@ -15,7 +15,7 @@
 .profile-page {
   box-sizing: content-box;
   background-color: #ffffff;
-  padding: 23px 0 0 23px;
+  padding: 23px 0 23px 23px;
   color: black;
   flex: 1;
   transition: overflow-y 0.3s ease;
@@ -153,6 +153,7 @@
 
 .window {
   background: #fff;
+  max-width: 50%;
   padding: 40px;
   border-radius: 20px;
   transform: translateY(-500px);
@@ -225,7 +226,8 @@
 }
 
 .save-overlay-button-size {
-  height: 30px;
+  height: 25px;
+  font-size: 20px;
 }
 
 .edit-profile-info {
@@ -391,7 +393,7 @@
   }
 
   .window {
-    padding: 30px 10px;
+    padding: 30px 20px;
     width: 93%;
   }
 

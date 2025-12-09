@@ -11,15 +11,12 @@ import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
 import { likeTrackBtn } from '@/utils/likeTrack.js';
 import { createPlaylis } from '@/utils/initCreatePlaylist';
 import { share } from "@/utils/shareBtn.js";
+import {showInfoMessage} from "@/utils/showInfoMessage";
 
 export class ArtistPage {
   async render(id) {
     let pageData = {
       isAuthenticated: localStorage.getItem('isAuthenticated') === 'true',
-      name: '',
-      description:
-        'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.',
-      listeners: playsParser(0),
       albums: [],
       popular_tracks: [],
       singls: [],
@@ -29,13 +26,15 @@ export class ArtistPage {
     const contentTemplateWithoutData = Handlebars.templates['artistPage.hbs'];
     document.getElementById('app').innerHTML = contentTemplateWithoutData(pageData);
     document.querySelector('head title').textContent = 'Wave music';
+    await Promise.all([header.render(), sidebar.render()]);
 
     try {
-      const data = await apiServise.getArtistPageData(id);
+      const data = await apiServise.getArtistPageData(id, pageData.isAuthenticated);
       pageData.id = data.artist.id;
       pageData.name = data.artist ? data.artist.name : 'Unknown Artist';
       pageData.artist_header = getValidImage('artists/' + data.artist.header_url, 'default-artist.png');
       pageData.description = data.artist.description;
+      pageData.isSubscribed = data.artist.isSubscribed;
       pageData.listeners = playsParser(data.artist.play_count) || 0;
       pageData.similar_artists = (data.similar_artists || []).map((artist) => ({
         id: artist.id,
@@ -127,6 +126,40 @@ export class ArtistPage {
         }
 
         container.classList.toggle('expanded');
+      });
+    }
+
+    const subscribeButton = document.getElementById('artistSubscribeButton');
+    if (subscribeButton) {
+      subscribeButton.addEventListener('click', async () => {
+        const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+        if (!isAuthenticated) {
+            router.navigate('/login');
+            return;
+        }
+
+        const artistId = subscribeButton.dataset.artistId;
+        const artistName = subscribeButton.dataset.artistName;
+        const isSubscribed = subscribeButton.dataset.isSubscribed === 'true';
+        subscribeButton.disabled = true;
+
+        try {
+          await apiServise.toggleSubscribeToArtist(artistId, !isSubscribed);
+
+          subscribeButton.dataset.isSubscribed = isSubscribed ? 'false' : 'true';
+          if (isSubscribed) {
+            subscribeButton.innerText = 'Подписаться';
+            showInfoMessage(`Вы отписались от «${artistName || ''}»`);
+          }
+          else {
+            subscribeButton.innerText = 'Отписаться';
+            showInfoMessage(`Вы подписались на «${artistName || ''}»`);
+          }
+        } catch (error) {
+          console.error('Failed to subscribe to artist:', error);
+        } finally {
+          subscribeButton.disabled = false;
+        }
       });
     }
   }
