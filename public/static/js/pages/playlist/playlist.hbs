@@ -28,21 +28,25 @@
             data-first-track-id="{{ track_id }}"
           ></button>
           {{#unless favourite}}
-          <button class="dots">{{> dots}}</button>
-          <div class="actions-menu hidden">
-            <button class="actions-item" id="editPlaylistButton">
-              <span class="actions-item-svg">{{> pencil }}</span
-              >Редактировать
-            </button>
-            <button class="actions-item" id="shareButton">
-              <span class="actions-item-svg">{{> share}}</span
-              >Поделиться
-            </button>
-            <button class="actions-item" id="deletePlaylistButton">
-              <span class="actions-item-svg">{{> trash}}</span
-              >Удалить
-            </button>
-          </div>
+            {{#if isCreator}}
+            <button class="dots">{{> dots}}</button>
+            <div class="actions-menu hidden">
+              <button class="actions-item" id="editPlaylistButton">
+                <span class="actions-item-svg">{{> pencil }}</span
+                >Редактировать
+              </button>
+              <button class="actions-item" id="shareButton">
+                <span class="actions-item-svg">{{> share}}</span
+                >Поделиться
+              </button>
+              <button class="actions-item" id="deletePlaylistButton">
+                <span class="actions-item-svg">{{> trash}}</span
+                >Удалить
+              </button>
+            </div>
+            {{else}}
+            <button class="control-btn shuffle-album" id="shareButton">{{> share }}</button>
+            {{/if}}
           {{/unless}}
         </div>
       </div>
@@ -91,21 +95,23 @@
           {{/each}}
         </div>
         {{#unless favourite}}
-        {{#if tracks}}
-          <div class="header-divider" id="playlistTracksDivider"></div>
-        {{/if}}
-        <div class="playlist-search-title">Давай добавим что-нибудь в твой плейлист</div>
-        <div class="playlist-search-container">
-          <div class="search-icon">{{> searchIcon }}</div>
-          <input
-            type="text"
-            class="search-input"
-            id="searchTracks"
-            placeholder="Название трека"
-            value="{{ searchValue }}"
-          />
-        </div>
-        <div class="tracks-table" id="searchedTracksContainer"></div>
+          {{#if isCreator}}
+          {{#if tracks}}
+            <div class="header-divider" id="playlistTracksDivider"></div>
+          {{/if}}
+          <div class="playlist-search-title">Давай добавим что-нибудь в твой плейлист</div>
+          <div class="playlist-search-container">
+            <div class="search-icon">{{> searchIcon }}</div>
+            <input
+              type="text"
+              class="search-input"
+              id="searchTracks"
+              placeholder="Название трека"
+              value="{{ searchValue }}"
+            />
+          </div>
+          <div class="tracks-table" id="searchedTracksContainer"></div>
+          {{/if}}
         {{/unless}}
       </div>
     </div>

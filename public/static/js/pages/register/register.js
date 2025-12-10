@@ -98,14 +98,11 @@ export class RegistrationPage {
 
       try {
         await apiServise.registerUser(login, email, password);
-        console.log('Registration successful');
 
-        console.log('Attempting auto-login after registration...');
-        await apiServise.loginUser(login, password);
-
-        console.log('Auto-login successful');
+        const response = await apiServise.loginUser(login, password);
 
         localStorage.setItem('isAuthenticated', 'true');
+        localStorage.setItem('uid', response.ID);
 
         window.location.replace('/');
         await player.init();

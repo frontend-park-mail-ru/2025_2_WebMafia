@@ -3,6 +3,7 @@ import { router } from '@/routing.js';
 import { FormValidator } from '@/validation.js';
 import { images } from "@/assets.js";
 import { getValidImage } from '@/parsers.js';
+import { confirmation } from "@/components/confirmation_modal/confirmationModal.js";
 
 class PlaylistModalService {
   constructor() {
@@ -33,6 +34,19 @@ class PlaylistModalService {
   render() {
     if (document.querySelector('.modal-overlay')) {
       document.querySelector('.modal-overlay').remove();
+    }
+
+    if (localStorage.getItem('isAuthenticated') !== 'true') {
+      confirmation.showConfirm({
+        title: 'Создать плейлист',
+        description: `Создание плейлистов доступном в вашем <b>Wave Music</b> аккаунте`,
+        confirmText: 'Войти',
+        cancelText: 'Закрыть',
+        onConfirm: () => {
+          router.navigate('/login')
+        }
+      });
+      return;
     }
 
     const template = Handlebars.templates['playlistModal.hbs'];

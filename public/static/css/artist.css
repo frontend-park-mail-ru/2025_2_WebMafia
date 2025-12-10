@@ -101,7 +101,7 @@
 }
 
 .loading {
-  display: none;
+  display: none !important;
 }
 
 .artist-description {

@@ -77,7 +77,7 @@ export class AlbumPage {
     await Promise.all([header.render(), sidebar.render()]);
     slider.sliderFunction();
     initScrollbar();
-    this.addEventListeners();
+    this.albumLikeButton();
     setPlayButtonsOnAuth();
     likeTrackBtn();
     playTrack();
@@ -85,7 +85,7 @@ export class AlbumPage {
     share();
   }
 
-  addEventListeners() {
+  albumLikeButton() {
     const likeButton = document.getElementById('albumLikeButton');
     if (likeButton) {
       likeButton.addEventListener('click', async () => {
@@ -96,24 +96,39 @@ export class AlbumPage {
         }
 
         const albumId = likeButton.dataset.albumId;
-        const albumName = likeButton.dataset.albumName;
-        const isLiked = likeButton.classList.contains('active');
+        const albumName = likeButton.dataset.albumName || 'Альбом';
+        const likeIcon = likeButton.querySelector('.actions-item-svg');
+        const likeText = likeButton.querySelector('.actions-item-text');
+
+        const wasLiked = likeIcon.classList.contains('active');
+        const newLikedState = !wasLiked;
+
+        const renderState = (isLiked) => {
+          if (isLiked) {
+            likeIcon.classList.add('active');
+            likeText.textContent = 'Удалить из библиотеки';
+          } else {
+            likeIcon.classList.remove('active');
+            likeText.textContent = 'Добавить в библиотеку';
+          }
+        };
+
+        renderState(newLikedState);
         likeButton.disabled = true;
 
         try {
-          await apiServise.toggleAlbumLike(albumId, !isLiked);
-          likeButton.classList.toggle('active');
+          await apiServise.toggleAlbumLike(albumId, newLikedState);
 
-          if (isLiked) {
-            likeButton.innerText = 'Добавить в библиотеку';
-            showInfoMessage(`Вы удалили альбом «${albumName || ''}» из библиотеки`);
+          if (newLikedState) {
+            showInfoMessage(`Альбом «${albumName}» добавлен в библиотеку`);
+          } else {
+            showInfoMessage(`Альбом «${albumName}» удалён из библиотеки`);
           }
-          else {
-            likeButton.innerText = 'Удалить из библиотеки';
-            showInfoMessage(`Альбом «${albumName || ''}» добавлен в библиотеку`);
-          }
+
         } catch (error) {
           console.error('Failed to like album:', error);
+          renderState(wasLiked);
+          showInfoMessage('Ошибка при обновлении библиотеки. Попробуйте позже.');
         } finally {
           likeButton.disabled = false;
         }

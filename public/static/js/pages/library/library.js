@@ -43,7 +43,7 @@ export class LibraryPage {
         name: 'Понравившиеся треки',
         image: images.likedTracksPath,
         created_at: new Date(),
-        sub: data.favourite_tracks ? tracksNumParser(data.favourite_tracks.length) : '0 треков',
+        sub: tracksNumParser(data.favourite_tracks.length),
         href: 'playlist/LM',
         type: 'Плейлист',
       };

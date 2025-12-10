@@ -56,9 +56,8 @@ export class LoginPage {
       try {
         const response = await apiServise.loginUser(login, password);
 
-        console.log('Login successful:', response);
-
         localStorage.setItem('isAuthenticated', 'true');
+        localStorage.setItem('uid', response.ID);
 
         window.location.replace('/');
         await player.init();

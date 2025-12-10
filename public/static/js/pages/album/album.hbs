@@ -24,12 +24,16 @@
           <button class="dots">{{> dots}}</button>
           <div class="actions-menu hidden">
             <button class="actions-item" id="albumLikeButton" data-album-id="{{ id }}" data-album-name="{{ title }}">
-              <span class="actions-item-svg {{#if is_liked}}active{{/if}}">{{> likeBtn }}</span>
-              {{#if is_liked}}
-                Удалить из библиотеки
-              {{else}}
-                Добавить в библиотеку
-              {{/if}}
+              <span class="actions-item-svg {{#if is_liked}}active{{/if}}">
+                {{> likeBtn }}
+              </span>
+              <span class="actions-item-text">
+                {{#if is_liked}}
+                  Удалить из библиотеки
+                {{else}}
+                  Добавить в библиотеку
+                {{/if}}
+              </span>
             </button>
             <button class="actions-item" id="shareButton">
               <span class="actions-item-svg">{{> share}}</span

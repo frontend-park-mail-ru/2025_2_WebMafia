@@ -60,6 +60,7 @@ export class PlaylistPage {
         pageData.date = dateParser(data.created_at);
         pageData.image = getValidImage(data.avatar_url ? data.avatar_url : '', images.defaultPlaylistPath);
         pageData.description = data.description;
+        pageData.isCreator = data.creator_id === localStorage.getItem('uid');
       }
       let totalDuration = 0;
       pageData.tracks = (data.tracks || []).map((track) => {
@@ -84,7 +85,7 @@ export class PlaylistPage {
 
       pageData.totalDuration = totalDurationParser(totalDuration);
       this.totalDuration = totalDuration;
-      pageData.tracksNum = pageData.tracks.length ? tracksNumParser(pageData.tracks.length) : '0 треков';
+      pageData.tracksNum = tracksNumParser(pageData.tracks.length);
     } catch (error) {
       console.error('Failed to load playlist page data:', error);
 
