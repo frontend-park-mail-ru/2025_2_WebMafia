@@ -142,6 +142,7 @@
 
   .album-row.playlist .track-like-container {
     position: static;
+    flex-shrink: 0;
   }
 
   .library-search-container {

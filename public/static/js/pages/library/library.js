@@ -29,10 +29,7 @@ export class LibraryPage {
     document.getElementById('app').innerHTML = contentTemplate(pageData);
     await Promise.all([header.render(), sidebar.render()]);
 
-    if (!pageData.isAuthenticated) {
-      await Promise.all([header.render(), sidebar.render()]);
-      return;
-    }
+    if (!pageData.isAuthenticated) return;
 
     const gridTemplate = Handlebars.templates['libraryGrid.hbs'];
     document.querySelector('head title').textContent = 'Wave Music';
@@ -113,9 +110,6 @@ export class LibraryPage {
     document.getElementById('app').innerHTML = contentTemplate(pageData);
     document.querySelector('.grid-layout').innerHTML = gridTemplate(pageData);
     playerOnlyOnPlay();
-
-    await Promise.all([header.render(), sidebar.render()]);
-
     initScrollbar();
     playTrack();
     setPlayButtonsOnAuth();
@@ -419,7 +413,7 @@ export class LibraryPage {
         const touch = e.touches[0];
         createAndShowMenu(e, touch.clientX, touch.clientY);
       }, 500);
-    }, { passive: false });
+    }, { passive: true });
 
     const cancelLongPress = () => clearTimeout(longPressTimer);
     document.addEventListener('touchmove', cancelLongPress);
