@@ -1,7 +1,7 @@
 <div class="overlay">
   <div class="window">
     <div class="overlay-header">
-      <h2 class="title-name">Создать плейлист</h2>
+      <h2 class="title-name">{{ modalTitle }}</h2>
       <button class="close-button" aria-label="Закрыть">{{> close }}</button>
     </div>
     <div class="header-divider"></div>
@@ -10,7 +10,7 @@
         <div class="edit-avatar">
           <div class="edit-avatar-placement">
             <img
-              src="{{playlistImage}}"
+              src="{{ playlistImage }}"
               alt="Аватар плейлиста"
               class="profile-image create-playlist"
               id="playlistAvatar"
@@ -26,7 +26,7 @@
           <div class="form-group">
             <label for="title">Название</label>
             <div class="input-wrapper">
-              <input type="text" id="title" name="title" placeholder="Добавь название" />
+              <input type="text" id="title" name="title" placeholder="Добавь название" value="{{ title }}" />
               <div class="error-message" id="titleError"></div>
               <div class="validation-message" id="titleInformation"></div>
             </div>
@@ -40,7 +40,7 @@
                 id="description"
                 name="description"
                 placeholder="Добавь описание (необязательно)"
-              ></textarea>
+              >{{ description }}</textarea>
               <div class="validation-message" id="descriptionInformation"></div>
             </div>
           </div>
@@ -49,7 +49,7 @@
         </form>
       </div>
       <div class="save-overlay-button">
-        <button class="primary-button save-overlay-button-size" id="submitCreatePlaylist">Создать</button>
+        <button class="primary-button save-overlay-button-size" id="submitPlaylistOverlay">{{ submitText }}</button>
       </div>
     </div>
   </div>

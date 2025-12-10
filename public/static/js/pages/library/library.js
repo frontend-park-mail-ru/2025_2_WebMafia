@@ -12,7 +12,7 @@ import { copyToClipboard } from '@/utils/shareBtn.js';
 import { deletePlaylistLogic } from '@/utils/deletePlaylist.js';
 import { confirmation } from '@/components/confirmation_modal/confirmationModal.js';
 import { showInfoMessage } from '@/utils/showInfoMessage.js';
-import { createPlaylistModal } from "@/components/create_playlist_modal/initCreatePlaylist.js";
+import { playlistModal } from "@/components/playlist_modal/initPlaylistModal.js";
 
 export class LibraryPage {
   async render() {
@@ -80,6 +80,7 @@ export class LibraryPage {
           const item = {
             id: playlist.id,
             name: playlist.title,
+            description: playlist.description,
             default_avatar: 'default-playlist.png',
             image: getValidImage(playlist.avatar_url, images.defaultPlaylistPath),
             created_at: new Date(playlist.created_at),
@@ -135,7 +136,7 @@ export class LibraryPage {
     createPlaylistButtons.forEach(btn => {
       btn.addEventListener('click', (e) => {
         e.preventDefault();
-        createPlaylistModal.show();
+        playlistModal.openCreate();
       });
     });
 
@@ -370,7 +371,32 @@ export class LibraryPage {
             });
             break;
           case 'edit':
-                 // router.navigate(...)
+            const playlistItem = pageData.playlists.find(item => item.id === id);
+
+            playlistModal.openEdit(
+              {
+                id: id,
+                title: name,
+                description: playlistItem ? playlistItem.description : '',
+                image: playlistItem.image === images.defaultPlaylistPath ? '' : playlistItem.image ,
+              },
+              (newData) => {
+                const titleEl = card.querySelector('.card-name');
+
+                if (titleEl) titleEl.textContent = newData.title;
+                card.dataset.name = newData.title;
+
+                const currentImg = card.querySelector('.playlist-cover');
+                if (currentImg) currentImg.src = newData.image ? newData.image : images.defaultPlaylistPath;
+
+                if (playlistItem) {
+                  playlistItem.name = newData.title;
+                  playlistItem.description = newData.description;
+                  playlistItem.image = newData.image ? newData.image : images.defaultPlaylistPath;
+                }
+
+                showInfoMessage('Изменения успешно сохранены!');
+              });
             break;
           case 'share':
             copyToClipboard(href);

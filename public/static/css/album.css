@@ -340,6 +340,7 @@
   }
 
   .tracks-card {
+    flex-grow: unset;
     padding: 10px 5px;
     margin: 20px 0 40px 0;
     width: 90%;
