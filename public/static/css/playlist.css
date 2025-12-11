@@ -3,9 +3,9 @@
   cursor: pointer;
 }
 
-.dots svg {
+/* .dots svg {
   transition: all 0.3s ease;
-}
+} */
 
 .dots svg {
   width: 26px;
@@ -124,7 +124,7 @@
 }
 
 .tracks-card .header-divider {
-  margin: 0 10px 15px 10px;
+  margin: 0 10px 15px;
 }
 
 .right-row-content-playlist {

@@ -15,9 +15,11 @@
   0% {
     background-position: 0% 50%;
   }
+
   50% {
     background-position: 100% 50%;
   }
+  
   100% {
     background-position: 0% 50%;
   }
@@ -172,7 +174,7 @@
   cursor: pointer;
   height: 60px;
   box-sizing: border-box;
-  margin: 10px auto 0 auto;
+  margin: 10px auto 0;
   transition: all 0.5s ease;
   background-size: 150% 100%;
 }
@@ -282,7 +284,7 @@ input[type='password']::placeholder {
     top: 100%;
     left: 15px;
     border-style: solid;
-    border-color: #d4d9d9 transparent transparent transparent;
+    border-color: #d4d9d9 transparent transparent;
     right: auto;
     transform: none;
     bottom: auto;
@@ -439,9 +441,9 @@ input[type='password']::placeholder {
     font-size: 13px;
   }
 
-  .below-question {
+  /* .below-question {
     margin-top: 10px;
-  }
+  } */
 
   .eye svg {
     width: 20px;

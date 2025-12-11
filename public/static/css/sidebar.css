@@ -172,9 +172,9 @@
     stroke: url(#menuGradient);
   }
 
-  .menu-item.active {
+  /* .menu-item.active {
     color: black;
-  }
+  } */
 
   .menu-item.active {
     border-radius: 0;

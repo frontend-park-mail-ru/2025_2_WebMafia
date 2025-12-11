@@ -504,10 +504,6 @@
     position: relative;
   }
 
-  .player.expanded .remote-container {
-    width: 100%;
-  }
-
   .player.expanded .track-time.current,
   .player.expanded .track-time.total {
     position: absolute;
@@ -516,8 +512,13 @@
     z-index: 52;
   }
 
-  .player.expanded .track-time.current { left: 0; transform: translateY(0); }
-  .player.expanded .track-time.total   { right: 0; transform: translateY(0); }
+  .player.expanded .track-time.current { 
+    left: 0; transform: translateY(0); 
+  }
+
+  .player.expanded .track-time.total   { 
+    right: 0; transform: translateY(0); 
+  }
 
   .player.expanded .remote-container {
     position: static;
@@ -564,7 +565,7 @@
 
   .remote-slider {
     width: 100%;
-    margin: 0 0 2px 0;
+    margin: 0 0 2px;
   }
 
   .remote-slider::-webkit-slider-runnable-track {

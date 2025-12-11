@@ -40,7 +40,7 @@
   display: none;
   border-radius: 50%;
   align-items: center;
-  padding: 10px 13px 10px 13px;
+  padding: 10px 13px;
 }
 
 .second-cross-icon svg {
@@ -129,7 +129,7 @@
     flex-direction: row;
     justify-content: space-between;
     position: relative;
-    margin: 10px 0 15px 0;
+    margin: 10px 0 15px;
   }
 
   .library-header-container .search-toggle {
@@ -172,11 +172,6 @@
   .library-search-container.active .search-input {
     opacity: 1;
     transform: translateX(0);
-  }
-
-  .library-search-container.active .search-input {
-    opacity: 1;
-    transform: translateY(0);
   }
 
   .library-search-container .input-close-button {

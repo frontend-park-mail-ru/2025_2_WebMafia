@@ -115,7 +115,7 @@
   transform: translateY(-10px);
   pointer-events: none;
   transition: all 0.3s ease;
-  padding: 10px 15px 10px 15px;
+  padding: 10px 15px;
 }
 
 .dropdown-menu.show {
