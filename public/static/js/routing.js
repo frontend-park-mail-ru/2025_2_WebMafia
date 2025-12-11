@@ -1,7 +1,7 @@
 import { MainPage } from '@/pages/mainpage/mainpage.js';
 import { notFoundPage } from '@/pages/notfoundpage/notFoundPage.js';
-import { LoginPage } from '@/pages/login/login.js';
-import { RegistrationPage } from '@/pages/register/register.js';
+import { LoginPage } from '@/pages/auth/login.ts';
+import { RegistrationPage } from '@/pages/auth/register.ts';
 import { ArtistPage } from '@/pages/artist/artist.js';
 import { ProfilePage } from '@/pages/profile/profilePage.js';
 import { ArtistAlbumsPage } from '@/pages/artist_albums/artistAlbumsPage.js';

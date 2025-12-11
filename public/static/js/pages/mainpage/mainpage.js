@@ -9,7 +9,7 @@ import { playTrack } from '@/playTrackBtn.js';
 import { getValidImage, playsParser } from '@/parsers.js';
 import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
 import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
-import { setupMarquees } from '@/marquee.js';
+import { setupMarquees } from '@/marquee';
 import { createPlaylis } from '@/utils/initCreatePlaylist';
 
 export class MainPage {

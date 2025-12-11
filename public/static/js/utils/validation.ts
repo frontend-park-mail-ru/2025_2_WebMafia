@@ -1,17 +1,46 @@
+export type ValidatorFn = (value: string) => string | null;
+
+export type InfoFn = (value: string) => string | string[] | null;
+
+export interface ValidatorsConfig {
+  [fieldName: string]: ValidatorFn;
+}
+
+export interface InformationConfig {
+  [fieldName: string]: InfoFn;
+}
+
+export interface ValidatorOptions {
+  submitButtonSelector?: string;
+  messageSelector?: string;
+}
+
 export class FormValidator {
-  constructor(formId, validators, information, options = {}) {
-    this.form = document.getElementById(formId);
+  private form: HTMLFormElement | null;
+  private validators: ValidatorsConfig;
+  private information: InformationConfig;
+  private submitButton: HTMLButtonElement | null;
+  private messageElement: HTMLElement | null;
+  private touchedFields: Record<string, boolean>;
+
+  public onSubmit: (formData: FormData) => void;
+
+  constructor(formId: string, validators: ValidatorsConfig, information: InformationConfig, options: ValidatorOptions = {}) {
+    this.form = document.getElementById(formId) as HTMLFormElement;
     this.validators = validators;
     this.information = information;
-    this.submitButtonSelector = options.submitButtonSelector || '.login-button';
-    this.messageSelector = options.messageSelector || '#generalError';
-    this.submitButton = this.form?.querySelector(this.submitButtonSelector);
+    const submitButtonSelector = options.submitButtonSelector || '.login-button';
+    const messageSelector = options.messageSelector || '#generalError';
+    this.submitButton = this.form?.querySelector<HTMLButtonElement>(submitButtonSelector);
     this.touchedFields = {};
-    this.messageElement = document.querySelector(this.messageSelector);
+    this.messageElement = document.querySelector<HTMLElement>(messageSelector);
+    this.onSubmit = (formData) => {
+      console.log('Form submitted with:', Object.fromEntries(formData));
+    };
     this.setupMessageElement();
   }
 
-  showMessage(message, isSuccess = false) {
+  public showMessage(message: string, isSuccess: boolean = false): void {
     if (!this.messageElement) return;
 
     this.messageElement.textContent = message;
@@ -19,7 +48,7 @@ export class FormValidator {
     this.messageElement.classList.add('show');
   }
 
-  setupMessageElement() {
+  private setupMessageElement(): void {
     if (!this.messageElement) return;
     this.messageElement.style.textAlign = 'center';
     this.messageElement.style.marginBottom = '15px';
@@ -27,15 +56,15 @@ export class FormValidator {
     this.messageElement.style.borderRadius = '5px';
   }
 
-  clearMessage() {
+  private clearMessage() {
     if (this.messageElement) {
       this.messageElement.textContent = '';
       this.messageElement.classList.remove('show');
     }
   }
 
-  showError(fieldId, message) {
-    const errorElement = document.getElementById(fieldId + 'Error');
+  private showError(fieldId: string, message: string): void {
+    const errorElement = document.getElementById(`${fieldId}Error`);
     const formGroup = document.getElementById(fieldId)?.closest('.form-group');
     if (errorElement && formGroup) {
       errorElement.textContent = message;
@@ -43,8 +72,9 @@ export class FormValidator {
       formGroup.classList.add('error');
     }
   }
-  hideError(fieldId) {
-    const errorElement = document.getElementById(fieldId + 'Error');
+
+  private hideError(fieldId: string): void {
+    const errorElement = document.getElementById(`${fieldId}Error`);
     const formGroup = document.getElementById(fieldId)?.closest('.form-group');
     if (errorElement && formGroup) {
       errorElement.classList.remove('show');
@@ -52,8 +82,8 @@ export class FormValidator {
     }
   }
 
-  showInfo(fieldId, message) {
-    const informationElement = document.getElementById(fieldId + 'Information');
+  private showInfo(fieldId: string, message: string | string[]): void {
+    const informationElement = document.getElementById(`${fieldId}Information`);
     if (!informationElement) return;
 
     if (Array.isArray(message) && message.length > 1) {
@@ -66,13 +96,14 @@ export class FormValidator {
       informationElement.innerHTML = '';
       informationElement.appendChild(ul);
     } else {
-      informationElement.textContent = message;
+      informationElement.textContent = Array.isArray(message) ? message[0] : message;
     }
 
     informationElement.classList.add('show');
   }
-  hideInfo(fieldId) {
-    const informationElement = document.getElementById(fieldId + 'Information');
+
+  private hideInfo(fieldId: string): void {
+    const informationElement = document.getElementById(`${fieldId}Information`);
     if (informationElement) {
       informationElement.classList.remove('show');
     }
@@ -80,7 +111,7 @@ export class FormValidator {
 
   // Проверка одного поля,
   // Чтоб выводить конкретно у него ошибку появившуюся при вводе
-  validateFieldForBlur(input) {
+  private validateFieldForBlur(input: HTMLInputElement | HTMLTextAreaElement): boolean {
     const value = input.value;
     const error = this.validators[input.name]?.(value);
 
@@ -91,10 +122,11 @@ export class FormValidator {
     }
 
     // для учтения несовпадений паролей при изменении изначального пароля
-    if (input.name === 'password') {
-      const confirmInput = this.form.querySelector('[name="passwordConfirm"]');
-      if (confirmInput) {
-        const confirmError = this.validators.passwordConfirm?.(confirmInput.value);
+    if (input.name === 'password' && this.form) {
+      const confirmInput = this.form.querySelector<HTMLInputElement>('[name="passwordConfirm"]');
+      if (confirmInput && confirmInput.value) {
+        const confirmValidator = this.validators['passwordConfirm'];
+        const confirmError = confirmValidator ? confirmValidator(confirmInput.value) : null;
         if (confirmError && confirmInput.value) {
           this.showError('passwordConfirm', confirmError);
         } else {
@@ -106,21 +138,29 @@ export class FormValidator {
     return !error;
   }
 
-  validateFieldForInput(input) {
+  private validateFieldForInput(input: HTMLInputElement | HTMLTextAreaElement): boolean {
     const value = input.value;
-    const info = this.information[input.name]?.(value);
-    if (info) this.showInfo(input.name, info);
-    else this.hideInfo(input.name);
+    const infoFn = this.information[input.name];
+    const info = infoFn ? infoFn(value) : null;
+
+    if (info) {
+      this.showInfo(input.name, info);
+    }
+    else {
+      this.hideInfo(input.name);
+    }
     return !info;
   }
 
   // Проверка всей формы для кнопки
   // Теперь не положено передавать всю форму для валидации да и возвращать ничего не надо - только кнопку включать
-  validateForm() {
+  public validateForm(): boolean {
+    if (!this.form) return false;
+
     let isValid = true;
 
     for (const field of Object.keys(this.validators)) {
-      const input = this.form.querySelector(`[name="${field}"]`);
+      const input = this.form.querySelector<HTMLInputElement | HTMLTextAreaElement>(`[name="${field}"]`);
       if (!input) continue;
       const error = this.validators[field](input.value);
       if (error) {
@@ -137,13 +177,16 @@ export class FormValidator {
   }
 
   init() {
-    if (!this.form) return;
+    if (!this.form) {
+      console.warn('FormValidator: Form element not found');
+      return;
+    }
 
     // обработчик отправки
     this.form.addEventListener('submit', (e) => {
       e.preventDefault();
       if (this.validateForm()) {
-        const formData = new FormData(this.form);
+        const formData = new FormData(this.form as HTMLFormElement);
         this.clearMessage();
         this.onSubmit(formData);
       }
@@ -152,29 +195,28 @@ export class FormValidator {
     // обработка каждого поля
     // При вводе или переключении проверяем и выводим сообщения валидации только у трогаемых полей
     // Также всегда используем validateForm() чтоб активировать или дезактивировать кнопку submit
-    this.form.querySelectorAll('input, textarea').forEach((input) => {
-      this.touchedFields[input.name] = false;
+    const inputs = this.form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('input, textarea');
+
+    inputs.forEach((input) => {
+      const name = input.name;
+      this.touchedFields[name] = false;
 
       ['input', 'click'].forEach((event) =>
         input.addEventListener(event, () => {
-          this.hideError(input.name);
-          this.touchedFields[input.name] = true;
+          this.hideError(name);
+          this.touchedFields[name] = true;
           this.validateFieldForInput(input);
           this.validateForm();
         })
       );
 
       input.addEventListener('blur', () => {
-        this.hideInfo(input.name);
-        if (this.touchedFields[input.name]) {
+        this.hideInfo(name);
+        if (this.touchedFields[name]) {
           this.validateFieldForBlur(input);
         }
         this.validateForm();
       });
     });
-  }
-
-  onSubmit(formData) {
-    console.log('Form submitted with:', Object.fromEntries(formData));
   }
 }

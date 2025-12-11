@@ -1,7 +1,7 @@
 import { apiServise, API_TRACKS_URL } from '@/data.js';
 import { getValidImage } from '@/parsers.js';
 import { likeChange } from '@/utils/likeTrack';
-import { setupMarquees } from '@/marquee.js';
+import { setupMarquees } from '@/marquee';
 
 export class Player extends EventTarget {
   constructor() {

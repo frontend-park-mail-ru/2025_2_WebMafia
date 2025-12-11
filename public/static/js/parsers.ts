@@ -1,6 +1,6 @@
 import { API_AVATARS_URL } from '@/data.js';
 
-export function pluralize(number, one, few, many) {
+export function pluralize(number: number, one: string, few: string, many: string): string {
   const n = Math.floor(number);
   const lastDigit = n % 10;
   const lastTwoDigits = n % 100;
@@ -11,40 +11,34 @@ export function pluralize(number, one, few, many) {
   return many;
 }
 
-export function playsParser(plays) {
-  let display = plays;
+export function playsParser(plays: number): string {
+  const formatter = new Intl.NumberFormat('ru-RU', {
+    notation: 'compact',
+    compactDisplay: 'short',
+    maximumFractionDigits: 1
+  });
 
-  if (plays >= 1_000_000_000) {
-    const value = plays / 1_000_000_000;
-    display = (value < 10 ? value.toFixed(1) : value.toFixed(0)).replace('.', ',') + ' млрд.';
-  } else if (plays >= 1_000_000) {
-    const value = plays / 1_000_000;
-    display = (value < 10 ? value.toFixed(1) : value.toFixed(0)).replace('.', ',') + ' млн.';
-  } else if (plays >= 1_000) {
-    const value = plays / 1_000;
-    display = (value < 10 ? value.toFixed(1) : value.toFixed(0)).replace('.', ',') + ' тыс.';
-  }
-
-  return `${display} ${pluralize(plays, 'прослушивание', 'прослушивания', 'прослушиваний')}`;
+  const value = formatter.format(plays);
+  return `${value} ${pluralize(plays, 'прослушивание', 'прослушивания', 'прослушиваний')}`;
 }
 
-export function durationParser(duration) {
+export function durationParser(duration: number): string {
   const durationM = Math.floor(duration / 60);
   const durationS = duration % 60;
   return durationS < 10 ? `${durationM}:0${durationS}` : `${durationM}:${durationS}`;
 }
 
-export function durationToSec(d) {
+export function durationToSec(d: string): number {
     const [m, s] = d.split(':').map(Number);
     return m * 60 + s;
 }
 
-export function totalDurationParser(duration) {
-  let duration_h = Math.floor(duration / 3600);
-  let duration_m = Math.floor((duration % 3600) / 60);
-  let duration_s = duration % 60;
+export function totalDurationParser(duration: number): string {
+  const duration_h = Math.floor(duration / 3600);
+  const duration_m = Math.floor((duration % 3600) / 60);
+  const duration_s = duration % 60;
 
-  let parts = [];
+  const parts: string[] = [];
 
   if (duration_h > 0) {
     parts.push(`${duration_h} ${pluralize(duration_h, 'час', 'часа', 'часов')}`);
@@ -59,22 +53,20 @@ export function totalDurationParser(duration) {
   return parts.join(' ');
 }
 
-export function tracksNumParser(count) {
+export function tracksNumParser(count: number | null | undefined): string {
   if (count == null || count < 0) return '';
   return `${count} ${pluralize(count, 'трек', 'трека', 'треков')}`;
 }
 
-export function getValidImage(url, defaultImage) {
-  if (!url || url === '') {
-    if (!defaultImage) return url;
-    return defaultImage || '';
-  }
+export function getValidImage(url: string | null | undefined, defaultImage?: string) {
+  if (!url || url === '') return defaultImage || '';
+
   return `${API_AVATARS_URL}/${url}`;
 }
 
-export function dateParser(dateStr) {
+export function dateParser(dateStr: string | undefined): string {
   if (!dateStr) return '';
-
-  const [year, month, day] = dateStr.slice(0, 10).split('-');
-  return `${day}.${month}.${year}`;
+  const date = new Date(dateStr);
+  if (isNaN(date.getTime())) return '';
+  return new Intl.DateTimeFormat('ru-RU').format(date);
 }

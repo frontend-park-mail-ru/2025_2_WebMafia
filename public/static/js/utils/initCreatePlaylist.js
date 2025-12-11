@@ -1,6 +1,6 @@
 import { apiServise } from '@/data.js';
 import { router } from '@/routing.js';
-import { FormValidator } from '@/validation.js';
+import { FormValidator } from '@/utils/validation.ts';
 
 export function createPlaylis() {
   const createPlaylistOverlay = document.getElementById('createPlaylistOverlay');

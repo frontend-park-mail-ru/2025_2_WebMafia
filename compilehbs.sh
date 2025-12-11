@@ -2,9 +2,9 @@ handlebars public/static/js/pages/mainpage/MainPage.hbs -f public/static/js/page
 
 handlebars public/static/js/pages/notfoundpage/404.hbs -f public/static/js/pages/notfoundpage/notFoundPage.tmpl.js
 
-handlebars public/static/js/pages/login/login.hbs -f public/static/js/pages/login/login.tmpl.js
+handlebars public/static/js/pages/auth/login.hbs -f public/static/js/pages/auth/login.tmpl.js
 
-handlebars public/static/js/pages/register/register.hbs -f public/static/js/pages/register/register.tmpl.js
+handlebars public/static/js/pages/auth/register.hbs -f public/static/js/pages/auth/register.tmpl.js
 
 handlebars public/static/js/pages/artist/artistPage.hbs -f public/static/js/pages/artist/artistPage.tmpl.js
 

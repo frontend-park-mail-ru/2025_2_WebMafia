@@ -1,17 +1,17 @@
 import { router } from '@/routing.js';
 import { apiServise } from '@/data.js';
-import { initPasswordShowing } from '@/eye.js';
+import { initPasswordShowing } from '@/eye';
 import { initScrollbar } from '@/scrollbar.js';
 import { durationParser, getValidImage, playsParser } from '@/parsers.js';
 import { sidebar } from '@/components/sidebar/sidebar.js';
 import { slider } from '@/slider.js';
 import { header } from '@/components/header/header.js';
 import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
-import { FormValidator } from '@/validation.js';
+import { FormValidator } from '@/utils/validation.ts';
 import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
 import { playTrack } from '@/playTrackBtn.js';
 import { likeTrackBtn } from '@/utils/likeTrack.js';
-import { setupMarquees } from '@/marquee.js';
+import { setupMarquees } from '@/marquee';
 import { createPlaylis } from '@/utils/initCreatePlaylist';
 import { images } from '@/assets';
 
@@ -28,7 +28,7 @@ export class ProfilePage {
     const contentTemplate = Handlebars.templates['profilePage.hbs'];
     document.getElementById('app').innerHTML = contentTemplate(pageData);
     document.querySelector('head title').textContent = 'Wave Music';
-    await Promise.all([header.render(), sidebar.render()]);
+
     if (!pageData.isAuthenticated) {
       await Promise.all([header.render(), sidebar.render()]);
       return;

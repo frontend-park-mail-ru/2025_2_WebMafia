@@ -1,7 +1,12 @@
-export function setupMarquees() {
-  document.querySelectorAll('.marquee').forEach(marquee => {
-    const inner = marquee.querySelector('.marquee-inner');
-    let texts = inner.querySelectorAll('.marquee-text');
+export function setupMarquees(): void {
+  const marquees = document.querySelectorAll<HTMLElement>('.marquee');
+
+  marquees.forEach((marquee) => {
+    const inner = marquee.querySelector<HTMLElement>('.marquee-inner');
+
+    if (!inner) return;
+
+    const texts = inner.querySelectorAll<HTMLElement>('.marquee-text');
 
     if (texts.length === 0) return;
     texts[0].style.paddingRight = '0';
@@ -17,7 +22,7 @@ export function setupMarquees() {
       inner.style.transform = 'translateX(0)';
     } else {
       if (texts.length < 2) {
-        const clone = texts[0].cloneNode(true);
+        const clone = texts[0].cloneNode(true) as HTMLElement;
         inner.appendChild(clone);
       }
 
