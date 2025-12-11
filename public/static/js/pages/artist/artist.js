@@ -10,8 +10,8 @@ import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
 import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
 import { likeTrackBtn } from '@/utils/likeTrack.js';
 import { createPlaylis } from '@/utils/initCreatePlaylist';
-import { share } from "@/utils/shareBtn.js";
-import {showInfoMessage} from "@/utils/showInfoMessage";
+import { share } from '@/utils/shareBtn.js';
+import { showInfoMessage } from '@/utils/showInfoMessage';
 
 export class ArtistPage {
   async render(id) {
@@ -134,8 +134,8 @@ export class ArtistPage {
       subscribeButton.addEventListener('click', async () => {
         const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
         if (!isAuthenticated) {
-            router.navigate('/login');
-            return;
+          router.navigate('/login');
+          return;
         }
 
         const artistId = subscribeButton.dataset.artistId;
@@ -150,8 +150,7 @@ export class ArtistPage {
           if (isSubscribed) {
             subscribeButton.innerText = 'Подписаться';
             showInfoMessage(`Вы отписались от «${artistName || ''}»`);
-          }
-          else {
+          } else {
             subscribeButton.innerText = 'Отписаться';
             showInfoMessage(`Вы подписались на «${artistName || ''}»`);
           }

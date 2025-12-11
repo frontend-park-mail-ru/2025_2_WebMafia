@@ -306,6 +306,8 @@ export class PlaylistPage {
 
           const newTitle = document.getElementById('titlePlaylist').value;
           const newDescription = document.getElementById('descriptionPlaylist').value;
+          const getDescriptionOverlay = document.getElementById('descriptionOverlay');
+
           if (newTitle !== this.playlistData.title || newDescription !== this.playlistData.description) {
             this.playlistData.title = newTitle;
             this.playlistData.description = newDescription;

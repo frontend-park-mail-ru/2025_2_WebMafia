@@ -15,9 +15,9 @@ export class apiServises {
     this.playlistRoutes = [];
 
     if (import.meta.env.DEV) {
-       this.userRoutes = userRoutes;
-       this.tracksArtistAlbumRoutes = tracksArtistAlbumRoutes;
-       this.playlistRoutes = playlistRoutes;
+      this.userRoutes = userRoutes;
+      this.tracksArtistAlbumRoutes = tracksArtistAlbumRoutes;
+      this.playlistRoutes = playlistRoutes;
     }
   }
 
@@ -106,17 +106,16 @@ export class apiServises {
         popular_tracks: popular_tracks || [],
         artist: artist || {},
         similar_artists: similar_artists || [],
-      }
+      };
 
-      if (!isAuthenticated)
-        return result;
+      if (!isAuthenticated) return result;
 
       const [favorite_tracks, favorite_artists] = await Promise.all([
         this.getFavoriteTrackIds(),
         this.request('/favorite/artists').catch(() => []),
       ]);
 
-      const subscribedArtistIds = new Set(favorite_artists.map(a => a.id));
+      const subscribedArtistIds = new Set(favorite_artists.map((a) => a.id));
       result.artist.isSubscribed = subscribedArtistIds.has(artist.id);
 
       if (favorite_tracks) {
@@ -153,9 +152,8 @@ export class apiServises {
         this.request(`/artists/${id}`).catch(() => []),
       ]);
 
-      const result = { tracks: tracks || [], artist: artist || {} }
-      if (!isAuthenticated)
-        return result;
+      const result = { tracks: tracks || [], artist: artist || {} };
+      if (!isAuthenticated) return result;
 
       const likedTrackIds = await this.getFavoriteTrackIds();
 
@@ -184,7 +182,7 @@ export class apiServises {
         top_artists: artists || [],
         top_tracks: top_tracks || [],
         recent: artists || [],
-      }
+      };
 
       if (favorite_tracks) {
         result.top_tracks = (top_tracks || []).map((track) => ({
@@ -224,8 +222,7 @@ export class apiServises {
       const track = await this.request(`/tracks/${id}`).catch(() => []);
 
       const likedTrackIds = await this.getFavoriteTrackIds();
-      if (likedTrackIds)
-        track.is_liked = likedTrackIds.has(track.id);
+      if (likedTrackIds) track.is_liked = likedTrackIds.has(track.id);
 
       return track;
     } catch (error) {
@@ -295,7 +292,7 @@ export class apiServises {
     const playlist = await this.request(`/playlists/${id}`).catch(() => []);
 
     if (playlist.avatar_url) {
-      await this.request(`/playlists/${playlistId}/avatar`, {
+      await this.request(`/playlists/${id}/avatar`, {
         method: 'DELETE',
         headers: {
           'X-CSRF-Token': csrfToken,
@@ -351,17 +348,16 @@ export class apiServises {
         this.request(`/albums/${id}/tracks`).catch(() => []),
       ]);
 
-      const result = { album: album || {}, tracks: tracks || [] }
+      const result = { album: album || {}, tracks: tracks || [] };
 
-      if (!isAuthenticated)
-        return result;
+      if (!isAuthenticated) return result;
 
       const [favorite_tracks, favorite_albums] = await Promise.all([
         this.getFavoriteTrackIds(),
         this.request('/favorite/albums').catch(() => []),
       ]);
 
-      const subscribedAlbumsIds = new Set(favorite_albums.map(a => a.id));
+      const subscribedAlbumsIds = new Set(favorite_albums.map((a) => a.id));
       result.album.is_liked = subscribedAlbumsIds.has(album.id);
 
       if (favorite_tracks) {
@@ -380,13 +376,11 @@ export class apiServises {
 
   async getPlaylistPageData(id, isAuthenticated) {
     try {
-      if (id === 'LM')
-        return await this.request('/playlists/favorite').catch(() => []);
+      if (id === 'LM') return await this.request('/playlists/favorite').catch(() => []);
 
       const playlist = await this.request(`/playlists/${id}`).catch(() => []);
 
-      if (!isAuthenticated)
-        return playlist;
+      if (!isAuthenticated) return playlist;
 
       const likedTrackIds = await this.getFavoriteTrackIds();
       if (likedTrackIds) {
@@ -470,8 +464,7 @@ export class apiServises {
     try {
       const favorite_tracks = await this.request('/playlists/favorite').catch(() => []);
 
-      if (favorite_tracks.tracks)
-        return new Set(favorite_tracks.tracks.map(t => t.id));
+      if (favorite_tracks.tracks) return new Set(favorite_tracks.tracks.map((t) => t.id));
 
       return null;
     } catch (error) {
@@ -584,8 +577,7 @@ export class apiServises {
   async searchTrack(name, isAuthenticated) {
     let tracks = await this.request(`/tracks/search?q=${name}&limit=5`).catch(() => []);
 
-    if (!isAuthenticated)
-      return tracks;
+    if (!isAuthenticated) return tracks;
 
     const likedTrackIds = await this.getFavoriteTrackIds();
     if (likedTrackIds) {

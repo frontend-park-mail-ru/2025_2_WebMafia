@@ -10,8 +10,8 @@ import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
 import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
 import { likeTrackBtn } from '@/utils/likeTrack.js';
 import { createPlaylis } from '@/utils/initCreatePlaylist';
-import { albumPlaylistButtons } from "@/utils/albumPlaylistButtons.js";
-import { share } from "@/utils/shareBtn.js";
+import { albumPlaylistButtons } from '@/utils/albumPlaylistButtons.js';
+import { share } from '@/utils/shareBtn.js';
 
 export class AlbumPage {
   async render(id) {
@@ -92,8 +92,8 @@ export class AlbumPage {
       likeButton.addEventListener('click', async () => {
         const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
         if (!isAuthenticated) {
-            router.navigate('/login');
-            return;
+          router.navigate('/login');
+          return;
         }
 
         const albumId = likeButton.dataset.albumId;

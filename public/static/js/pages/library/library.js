@@ -221,19 +221,19 @@ export class LibraryPage {
     let longPressTimer;
 
     const menuConfig = {
-      'Плейлист': [
+      Плейлист: [
         { text: 'Редактировать', icon: 'pencil', action: 'edit' },
         { text: 'Поделиться', icon: 'share', action: 'share' },
-        { text: 'Удалить', icon: 'trash', action: 'delete' }
+        { text: 'Удалить', icon: 'trash', action: 'delete' },
       ],
-      'Артист': [
+      Артист: [
         { text: 'Отписаться', icon: 'close', action: 'unsubscribe' },
         { text: 'Поделиться', icon: 'share', action: 'share' },
       ],
-      'default': [
+      default: [
         { text: 'Удалить из библиотеки', icon: 'close', action: 'deleteFromLibrary' },
         { text: 'Поделиться', icon: 'share', action: 'share' },
-      ]
+      ],
     };
 
     const removeMenu = () => {
@@ -312,11 +312,11 @@ export class LibraryPage {
                   console.error('Ошибка при удалении плейлиста:', error);
                   showInfoMessage(`Не удалось отписаться от «${name || ''}»`);
                 }
-              }
+              },
             });
             break;
           case 'edit':
-                 // router.navigate(...)
+            // router.navigate(...)
             break;
           case 'share':
             copyToClipboard(href);
@@ -324,7 +324,7 @@ export class LibraryPage {
         }
 
         removeMenu();
-        });
+      });
     };
 
     document.addEventListener('contextmenu', (e) => {
@@ -333,13 +333,17 @@ export class LibraryPage {
       }
     });
 
-    document.addEventListener('touchstart', (e) => {
-      if (!e.target.closest('.grid-layout')) return;
-      longPressTimer = setTimeout(() => {
-        const touch = e.touches[0];
-        createAndShowMenu(e, touch.clientX, touch.clientY);
-      }, 500);
-    }, { passive: false });
+    document.addEventListener(
+      'touchstart',
+      (e) => {
+        if (!e.target.closest('.grid-layout')) return;
+        longPressTimer = setTimeout(() => {
+          const touch = e.touches[0];
+          createAndShowMenu(e, touch.clientX, touch.clientY);
+        }, 500);
+      },
+      { passive: false }
+    );
 
     const cancelLongPress = () => clearTimeout(longPressTimer);
     document.addEventListener('touchmove', cancelLongPress);

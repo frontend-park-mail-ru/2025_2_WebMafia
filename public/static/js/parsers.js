@@ -35,8 +35,8 @@ export function durationParser(duration) {
 }
 
 export function durationToSec(d) {
-    const [m, s] = d.split(':').map(Number);
-    return m * 60 + s;
+  const [m, s] = d.split(':').map(Number);
+  return m * 60 + s;
 }
 
 export function totalDurationParser(duration) {

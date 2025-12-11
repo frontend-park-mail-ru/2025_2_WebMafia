@@ -48,8 +48,8 @@ export const initScrollbar = () => {
     scrollContent.addEventListener('touchend', () => {
       scrollbarTrack.style.opacity = '0';
     });
-  }
-  else {// show/hide on hover
+  } else {
+    // show/hide on hover
     scrollContent.addEventListener('pointerenter', () => {
       scrollbarTrack.style.opacity = '1';
     });
