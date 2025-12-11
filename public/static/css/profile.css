@@ -188,7 +188,7 @@
   80% {
     transform: translateX(5px);
   }
-  
+
   100% {
     transform: translateX(0);
   }
@@ -381,7 +381,8 @@
     padding: 10px;
     background: linear-gradient(157deg, #7e4dff, #a766ff, #da96ff) right bottom;
     background-size: 150% 150%;
-    transition: background-position 0.5s ease,
+    transition:
+      background-position 0.5s ease,
       background 0.5s ease;
     font-size: 18px;
   }

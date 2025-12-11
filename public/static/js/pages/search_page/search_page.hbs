@@ -62,14 +62,19 @@
                     <!-- {{#each @root.artists}} -->
                     <a href="artist/{{ artist_id }}" class="text href-decoration">
                       <!-- {{ name }}{{#unless @last}}, {{/unless}} -->
-                      {{artist}}
+                      {{ artist }}
                     </a>
                     <!-- {{/each}} -->
                   </div>
                 </div>
-                
+
                 <div class="track-like-container">
-                  <button class="like-btn-track artist-like-size {{#if is_liked}}active{{/if}}" data-track-id="{{ id }}">{{> likeBtn }}</button>
+                  <button
+                    class="like-btn-track artist-like-size {{#if is_liked}}active{{/if}}"
+                    data-track-id="{{ id }}"
+                  >
+                    {{> likeBtn }}
+                  </button>
                 </div>
                 <div class="track-duration">{{ duration }}</div>
               </div>

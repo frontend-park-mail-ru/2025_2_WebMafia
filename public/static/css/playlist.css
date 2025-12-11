@@ -120,7 +120,7 @@
   font-size: 20px;
   font-weight: 600;
   margin-left: 13px;
-  margin-top: 5px
+  margin-top: 5px;
 }
 
 .tracks-card .header-divider {
@@ -179,7 +179,9 @@
   stroke: #555;
   width: 26px;
   height: 26px;
-  transition: stroke 0.3s ease, transform 0.3s ease;
+  transition:
+    stroke 0.3s ease,
+    transform 0.3s ease;
 }
 
 .delete-btn-track:hover svg {
@@ -204,7 +206,11 @@
     grid-template-columns: 80% 20%;
   }
 
-  .playlist-track-number, .playlist-sub .dot, .playlist-album, .add-button-name, .playlists .track-duration {
+  .playlist-track-number,
+  .playlist-sub .dot,
+  .playlist-album,
+  .add-button-name,
+  .playlists .track-duration {
     display: none;
   }
 
@@ -230,7 +236,8 @@
     opacity: 1;
   }
 
-  .playlist-search-container .search-icon, .add-button-toggle {
+  .playlist-search-container .search-icon,
+  .add-button-toggle {
     display: block;
   }
 
@@ -238,11 +245,13 @@
     width: 20px;
   }
 
-  .playlist .album-play-wrapper, .playlist-unfav .album-play-wrapper {
+  .playlist .album-play-wrapper,
+  .playlist-unfav .album-play-wrapper {
     margin: 0 5px;
   }
 
-  .playlist, .playlist-unfav {
+  .playlist,
+  .playlist-unfav {
     padding: 5px 20px 5px 5px;
   }
 

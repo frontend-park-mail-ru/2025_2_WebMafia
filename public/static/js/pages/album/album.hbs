@@ -7,7 +7,9 @@
       <div class="album-card">
         <div class="album-artist">
           <img class="album-artist-avatar" src="{{ artist.avatar }}" alt="{{ artist.name }}" />
-          <a href="artist/{{ artist.id }}" title="{{ artist.name }}" class="album-artist-name href-decoration">{{ artist.name }}</a>
+          <a href="artist/{{ artist.id }}" title="{{ artist.name }}" class="album-artist-name href-decoration">{{
+            artist.name
+          }}</a>
         </div>
         <img class="album-cover {{#unless cover}}loading{{/unless}}" src="{{ cover }}" alt="{{ title }}" />
         <div class="album-card-title">{{ title }}</div>
@@ -20,11 +22,21 @@
         {{/if}}
         <div class="album-buttons">
           <button class="control-btn shuffle-album">{{> shuffle}}</button>
-          <button class="play-button play-button-album" data-album-id="{{ id }}" data-context="album-tracks" data-track-id="{{ track_id }}" data-first-track-id="{{ track_id }}"></button>
+          <button
+            class="play-button play-button-album"
+            data-album-id="{{ id }}"
+            data-context="album-tracks"
+            data-track-id="{{ track_id }}"
+            data-first-track-id="{{ track_id }}"
+          ></button>
           <button class="dots">{{> dots}}</button>
           <div class="actions-menu hidden">
             <button class="actions-item">
-              <span class="actions-item-svg {{#if is_liked}}active{{/if}}" data-album-id="{{ id }}" id="albumLikeButton">{{> likeBtn }}</span
+              <span
+                class="actions-item-svg {{#if is_liked}}active{{/if}}"
+                data-album-id="{{ id }}"
+                id="albumLikeButton"
+                >{{> likeBtn }}</span
               >Добавить в любимые
             </button>
             <button class="actions-item" id="shareButton">
@@ -56,7 +68,9 @@
                 <div class="track-plays-num">{{ plays }}</div>
               </div>
               <div class="track-like-container">
-                <button class="like-btn-track album-like-size {{#if is_liked}}active{{/if}}" data-track-id="{{ id }}">{{> likeBtn }}</button>
+                <button class="like-btn-track album-like-size {{#if is_liked}}active{{/if}}" data-track-id="{{ id }}">
+                  {{> likeBtn }}
+                </button>
                 <div class="track-duration">{{ duration }}</div>
               </div>
             </div>

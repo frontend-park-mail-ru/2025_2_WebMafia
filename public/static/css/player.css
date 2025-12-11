@@ -214,7 +214,7 @@
   stroke: #ffffff;
 }
 
-.control-btn.shuffle.active svg{
+.control-btn.shuffle.active svg {
   stroke: #a766ff;
 }
 
@@ -223,7 +223,7 @@
 }
 
 .control-btn.repeat.active svg,
-.control-btn.repeat-one.active svg{
+.control-btn.repeat-one.active svg {
   stroke: #a766ff;
 }
 
@@ -300,7 +300,7 @@
   --progress: 50%;
 }
 
-.volume-slider::-webkit-slider-thumb:hover{
+.volume-slider::-webkit-slider-thumb:hover {
   transform: scale(1.1);
   border-color: #a866eb;
 }
@@ -442,7 +442,10 @@
     height: 5%;
   }
 
-  .player.expanded .track-time, .player.expanded .shuffle, .player.expanded .prev, .player.expanded .repeat {
+  .player.expanded .track-time,
+  .player.expanded .shuffle,
+  .player.expanded .prev,
+  .player.expanded .repeat {
     display: block;
   }
 
@@ -470,17 +473,20 @@
     order: 2;
   }
 
-  .player.expanded .play svg, .player.expanded .pause svg {
+  .player.expanded .play svg,
+  .player.expanded .pause svg {
     width: 72px;
     height: 72px;
   }
 
-  .player.expanded .next svg, .player.expanded .prev svg {
+  .player.expanded .next svg,
+  .player.expanded .prev svg {
     width: 42px;
     height: 42px;
   }
 
-  .player.expanded .shuffle svg, .player.expanded .repeat svg {
+  .player.expanded .shuffle svg,
+  .player.expanded .repeat svg {
     width: 28px;
     height: 28px;
   }
@@ -512,12 +518,14 @@
     z-index: 52;
   }
 
-  .player.expanded .track-time.current { 
-    left: 0; transform: translateY(0); 
+  .player.expanded .track-time.current {
+    left: 0;
+    transform: translateY(0);
   }
 
-  .player.expanded .track-time.total   { 
-    right: 0; transform: translateY(0); 
+  .player.expanded .track-time.total {
+    right: 0;
+    transform: translateY(0);
   }
 
   .player.expanded .remote-container {
@@ -527,7 +535,7 @@
 
   .player.expanded .remote-slider::-webkit-slider-runnable-track {
     height: 6px;
-    background: linear-gradient(90deg, #7fd8e6 0%, #F048FF var(--progress), #e0e0e0 var(--progress), #e0e0e0 100%);
+    background: linear-gradient(90deg, #7fd8e6 0%, #f048ff var(--progress), #e0e0e0 var(--progress), #e0e0e0 100%);
   }
 
   .player.expanded .remote-slider::-webkit-slider-thumb {
@@ -552,7 +560,12 @@
     min-width: unset;
   }
 
-  .player-right, .track-time, .shuffle, .prev, .repeat, .repeat-one {
+  .player-right,
+  .track-time,
+  .shuffle,
+  .prev,
+  .repeat,
+  .repeat-one {
     display: none;
   }
 
@@ -570,7 +583,13 @@
 
   .remote-slider::-webkit-slider-runnable-track {
     height: 4px;
-    background: linear-gradient(90deg, #7fd8e6 0%, #F048FF var(--progress), transparent var(--progress), transparent 100%);
+    background: linear-gradient(
+      90deg,
+      #7fd8e6 0%,
+      #f048ff var(--progress),
+      transparent var(--progress),
+      transparent 100%
+    );
   }
 
   .track-cover-player {
@@ -606,7 +625,8 @@
     transition: transform 0.3s ease;
   }
 
-  .control-btn:active, .like-btn:active {
+  .control-btn:active,
+  .like-btn:active {
     transform: scale(0.9);
   }
 }
@@ -637,12 +657,14 @@
     margin-right: 0;
   }
 
-  .play svg, .pause svg {
+  .play svg,
+  .pause svg {
     width: 38px;
     height: 38px;
   }
 
-  .next svg, .prev svg {
+  .next svg,
+  .prev svg {
     width: 22px;
     height: 22px;
   }
@@ -682,17 +704,20 @@
     height: 18%;
   }
 
-  .player.expanded .play svg, .player.expanded .pause svg {
+  .player.expanded .play svg,
+  .player.expanded .pause svg {
     width: 64px;
     height: 64px;
   }
 
-  .player.expanded .next svg, .player.expanded .prev svg {
+  .player.expanded .next svg,
+  .player.expanded .prev svg {
     width: 36px;
     height: 36px;
   }
 
-  .player.expanded .shuffle svg, .player.expanded .repeat svg {
+  .player.expanded .shuffle svg,
+  .player.expanded .repeat svg {
     width: 26px;
     height: 26px;
   }
@@ -701,6 +726,10 @@
     right: -10px;
   }
 
-  .player.expanded .track-title  { font-size: 20px; }
-  .player.expanded .track-artist { font-size: 17px; }
+  .player.expanded .track-title {
+    font-size: 20px;
+  }
+  .player.expanded .track-artist {
+    font-size: 17px;
+  }
 }
