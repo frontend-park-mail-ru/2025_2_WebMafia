@@ -1,0 +1,69 @@
+<div class="section" id="section">
+  <div class="layout">
+    {{> sidebar}}
+    <div class="page" id="scrollContent">
+      <div class="track-info-container comments">
+        <div class="track-info-artist-container">
+            <div class="right-side">
+                <img src="/static/img/logo.png" alt="фото альбома" class="track-cover-comment">
+                <div class="comments-artist-info">
+                    <div class="track-comment-artist href-decoration">АБОБА</div>
+                    <div class="track-plays-num">123123 абоба</div>
+                </div>
+            </div>
+            <div class="left-side">
+                <button class="share-button black" id="shareButton">{{> share }}</button>
+                <button
+                    class="primary-outline-button artist-subscription {{#unless id}}{{/unless}}"
+                    id="artistSubscribeButton"
+                    data-artist-id="{{ id }}"
+                    data-artist-name="{{ name }}"
+                    data-is-subscribed="{{ isSubscribed }}">
+                    {{#if isSubscribed}}
+                        Отписаться
+                    {{else}}
+                        Подписаться
+                    {{/if}}
+                </button>
+            </div>
+        </div>
+        <div class="track-info-comments">
+            <div class="track-cover-and-buttons">
+                <div class="right-side">
+                    <button class="play-button play-button-album" data-album-id="{{ id }}" data-context="album-tracks" data-track-id="{{ track_id }}" data-first-track-id="{{ track_id }}"></button>
+                    <div class="comments-artist-info">
+                        <div class="track-name">АБОБА</div>
+                        <div class="track-performer href-decoration">абоба</div>
+                    </div>
+                </div>
+                <div class="left-side">
+                    <button class="control-btn black prev">{{> nextTrack}}</button>
+                    <button class="control-btn black next">{{> nextTrack }}</button>
+                </div>
+            </div>
+                
+            <div class="progress-remote">
+                <span class="track-time current">-:--</span>
+                <div class="remote-container">
+                    <input type="range" min="0" max="100" value="0" class="remote-slider" />
+                </div>
+                <span class="track-time total">-:--</span>
+            </div>
+        </div>
+      </div>
+
+      <div class="comments-container">
+        <div class="title-name">Оставьте комментарий</div>
+        <form id="createPlaylistForm">
+            <div class="form-group">
+            <div class="input-wrapper">
+                <input type="text" id="title" name="title" placeholder="Добавь название" />
+                <div class="error-message" id="titleError"></div>
+                <div class="validation-message" id="titleInformation"></div>
+            </div>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

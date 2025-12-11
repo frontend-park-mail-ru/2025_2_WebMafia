@@ -2,6 +2,7 @@ import { apiServise, API_TRACKS_URL } from '@/data.js';
 import { getValidImage } from '@/parsers.js';
 import { likeChange } from '@/utils/likeTrack';
 import { setupMarquees } from '@/marquee.js';
+import { goToComments } from '@/utils/goToComment.js';
 
 export class Player extends EventTarget {
   constructor() {
@@ -203,6 +204,7 @@ export class Player extends EventTarget {
     this.audio.addEventListener('ended', () => {
       this.handletrackEnd();
     });
+    goToComments();
   }
 
   handletrackEnd() {
