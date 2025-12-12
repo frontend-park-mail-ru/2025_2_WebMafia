@@ -2,8 +2,8 @@ import { apiServise } from '@/data.js';
 import { router } from '@/routing.js';
 import { header } from '@/components/header/header.js';
 import { sidebar } from '@/components/sidebar/sidebar.js';
-import { initScrollbar } from '@/scrollbar.js';
-import { slider } from '@/slider.js';
+import { scrollbar } from '@/utils/scrollbar';
+import { slider } from '@/utils/slider';
 import {
   playsParser,
   durationParser,
@@ -19,7 +19,6 @@ import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
 import { FormValidator } from '@/utils/validation.ts';
 import { likeChange, likeTrackBtn } from '@/utils/likeTrack';
 import { createPlaylis } from '@/utils/initCreatePlaylist';
-import { confirmation } from '@/components/confirmation_modal/confirmationModal.js';
 import { images } from '@/assets';
 import { albumPlaylistButtons } from '@/utils/albumPlaylistButtons.js';
 import { share } from '@/utils/shareBtn';
@@ -103,8 +102,8 @@ export class PlaylistPage {
     document.querySelector('head title').textContent = pageData.title;
     playerOnlyOnPlay();
     await Promise.all([header.render(), sidebar.render()]);
-    slider.sliderFunction();
-    initScrollbar();
+    slider.init();
+    scrollbar.init();
     this.addEventListeners();
     createPlaylis();
     setPlayButtonsOnAuth();

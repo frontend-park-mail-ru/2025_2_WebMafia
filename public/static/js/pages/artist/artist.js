@@ -1,10 +1,10 @@
 import { router } from '@/routing.js';
-import { initScrollbar } from '@/scrollbar.js';
+import { scrollbar } from '@/utils/scrollbar';
 import { apiServise } from '@/data.js';
 import { durationParser, getValidImage, playsParser } from '@/parsers.js';
 import { header } from '@/components/header/header.js';
 import { sidebar } from '@/components/sidebar/sidebar.js';
-import { slider } from '@/slider.js';
+import { slider } from '@/utils/slider';
 import { playTrack } from '@/playTrackBtn.js';
 import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
 import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
@@ -91,8 +91,8 @@ export class ArtistPage {
     playerOnlyOnPlay();
     await Promise.all([header.render(), sidebar.render()]);
     createPlaylis();
-    slider.sliderFunction();
-    initScrollbar();
+    slider.init();
+    scrollbar.init();
     this.addEventListeners();
     setPlayButtonsOnAuth();
     likeTrackBtn();

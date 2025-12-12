@@ -2,7 +2,7 @@ import { apiServise } from '@/data.js';
 import { router } from '@/routing.js';
 import { header } from '@/components/header/header.js';
 import { sidebar } from '@/components/sidebar/sidebar.js';
-import { initScrollbar } from '@/scrollbar.js';
+import { scrollbar } from '@/utils/scrollbar';
 import { getValidImage, playsParser, tracksNumParser } from '@/parsers.js';
 import { playTrack } from '@/playTrackBtn.js';
 import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
@@ -117,7 +117,7 @@ export class LibraryPage {
 
     createPlaylis();
 
-    initScrollbar();
+    scrollbar.init();
     playTrack();
     setPlayButtonsOnAuth();
     this.addEventListeners(pageData);

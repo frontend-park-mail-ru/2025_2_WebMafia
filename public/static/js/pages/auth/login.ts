@@ -1,10 +1,8 @@
 import { Auth } from './auth.ts';
-import { FormValidator, ValidatorsConfig, InformationConfig } from '@/utils/validation';
+import { FormValidator } from '@/utils/validation';
 import { apiServise } from '@/data.js';
-import { router } from '@/routing';
 import { initPasswordShowing } from '@/eye';
-import { player } from '@/components/player/player.js';
-import { Rules } from './validationRules';
+import { FormSchemas } from '@/utils/validationRules';
 
 export class LoginPage extends Auth {
   protected templateName = 'login.hbs';
@@ -16,35 +14,19 @@ export class LoginPage extends Auth {
   }
 
   private initValidation(): void {
-    const validators: ValidatorsConfig = {
-      login: (val) => Rules.required(val) || Rules.minLength(5)(val),
-      password: (val) => Rules.required(val) || Rules.minLength(8)(val),
-    };
+    const formId = 'loginForm';
 
-    const information: InformationConfig = {
-      login: (val) => {
-        const errors: string[] = [];
-        if (val.length < 5) errors.push('Минимум 5 символов');
-        if (val.length > 35) errors.push('Максимум 35 символов');
-        return errors.length ? errors : null;
-      },
-      password: (val) => (val.length < 8 ? ['Минимум 8 символов'] : null),
-    };
+    const { validators, info } = FormSchemas.login();
 
-    const validator = new FormValidator('loginForm', validators, information);
+    const validator = new FormValidator(formId, validators, info);
 
     validator.onSubmit = async (formData: FormData) => {
       const login = formData.get('login') as string;
       const password = formData.get('password') as string;
 
       try {
-        await apiServise.loginUser(login, password);
-
-        localStorage.setItem('isAuthenticated', 'true');
-
-        await player.init();
-
-        router.navigate('/');
+        const response = await apiServise.loginUser(login, password);
+        this.handleLoginSuccess(response);
       } catch (error: any) {
         this.handleApiError(error, validator);
       }

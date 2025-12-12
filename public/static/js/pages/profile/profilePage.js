@@ -1,10 +1,10 @@
 import { router } from '@/routing.js';
 import { apiServise } from '@/data.js';
 import { initPasswordShowing } from '@/eye';
-import { initScrollbar } from '@/scrollbar.js';
+import { scrollbar } from '@/utils/scrollbar';
 import { durationParser, getValidImage, playsParser } from '@/parsers.js';
 import { sidebar } from '@/components/sidebar/sidebar.js';
-import { slider } from '@/slider.js';
+import { slider } from '@/utils/slider';
 import { header } from '@/components/header/header.js';
 import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
 import { FormValidator } from '@/utils/validation.ts';
@@ -76,10 +76,10 @@ export class ProfilePage {
     playerOnlyOnPlay();
     await Promise.all([header.render(), sidebar.render()]);
     createPlaylis();
-    slider.sliderFunction();
+    slider.init();
     this.addEventListeners(pageData.profile);
     initPasswordShowing();
-    initScrollbar();
+    scrollbar.init();
     setPlayButtonsOnAuth();
     likeTrackBtn();
     playTrack();

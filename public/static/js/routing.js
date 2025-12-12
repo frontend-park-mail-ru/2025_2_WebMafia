@@ -1,4 +1,4 @@
-import { MainPage } from '@/pages/mainpage/mainpage.js';
+import { MainPage } from '@/pages/mainpage/mainpage.ts';
 import { notFoundPage } from '@/pages/notfoundpage/notFoundPage.js';
 import { LoginPage } from '@/pages/auth/login.ts';
 import { RegistrationPage } from '@/pages/auth/register.ts';

@@ -2,7 +2,7 @@ import { apiServise } from '@/data.js';
 import { router } from '@/routing.js';
 import { header } from '@/components/header/header.js';
 import { sidebar } from '@/components/sidebar/sidebar.js';
-import { initScrollbar } from '@/scrollbar.js';
+import { scrollbar } from '@/utils/scrollbar';
 import { durationParser, getValidImage, playsParser } from '@/parsers.js';
 import { playTrack } from '@/playTrackBtn.js';
 import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
@@ -62,7 +62,7 @@ export class ArtistTracksPage {
     await Promise.all([header.render(), sidebar.render()]);
     createPlaylis();
     setPlayButtonsOnAuth();
-    initScrollbar();
+    scrollbar.init();
     likeTrackBtn();
     playTrack();
   }

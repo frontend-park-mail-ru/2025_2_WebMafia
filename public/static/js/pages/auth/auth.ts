@@ -1,8 +1,6 @@
 import { router } from '@/routing';
-import { images } from '@/assets';
+import { images } from '@/assets.ts';
 import { FormValidator } from '@/utils/validation';
-
-declare const Handlebars: any;
 
 export abstract class Auth {
   protected abstract templateName: string;
@@ -51,5 +49,11 @@ export abstract class Auth {
     }
 
     validator.showMessage(msg, false);
+  }
+
+  protected handleLoginSuccess(response: { id: string }): void {
+    localStorage.setItem('isAuthenticated', 'true');
+    localStorage.setItem('uid', response.id);
+    router.navigate('/');
   }
 }
