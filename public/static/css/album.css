@@ -284,10 +284,6 @@
   .like-btn-track {
     opacity: 1;
   }
-
-  .delete-btn-track {
-    opacity: 1;
-  }
 }
 
 @media (max-width: 1250px) {

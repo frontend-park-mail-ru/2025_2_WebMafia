@@ -203,6 +203,12 @@
   height: 20px;
 }
 
+@media (hover: none) and (pointer: coarse) {
+  .delete-btn-track {
+    opacity: 1;
+  }
+}
+
 @media (max-width: 1000px) {
   .right-row-content-playlist {
     display: grid;
