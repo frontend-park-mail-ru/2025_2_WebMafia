@@ -57,10 +57,9 @@ export class LoginPage {
         const response = await apiServise.loginUser(login, password);
 
         localStorage.setItem('isAuthenticated', 'true');
-        localStorage.setItem('uid', response.ID);
+        localStorage.setItem('uid', response.id);
 
-        window.location.replace('/');
-        await player.init();
+        router.navigate('/');
       } catch (error) {
         let msg = 'Ошибка авторизации.';
         if (error.message === 'unauthorized') msg = 'Неверное имя пользователя или пароль.';

@@ -295,7 +295,7 @@ export class MainPage {
     if (slider) {
       slider.addEventListener('touchstart', (e) => {
         touchStartX = e.changedTouches[0].clientX;
-      });
+      }, { passive: true });
 
       slider.addEventListener('touchend', (e) => {
         touchEndX = e.changedTouches[0].clientX;

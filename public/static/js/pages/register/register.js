@@ -102,10 +102,9 @@ export class RegistrationPage {
         const response = await apiServise.loginUser(login, password);
 
         localStorage.setItem('isAuthenticated', 'true');
-        localStorage.setItem('uid', response.ID);
+        localStorage.setItem('uid', response.id);
 
-        window.location.replace('/');
-        await player.init();
+        router.navigate('/');
       } catch (error) {
         let msg = 'Ошибка регистрации';
         if (error.message === 'resource conflict') msg = 'Пользователь с такими данными уже существует';

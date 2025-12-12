@@ -44,9 +44,11 @@ export const initScrollbar = () => {
   if (isMobile) {
     scrollContent.addEventListener('touchmove', () => {
       scrollbarTrack.style.opacity = '1';
-    });
+    }, { passive: true });
     scrollContent.addEventListener('touchend', () => {
-      scrollbarTrack.style.opacity = '0';
+      setTimeout(() => {
+        scrollbarTrack.style.opacity = '0';
+      }, 400);
     });
   }
   else {// show/hide on hover

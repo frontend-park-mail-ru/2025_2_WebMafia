@@ -125,14 +125,14 @@
 }
 
 .sidebar .header-divider {
-  width: 90%;
+  width: 220px;
   background: #aaacb5;
   margin: 20px 0;
 }
 
-.sidebar-secondary-button {
-  cursor: pointer !important;
-  width: 190px !important;
+.sidebar .secondary-button {
+  cursor: pointer;
+  width: 190px;
 }
 
 @media (max-width: 1150px) {
@@ -159,8 +159,8 @@
     font-weight: 600;
   }
 
-  .sidebar-secondary-button {
-    width: auto !important;
+  .sidebar .secondary-button {
+    width: auto;
   }
 
   .menu-item.active .icon-path {
@@ -208,8 +208,8 @@
 }
 
 @media (max-height: 350px) and (min-width: 800px) {
-  .sidebar-secondary-button {
-    display: none !important;
+  .sidebar .secondary-button {
+    display: none;
   }
 }
 
