@@ -175,6 +175,7 @@
   display: flex;
   flex-direction: column;
   min-width: 0;
+  margin-right: 15px;
 }
 
 .play-icon,
@@ -226,6 +227,7 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
+  min-width: 0;
 }
 
 .overlay-header {
@@ -281,10 +283,6 @@
   .like-btn-track {
     opacity: 1;
   }
-
-  .delete-btn-track {
-    opacity: 1;
-  }
 }
 
 @media (max-width: 1250px) {
@@ -335,6 +333,7 @@
   }
 
   .tracks-card {
+    flex-grow: unset;
     padding: 10px 5px;
     margin: 20px 0 40px;
     width: 90%;
@@ -356,7 +355,7 @@
   }
 
   .album-row {
-    padding: 5px 0 5px 5px;
+    padding: 5px 15px 5px 5px;
     height: 60px;
   }
 

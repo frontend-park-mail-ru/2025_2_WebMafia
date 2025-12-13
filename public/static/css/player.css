@@ -167,8 +167,8 @@
 }
 
 .control-btn.shuffle-album svg {
-  width: 28px !important;
-  height: 28px !important;
+  width: 28px;
+  height: 28px;
   stroke: #000000;
 }
 
@@ -328,7 +328,7 @@
 .volume-icon.level-0 .volume-wave-1,
 .volume-icon.level-0 .volume-wave-2,
 .volume-icon.level-0 .volume-wave-3 {
-  opacity: 0 !important;
+  opacity: 0;
 }
 
 .volume-icon.level-0 .volume-mute-cross {

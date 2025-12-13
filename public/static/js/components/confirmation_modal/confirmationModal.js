@@ -18,6 +18,7 @@ class ModalService {
 
     const close = () => {
       overlay.classList.remove('active');
+      document.removeEventListener('keydown', handleEsc);
       setTimeout(() => {
         overlay.remove();
       }, 300);
@@ -37,10 +38,7 @@ class ModalService {
     };
 
     const handleEsc = (e) => {
-      if (e.key === 'Escape') {
-        close();
-        document.removeEventListener('keydown', handleEsc);
-      }
+      if (e.key === 'Escape') { close(); }
     };
     document.addEventListener('keydown', handleEsc);
   }

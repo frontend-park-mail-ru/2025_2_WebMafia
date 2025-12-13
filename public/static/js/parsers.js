@@ -60,7 +60,7 @@ export function totalDurationParser(duration) {
 }
 
 export function tracksNumParser(count) {
-  if (count == null || count < 0) return '';
+  if (count == null || count < 0) return '0 треков';
   return `${count} ${pluralize(count, 'трек', 'трека', 'треков')}`;
 }
 

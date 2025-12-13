@@ -31,13 +31,17 @@
           ></button>
           <button class="dots">{{> dots}}</button>
           <div class="actions-menu hidden">
-            <button class="actions-item">
-              <span
-                class="actions-item-svg {{#if is_liked}}active{{/if}}"
-                data-album-id="{{ id }}"
-                id="albumLikeButton"
-                >{{> likeBtn }}</span
-              >Добавить в любимые
+            <button class="actions-item" id="albumLikeButton" data-album-id="{{ id }}" data-album-name="{{ title }}">
+              <span class="actions-item-svg {{#if is_liked}}active{{/if}}">
+                {{> likeBtn }}
+              </span>
+              <span class="actions-item-text">
+                {{#if is_liked}}
+                  Удалить из библиотеки
+                {{else}}
+                  Добавить в библиотеку
+                {{/if}}
+              </span>
             </button>
             <button class="actions-item" id="shareButton">
               <span class="actions-item-svg">{{> share}}</span
@@ -80,7 +84,7 @@
       </div>
     </div>
     <div class="turquoise-oval"></div>
-    <div class="overlay" id="albumDescriptionOverlay">
+    <div class="overlay" id="descriptionOverlay">
       <div class="window">
         <div class="overlay-header">
           <span class="album-title">{{ title }}</span>

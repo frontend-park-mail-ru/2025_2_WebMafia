@@ -403,7 +403,8 @@
 
   .window {
     padding: 30px 20px;
-    width: 93%;
+    width: 90%;
+    max-width: unset;
   }
 
   .edit-profile-info {

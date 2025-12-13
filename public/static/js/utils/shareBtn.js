@@ -12,6 +12,7 @@ export function copyToClipboard(text) {
 
 export function share() {
   const shareBtn = document.getElementById('shareButton');
+  if (!shareBtn) return;
   shareBtn.addEventListener('click', () => {
     const url = window.location.href;
     copyToClipboard(url);

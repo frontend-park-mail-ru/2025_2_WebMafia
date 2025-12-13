@@ -42,8 +42,8 @@
   background: #4e4e4e;
 }
 
-#customScrollbarThumb.dragging {
-  background: #2e2e2e !important;
+#customScrollbarThumb.dragging, #customScrollbar:hover #customScrollbarThumb.dragging {
+  background: #2e2e2e;
 }
 
 .page-wrapper {
@@ -220,11 +220,11 @@
 }
 
 .play-popular-track.is-active.paused .pause-icon {
-  display: block !important;
+  display: block;
 }
 
 .play-popular-track.is-active.paused .play-icon {
-  display: none !important;
+  display: none;
 }
 
 .play-popular-track svg {
@@ -274,7 +274,6 @@
   font-size: 18px;
   font-weight: 600;
   text-decoration: none;
-  text-align: right;
 }
 
 .track-performers,
@@ -313,6 +312,7 @@
   gap: 10px;
   display: flex;
   align-items: center;
+  justify-content: center;
 }
 
 .like-btn-track {
@@ -354,7 +354,8 @@
 }
 
 .share-button {
-  all: unset;
+  background: inherit;
+  border: none;
   cursor: pointer;
 }
 
@@ -536,5 +537,14 @@
 
   .show-all {
     font-size: 18px;
+  }
+
+  .share-button svg {
+    width: 28px;
+    height: 28px;
+  }
+
+  .share-button {
+    padding: 0;
   }
 }
