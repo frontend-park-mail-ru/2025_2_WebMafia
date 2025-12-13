@@ -14,17 +14,6 @@
   display: none;
 }
 
-.hidden {
-  opacity: 0 !important;
-  pointer-events: none;
-  transform: scale(0.8);
-  visibility: hidden;
-  transition:
-    opacity 0.5s ease,
-    transform 0.5s ease;
-  box-shadow: none;
-}
-
 .card-fade-out {
   opacity: 0;
   transform: scale(0.8);

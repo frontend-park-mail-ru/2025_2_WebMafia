@@ -16,14 +16,13 @@ import {
 import { playTrack } from '@/playTrackBtn.js';
 import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
 import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
-import { FormValidator } from '@/validation.js';
 import { likeChange, likeTrackBtn } from '@/utils/likeTrack';
-import { createPlaylis } from '@/utils/initCreatePlaylist';
-import { confirmation } from '@/components/confirmation_modal/confirmationModal.js';
 import { images } from '@/assets';
 import { albumPlaylistButtons } from '@/utils/albumPlaylistButtons.js';
 import { share } from '@/utils/shareBtn';
 import { deletePlaylistLogic } from '@/utils/deletePlaylist';
+import { playlistModal } from "@/components/playlist_modal/initPlaylistModal.js";
+import { showInfoMessage } from "@/utils/showInfoMessage.js";
 
 export class PlaylistPage {
   constructor() {
@@ -45,13 +44,12 @@ export class PlaylistPage {
 
     try {
       const data = await apiServise.getPlaylistPageData(id, pageData.isAuthenticated);
-      this.playlistData = data;
       const firstTrackId = data.tracks && data.tracks.length > 0 ? data.tracks[0].id : null;
       pageData = {
         favourite: true,
         date: 'Создан автоматически',
         title: 'Понравившиеся треки',
-        cover: images.likedTracksPath,
+        image: images.likedTracksPath,
         description: 'В этот плейлист попадают треки, которым вы поставили отметку "Нравится"',
         track_id: firstTrackId,
       };
@@ -60,9 +58,9 @@ export class PlaylistPage {
         pageData.title = data.title;
         pageData.id = data.id;
         pageData.date = dateParser(data.created_at);
-        pageData.cover = getValidImage(data.avatar_url ? data.avatar_url : '', images.defaultPlaylistPath);
-        pageData.isCover = data.avatar_url;
+        pageData.image = getValidImage(data.avatar_url ? data.avatar_url : '', images.defaultPlaylistPath);
         pageData.description = data.description;
+        pageData.isCreator = data.creator_id === localStorage.getItem('uid');
       }
       let totalDuration = 0;
       pageData.tracks = (data.tracks || []).map((track) => {
@@ -79,9 +77,15 @@ export class PlaylistPage {
           is_liked: pageData.favourite ? true : track.is_liked,
         };
       });
+
+      this.playlistData.id = pageData.id;
+      this.playlistData.title = pageData.title;
+      this.playlistData.description = pageData.description;
+      this.playlistData.image = pageData.image === images.defaultPlaylistPath ? null : pageData.image;
+
       pageData.totalDuration = totalDurationParser(totalDuration);
       this.totalDuration = totalDuration;
-      pageData.tracksNum = pageData.tracks.length ? tracksNumParser(pageData.tracks.length) : '0 треков';
+      pageData.tracksNum = tracksNumParser(pageData.tracks.length);
     } catch (error) {
       console.error('Failed to load playlist page data:', error);
 
@@ -106,7 +110,6 @@ export class PlaylistPage {
     slider.sliderFunction();
     initScrollbar();
     this.addEventListeners();
-    createPlaylis();
     setPlayButtonsOnAuth();
     likeTrackBtn();
     playTrack();
@@ -115,11 +118,6 @@ export class PlaylistPage {
   }
 
   addEventListeners() {
-    const editPlaylistButton = document.getElementById('editPlaylistButton');
-    const deletePlaylistButton = document.getElementById('deletePlaylistButton');
-    const editPlaylistOverlay = document.getElementById('editPlaylistOverlay');
-    const closeOverlayButton = document.getElementById('closeOverlayButtonPlaylist');
-
     if (this.playlistData.is_favorite) {
       const appContainer = document.getElementById('app');
 
@@ -170,200 +168,58 @@ export class PlaylistPage {
         }
       };
       window.addEventListener('player-like-changed', handlePlayerLikeChange);
+      return;
     }
 
-    if (editPlaylistButton && editPlaylistOverlay) {
+    const editPlaylistButton = document.getElementById('editPlaylistButton');
+    if (editPlaylistButton) {
       editPlaylistButton.addEventListener('click', (e) => {
         e.preventDefault();
-        editPlaylistOverlay.classList.add('active');
-      });
-    }
+        playlistModal.openEdit(this.playlistData, (newData) => {
+          this.playlistData = newData;
 
-    if (closeOverlayButton && editPlaylistOverlay) {
-      closeOverlayButton.addEventListener('click', (e) => {
-        e.preventDefault();
-        editPlaylistOverlay.classList.remove('active');
-      });
-    }
+          const avatarContainer = document.querySelector('#playlistAvatarContainer img');
+          avatarContainer.src = newData.image ? newData.image : images.defaultPlaylistPath;
 
-    if (editPlaylistOverlay) {
-      editPlaylistOverlay.addEventListener('click', (e) => {
-        if (e.target === editPlaylistOverlay) {
-          editPlaylistOverlay.classList.remove('active');
-        }
-      });
-    }
+          const title = document.querySelector('.album-card-title');
+          if (title) title.textContent = newData.title;
 
-    let selectedAvatarFile = null;
-    let deleteAvatar = false;
-    const editAvatarButtons = document.getElementById('editPlaylistAvatarButtons');
-
-    function updateAvatarContainer(containerId, src = null) {
-      const container = document.getElementById(containerId);
-      if (!container) return;
-
-      const img = container.querySelector('img');
-
-      if (src) img.src = src;
-      else img.src = 'static/img/default-playlist.png';
-    }
-
-    if (editAvatarButtons) {
-      editAvatarButtons.addEventListener('click', (e) => {
-        const target = e.target;
-
-        if (target.id === 'setPlaylistAvatarButton') {
-          e.preventDefault();
-
-          const input = document.createElement('input');
-          input.type = 'file';
-          input.accept = 'image/*';
-          input.click();
-
-          input.addEventListener('change', () => {
-            const file = input.files[0];
-            if (!file) return;
-
-            if (file.size > 5 * 1024 * 1024) {
-              alert('Файл слишком большой (максимум 5МБ)');
-              return;
+          const description = document.getElementById('getDescription');
+          const allDescription = document.getElementById('allDescription');
+          if (description) {
+            if (newData.description.trim() === '') {
+              description.remove();
+            } else {
+              description.textContent = newData.description;
+              if (allDescription) allDescription.textContent = newData.description;
             }
+          } else if (newData.description.trim() !== '') {
+            const container = document.querySelector('.album-card');
+            const buttons = container.querySelector('.album-buttons');
 
-            selectedAvatarFile = file;
-            deleteAvatar = false;
+            const newDescEl = document.createElement('div');
+            newDescEl.className = 'card-sub album-description';
+            newDescEl.id = 'getDescription';
+            newDescEl.textContent = newData.description;
+            if (allDescription) allDescription.textContent = newData.description;
 
-            const reader = new FileReader();
-            reader.onload = (event) => {
-              updateAvatarContainer('playlistAvatarEditContainer', event.target.result);
+            container.insertBefore(newDescEl, buttons);
 
-              if (!document.getElementById('deletePlaylistAvatarButton')) {
-                editAvatarButtons.insertAdjacentHTML(
-                  'beforeend',
-                  `<button id="deletePlaylistAvatarButton" class="secondary-button save-avatar-button-size">Удалить фото</button>`
-                );
-              }
-            };
-            reader.readAsDataURL(file);
-          });
-        }
-
-        if (target.id === 'deletePlaylistAvatarButton') {
-          e.preventDefault();
-
-          selectedAvatarFile = null;
-          deleteAvatar = true;
-
-          updateAvatarContainer('playlistAvatarEditContainer');
-
-          target.remove();
-        }
-      });
-    }
-
-    const editValidators = {
-      title: (value) => {
-        if (!value) return 'Назовите ваш плейлист';
-        return null;
-      },
-    };
-
-    const editInformation = {
-      title: (value) => (value ? null : 'Укажите название плейлиста'),
-      description: (value) => {
-        return 'Максимум 300 символов';
-      },
-    };
-
-    const editValidator = new FormValidator('editPlaylistForm', editValidators, editInformation, {
-      submitButtonSelector: '.general-error',
-      messageSelector: '#generalErrorPlaylist',
-    });
-
-    editValidator.init();
-
-    const saveButton = document.getElementById('savePlaylistChangesButton');
-    if (saveButton) {
-      saveButton.addEventListener('click', async (e) => {
-        e.preventDefault();
-
-        const isValid = editValidator.validateForm();
-        if (!isValid) {
-          editValidator.showMessage('Пожалуйста, проверьте подсвеченные поля');
-          return;
-        }
-
-        try {
-          if (selectedAvatarFile) {
-            const response = await apiServise.uploadPlaylistAvatar(selectedAvatarFile, this.playlistData.id);
-            const newAvatarUrl = getValidImage(response.avatar_url);
-            updateAvatarContainer('playlistAvatarContainer', newAvatarUrl);
-            selectedAvatarFile = null;
-          } else if (deleteAvatar) {
-            await apiServise.deletePlaylistAvatar(this.playlistData.id);
-            updateAvatarContainer('playlistAvatarContainer');
-            deleteAvatar = false;
-          }
-
-          const newTitle = document.getElementById('titlePlaylist').value;
-          const newDescription = document.getElementById('descriptionPlaylist').value;
-          if (newTitle !== this.playlistData.title || newDescription !== this.playlistData.description) {
-            this.playlistData.title = newTitle;
-            this.playlistData.description = newDescription;
-            await apiServise.updatePlaylist(newTitle, newDescription, this.playlistData.id);
-            const title = document.querySelector('.album-card-title');
-            if (title) {
-              title.textContent = newTitle;
-            }
-            const description = document.getElementById('getDescription');
-            const allDescription = document.getElementById('allDescription');
-            if (description) {
-              if (newDescription.trim() === '') {
-                description.remove();
-              } else {
-                description.textContent = newDescription;
-                if (allDescription) allDescription.textContent = newDescription;
-              }
-            } else if (newDescription.trim() !== '') {
-              const container = document.querySelector('.album-card');
-              const buttons = container.querySelector('.album-buttons');
-
-              const newDescEl = document.createElement('div');
-              newDescEl.className = 'card-sub album-description';
-              newDescEl.id = 'getDescription';
-              newDescEl.textContent = newDescription;
-              if (allDescription) allDescription.textContent = newDescription;
-
-              container.insertBefore(newDescEl, buttons);
-
-              if (getDescriptionOverlay) {
-                newDescEl.addEventListener('click', (e) => {
-                  e.preventDefault();
-                  getDescriptionOverlay.classList.add('active');
-                });
-              }
+            const getDescriptionOverlay = document.getElementById('descriptionOverlay');
+            if (getDescriptionOverlay) {
+              newDescEl.addEventListener('click', (e) => {
+                e.preventDefault();
+                getDescriptionOverlay.classList.add('active');
+              });
             }
           }
-          editValidator.showMessage('Изменения успешно сохранены!', true);
-          setTimeout(() => {
-            const messageElement = document.getElementById('generalErrorPlaylist');
-            if (messageElement) {
-              messageElement.textContent = '';
-              messageElement.classList.remove('show');
-              messageElement.style.backgroundColor = '';
-            }
 
-            editPlaylistOverlay.classList.remove('active');
-          }, 1000);
-        } catch (err) {
-          console.error('Ошибка при сохранении плейлиста:', err);
-          let msg = 'Не удалось сохранить изменения. Попробуйте еще раз чуть позже.';
-          if (err.message === 'bad request')
-            msg = 'Что-то пошло не так. Пожалуйста, проверьте правильность введенных данных.';
-          editValidator.showMessage(msg);
-        }
+          showInfoMessage('Изменения успешно сохранены!');
+        });
       });
     }
 
+    const deletePlaylistButton = document.getElementById('deletePlaylistButton');
     if (deletePlaylistButton) {
       deletePlaylistButton.addEventListener('click', (e) => {
         e.preventDefault();

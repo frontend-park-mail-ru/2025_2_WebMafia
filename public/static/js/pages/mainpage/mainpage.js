@@ -10,7 +10,6 @@ import { getValidImage, playsParser } from '@/parsers.js';
 import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
 import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
 import { setupMarquees } from '@/marquee.js';
-import { createPlaylis } from '@/utils/initCreatePlaylist';
 
 export class MainPage {
   async render() {
@@ -76,7 +75,6 @@ export class MainPage {
     initScrollbar();
     this.addEventListeners();
     setPlayButtonsOnAuth();
-    createPlaylis();
     this.nowPlayingCardSlider();
     playTrack();
   }
@@ -297,7 +295,7 @@ export class MainPage {
     if (slider) {
       slider.addEventListener('touchstart', (e) => {
         touchStartX = e.changedTouches[0].clientX;
-      });
+      }, { passive: true });
 
       slider.addEventListener('touchend', (e) => {
         touchEndX = e.changedTouches[0].clientX;
