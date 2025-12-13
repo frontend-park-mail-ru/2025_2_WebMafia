@@ -1,5 +1,5 @@
 import { images } from '@/assets';
-import { playlistModal } from "@/components/playlist_modal/initPlaylistModal.js";
+import { playlistModal } from '@/components/playlist_modal/initPlaylistModal.js';
 
 export class Sidebar {
   async render() {
