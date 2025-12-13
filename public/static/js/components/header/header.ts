@@ -5,23 +5,27 @@ import { player } from '@/components/player/player.js';
 import { confirmation } from '@/components/confirmation_modal/confirmationModal.js';
 import { images } from '@/assets';
 
-export class Header {
-  async render(searchValue) {
-    let pageData = {
-      isAuthenticated: localStorage.getItem('isAuthenticated') === 'true',
+class Header {
+  private boundDocumentClick: ((e: Event) => void) | null = null;
+
+  async render(searchValue = '') {
+    const container = document.getElementById('header');
+    if (!container) return;
+
+    const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+    let pageData: any = {
+      isAuthenticated: isAuthenticated,
       searchValue: searchValue,
       logoImage: images.logoPath,
     };
 
     const contentTemplate = Handlebars.templates['header.hbs'];
-    const headerHTML = contentTemplate(pageData);
+    container.innerHTML = contentTemplate(pageData);
 
-    const section = document.getElementById('section');
-    if (section && !document.getElementById('header')) {
-      section.insertAdjacentHTML('afterbegin', headerHTML);
+    if (!isAuthenticated) {
+      this.addEventListeners();
+      return;
     }
-    this.addEventListeners();
-    if (!pageData.isAuthenticated) return;
 
     try {
       const data = await apiServise.getProfileData();
@@ -29,23 +33,28 @@ export class Header {
       pageData.nickname = data.Login;
       pageData.letter = pageData.nickname ? pageData.nickname[0].toUpperCase() : '';
     } catch (error) {
-      console.error('Failed to load user data:', error);
-      localStorage.removeItem('isAuthenticated');
-      router.navigate('/');
+      console.error('Failed to load header user data:', error);
       return;
     }
 
-    document.getElementById('header').outerHTML = contentTemplate(pageData);
+    container.innerHTML = contentTemplate(pageData);
 
     this.addEventListeners();
     this.profileDropdown();
   }
 
+  public destroy() {
+    if (this.boundDocumentClick) {
+      document.removeEventListener('click', this.boundDocumentClick);
+      this.boundDocumentClick = null;
+    }
+  }
+
   addEventListeners() {
     const logoutButton = document.getElementById('logoutBtn');
-    const searchWindow = document.getElementById('searchInput');
+    const searchWindow = document.getElementById('searchInput') as HTMLInputElement;
     if (searchWindow) {
-      searchWindow.addEventListener('keydown', async (e) => {
+      searchWindow.addEventListener('keydown', (e) => {
         if (e.code === 'Enter' || e.key === 'Enter') {
           e.preventDefault();
           const searchVal = searchWindow.value;
@@ -68,15 +77,17 @@ export class Header {
           onConfirm: async () => {
             try {
               await apiServise.logoutUser();
-            } catch (error) {
+            } catch (error: any) {
               console.error('Logout request failed:', error.message);
             } finally {
-              localStorage.removeItem('isAuthenticated');
-              localStorage.removeItem('currentTrackId');
-              localStorage.removeItem('isPlaying');
-              localStorage.removeItem('playTime');
-              localStorage.removeItem('volume');
-              localStorage.removeItem('playerContext');
+              localStorage.clear();
+              this.destroy();
+
+              const headerContainer = document.getElementById('header');
+              const sidebarContainer = document.getElementById('sidebar');
+              if (headerContainer) headerContainer.remove();
+              if (sidebarContainer) sidebarContainer.remove();
+
               player.destroy();
               router.navigate('/');
             }
@@ -85,11 +96,18 @@ export class Header {
       });
     }
 
+    this.initSearchToggle();
+  }
+
+  private initSearchToggle() {
     const searchToggle = document.getElementById('searchToggle');
     const searchContainer = document.getElementById('header-search-container');
-    const searchInput = document.getElementById('searchInput');
+    const searchInput = document.getElementById('searchInput') as HTMLInputElement;
     const inputCloseButton = document.querySelector('.input-close-button');
-    const headLeft = document.querySelector('.head-left');
+    const headLeft = document.querySelector('.head-left') as HTMLElement;
+
+    if (!searchToggle || !searchContainer || !searchInput || !inputCloseButton || !headLeft)
+      return;
 
     searchToggle.addEventListener('click', (e) => {
       e.preventDefault();
@@ -112,24 +130,27 @@ export class Header {
     });
   }
 
-  profileDropdown() {
+  private profileDropdown() {
     const profileBtn = document.querySelector('.profile-btn');
     const dropDownMenu = document.querySelector('.dropdown-menu');
 
-    if (profileBtn && dropDownMenu) {
-      profileBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        dropDownMenu.classList.toggle('show');
-      });
+    if (!profileBtn || !dropDownMenu)
+      return;
 
-      document.addEventListener('click', (e) => {
-        const isClickInside = profileBtn.contains(e.target) || dropDownMenu.contains(e.target);
+    profileBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      dropDownMenu.classList.toggle('show');
+    });
 
-        if (!isClickInside) {
-          dropDownMenu.classList.remove('show');
-        }
-      });
-    }
+    this.boundDocumentClick = (e: Event) => {
+      const target = e.target as Node;
+      const isClickInside = profileBtn.contains(target) || dropDownMenu.contains(target);
+      if (!isClickInside) {
+        dropDownMenu.classList.remove('show');
+      }
+    };
+
+    document.addEventListener('click', this.boundDocumentClick);
   }
 }
 

@@ -12,7 +12,20 @@ import { LibraryPage } from '@/pages/library/library.js';
 import { SearchPage } from '@/pages/search_page/search_page.js';
 import { PlaylistPage } from '@/pages/playlist/playlist.js';
 
-export class Router {
+interface Page {
+  render(slug?: string): Promise<void> | void;
+  destroy?(): void;
+}
+
+interface Route {
+  pattern: RegExp;
+  component: Page;
+}
+
+class Router {
+  private routes: Route[];
+  private currentPage: Page | null = null;
+
   constructor() {
     this.routes = [
       { pattern: /^\/$/, component: new MainPage() },
@@ -50,10 +63,10 @@ export class Router {
     this.handleLocation = this.handleLocation.bind(this);
   }
 
-  handleLocation() {
-    const path = window.location.pathname;
+  async handleLocation(): Promise<void> {
+    const path: string = window.location.pathname;
 
-    let matched = null;
+    let matched: { component: Page; params: string[] } | null = null;
     for (const route of this.routes) {
       const match = path.match(route.pattern);
 
@@ -63,20 +76,34 @@ export class Router {
       }
     }
 
-    if (matched) {
-      const { component, params } = matched;
-      component.render(params[0]);
-    } else {
-      new notFoundPage().render();
+    if (!matched) {
+      matched = { component: new notFoundPage(), params: [] };
+    }
+
+    const { component, params } = matched;
+
+    if (this.currentPage) {
+      if (typeof this.currentPage.destroy === 'function') {
+        console.log('destroyed');
+        this.currentPage.destroy();
+      }
+    }
+
+    this.currentPage = component;
+
+    try {
+      await component.render(params[0]);
+    } catch (error) {
+      console.error('Render error:', error);
     }
   }
 
-  init() {
+  init(): void {
     document.body.addEventListener('click', (e) => {
-      const link = e.target.closest('a');
+      const link = (e.target as HTMLElement).closest('a');
       if (link) {
         const href = link.getAttribute('href');
-        if (href && href.startsWith('/')) {
+        if (href && href.startsWith('/') && !href.startsWith('http') && !link.target) {
           e.preventDefault();
           this.navigate(href);
         }
@@ -88,7 +115,7 @@ export class Router {
     this.handleLocation();
   }
 
-  navigate(path) {
+  navigate(path: string): void {
     if (window.location.pathname !== path) {
       window.history.pushState({}, '', path);
     }

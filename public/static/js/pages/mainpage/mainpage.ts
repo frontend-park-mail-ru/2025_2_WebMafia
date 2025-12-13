@@ -1,7 +1,5 @@
 import { apiServise } from '@/data.js';
 import { router } from '@/routing.js';
-import { header } from '@/components/header/header.js';
-import { sidebar } from '@/components/sidebar/sidebar.js';
 import { scrollbar } from '@/utils/scrollbar';
 import { slider } from '@/utils/slider';
 import { nowPlayingSlider } from "@/pages/mainpage/nowPlayingSlider";
@@ -9,6 +7,7 @@ import { playTrack } from '@/playTrackBtn.js';
 import { getValidImage, playsParser } from '@/utils/parsers.ts';
 import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
 import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
+import { BasePage } from "@/pages/base/basePage.ts";
 
 interface MainPageData {
   isAuthenticated: boolean;
@@ -17,11 +16,11 @@ interface MainPageData {
   tracks: any[];
 }
 
-export class MainPage {
+export class MainPage extends BasePage {
   //Тож для ремувивентлистнеров
   private clickHandlers: Array<{ el: Element, fn: EventListener }> = [];
 
-  async render() {
+  async renderContent(contentContainer: HTMLElement): Promise<void> {
     let pageData: MainPageData = {
       isAuthenticated: localStorage.getItem('isAuthenticated') === 'true',
       artists: [],
@@ -33,10 +32,9 @@ export class MainPage {
     }
 
     const contentTemplate = Handlebars.templates['MainPage.hbs'];
-    this.updateView(contentTemplate(pageData));
+    contentContainer.innerHTML = contentTemplate(pageData);
     const titleEl = document.querySelector('head title');
     if (titleEl) titleEl.textContent = 'Wave Music';
-    await Promise.all([header.render(), sidebar.render()]);
 
     try {
       const data = await apiServise.getMainPageData();
@@ -77,15 +75,9 @@ export class MainPage {
       alert('Не удалось загрузить главную страницу.');
       return;
     }
-    this.updateView(contentTemplate(pageData));
-    await Promise.all([header.render(), sidebar.render()]);
+    contentContainer.innerHTML = contentTemplate(pageData);
 
     this.initComponents();
-  }
-
-  private updateView(html: string): void {
-    const app = document.getElementById('app');
-    if (app) app.innerHTML = html;
   }
 
   private initComponents(): void {

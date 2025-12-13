@@ -30,6 +30,13 @@ html, body {
   margin-bottom: 90px;
 }
 
+.layout-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
 /* Content */
 .page {
   margin: 0 20px;
