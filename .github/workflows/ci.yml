@@ -45,7 +45,7 @@ jobs:
     deploy:
       runs-on: ubuntu-latest
       needs: check-and-build
-      if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main'
+      if: github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/main'
 
       steps:
         - name: Download artifact
