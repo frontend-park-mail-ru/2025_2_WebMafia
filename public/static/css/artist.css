@@ -42,7 +42,8 @@
   background: #4e4e4e;
 }
 
-#customScrollbarThumb.dragging, #customScrollbar:hover #customScrollbarThumb.dragging {
+#customScrollbarThumb.dragging,
+#customScrollbar:hover #customScrollbarThumb.dragging {
   background: #2e2e2e;
 }
 

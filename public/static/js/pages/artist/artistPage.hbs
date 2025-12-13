@@ -73,7 +73,12 @@
                 </div>
 
                 <div class="track-like-container">
-                  <button class="like-btn-track artist-like-size {{#if is_liked}}active{{/if}}" data-track-id="{{ id }}">{{> likeBtn }}</button>
+                  <button
+                    class="like-btn-track artist-like-size {{#if is_liked}}active{{/if}}"
+                    data-track-id="{{ id }}"
+                  >
+                    {{> likeBtn }}
+                  </button>
                   <div class="track-duration">{{ duration }}</div>
                 </div>
               </div>
