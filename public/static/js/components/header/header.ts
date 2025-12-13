@@ -10,7 +10,7 @@ class Header {
 
   async render(searchValue = '') {
     const container = document.getElementById('header');
-    if (!container) return;
+    if (!container || container.innerHTML.trim() !== '') return;
 
     const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
     let pageData: any = {
@@ -84,9 +84,7 @@ class Header {
               this.destroy();
 
               const headerContainer = document.getElementById('header');
-              const sidebarContainer = document.getElementById('sidebar');
-              if (headerContainer) headerContainer.remove();
-              if (sidebarContainer) sidebarContainer.remove();
+              if (headerContainer) headerContainer.innerHTML = '';
 
               player.destroy();
               router.navigate('/');

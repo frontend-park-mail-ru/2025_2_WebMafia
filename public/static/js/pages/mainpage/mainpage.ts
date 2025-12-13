@@ -8,6 +8,7 @@ import { getValidImage, playsParser } from '@/utils/parsers.ts';
 import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
 import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
 import { BasePage } from "@/pages/base/basePage.ts";
+import {showInfoMessage} from "@/utils/showInfoMessage";
 
 interface MainPageData {
   isAuthenticated: boolean;
@@ -67,12 +68,7 @@ export class MainPage extends BasePage {
         return;
       }
 
-      if (error.message?.includes('Network')) {
-        alert('Проблема с подключением. Попробуйте позже.');
-        return;
-      }
-
-      alert('Не удалось загрузить главную страницу.');
+      showInfoMessage('Не удалось загрузить главную страницу');
       return;
     }
     contentContainer.innerHTML = contentTemplate(pageData);

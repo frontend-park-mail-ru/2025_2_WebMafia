@@ -6,6 +6,11 @@ class Sidebar {
   public async render() {
     const sidebar = document.getElementById('sidebar');
     if (!sidebar) return;
+    if (sidebar.innerHTML.trim() !== '') {
+      this.activePath();
+      return;
+    }
+
     this.container = sidebar;
 
     const contentTemplate = Handlebars.templates['sidebar.hbs'];

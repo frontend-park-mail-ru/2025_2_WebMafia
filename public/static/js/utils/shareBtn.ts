@@ -1,6 +1,6 @@
 import { showInfoMessage } from "@/utils/showInfoMessage.js";
 
-export function copyToClipboard(text) {
+export function copyToClipboard(text: string) {
   navigator.clipboard.writeText(text)
     .then(() => showInfoMessage("Ссылка скопирована в буфер обмена"))
     .catch(err => {
