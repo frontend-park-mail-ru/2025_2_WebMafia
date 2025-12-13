@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "compilehbs.sh && vite build ",
     "build:server": "./compilehbs.sh && vite build ",
+    "deploy": "",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "compilehbs.sh && node server.js",
     "lint": "eslint .",
