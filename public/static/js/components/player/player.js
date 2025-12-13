@@ -2,7 +2,7 @@ import { apiServise, API_TRACKS_URL } from '@/data.js';
 import { getValidImage } from '@/parsers.js';
 import { likeChange } from '@/utils/likeTrack';
 import { setupMarquees } from '@/marquee.js';
-import { goToComments } from '@/utils/goToComment.js';
+import { router } from '@/routing.js';
 
 export class Player extends EventTarget {
   constructor() {
@@ -195,6 +195,16 @@ export class Player extends EventTarget {
       this.onLikeClickBound = this.handleLikeClick.bind(this);
       likeBtn.addEventListener('click', this.onLikeClickBound);
     }
+    const commentBtn = document.querySelector('.goToCommentsBtn');
+    if (commentBtn) {
+      commentBtn.removeEventListener('click', this.handleCommentClick);
+      this.handleCommentClick = () => {
+        if (this.currentTrack) {
+          router.navigate(`/comments/${this.currentTrack.id}`);
+        }
+      };
+      commentBtn.addEventListener('click', this.handleCommentClick);
+    }
     this.audio.addEventListener('timeupdate', () => {
       this.updateCurrentTimeAndSlider();
     });
@@ -204,7 +214,6 @@ export class Player extends EventTarget {
     this.audio.addEventListener('ended', () => {
       this.handletrackEnd();
     });
-    goToComments();
   }
 
   handletrackEnd() {
@@ -267,6 +276,12 @@ export class Player extends EventTarget {
         likeBtn.classList.remove('active');
       }
     }
+
+    const goToCommentsBtn = document.querySelector('.goToCommentsBtn');
+    if (goToCommentsBtn) {
+      goToCommentsBtn.dataset.trackId = track.id;
+    }
+    // goToComments();
 
     let file_url = track.file_url;
     this.audio.src = file_url ? `${API_TRACKS_URL}/${file_url}` : `static/music/${file_url}`;

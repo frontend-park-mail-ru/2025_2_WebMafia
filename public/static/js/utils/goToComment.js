@@ -1,13 +1,11 @@
 import { router } from '@/routing.js';
+import { player } from '@/components/player/player.js';
 
 export function goToComments() {
-  const trackTitle = document.querySelector('.track-title');
-  const id = localStorage.getItem('currentTrackId');
-  if (trackTitle) {
-    trackTitle.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      router.navigate(`/comments/${id}`);
-    });
-  }
+  const trackTitle = document.querySelector('.goToCommentsBtn');
+  trackTitle.addEventListener('click', (e) => {
+    const id = player.currentTrack.id;
+    e.preventDefault();
+    router.navigate(`/comments/${id}`);
+  });
 }

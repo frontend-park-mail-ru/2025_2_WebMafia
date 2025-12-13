@@ -92,3 +92,6 @@ handlebars public/static/js/components/now_playing_cards/nowPlayingCards.hbs -f 
 
 handlebars public/static/js/pages/track_comments/trackComments.hbs -f public/static/js/pages/track_comments/trackComments.tmpl.js
 
+handlebars public/static/js/partials/goToCommentsBtn.hbs -f public/static/js/partials/goToCommentsBtn.tmpl.js
+
+

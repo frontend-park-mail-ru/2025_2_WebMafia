@@ -5,19 +5,19 @@
       <div class="track-info-container comments">
         <div class="track-info-artist-container">
             <div class="right-side">
-                <img src="/static/img/logo.png" alt="фото альбома" class="track-cover-comment">
+                <img src="{{artist.avatar}}" alt="фото альбома" class="track-cover-comment {{#unless id}}loading{{/unless}}">
                 <div class="comments-artist-info">
-                    <div class="track-comment-artist href-decoration">АБОБА</div>
-                    <div class="track-plays-num">123123 абоба</div>
+                    <div class="track-comment-artist href-decoration">{{artist.name}}</div>
+                    <div class="track-plays-num comments">{{listeners}}</div>
                 </div>
             </div>
             <div class="left-side">
                 <button class="share-button black" id="shareButton">{{> share }}</button>
                 <button
-                    class="primary-outline-button artist-subscription {{#unless id}}{{/unless}}"
+                    class="primary-outline-button artist-subscription {{#unless id}}loading{{/unless}}"
                     id="artistSubscribeButton"
-                    data-artist-id="{{ id }}"
-                    data-artist-name="{{ name }}"
+                    data-artist-id="{{ artist.id }}"
+                    data-artist-name="{{ artist.name }}"
                     data-is-subscribed="{{ isSubscribed }}">
                     {{#if isSubscribed}}
                         Отписаться
@@ -30,10 +30,10 @@
         <div class="track-info-comments">
             <div class="track-cover-and-buttons">
                 <div class="right-side">
-                    <button class="play-button play-button-album" data-album-id="{{ id }}" data-context="album-tracks" data-track-id="{{ track_id }}" data-first-track-id="{{ track_id }}"></button>
+                    <button class="play-button play-button-album comments" data-album-id="{{ id }}" data-context="{{player_context}}" data-track-id="{{ track_id }}" data-first-track-id="{{ track_id }}"></button>
                     <div class="comments-artist-info">
-                        <div class="track-name">АБОБА</div>
-                        <div class="track-performer href-decoration">абоба</div>
+                        <div class="track-name">{{title}}</div>
+                        <div class="track-performer href-decoration">{{artist.name}}</div>
                     </div>
                 </div>
                 <div class="left-side">
@@ -42,27 +42,47 @@
                 </div>
             </div>
                 
-            <div class="progress-remote">
-                <span class="track-time current">-:--</span>
-                <div class="remote-container">
-                    <input type="range" min="0" max="100" value="0" class="remote-slider" />
+            <div class="progress-remote-comments">
+                <span class="track-time-comments current">-:--</span>
+                <div class="remote-container-comments">
+                    <input type="range" min="0" max="100" value="0" class="remote-slider-comments" />
                 </div>
-                <span class="track-time total">-:--</span>
+                <span class="track-time-comments total">-:--</span>
             </div>
         </div>
       </div>
-
       <div class="comments-container">
-        <div class="title-name">Оставьте комментарий</div>
+        <div class="header-divider"></div>
+        <div class="comments-title-name">Оставьте комментарий</div>
         <form id="createPlaylistForm">
             <div class="form-group">
             <div class="input-wrapper">
-                <input type="text" id="title" name="title" placeholder="Добавь название" />
+                <input type="text" id="title" name="title" placeholder="Напишите комментарий" />
                 <div class="error-message" id="titleError"></div>
                 <div class="validation-message" id="titleInformation"></div>
             </div>
             </div>
         </form>
+
+        <div class="comment-container">
+            <div class="profile-avatar-header user-avatar" id="avatarHeaderContainer">
+                {{#if avatar}}
+                    <img src="{{ avatar }}" alt="Ваш аватар" class="profile-image" />
+                {{else}}
+                    <div class="default-avatar default-avatar-header">{{ letter }}</div>
+                {{/if}}
+            </div>
+            <div class="comment-info-container">
+                <div class="comment-info-header">
+                    <div class="comment-author">{{name}}</div>
+                    <span class="dot"></span>
+                    <div class="comment-time">{{name}}</div>
+                </div>
+                <div class="comment-text">
+                    {{id}}
+                </div>
+            </div>
+        </div>
       </div>
     </div>
   </div>
