@@ -1,0 +1,56 @@
+<div class="overlay">
+  <div class="window">
+    <div class="overlay-header">
+      <h2 class="title-name">{{ modalTitle }}</h2>
+      <button class="close-button" aria-label="Закрыть">{{> close }}</button>
+    </div>
+    <div class="header-divider"></div>
+    <div class="edit-profile-wrapper">
+      <div class="edit-profile-info">
+        <div class="edit-avatar">
+          <div class="edit-avatar-placement">
+            <img
+              src="{{ playlistImage }}"
+              alt="Аватар плейлиста"
+              class="profile-image create-playlist"
+              id="playlistAvatar"
+            />
+          </div>
+          <div class="edit-avatar-buttons" id="avatarButtonsContainer">
+            <button id="setAvatarBtn" class="secondary-button save-avatar-button-size">
+              Выбрать фото
+            </button>
+          </div>
+        </div>
+        <form id="createPlaylistForm">
+          <div class="form-group">
+            <label for="title">Название</label>
+            <div class="input-wrapper">
+              <input type="text" id="title" name="title" placeholder="Добавь название" value="{{ title }}" />
+              <div class="error-message" id="titleError"></div>
+              <div class="validation-message" id="titleInformation"></div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="description">Описание</label>
+            <div class="input-wrapper">
+              <textarea
+                maxlength="300"
+                id="description"
+                name="description"
+                placeholder="Добавь описание (необязательно)"
+              >{{ description }}</textarea>
+              <div class="validation-message" id="descriptionInformation"></div>
+            </div>
+          </div>
+
+          <div class="general-error" id="generalError"></div>
+        </form>
+      </div>
+      <div class="save-overlay-button">
+        <button class="primary-button save-overlay-button-size" id="submitPlaylistOverlay">{{ submitText }}</button>
+      </div>
+    </div>
+  </div>
+</div>

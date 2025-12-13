@@ -3,12 +3,11 @@ import { router } from '@/routing.js';
 import { header } from '@/components/header/header.js';
 import { sidebar } from '@/components/sidebar/sidebar.js';
 import { scrollbar } from '@/utils/scrollbar';
-import { durationParser, getValidImage, playsParser } from '@/parsers.js';
+import { durationParser, getValidImage, playsParser } from '@/utils/parsers.ts';
 import { playTrack } from '@/playTrackBtn.js';
 import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
 import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
 import { likeTrackBtn } from '@/utils/likeTrack.js';
-import { createPlaylis } from '@/utils/initCreatePlaylist';
 
 export class ArtistTracksPage {
   async render(artistId) {
@@ -60,7 +59,6 @@ export class ArtistTracksPage {
     document.getElementById('app').innerHTML = contentTemplate(pageData);
     playerOnlyOnPlay();
     await Promise.all([header.render(), sidebar.render()]);
-    createPlaylis();
     setPlayButtonsOnAuth();
     scrollbar.init();
     likeTrackBtn();

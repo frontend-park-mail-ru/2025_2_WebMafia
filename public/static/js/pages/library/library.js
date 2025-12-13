@@ -3,16 +3,16 @@ import { router } from '@/routing.js';
 import { header } from '@/components/header/header.js';
 import { sidebar } from '@/components/sidebar/sidebar.js';
 import { scrollbar } from '@/utils/scrollbar';
-import { getValidImage, playsParser, tracksNumParser } from '@/parsers.js';
+import { getValidImage, playsParser, tracksNumParser } from '@/utils/parsers.ts';
 import { playTrack } from '@/playTrackBtn.js';
 import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
 import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
-import { createPlaylis } from '@/utils/initCreatePlaylist';
 import { images } from '@/assets';
 import { copyToClipboard } from '@/utils/shareBtn.js';
 import { deletePlaylistLogic } from '@/utils/deletePlaylist.js';
 import { confirmation } from '@/components/confirmation_modal/confirmationModal.js';
 import { showInfoMessage } from '@/utils/showInfoMessage.js';
+import { playlistModal } from "@/components/playlist_modal/initPlaylistModal.js";
 
 export class LibraryPage {
   async render() {
@@ -29,10 +29,7 @@ export class LibraryPage {
     document.getElementById('app').innerHTML = contentTemplate(pageData);
     await Promise.all([header.render(), sidebar.render()]);
 
-    if (!pageData.isAuthenticated) {
-      await Promise.all([header.render(), sidebar.render()]);
-      return;
-    }
+    if (!pageData.isAuthenticated) return;
 
     const gridTemplate = Handlebars.templates['libraryGrid.hbs'];
     document.querySelector('head title').textContent = 'Wave Music';
@@ -43,7 +40,7 @@ export class LibraryPage {
         name: 'Понравившиеся треки',
         image: images.likedTracksPath,
         created_at: new Date(),
-        sub: data.favourite_tracks ? tracksNumParser(data.favourite_tracks.length) : '0 треков',
+        sub: tracksNumParser(data.favourite_tracks.length),
         href: 'playlist/LM',
         type: 'Плейлист',
       };
@@ -80,6 +77,7 @@ export class LibraryPage {
           const item = {
             id: playlist.id,
             name: playlist.title,
+            description: playlist.description,
             default_avatar: 'default-playlist.png',
             image: getValidImage(playlist.avatar_url, images.defaultPlaylistPath),
             created_at: new Date(playlist.created_at),
@@ -112,26 +110,29 @@ export class LibraryPage {
     document.getElementById('app').innerHTML = contentTemplate(pageData);
     document.querySelector('.grid-layout').innerHTML = gridTemplate(pageData);
     playerOnlyOnPlay();
-
-    await Promise.all([header.render(), sidebar.render()]);
-
-    createPlaylis();
-
     scrollbar.init();
     playTrack();
     setPlayButtonsOnAuth();
     this.addEventListeners(pageData);
-    this.initContextMenu();
+    this.initContextMenu(pageData);
   }
 
   addEventListeners(data) {
     const searchToggle = document.getElementById('librarySearchToggle');
+    const createPlaylistButtons = document.querySelectorAll('.create-playlist-button');
     const libraryHeaderContainer = document.querySelector('.library-header-container');
     const titleName = document.querySelector('.title-name');
     const createPlaylistToggle = document.querySelector('.create-playlist-toggle');
     const rightSearchContainer = document.querySelector('.library-search-container');
     const closeButton = rightSearchContainer.querySelector('.input-close-button');
     const originalParent = rightSearchContainer.parentElement;
+
+    createPlaylistButtons.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        playlistModal.openCreate();
+      });
+    });
 
     searchToggle.addEventListener('click', (e) => {
       e.preventDefault();
@@ -216,7 +217,7 @@ export class LibraryPage {
     });
   }
 
-  initContextMenu() {
+  initContextMenu(pageData) {
     let activeMenu = null;
     let longPressTimer;
 
@@ -234,6 +235,36 @@ export class LibraryPage {
         { text: 'Удалить из библиотеки', icon: 'close', action: 'deleteFromLibrary' },
         { text: 'Поделиться', icon: 'share', action: 'share' },
       ]
+    };
+
+    const removeFromDataAndUI = (id, typeInCard, cardElement) => {
+      cardElement.remove();
+
+      let categoryKey = 'albums';
+      if (typeInCard === 'Плейлист') categoryKey = 'playlists';
+      else if (typeInCard === 'Артист') categoryKey = 'artists';
+
+      const libIndex = pageData.library.findIndex(item => item.id === id);
+      if (libIndex !== -1) {
+        pageData.library.splice(libIndex, 1);
+      }
+
+      const categoryArray = pageData[categoryKey];
+      if (categoryArray) {
+        const catIndex = categoryArray.findIndex(item => item.id === id);
+        if (catIndex !== -1) {
+          categoryArray.splice(catIndex, 1);
+        }
+
+        if (categoryArray.length === 0) {
+          const sortButton = document.querySelector(`.sort-buttons button[data-name="${categoryKey}"]`);
+          if (sortButton.classList.contains('primary-button')) {
+            const disableSortBtn = document.getElementById('disableSort');
+            if (disableSortBtn) disableSortBtn.click();
+          }
+          sortButton.remove();
+        }
+      }
     };
 
     const removeMenu = () => {
@@ -294,7 +325,25 @@ export class LibraryPage {
         switch (action) {
           case 'delete':
             deletePlaylistLogic(id, name, () => {
-              card.remove();
+              removeFromDataAndUI(id, type, card);
+            });
+            break;
+          case 'deleteFromLibrary':
+            confirmation.showConfirm({
+              title: 'Ты точно хочешь удалить этот альбом из библиотеки?',
+              description: `Альбом <b>«${name || ''}»</b> будет удалён из твоей библиотеки, но ты всё ещё сможешь найти его на <b>Wave Music</b>`,
+              confirmText: 'Удалить',
+              cancelText: 'Отмена',
+              onConfirm: async () => {
+                try {
+                  await apiServise.toggleAlbumLike(id, false);
+                  removeFromDataAndUI(id, type, card);
+                  showInfoMessage(`Вы удалили «${name || ''}» из библиотеки`);
+                } catch (error) {
+                  console.error('Ошибка при удалении альбома:', error);
+                  showInfoMessage(`Не удалось удалить «${name || ''}» из библиотеки`);
+                }
+              }
             });
             break;
           case 'unsubscribe':
@@ -306,17 +355,42 @@ export class LibraryPage {
               onConfirm: async () => {
                 try {
                   await apiServise.toggleSubscribeToArtist(id, false);
-                  card.remove();
+                  removeFromDataAndUI(id, type, card);
                   showInfoMessage(`Вы отписались от «${name || ''}»`);
                 } catch (error) {
-                  console.error('Ошибка при удалении плейлиста:', error);
+                  console.error('Ошибка при отписки от артиста:', error);
                   showInfoMessage(`Не удалось отписаться от «${name || ''}»`);
                 }
               }
             });
             break;
           case 'edit':
-                 // router.navigate(...)
+            const playlistItem = pageData.playlists.find(item => item.id === id);
+
+            playlistModal.openEdit(
+              {
+                id: id,
+                title: name,
+                description: playlistItem ? playlistItem.description : '',
+                image: playlistItem.image === images.defaultPlaylistPath ? '' : playlistItem.image ,
+              },
+              (newData) => {
+                const titleEl = card.querySelector('.card-name');
+
+                if (titleEl) titleEl.textContent = newData.title;
+                card.dataset.name = newData.title;
+
+                const currentImg = card.querySelector('.playlist-cover');
+                if (currentImg) currentImg.src = newData.image ? newData.image : images.defaultPlaylistPath;
+
+                if (playlistItem) {
+                  playlistItem.name = newData.title;
+                  playlistItem.description = newData.description;
+                  playlistItem.image = newData.image ? newData.image : images.defaultPlaylistPath;
+                }
+
+                showInfoMessage('Изменения успешно сохранены!');
+              });
             break;
           case 'share':
             copyToClipboard(href);
@@ -339,7 +413,7 @@ export class LibraryPage {
         const touch = e.touches[0];
         createAndShowMenu(e, touch.clientX, touch.clientY);
       }, 500);
-    }, { passive: false });
+    }, { passive: true });
 
     const cancelLongPress = () => clearTimeout(longPressTimer);
     document.addEventListener('touchmove', cancelLongPress);

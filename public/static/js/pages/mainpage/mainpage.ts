@@ -6,7 +6,7 @@ import { scrollbar } from '@/utils/scrollbar';
 import { slider } from '@/utils/slider';
 import { nowPlayingSlider } from "@/pages/mainpage/nowPlayingSlider";
 import { playTrack } from '@/playTrackBtn.js';
-import { getValidImage, playsParser } from '@/parsers';
+import { getValidImage, playsParser } from '@/utils/parsers.ts';
 import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
 import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
 

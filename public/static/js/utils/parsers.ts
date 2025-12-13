@@ -54,13 +54,14 @@ export function totalDurationParser(duration: number): string {
 }
 
 export function tracksNumParser(count: number | null | undefined): string {
-  if (count == null || count < 0) return '';
+  if (count == null || count < 0) return '0 треков';
   return `${count} ${pluralize(count, 'трек', 'трека', 'треков')}`;
 }
 
 export function getValidImage(url: string | null | undefined, defaultImage?: string) {
-  if (!url || url === '') return defaultImage || '';
-
+  if (!url || url === '') {
+    return defaultImage || '';
+  }
   return `${API_AVATARS_URL}/${url}`;
 }
 

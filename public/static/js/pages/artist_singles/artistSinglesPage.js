@@ -3,10 +3,9 @@ import { router } from '@/routing.js';
 import { header } from '@/components/header/header.js';
 import { sidebar } from '@/components/sidebar/sidebar.js';
 import { scrollbar } from '@/utils/scrollbar';
-import { getValidImage } from '@/parsers.js';
+import { getValidImage } from '@/utils/parsers.ts';
 import { playTrack } from '@/playTrackBtn.js';
 import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
-import { createPlaylis } from '@/utils/initCreatePlaylist';
 
 export class ArtistSinglesPage {
   async render(artistId) {
@@ -58,7 +57,6 @@ export class ArtistSinglesPage {
     document.getElementById('app').innerHTML = contentTemplate(pageData);
     playerOnlyOnPlay();
     await Promise.all([header.render(), sidebar.render()]);
-    createPlaylis();
     scrollbar.init();
     playTrack();
   }

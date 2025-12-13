@@ -1,7 +1,7 @@
 import { player } from '@/components/player/player';
-import { getValidImage } from '@/parsers';
+import { getValidImage } from '@/utils/parsers.ts';
 import { playTrack } from '@/playTrackBtn';
-import { setupMarquees } from '@/marquee';
+import { setupMarquees } from '@/utils/marquee.ts';
 
 interface TrackData {
   id: string | number;
@@ -210,7 +210,7 @@ class NowPlayingCardsSlider {
 
     slider.addEventListener('touchstart', (e: any) => {
       touchStartX = e.changedTouches[0].clientX;
-    });
+    }, { passive: true });
 
     slider.addEventListener('touchend', (e: any) => {
       touchEndX = e.changedTouches[0].clientX;

@@ -1,9 +1,9 @@
 import { apiServise } from '@/data.js';
 import { router } from '@/routing.js';
-import { getValidImage } from '@/parsers.js';
+import { getValidImage } from '@/utils/parsers.ts';
 import { player } from '@/components/player/player.js';
 import { confirmation } from '@/components/confirmation_modal/confirmationModal.js';
-import { images } from '../../assets';
+import { images } from '@/assets';
 
 export class Header {
   async render(searchValue) {

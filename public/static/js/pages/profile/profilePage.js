@@ -2,7 +2,7 @@ import { router } from '@/routing.js';
 import { apiServise } from '@/data.js';
 import { initPasswordShowing } from '@/eye';
 import { scrollbar } from '@/utils/scrollbar';
-import { durationParser, getValidImage, playsParser } from '@/parsers.js';
+import { durationParser, getValidImage, playsParser } from '@/utils/parsers.ts';
 import { sidebar } from '@/components/sidebar/sidebar.js';
 import { slider } from '@/utils/slider';
 import { header } from '@/components/header/header.js';
@@ -11,8 +11,7 @@ import { FormValidator } from '@/utils/validation.ts';
 import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
 import { playTrack } from '@/playTrackBtn.js';
 import { likeTrackBtn } from '@/utils/likeTrack.js';
-import { setupMarquees } from '@/marquee';
-import { createPlaylis } from '@/utils/initCreatePlaylist';
+import { setupMarquees } from '@/utils/marquee';
 import { images } from '@/assets';
 
 export class ProfilePage {
@@ -75,7 +74,6 @@ export class ProfilePage {
     document.querySelector('head title').textContent = pageData.profile.nickname;
     playerOnlyOnPlay();
     await Promise.all([header.render(), sidebar.render()]);
-    createPlaylis();
     slider.init();
     this.addEventListeners(pageData.profile);
     initPasswordShowing();
