@@ -1,17 +1,14 @@
 import { apiServise } from '@/data.js';
-import { router } from '@/routing.js';
 import { header } from '@/components/header/header.js';
 import { sidebar } from '@/components/sidebar/sidebar.js';
 import { initScrollbar } from '@/scrollbar.js';
 import { slider } from '@/slider.js';
 import { player } from '@/components/player/player.js';
 import { playTrack } from '@/playTrackBtn.js';
-import { getValidImage, playsParser, durationParser } from '@/parsers.js';
+import { getValidImage, playsParser } from '@/parsers.js';
 import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
 import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
-import { setupMarquees } from '@/marquee.js';
 import { createPlaylis } from '@/utils/initCreatePlaylist';
-import { nowPlayingcards } from '@/components/now_playing_cards/nowPlayingCards';
 import { nowPlayingCardSlider } from '@/utils/nowPlayingCardsLogic.js';
 import {
   setInitialPLayTime,
@@ -19,7 +16,7 @@ import {
   updateCurrentTimeAndSlider,
   loadTrackInfo,
 } from '@/utils/playerFunctions.js';
-import { goToComments } from '@/utils/goToComment.js';
+import { CommentsSocket } from '@/utils/webSocketConnect.js';
 
 export class trackComments {
   async render(id) {
@@ -93,6 +90,7 @@ export class trackComments {
     setInitialPLayTime();
     this.setupPageLogic(id);
     playTrack();
+    CommentsSocket(id);
   }
 
   setupPageLogic(pageTrackId) {
