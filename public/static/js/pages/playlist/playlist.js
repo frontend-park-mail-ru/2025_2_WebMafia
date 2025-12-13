@@ -21,8 +21,8 @@ import { images } from '@/assets';
 import { albumPlaylistButtons } from '@/utils/albumPlaylistButtons.js';
 import { share } from '@/utils/shareBtn';
 import { deletePlaylistLogic } from '@/utils/deletePlaylist';
-import { playlistModal } from "@/components/playlist_modal/initPlaylistModal.js";
-import { showInfoMessage } from "@/utils/showInfoMessage.js";
+import { playlistModal } from '@/components/playlist_modal/initPlaylistModal.js';
+import { showInfoMessage } from '@/utils/showInfoMessage.js';
 
 export class PlaylistPage {
   constructor() {
@@ -205,122 +205,12 @@ export class PlaylistPage {
 
             container.insertBefore(newDescEl, buttons);
 
-<<<<<<< HEAD
-              if (!document.getElementById('deletePlaylistAvatarButton')) {
-                editAvatarButtons.insertAdjacentHTML(
-                  'beforeend',
-                  `<button id="deletePlaylistAvatarButton" class="secondary-button save-avatar-button-size">Удалить фото</button>`
-                );
-              }
-            };
-            reader.readAsDataURL(file);
-          });
-        }
-
-        if (target.id === 'deletePlaylistAvatarButton') {
-          e.preventDefault();
-
-          selectedAvatarFile = null;
-          deleteAvatar = true;
-
-          updateAvatarContainer('playlistAvatarEditContainer');
-
-          target.remove();
-        }
-      });
-    }
-
-    const editValidators = {
-      title: (value) => {
-        if (!value) return 'Назовите ваш плейлист';
-        return null;
-      },
-    };
-
-    const editInformation = {
-      title: (value) => (value ? null : 'Укажите название плейлиста'),
-      description: (value) => {
-        return 'Максимум 300 символов';
-      },
-    };
-
-    const editValidator = new FormValidator('editPlaylistForm', editValidators, editInformation, {
-      submitButtonSelector: '.general-error',
-      messageSelector: '#generalErrorPlaylist',
-    });
-
-    editValidator.init();
-
-    const saveButton = document.getElementById('savePlaylistChangesButton');
-    if (saveButton) {
-      saveButton.addEventListener('click', async (e) => {
-        e.preventDefault();
-
-        const isValid = editValidator.validateForm();
-        if (!isValid) {
-          editValidator.showMessage('Пожалуйста, проверьте подсвеченные поля');
-          return;
-        }
-
-        try {
-          if (selectedAvatarFile) {
-            const response = await apiServise.uploadPlaylistAvatar(selectedAvatarFile, this.playlistData.id);
-            const newAvatarUrl = getValidImage(response.avatar_url);
-            updateAvatarContainer('playlistAvatarContainer', newAvatarUrl);
-            selectedAvatarFile = null;
-          } else if (deleteAvatar) {
-            await apiServise.deletePlaylistAvatar(this.playlistData.id);
-            updateAvatarContainer('playlistAvatarContainer');
-            deleteAvatar = false;
-          }
-
-          const newTitle = document.getElementById('titlePlaylist').value;
-          const newDescription = document.getElementById('descriptionPlaylist').value;
-          const getDescriptionOverlay = document.getElementById('descriptionOverlay');
-
-          if (newTitle !== this.playlistData.title || newDescription !== this.playlistData.description) {
-            this.playlistData.title = newTitle;
-            this.playlistData.description = newDescription;
-            await apiServise.updatePlaylist(newTitle, newDescription, this.playlistData.id);
-            const title = document.querySelector('.album-card-title');
-            if (title) {
-              title.textContent = newTitle;
-            }
-            const description = document.getElementById('getDescription');
-            const allDescription = document.getElementById('allDescription');
-            if (description) {
-              if (newDescription.trim() === '') {
-                description.remove();
-              } else {
-                description.textContent = newDescription;
-                if (allDescription) allDescription.textContent = newDescription;
-              }
-            } else if (newDescription.trim() !== '') {
-              const container = document.querySelector('.album-card');
-              const buttons = container.querySelector('.album-buttons');
-
-              const newDescEl = document.createElement('div');
-              newDescEl.className = 'card-sub album-description';
-              newDescEl.id = 'getDescription';
-              newDescEl.textContent = newDescription;
-              if (allDescription) allDescription.textContent = newDescription;
-
-              container.insertBefore(newDescEl, buttons);
-
-              if (getDescriptionOverlay) {
-                newDescEl.addEventListener('click', (e) => {
-                  e.preventDefault();
-                  getDescriptionOverlay.classList.add('active');
-                });
-              }
-=======
             const getDescriptionOverlay = document.getElementById('descriptionOverlay');
             if (getDescriptionOverlay) {
               newDescEl.addEventListener('click', (e) => {
                 e.preventDefault();
                 getDescriptionOverlay.classList.add('active');
               });
->>>>>>> dev
             }
           }
 
