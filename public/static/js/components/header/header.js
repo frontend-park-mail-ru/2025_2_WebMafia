@@ -2,13 +2,15 @@ import { apiServise, apiPath } from '@/data.js';
 import { router } from '@/routing.js';
 import { getValidImage } from '@/parsers.js';
 import { player } from '@/components/player/player.js';
-import { getStaticImagePath } from '@/utils/getStaticImages.js';
+import { confirmation } from '@/components/confirmation_modal/confirmationModal.js';
+import { images } from '@/assets.js';
 
 export class Header {
   async render(searchValue) {
     let pageData = {
       isAuthenticated: localStorage.getItem('isAuthenticated') === 'true',
       searchValue: searchValue,
+      logoImage: images.logoPath,
     };
 
     const contentTemplate = Handlebars.templates['header.hbs'];
@@ -19,7 +21,6 @@ export class Header {
       section.insertAdjacentHTML('afterbegin', headerHTML);
     }
     this.addEventListeners();
-    getStaticImagePath(apiPath);
     if (!pageData.isAuthenticated) return;
 
     try {
@@ -35,7 +36,6 @@ export class Header {
     }
 
     document.getElementById('header').outerHTML = contentTemplate(pageData);
-    getStaticImagePath(apiPath);
 
     this.addEventListeners();
     this.profileDropdown();
@@ -56,22 +56,16 @@ export class Header {
       });
     }
 
-    const warningOverlay = document.getElementById('warningOverlayHeader');
     if (logoutButton) {
-      logoutButton.addEventListener('click', async (e) => {
+      logoutButton.addEventListener('click', (e) => {
         e.preventDefault();
-        warningOverlay.classList.add('active');
-        const closeBtn = document.getElementById('cancelAction');
-        const confirmBtn = document.getElementById('confirmActionHeader');
-        if (closeBtn) {
-          closeBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            warningOverlay.classList.remove('active');
-          });
-        }
-        if (confirmBtn) {
-          confirmBtn.addEventListener('click', async (e) => {
-            e.preventDefault();
+
+        confirmation.showConfirm({
+          title: 'Выход из аккаунта',
+          description: 'Вы уверены, что хотите выйти из аккаунта <b>Wave Music</b>?',
+          confirmText: 'Выйти',
+          cancelText: 'Отмена',
+          onConfirm: async () => {
             try {
               await apiServise.logoutUser();
             } catch (error) {
@@ -86,26 +80,8 @@ export class Header {
               player.destroy();
               router.navigate('/');
             }
-          });
-        }
-      });
-    }
-
-    const closeWarningBtn = document.getElementById('closeWarningBtn');
-
-    if (closeWarningBtn && warningOverlay) {
-      closeWarningBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-
-        warningOverlay.classList.remove('active');
-      });
-    }
-
-    if (warningOverlay) {
-      warningOverlay.addEventListener('click', (e) => {
-        if (e.target === warningOverlay) {
-          warningOverlay.classList.remove('active');
-        }
+          },
+        });
       });
     }
 

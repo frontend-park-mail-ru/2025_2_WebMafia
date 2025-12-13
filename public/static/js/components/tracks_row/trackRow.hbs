@@ -30,8 +30,10 @@
     </div>
     <div class="track-like-container">
       <button class="like-btn-track album-like-size {{#if is_liked}}active{{/if}}" data-track-id="{{ id }}">{{> likeBtn }}</button>
+      <div class="track-duration">{{ duration }}</div>
+      {{#unless @root.favourite}}
+        <button class="delete-btn-track" data-track-id="{{ id }}">{{> delete }}</button>
+      {{/unless}}
     </div>
-    <div class="track-duration">{{ duration }}</div>
-    <button class="delete-btn-track" data-track-id="{{ id }}">{{> delete }}</button>
   </div>
 </div>

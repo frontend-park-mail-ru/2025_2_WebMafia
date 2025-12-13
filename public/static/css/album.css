@@ -41,12 +41,12 @@
   position: sticky;
   top: 4dvh;
   background-color: #fafafa;
-  width: 300px;
+  width: 320px;
   display: flex;
   flex-direction: column;
   align-items: center;
   border-radius: 30px;
-  padding: 25px 30px;
+  padding: 25px;
   z-index: 1;
   margin: 4dvh 0 0 4dvh;
 }
@@ -149,11 +149,6 @@
   height: 75px;
 }
 
-.album-row .track-duration {
-  width: 54px;
-  text-align: right;
-}
-
 .album-row.active,
 .album-row:hover {
   background-color: #e6e9f5;
@@ -181,6 +176,7 @@
   display: flex;
   flex-direction: column;
   min-width: 0;
+  margin-right: 15px;
 }
 
 .play-icon,
@@ -228,11 +224,11 @@
 
 .tracks-duration-wrapper {
   flex: 1;
-  display: grid;
-  grid-template-columns: 1fr 100px;
+  display: flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
+  min-width: 0;
 }
 
 .overlay-header {
@@ -258,15 +254,16 @@
   background: none;
   border: none;
   cursor: pointer;
-  transition: color 0.2s ease;
 }
 
 .close-button svg {
-  fill: #666;
+  stroke: #666;
+  stroke-width: 2;
+  transition: stroke 0.2s ease;
 }
 
 .close-button:hover svg {
-  fill: #000;
+  stroke: #000;
 }
 
 .header-divider {
@@ -277,6 +274,8 @@
 
 .album-row:hover .like-btn-track,
 .album-row.active .like-btn-track,
+.album-row:hover .delete-btn-track,
+.album-row.active .delete-btn-track,
 .like-btn-track.active {
   opacity: 1;
 }
@@ -307,6 +306,11 @@
 }
 
 @media (max-width: 1000px) {
+  .close-button svg {
+    width: 32px;
+    height: 32px;
+  }
+
   .album-page {
     flex-direction: column;
     align-items: center;
@@ -334,6 +338,7 @@
   }
 
   .tracks-card {
+    flex-grow: unset;
     padding: 10px 5px;
     margin: 20px 0 40px 0;
     width: 90%;
@@ -355,12 +360,8 @@
   }
 
   .album-row {
-    padding: 5px 0 5px 5px;
+    padding: 5px 15px 5px 5px;
     height: 60px;
-  }
-
-  .album-row .track-duration {
-    display: flex;
   }
 
   .album-artist-name {

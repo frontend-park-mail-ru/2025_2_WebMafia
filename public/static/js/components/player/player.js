@@ -130,7 +130,7 @@ export class Player extends EventTarget {
               tracks = await apiServise.request(`/artists/${context.id}/tracks`);
               break;
             case 'playlist-tracks':
-              result = await apiServise.getPlaylistPageData(context.id);
+              result = await apiServise.getPlaylistPageData(context.id, true);
               tracks = result.tracks;
               break;
             case 'all-tracks':
@@ -534,7 +534,7 @@ export class Player extends EventTarget {
 
       volumeSlider.dispatchEvent(new Event('input'));
       volumeSlider.dispatchEvent(new Event('change'));
-    });
+    }, { passive: true });
 
     updateVolumeSlider(volumeSlider.value);
     volumeSlider.addEventListener('input', function () {
@@ -727,7 +727,7 @@ export class Player extends EventTarget {
 
     slider.addEventListener('touchstart', () => {
       isDraggingSlider = true;
-    });
+    }, { passive: true });
 
     slider.addEventListener('touchend', () => {
       isDraggingSlider = false;
@@ -737,7 +737,7 @@ export class Player extends EventTarget {
       if (isDraggingSlider) return;
       startY = e.touches[0].clientY;
       startHeight = player.offsetHeight;
-    });
+    }, { passive: true });
 
     player.addEventListener('touchmove', (e) => {
       if (isDraggingSlider) return;
@@ -745,7 +745,7 @@ export class Player extends EventTarget {
       let newHeight = startHeight - dy;
       newHeight = Math.max(minHeight, Math.min(maxHeight, newHeight));
       player.style.height = newHeight + 'px';
-    });
+    }, { passive: true });
 
     player.addEventListener('touchend', (e) => {
       if (isDraggingSlider) return;

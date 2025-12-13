@@ -24,6 +24,12 @@ handlebars public/static/js/pages/library/library.hbs -f public/static/js/pages/
 
 handlebars public/static/js/components/header/header.hbs -f public/static/js/components/header/header.tmpl.js
 
+handlebars public/static/js/components/context_menu/contextMenu.hbs -f public/static/js/components/context_menu/contextMenu.tmpl.js
+
+handlebars public/static/js/components/confirmation_modal/confirmationModal.hbs -f public/static/js/components/confirmation_modal/confirmationModal.tmpl.js
+
+handlebars public/static/js/components/playlist_modal/playlistModal.hbs -f public/static/js/components/playlist_modal/playlistModal.tmpl.js
+
 handlebars public/static/js/components/sidebar/sidebar.hbs -f public/static/js/components/sidebar/sidebar.tmpl.js
 
 handlebars public/static/js/components/player/player.hbs -f public/static/js/components/player/player.tmpl.js
@@ -82,4 +88,4 @@ handlebars public/static/js/partials/delete.hbs -f public/static/js/partials/del
 
 handlebars public/static/js/partials/repeatOne.hbs -f public/static/js/partials/repeatOne.tmpl.js
 
-
+handlebars public/static/js/partials/share.hbs -f public/static/js/partials/share.tmpl.js

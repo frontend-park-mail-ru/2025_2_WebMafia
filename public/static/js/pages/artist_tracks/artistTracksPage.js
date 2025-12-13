@@ -8,7 +8,6 @@ import { playTrack } from '@/playTrackBtn.js';
 import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
 import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
 import { likeTrackBtn } from '@/utils/likeTrack.js';
-import { createPlaylis } from '@/utils/initCreatePlaylist';
 
 export class ArtistTracksPage {
   async render(artistId) {
@@ -21,9 +20,10 @@ export class ArtistTracksPage {
 
     const contentTemplate = Handlebars.templates['artistTracksPage.hbs'];
     document.getElementById('app').innerHTML = contentTemplate(pageData);
+    await Promise.all([header.render(), sidebar.render()]);
 
     try {
-      const data = await apiServise.getArtistTracks(artistId);
+      const data = await apiServise.getArtistTracks(artistId, pageData.isAuthenticated);
       if (data) {
         pageData.artistName = data.artist.name;
         pageData.artistId = data.artist.id;
@@ -59,7 +59,6 @@ export class ArtistTracksPage {
     document.getElementById('app').innerHTML = contentTemplate(pageData);
     playerOnlyOnPlay();
     await Promise.all([header.render(), sidebar.render()]);
-    createPlaylis();
     setPlayButtonsOnAuth();
     initScrollbar();
     likeTrackBtn();

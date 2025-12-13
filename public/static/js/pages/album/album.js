@@ -9,15 +9,14 @@ import { playTrack } from '@/playTrackBtn.js';
 import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
 import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
 import { likeTrackBtn } from '@/utils/likeTrack.js';
-import { player } from '@/components/player/player';
-import { createPlaylis } from '@/utils/initCreatePlaylist';
+import { albumPlaylistButtons } from "@/utils/albumPlaylistButtons.js";
+import { share } from "@/utils/shareBtn.js";
+import { showInfoMessage } from "@/utils/showInfoMessage.js";
 
 export class AlbumPage {
   async render(id) {
-    const isAuthenticated = localStorage.getItem('isAuthenticated');
     let pageData = {
-      cover: getValidImage('', 'default-album.png'),
-      isAuthenticated: isAuthenticated,
+      isAuthenticated: localStorage.getItem('isAuthenticated') === 'true',
     };
 
     const contentTemplate = Handlebars.templates['album.hbs'];
@@ -25,12 +24,13 @@ export class AlbumPage {
     document.querySelector('head title').textContent = 'Wave Music';
 
     try {
-      const data = await apiServise.getAlbumPageData(id);
+      const data = await apiServise.getAlbumPageData(id, pageData.isAuthenticated);
       const firstTrackId = data.tracks.length > 0 ? data.tracks[0].id : false;
       pageData = {
         id: data.album.id,
         title: data.album.title,
         type: data.album.type,
+        is_liked: data.album.is_liked,
         year: data.album.release_date ? data.album.release_date.slice(0, 4) : '',
         cover: getValidImage('albums/' + data.album.avatar_url, 'default-album.png'),
         artist: {
@@ -40,7 +40,6 @@ export class AlbumPage {
         },
         description: data.album.description,
         track_id: firstTrackId,
-        isAuthenticated: isAuthenticated,
       };
       let totalDuration = 0;
       pageData.tracks = (data.tracks || []).map((track) => {
@@ -76,48 +75,62 @@ export class AlbumPage {
     document.querySelector('head title').textContent = pageData.title;
     playerOnlyOnPlay();
     await Promise.all([header.render(), sidebar.render()]);
-    createPlaylis();
     slider.sliderFunction();
     initScrollbar();
-    this.addEventListeners();
+    this.albumLikeButton();
     setPlayButtonsOnAuth();
     likeTrackBtn();
     playTrack();
+    albumPlaylistButtons();
+    share();
   }
 
-  addEventListeners() {
-    const getDescriptionButton = document.getElementById('getDescription');
-    const getDescriptionOverlay = document.getElementById('albumDescriptionOverlay');
-    const albumShuffleBtn = document.querySelector('.album-buttons .control-btn.shuffle-album');
-    if (albumShuffleBtn) {
-      if (player.isShaffle) {
-        albumShuffleBtn.classList.add('active');
-      }
-      albumShuffleBtn.addEventListener('click', () => {
-        player.handleShaffleClick();
-      });
-    }
+  albumLikeButton() {
+    const likeButton = document.getElementById('albumLikeButton');
+    if (likeButton) {
+      likeButton.addEventListener('click', async () => {
+        const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+        if (!isAuthenticated) {
+            router.navigate('/login');
+            return;
+        }
 
-    if (getDescriptionButton && getDescriptionOverlay) {
-      getDescriptionButton.addEventListener('click', (e) => {
-        e.preventDefault();
-        getDescriptionOverlay.classList.add('active');
-      });
-    }
+        const albumId = likeButton.dataset.albumId;
+        const albumName = likeButton.dataset.albumName || 'Альбом';
+        const likeIcon = likeButton.querySelector('.actions-item-svg');
+        const likeText = likeButton.querySelector('.actions-item-text');
 
-    const closeDescriptionButton = document.getElementById('closeDescriptionButton');
-    if (closeDescriptionButton && getDescriptionOverlay) {
-      closeDescriptionButton.addEventListener('click', (e) => {
-        e.preventDefault();
-        getDescriptionOverlay.classList.remove('active');
-      });
-    }
+        const wasLiked = likeIcon.classList.contains('active');
+        const newLikedState = !wasLiked;
 
-    if (getDescriptionOverlay) {
-      getDescriptionOverlay.addEventListener('click', (e) => {
-        e.preventDefault();
-        if (e.target === getDescriptionOverlay) {
-          getDescriptionOverlay.classList.remove('active');
+        const renderState = (isLiked) => {
+          if (isLiked) {
+            likeIcon.classList.add('active');
+            likeText.textContent = 'Удалить из библиотеки';
+          } else {
+            likeIcon.classList.remove('active');
+            likeText.textContent = 'Добавить в библиотеку';
+          }
+        };
+
+        renderState(newLikedState);
+        likeButton.disabled = true;
+
+        try {
+          await apiServise.toggleAlbumLike(albumId, newLikedState);
+
+          if (newLikedState) {
+            showInfoMessage(`Альбом «${albumName}» добавлен в библиотеку`);
+          } else {
+            showInfoMessage(`Альбом «${albumName}» удалён из библиотеки`);
+          }
+
+        } catch (error) {
+          console.error('Failed to like album:', error);
+          renderState(wasLiked);
+          showInfoMessage('Ошибка при обновлении библиотеки. Попробуйте позже.');
+        } finally {
+          likeButton.disabled = false;
         }
       });
     }

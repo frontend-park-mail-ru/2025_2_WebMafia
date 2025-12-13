@@ -49,8 +49,8 @@
 }
 
 .like-btn.active svg {
-  fill: #a766ff;
-  stroke: #a766ff;
+  stroke: url(#menuGradient);
+  fill: url(#menuGradient);
 }
 
 .white svg {
@@ -59,8 +59,7 @@
 }
 
 .like-btn:hover svg {
-  stroke: #a766ff;
-  cursor: pointer;
+  stroke: url(#menuGradient);
   transform: scale(1.03);
 }
 
@@ -168,8 +167,8 @@
 }
 
 .control-btn.shuffle-album svg {
-  width: 28px !important;
-  height: 28px !important;
+  width: 28px;
+  height: 28px;
   stroke: #000000;
 }
 
@@ -329,7 +328,7 @@
 .volume-icon.level-0 .volume-wave-1,
 .volume-icon.level-0 .volume-wave-2,
 .volume-icon.level-0 .volume-wave-3 {
-  opacity: 0 !important;
+  opacity: 0;
 }
 
 .volume-icon.level-0 .volume-mute-cross {

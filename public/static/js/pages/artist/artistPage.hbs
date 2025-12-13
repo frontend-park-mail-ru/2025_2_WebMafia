@@ -1,5 +1,4 @@
 <div class="section" id="section">
-  {{> header}}
   <div class="layout">
     {{> sidebar}}
     <div class="page-wrapper" id="scrollContent">
@@ -14,7 +13,19 @@
         <div class="artist-name">{{ name }}</div>
         <div class="artist-interaction">
           <div class="listeners-num">{{ listeners }}</div>
-          <button class="primary-outline-button artist-subscription">Подписаться</button>
+          <button
+            class="primary-outline-button artist-subscription {{#unless id}}loading{{/unless}}"
+            id="artistSubscribeButton"
+            data-artist-id="{{ id }}"
+            data-artist-name="{{ name }}"
+            data-is-subscribed="{{ isSubscribed }}">
+            {{#if isSubscribed}}
+                Отписаться
+            {{else}}
+                Подписаться
+            {{/if}}
+          </button>
+          <button class="share-button {{#unless id}}loading{{/unless}}" id="shareButton">{{> share }}</button>
         </div>
         {{#if description}}
         <p class="artist-description">{{ description }}</p>
@@ -62,8 +73,8 @@
                 
                 <div class="track-like-container">
                   <button class="like-btn-track artist-like-size {{#if is_liked}}active{{/if}}" data-track-id="{{ id }}">{{> likeBtn }}</button>
+                  <div class="track-duration">{{ duration }}</div>
                 </div>
-                <div class="track-duration">{{ duration }}</div>
               </div>
             </div>
             {{/each}}

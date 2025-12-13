@@ -6,7 +6,6 @@ import { initScrollbar } from '@/scrollbar.js';
 import { getValidImage } from '@/parsers.js';
 import { playTrack } from '@/playTrackBtn.js';
 import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
-import { createPlaylis } from '@/utils/initCreatePlaylist';
 
 export class ArtistSinglesPage {
   async render(artistId) {
@@ -17,6 +16,7 @@ export class ArtistSinglesPage {
 
     const contentTemplate = Handlebars.templates['artistSinglesPage.hbs'];
     document.getElementById('app').innerHTML = contentTemplate(pageData);
+    await Promise.all([header.render(), sidebar.render()]);
 
     try {
       const data = await apiServise.getArtistAlbums(artistId);
@@ -57,7 +57,6 @@ export class ArtistSinglesPage {
     document.getElementById('app').innerHTML = contentTemplate(pageData);
     playerOnlyOnPlay();
     await Promise.all([header.render(), sidebar.render()]);
-    createPlaylis();
     initScrollbar();
     playTrack();
   }
