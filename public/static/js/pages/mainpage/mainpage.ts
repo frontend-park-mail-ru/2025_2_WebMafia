@@ -8,13 +8,14 @@ import { getValidImage, playsParser } from '@/utils/parsers.ts';
 import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
 import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
 import { BasePage } from "@/pages/base/basePage.ts";
-import {showInfoMessage} from "@/utils/showInfoMessage";
+import { showInfoMessage } from "@/utils/showInfoMessage";
+import { Artist, Album, Track } from '@/models';
 
 interface MainPageData {
   isAuthenticated: boolean;
-  artists: any[];
-  albums: any[];
-  tracks: any[];
+  artists: Array<{ id: string; name: string; listeners: string; image: string }>;
+  albums: Array<{ id: string; name: string; image: string; artist: string; type?: string }>;
+  tracks: Array<{ id: string; name: string; image: string; album_id?: string; artists?: Artist[] }>;
 }
 
 export class MainPage extends BasePage {
@@ -39,13 +40,13 @@ export class MainPage extends BasePage {
 
     try {
       const data = await apiServise.getMainPageData();
-      pageData.artists = (data.artists || []).map((artist: any) => ({
+      pageData.artists = (data.artists || []).map((artist: Artist) => ({
         id: artist.id,
         name: artist.name,
         listeners: playsParser(artist.play_count || 0),
         image: getValidImage(`artists/${artist.avatar_url}`, 'default-artist.png'),
       }));
-      pageData.albums = (data.albums || []).map((album: any) => ({
+      pageData.albums = (data.albums || []).map((album: Album) => ({
         id: album.id,
         name: album.title,
         image: getValidImage(`albums/${album.avatar_url}`, 'default-album.png'),
@@ -53,7 +54,7 @@ export class MainPage extends BasePage {
         artist_id: album.artists?.[0].id,
         type: album.type,
       }));
-      pageData.tracks = (data.tracks || []).map((track: any) => ({
+      pageData.tracks = (data.tracks || []).map((track: Track) => ({
         id: track.id,
         name: track.title,
         image: getValidImage(`albums/${track.album?.avatar_url}`, 'default-album.png'),

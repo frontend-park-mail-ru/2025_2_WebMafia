@@ -11,6 +11,7 @@ import { share } from "@/utils/shareBtn.js";
 import { showInfoMessage } from "@/utils/showInfoMessage";
 import { BasePage } from "@/pages/base/basePage.ts";
 import { confirmation } from "@/components/confirmation_modal/confirmationModal.js";
+import { Artist, Album, Track } from '@/models';
 
 interface ArtistPageData {
   isAuthenticated: boolean;
@@ -20,10 +21,10 @@ interface ArtistPageData {
   description?: string;
   isSubscribed?: boolean;
   listeners?: string;
-  similar_artists: any[];
-  popular_tracks: any[];
-  albums: any[];
-  singls: any[];
+  similar_artists: Array<{ id: string; name: string; listeners: string; image: string }>;
+  popular_tracks: Array<any>;
+  albums: Array<{ id: string; name: string; cover: string; year: string; type?: string }>;
+  singls: Array<{ id: string; name: string; cover: string; year: string; type?: string }>;
 }
 
 export class ArtistPage extends BasePage {
@@ -51,13 +52,13 @@ export class ArtistPage extends BasePage {
       pageData.description = data.artist.description;
       pageData.isSubscribed = data.artist.isSubscribed;
       pageData.listeners = playsParser(data.artist.play_count || 0);
-      pageData.similar_artists = (data.similar_artists || []).map((artist: any) => ({
+      pageData.similar_artists = (data.similar_artists || []).map((artist: Artist) => ({
         id: artist.id,
         name: artist.name,
         listeners: playsParser(artist.play_count || 0),
         image: getValidImage(`artists/${artist.avatar_url}`, 'default-artist.png'),
       }));
-      pageData.popular_tracks = (data.popular_tracks || []).map((track: any) => ({
+      pageData.popular_tracks = (data.popular_tracks || []).map((track: Track) => ({
         id: track.id,
         name: track.title,
         plays: playsParser(track.play_count || 0),
@@ -68,7 +69,7 @@ export class ArtistPage extends BasePage {
         artists: track.artists,
         is_liked: track.is_liked,
       }));
-      data.albums.forEach((album: any) => {
+      data.albums.forEach((album: Album) => {
         const item = {
           id: album.id,
           name: album.title,

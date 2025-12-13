@@ -4,6 +4,7 @@
     "noImplicitAny": false,
     "checkJs": false,
     "target": "ES2022",
+    "types": ["vite/client"],
     "useDefineForClassFields": true,
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "module": "ESNext",

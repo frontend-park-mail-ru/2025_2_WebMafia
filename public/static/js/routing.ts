@@ -84,7 +84,6 @@ class Router {
 
     if (this.currentPage) {
       if (typeof this.currentPage.destroy === 'function') {
-        console.log('destroyed');
         this.currentPage.destroy();
       }
     }
