@@ -1,4 +1,4 @@
-import { apiServise, apiPath } from '@/data.js';
+import { apiServise } from '@/data.js';
 import { router } from '@/routing.js';
 import { getValidImage } from '@/parsers.js';
 import { player } from '@/components/player/player.js';
