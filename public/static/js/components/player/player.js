@@ -502,21 +502,25 @@ export class Player extends EventTarget {
       }
     }
 
-    volumeSlider.addEventListener('wheel', function (e) {
-      e.preventDefault();
-      e.stopPropagation();
+    volumeSlider.addEventListener(
+      'wheel',
+      function (e) {
+        e.preventDefault();
+        e.stopPropagation();
 
-      const step = 5;
-      const delta = Math.sign(e.deltaY) * -step; // Инвертируем направление
-      const currentVolume = parseInt(volumeSlider.value);
-      const newVolume = Math.max(0, Math.min(100, currentVolume + delta));
+        const step = 5;
+        const delta = Math.sign(e.deltaY) * -step; // Инвертируем направление
+        const currentVolume = parseInt(volumeSlider.value);
+        const newVolume = Math.max(0, Math.min(100, currentVolume + delta));
 
-      volumeSlider.value = newVolume;
-      updateVolumeSlider(newVolume);
+        volumeSlider.value = newVolume;
+        updateVolumeSlider(newVolume);
 
-      volumeSlider.dispatchEvent(new Event('input'));
-      volumeSlider.dispatchEvent(new Event('change'));
-    }, { passive: true });
+        volumeSlider.dispatchEvent(new Event('input'));
+        volumeSlider.dispatchEvent(new Event('change'));
+      },
+      { passive: true }
+    );
 
     updateVolumeSlider(volumeSlider.value);
     volumeSlider.addEventListener('input', function () {
@@ -701,27 +705,39 @@ export class Player extends EventTarget {
       });
     }
 
-    slider.addEventListener('touchstart', () => {
-      isDraggingSlider = true;
-    }, { passive: true });
+    slider.addEventListener(
+      'touchstart',
+      () => {
+        isDraggingSlider = true;
+      },
+      { passive: true }
+    );
 
     slider.addEventListener('touchend', () => {
       isDraggingSlider = false;
     });
 
-    player.addEventListener('touchstart', (e) => {
-      if (isDraggingSlider) return;
-      startY = e.touches[0].clientY;
-      startHeight = player.offsetHeight;
-    }, { passive: true });
+    player.addEventListener(
+      'touchstart',
+      (e) => {
+        if (isDraggingSlider) return;
+        startY = e.touches[0].clientY;
+        startHeight = player.offsetHeight;
+      },
+      { passive: true }
+    );
 
-    player.addEventListener('touchmove', (e) => {
-      if (isDraggingSlider) return;
-      const dy = e.touches[0].clientY - startY;
-      let newHeight = startHeight - dy;
-      newHeight = Math.max(minHeight, Math.min(maxHeight, newHeight));
-      player.style.height = newHeight + 'px';
-    }, { passive: true });
+    player.addEventListener(
+      'touchmove',
+      (e) => {
+        if (isDraggingSlider) return;
+        const dy = e.touches[0].clientY - startY;
+        let newHeight = startHeight - dy;
+        newHeight = Math.max(minHeight, Math.min(maxHeight, newHeight));
+        player.style.height = newHeight + 'px';
+      },
+      { passive: true }
+    );
 
     player.addEventListener('touchend', (e) => {
       if (isDraggingSlider) return;

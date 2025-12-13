@@ -1,5 +1,5 @@
 import { images } from '@/assets';
-import { playlistModal } from "@/components/playlist_modal/initPlaylistModal.js";
+import { playlistModal } from '@/components/playlist_modal/initPlaylistModal.js';
 
 export class Sidebar {
   async render() {
@@ -29,8 +29,8 @@ export class Sidebar {
   createPlaylistButton() {
     const createButton = document.getElementById('sidebarCreatePlaylistButton');
     createButton.addEventListener('click', (e) => {
-        e.preventDefault();
-        playlistModal.openCreate();
+      e.preventDefault();
+      playlistModal.openCreate();
     });
   }
 }

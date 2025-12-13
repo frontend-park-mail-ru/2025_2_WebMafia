@@ -38,7 +38,9 @@ class ModalService {
     };
 
     const handleEsc = (e) => {
-      if (e.key === 'Escape') { close(); }
+      if (e.key === 'Escape') {
+        close();
+      }
     };
     document.addEventListener('keydown', handleEsc);
   }
