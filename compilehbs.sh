@@ -12,11 +12,9 @@ handlebars public/static/js/pages/artist/artistPage.hbs -f public/static/js/page
 
 handlebars public/static/js/pages/profile/profilePage.hbs -f public/static/js/pages/profile/profilePage.tmpl.js
 
-handlebars public/static/js/pages/artist_albums/artistAlbumsPage.hbs -f public/static/js/pages/artist_albums/artistAlbumsPage.tmpl.js
+handlebars public/static/js/pages/releases/artistReleasesPage.hbs -f public/static/js/pages/releases/artistReleasesPage.tmpl.js
 
 handlebars public/static/js/pages/artist_tracks/artistTracksPage.hbs -f public/static/js/pages/artist_tracks/artistTracksPage.tmpl.js
-
-handlebars public/static/js/pages/artist_singles/artistSinglesPage.hbs -f public/static/js/pages/artist_singles/artistSinglesPage.tmpl.js
 
 handlebars public/static/js/pages/search_page/search_page.hbs -f public/static/js/pages/search_page/search_page.tmpl.js
 

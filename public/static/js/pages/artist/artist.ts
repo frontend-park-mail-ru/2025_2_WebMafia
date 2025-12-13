@@ -45,7 +45,10 @@ export class ArtistPage extends BasePage {
 
     try {
       const data = await apiServise.getArtistPageData(artistId, pageData.isAuthenticated);
-      if (!data.artist) router.navigate('/not-found');
+      if (!data.artist) {
+        router.navigate('/not-found');
+        return;
+      }
       pageData.id = data.artist.id;
       pageData.name = data.artist.name;
       pageData.artist_header = getValidImage(`artists/${data.artist.header_url}`, 'default-artist.png');

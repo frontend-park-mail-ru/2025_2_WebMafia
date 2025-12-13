@@ -63,7 +63,7 @@
   color: black;
   flex: 1;
   transition: overflow-y 0.3s ease;
-  padding: 25px 12px 0 12px;
+  padding: 25px 0 12px 12px;
 }
 
 .artist-name {
@@ -152,10 +152,6 @@
   font-weight: 600;
   text-decoration: none;
   color: #393939;
-}
-
-.show-all:hover {
-  text-decoration: underline;
 }
 
 .tracks-table {

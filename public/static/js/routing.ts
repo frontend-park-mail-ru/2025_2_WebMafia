@@ -4,10 +4,9 @@ import { LoginPage } from '@/pages/auth/login.ts';
 import { RegistrationPage } from '@/pages/auth/register.ts';
 import { ArtistPage } from '@/pages/artist/artist.js';
 import { ProfilePage } from '@/pages/profile/profilePage.js';
-import { ArtistAlbumsPage } from '@/pages/artist_albums/artistAlbumsPage.js';
+import { ArtistReleasesPage } from '@/pages/releases/artistReleasesPage.ts';
 import { ArtistTracksPage } from '@/pages/artist_tracks/artistTracksPage.js';
 import { AlbumPage } from '@/pages/album/album.js';
-import { ArtistSinglesPage } from '@/pages/artist_singles/artistSinglesPage.js';
 import { LibraryPage } from '@/pages/library/library.js';
 import { SearchPage } from '@/pages/search_page/search_page.js';
 import { PlaylistPage } from '@/pages/playlist/playlist.js';
@@ -33,7 +32,7 @@ class Router {
       { pattern: /^\/register$/, component: new RegistrationPage() },
       {
         pattern: /^\/artist\/([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})\/albums$/,
-        component: new ArtistAlbumsPage(),
+        component: new ArtistReleasesPage(),
       },
       {
         pattern: /^\/artist\/([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})\/tracks$/,
@@ -41,7 +40,7 @@ class Router {
       },
       {
         pattern: /^\/artist\/([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})\/singles$/,
-        component: new ArtistSinglesPage(),
+        component: new ArtistReleasesPage(),
       },
       {
         pattern: /^\/artist\/([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})$/,
