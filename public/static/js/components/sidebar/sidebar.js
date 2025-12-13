@@ -29,8 +29,8 @@ export class Sidebar {
   createPlaylistButton() {
     const createButton = document.getElementById('sidebarCreatePlaylistButton');
     createButton.addEventListener('click', (e) => {
-        e.preventDefault();
-        playlistModal.openCreate();
+      e.preventDefault();
+      playlistModal.openCreate();
     });
   }
 }

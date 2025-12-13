@@ -12,7 +12,7 @@ import { copyToClipboard } from '@/utils/shareBtn.js';
 import { deletePlaylistLogic } from '@/utils/deletePlaylist.js';
 import { confirmation } from '@/components/confirmation_modal/confirmationModal.js';
 import { showInfoMessage } from '@/utils/showInfoMessage.js';
-import { playlistModal } from "@/components/playlist_modal/initPlaylistModal.js";
+import { playlistModal } from '@/components/playlist_modal/initPlaylistModal.js';
 
 export class LibraryPage {
   async render() {
@@ -127,7 +127,7 @@ export class LibraryPage {
     const closeButton = rightSearchContainer.querySelector('.input-close-button');
     const originalParent = rightSearchContainer.parentElement;
 
-    createPlaylistButtons.forEach(btn => {
+    createPlaylistButtons.forEach((btn) => {
       btn.addEventListener('click', (e) => {
         e.preventDefault();
         playlistModal.openCreate();
@@ -222,19 +222,19 @@ export class LibraryPage {
     let longPressTimer;
 
     const menuConfig = {
-      'Плейлист': [
+      Плейлист: [
         { text: 'Редактировать', icon: 'pencil', action: 'edit' },
         { text: 'Поделиться', icon: 'share', action: 'share' },
-        { text: 'Удалить', icon: 'trash', action: 'delete' }
+        { text: 'Удалить', icon: 'trash', action: 'delete' },
       ],
-      'Артист': [
+      Артист: [
         { text: 'Отписаться', icon: 'close', action: 'unsubscribe' },
         { text: 'Поделиться', icon: 'share', action: 'share' },
       ],
-      'default': [
+      default: [
         { text: 'Удалить из библиотеки', icon: 'close', action: 'deleteFromLibrary' },
         { text: 'Поделиться', icon: 'share', action: 'share' },
-      ]
+      ],
     };
 
     const removeFromDataAndUI = (id, typeInCard, cardElement) => {
@@ -244,14 +244,14 @@ export class LibraryPage {
       if (typeInCard === 'Плейлист') categoryKey = 'playlists';
       else if (typeInCard === 'Артист') categoryKey = 'artists';
 
-      const libIndex = pageData.library.findIndex(item => item.id === id);
+      const libIndex = pageData.library.findIndex((item) => item.id === id);
       if (libIndex !== -1) {
         pageData.library.splice(libIndex, 1);
       }
 
       const categoryArray = pageData[categoryKey];
       if (categoryArray) {
-        const catIndex = categoryArray.findIndex(item => item.id === id);
+        const catIndex = categoryArray.findIndex((item) => item.id === id);
         if (catIndex !== -1) {
           categoryArray.splice(catIndex, 1);
         }
@@ -321,6 +321,7 @@ export class LibraryPage {
         if (!btn) return;
         e.stopPropagation();
         const action = btn.dataset.action;
+        const playlistItem = pageData.playlists.find((item) => item.id === id);
 
         switch (action) {
           case 'delete':
@@ -343,7 +344,7 @@ export class LibraryPage {
                   console.error('Ошибка при удалении альбома:', error);
                   showInfoMessage(`Не удалось удалить «${name || ''}» из библиотеки`);
                 }
-              }
+              },
             });
             break;
           case 'unsubscribe':
@@ -361,18 +362,16 @@ export class LibraryPage {
                   console.error('Ошибка при отписки от артиста:', error);
                   showInfoMessage(`Не удалось отписаться от «${name || ''}»`);
                 }
-              }
+              },
             });
             break;
           case 'edit':
-            const playlistItem = pageData.playlists.find(item => item.id === id);
-
             playlistModal.openEdit(
               {
                 id: id,
                 title: name,
                 description: playlistItem ? playlistItem.description : '',
-                image: playlistItem.image === images.defaultPlaylistPath ? '' : playlistItem.image ,
+                image: playlistItem.image === images.defaultPlaylistPath ? '' : playlistItem.image,
               },
               (newData) => {
                 const titleEl = card.querySelector('.card-name');
@@ -390,7 +389,8 @@ export class LibraryPage {
                 }
 
                 showInfoMessage('Изменения успешно сохранены!');
-              });
+              }
+            );
             break;
           case 'share':
             copyToClipboard(href);
@@ -398,7 +398,7 @@ export class LibraryPage {
         }
 
         removeMenu();
-        });
+      });
     };
 
     document.addEventListener('contextmenu', (e) => {
@@ -407,13 +407,17 @@ export class LibraryPage {
       }
     });
 
-    document.addEventListener('touchstart', (e) => {
-      if (!e.target.closest('.grid-layout')) return;
-      longPressTimer = setTimeout(() => {
-        const touch = e.touches[0];
-        createAndShowMenu(e, touch.clientX, touch.clientY);
-      }, 500);
-    }, { passive: true });
+    document.addEventListener(
+      'touchstart',
+      (e) => {
+        if (!e.target.closest('.grid-layout')) return;
+        longPressTimer = setTimeout(() => {
+          const touch = e.touches[0];
+          createAndShowMenu(e, touch.clientX, touch.clientY);
+        }, 500);
+      },
+      { passive: true }
+    );
 
     const cancelLongPress = () => clearTimeout(longPressTimer);
     document.addEventListener('touchmove', cancelLongPress);

@@ -1,12 +1,4 @@
-export const userRoutes = [
-  '/login',
-  '/register',
-  '/csrf-token',
-  '/logout',
-  '/avatar',
-  '/profile',
-  '/me'
-];
+export const userRoutes = ['/login', '/register', '/csrf-token', '/logout', '/avatar', '/profile', '/me'];
 
 export const tracksArtistAlbumRoutes = [
   '/artists/search',
@@ -37,5 +29,5 @@ export const playlistRoutes = [
   '/favorite/artists',
   '/favorite/artists/:id',
   '/favorite/albums',
-  '/favorite/albums/:id'
+  '/favorite/albums/:id',
 ];

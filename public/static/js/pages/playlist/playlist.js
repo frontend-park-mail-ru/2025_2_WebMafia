@@ -21,8 +21,8 @@ import { images } from '@/assets';
 import { albumPlaylistButtons } from '@/utils/albumPlaylistButtons.js';
 import { share } from '@/utils/shareBtn';
 import { deletePlaylistLogic } from '@/utils/deletePlaylist';
-import { playlistModal } from "@/components/playlist_modal/initPlaylistModal.js";
-import { showInfoMessage } from "@/utils/showInfoMessage.js";
+import { playlistModal } from '@/components/playlist_modal/initPlaylistModal.js';
+import { showInfoMessage } from '@/utils/showInfoMessage.js';
 
 export class PlaylistPage {
   constructor() {

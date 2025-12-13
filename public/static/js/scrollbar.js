@@ -42,16 +42,20 @@ export const initScrollbar = () => {
   };
 
   if (isMobile) {
-    scrollContent.addEventListener('touchmove', () => {
-      scrollbarTrack.style.opacity = '1';
-    }, { passive: true });
+    scrollContent.addEventListener(
+      'touchmove',
+      () => {
+        scrollbarTrack.style.opacity = '1';
+      },
+      { passive: true }
+    );
     scrollContent.addEventListener('touchend', () => {
       setTimeout(() => {
         scrollbarTrack.style.opacity = '0';
       }, 400);
     });
-  }
-  else {// show/hide on hover
+  } else {
+    // show/hide on hover
     scrollContent.addEventListener('pointerenter', () => {
       scrollbarTrack.style.opacity = '1';
     });

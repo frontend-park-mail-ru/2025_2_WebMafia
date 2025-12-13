@@ -71,7 +71,6 @@
   font-size: 12px;
 }
 
-
 .album-cover {
   margin: 13px 0;
   width: 270px;
@@ -287,10 +286,6 @@
 }
 
 @media (max-width: 1250px) {
-  .album-play-wrapper {
-    margin-right: 0;
-  }
-
   .album-card {
     top: 20px;
     margin: 20px;
@@ -333,14 +328,14 @@
     top: auto;
     width: 90%;
     padding: 25px 30px;
-    margin: 20px 0 0 0;
+    margin: 20px 0 0;
     box-sizing: border-box;
   }
 
   .tracks-card {
     flex-grow: unset;
     padding: 10px 5px;
-    margin: 20px 0 40px 0;
+    margin: 20px 0 40px;
     width: 90%;
     box-sizing: border-box;
   }

@@ -1,5 +1,5 @@
 export function setupMarquees() {
-  document.querySelectorAll('.marquee').forEach(marquee => {
+  document.querySelectorAll('.marquee').forEach((marquee) => {
     const inner = marquee.querySelector('.marquee-inner');
     let texts = inner.querySelectorAll('.marquee-text');
 

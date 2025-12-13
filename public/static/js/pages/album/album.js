@@ -9,9 +9,9 @@ import { playTrack } from '@/playTrackBtn.js';
 import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
 import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
 import { likeTrackBtn } from '@/utils/likeTrack.js';
-import { albumPlaylistButtons } from "@/utils/albumPlaylistButtons.js";
-import { share } from "@/utils/shareBtn.js";
-import { showInfoMessage } from "@/utils/showInfoMessage.js";
+import { albumPlaylistButtons } from '@/utils/albumPlaylistButtons.js';
+import { share } from '@/utils/shareBtn.js';
+import { showInfoMessage } from '@/utils/showInfoMessage.js';
 
 export class AlbumPage {
   async render(id) {
@@ -91,8 +91,8 @@ export class AlbumPage {
       likeButton.addEventListener('click', async () => {
         const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
         if (!isAuthenticated) {
-            router.navigate('/login');
-            return;
+          router.navigate('/login');
+          return;
         }
 
         const albumId = likeButton.dataset.albumId;
@@ -124,7 +124,6 @@ export class AlbumPage {
           } else {
             showInfoMessage(`Альбом «${albumName}» удалён из библиотеки`);
           }
-
         } catch (error) {
           console.error('Failed to like album:', error);
           renderState(wasLiked);

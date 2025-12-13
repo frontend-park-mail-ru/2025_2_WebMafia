@@ -4,7 +4,7 @@
   justify-content: flex-end;
   align-items: flex-start;
   min-height: 450px;
-  padding: 30px 30px 25px 30px;
+  padding: 30px 30px 25px;
   border-radius: 20px;
   box-shadow: 0 5px 80px 8px rgba(26, 25, 30, 0.4);
   color: #fafafa;
@@ -42,7 +42,8 @@
   background: #4e4e4e;
 }
 
-#customScrollbarThumb.dragging, #customScrollbar:hover #customScrollbarThumb.dragging {
+#customScrollbarThumb.dragging,
+#customScrollbar:hover #customScrollbarThumb.dragging {
   background: #2e2e2e;
 }
 
@@ -63,7 +64,7 @@
   color: black;
   flex: 1;
   transition: overflow-y 0.3s ease;
-  padding: 25px 12px 0 12px;
+  padding: 25px 12px 0;
 }
 
 .artist-name {
@@ -86,7 +87,7 @@
   all: unset;
   display: inline-flex;
   align-items: center;
-  padding: 10px 15px 10px 15px;
+  padding: 10px 15px;
   border-radius: 14px;
   border: 3px solid #9c58e0;
   color: #9c58e0;
@@ -207,7 +208,7 @@
   transition: opacity 0.3s ease;
 }
 
-.play-popular-track .pause-icon{
+.play-popular-track .pause-icon {
   display: none;
 }
 
@@ -372,7 +373,7 @@
 
 .inform-message {
   position: fixed;
-  background: #E6E9F5;
+  background: #e6e9f5;
   left: 50%;
   bottom: 25px;
   padding: 22px;
@@ -380,7 +381,9 @@
   font-weight: 600;
   border-radius: 20px;
   transform: translateX(-50%) translateY(20px);
-  transition: transform 0.35s ease, opacity 0.35s ease;
+  transition:
+    transform 0.35s ease,
+    opacity 0.35s ease;
   opacity: 0;
   z-index: 9999;
 }
@@ -391,7 +394,9 @@
 }
 
 @media (max-width: 900px) {
-  .track-performers, .track-duration, .track-album-name {
+  .track-performers,
+  .track-duration,
+  .track-album-name {
     display: none;
   }
 
@@ -519,7 +524,7 @@
   }
 
   .artist-page {
-    padding: 0 0 20px 0;
+    padding: 0 0 20px;
   }
 
   .show-tracks-button {

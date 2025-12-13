@@ -1,9 +1,9 @@
 import { apiServise } from '@/data.js';
 import { router } from '@/routing.js';
 import { FormValidator } from '@/validation.js';
-import { images } from "@/assets.js";
+import { images } from '@/assets.js';
 import { getValidImage } from '@/parsers.js';
-import { confirmation } from "@/components/confirmation_modal/confirmationModal.js";
+import { confirmation } from '@/components/confirmation_modal/confirmationModal.js';
 
 class PlaylistModalService {
   constructor() {
@@ -43,8 +43,8 @@ class PlaylistModalService {
         confirmText: 'Войти',
         cancelText: 'Закрыть',
         onConfirm: () => {
-          router.navigate('/login')
-        }
+          router.navigate('/login');
+        },
       });
       return;
     }
@@ -55,11 +55,10 @@ class PlaylistModalService {
       isEdit: this.mode === 'edit',
       modalTitle: this.mode === 'create' ? 'Создать плейлист' : 'Редактировать плейлист',
       submitText: this.mode === 'create' ? 'Создать' : 'Сохранить',
-      playlistImage: (this.mode === 'edit' && this.playlistData.image)
-        ? this.playlistData.image
-        : images.defaultPlaylistPath,
+      playlistImage:
+        this.mode === 'edit' && this.playlistData.image ? this.playlistData.image : images.defaultPlaylistPath,
       title: this.mode === 'edit' ? this.playlistData.title : '',
-      description: this.mode === 'edit' ? this.playlistData.description : ''
+      description: this.mode === 'edit' ? this.playlistData.description : '',
     };
 
     const div = document.createElement('div');
@@ -142,25 +141,25 @@ class PlaylistModalService {
   }
 
   addDeleteAvatarButton() {
-      const container = this.overlay.querySelector('#avatarButtonsContainer');
-      const avatarPreview = this.overlay.querySelector('#playlistAvatar');
+    const container = this.overlay.querySelector('#avatarButtonsContainer');
+    const avatarPreview = this.overlay.querySelector('#playlistAvatar');
 
-      if (container.querySelector('#deleteAvatarBtn')) return;
+    if (container.querySelector('#deleteAvatarBtn')) return;
 
-      const btn = document.createElement('button');
-      btn.id = 'deleteAvatarBtn';
-      btn.className = 'secondary-button save-avatar-button-size';
-      btn.textContent = 'Удалить фото';
+    const btn = document.createElement('button');
+    btn.id = 'deleteAvatarBtn';
+    btn.className = 'secondary-button save-avatar-button-size';
+    btn.textContent = 'Удалить фото';
 
-      btn.addEventListener('click', (e) => {
-        e.preventDefault();
-        this.selectedAvatarFile = null;
-        this.isAvatarDeleted = true;
-        avatarPreview.src = images.defaultPlaylistPath;
-        btn.remove();
-      });
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      this.selectedAvatarFile = null;
+      this.isAvatarDeleted = true;
+      avatarPreview.src = images.defaultPlaylistPath;
+      btn.remove();
+    });
 
-      container.appendChild(btn);
+    container.appendChild(btn);
   }
 
   async handleSubmit(submitBtn) {
@@ -183,16 +182,13 @@ class PlaylistModalService {
 
         this.close(true);
         router.navigate(`playlist/${data.id}`);
-      }
-
-      else {
+      } else {
         let newAvatarUrl = this.playlistData.image;
 
         if (this.selectedAvatarFile) {
           const response = await apiServise.uploadPlaylistAvatar(this.selectedAvatarFile, this.playlistData.id);
           newAvatarUrl = getValidImage(response.avatar_url);
-        }
-        else if (this.isAvatarDeleted) {
+        } else if (this.isAvatarDeleted) {
           await apiServise.deletePlaylistAvatar(this.playlistData.id);
           newAvatarUrl = null;
         }
@@ -206,12 +202,11 @@ class PlaylistModalService {
             id: this.playlistData.id,
             title: title,
             description: description,
-            image: newAvatarUrl
+            image: newAvatarUrl,
           });
         }
         this.close(true);
       }
-
     } catch (err) {
       console.error('Ошибка:', err);
       submitBtn.disabled = false;
@@ -225,19 +220,14 @@ class PlaylistModalService {
 
   initValidator() {
     const validators = {
-      title: (value) => value ? null : 'Назовите ваш плейлист',
+      title: (value) => (value ? null : 'Назовите ваш плейлист'),
     };
     const infoMessages = {
-      title: (value) => value ? null : 'Укажите название плейлиста',
+      title: (value) => (value ? null : 'Укажите название плейлиста'),
       description: () => 'Максимум 300 символов',
     };
 
-    const v = new FormValidator(
-      'createPlaylistForm',
-      validators,
-      infoMessages,
-      '.general-error'
-    );
+    const v = new FormValidator('createPlaylistForm', validators, infoMessages, '.general-error');
     v.init();
     return v;
   }
@@ -252,12 +242,12 @@ class PlaylistModalService {
     if (this.selectedAvatarFile || this.isAvatarDeleted) return true;
 
     if (this.mode === 'create') {
-        return currentTitle.length > 0 || currentDesc.length > 0;
+      return currentTitle.length > 0 || currentDesc.length > 0;
     } else {
-        const originalTitle = this.playlistData.title || '';
-        const originalDesc = this.playlistData.description || '';
+      const originalTitle = this.playlistData.title || '';
+      const originalDesc = this.playlistData.description || '';
 
-        return currentTitle !== originalTitle || currentDesc !== originalDesc;
+      return currentTitle !== originalTitle || currentDesc !== originalDesc;
     }
   }
 
@@ -266,7 +256,10 @@ class PlaylistModalService {
 
     if (!force) {
       if (this.hasUnsavedChanges() && !this.warnedAboutChanges) {
-        this.validator.showMessage(`Чтобы не потерять изменения, нажми кнопку «${this.mode === 'create' ? 'Создать' : 'Сохранить'}»`, true);
+        this.validator.showMessage(
+          `Чтобы не потерять изменения, нажми кнопку «${this.mode === 'create' ? 'Создать' : 'Сохранить'}»`,
+          true
+        );
         this.warnedAboutChanges = true;
         return;
       }
