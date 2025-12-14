@@ -1,64 +1,64 @@
-    {{#if isAuthenticated}}
-    <div class="page" id="scrollContent">
-      <div class="library-header">
-        <div class="left-content">
-          <div class="library-header-container">
-            <div class="title-name">Библиотека</div>
-            <div class="library-events-buttons">
-              <button class="search-toggle" id="librarySearchToggle">
-                {{> searchIcon }}
-              </button>
-              <button class="create-playlist-toggle create-playlist-button">
-                {{> plus}}
-              </button>
-            </div>
-          </div>
-          <div class="sort-buttons">
-            <button class="secondary-button second-cross-icon" id="disableSort">{{> plus}}</button>
-            <button class="secondary-button" data-name="playlists">Плейлисты</button>
-            {{#if artists}}
-            <button class="secondary-button" data-name="artists">Артисты</button>
-            {{/if}}
-            {{#if albums}}
-            <button class="secondary-button" data-name="albums">Альбомы</button>
-            {{/if}}
-            {{#if tracks}}
-            <button class="secondary-button">Треки</button>
-            {{/if}}
-          </div>
-        </div>
-        <div class="right-content">
-          <button class="primary-button create-playlist-button">
-            {{> plus}}
-            Создать плейлист
+{{#if isAuthenticated}}
+<div class="page" id="scrollContent">
+  <div class="library-header">
+    <div class="left-content">
+      <div class="library-header-container">
+        <div class="title-name">Библиотека</div>
+        <div class="library-events-buttons">
+          <button class="search-toggle" id="librarySearchToggle">
+            {{> searchIcon }}
           </button>
-          <div class="library-search-container">
-            <div class="search-icon">{{> searchIcon }}</div>
-            <input
-              type="text"
-              class="search-input"
-              id="librarySearchInput"
-              placeholder="Искать в библиотеке"
-              value="{{ searchValue }}"
-            />
-            <div class="input-close-button">{{> close}}</div>
-          </div>
+          <button class="create-playlist-toggle create-playlist-button">
+            {{> plus}}
+          </button>
         </div>
       </div>
-      <div class="grid-layout">
-        {{> libraryGrid}}
+      <div class="sort-buttons">
+        <button class="secondary-button second-cross-icon" id="disableSort">{{> plus}}</button>
+        <button class="secondary-button" data-name="playlists">Плейлисты</button>
+        {{#if artists}}
+        <button class="secondary-button" data-name="artists">Артисты</button>
+        {{/if}}
+        {{#if albums}}
+        <button class="secondary-button" data-name="albums">Альбомы</button>
+        {{/if}}
+        {{#if tracks}}
+        <button class="secondary-button">Треки</button>
+        {{/if}}
       </div>
     </div>
-    {{else}}
-    <div class="profile-wrapper" id="scrollContent">
-      <div class="search-alert-container">
-        <div class="search-alert-text">
-          <div class="search-alert-title">Библиотека</div>
-          <div class="search-alert-subtitle">
-            Войдите, чтобы открыть доступ к вашим плейлистам, трекам и избранным артистам.
-          </div>
-          <a href="/login" class="secondary-button login-secondary-button">Войти</a>
-        </div>
+    <div class="right-content">
+      <button class="primary-button create-playlist-button">
+        {{> plus}}
+        Создать плейлист
+      </button>
+      <div class="library-search-container">
+        <div class="search-icon">{{> searchIcon }}</div>
+        <input
+          type="text"
+          class="search-input"
+          id="librarySearchInput"
+          placeholder="Искать в библиотеке"
+          value="{{ searchValue }}"
+        />
+        <div class="input-close-button">{{> close}}</div>
       </div>
     </div>
-    {{/if}}
+  </div>
+  <div class="grid-layout">
+    {{> libraryGrid}}
+  </div>
+</div>
+{{else}}
+<div class="profile-wrapper" id="scrollContent">
+  <div class="search-alert-container">
+    <div class="search-alert-text">
+      <div class="search-alert-title">Библиотека</div>
+      <div class="search-alert-subtitle">
+        Войдите, чтобы открыть доступ к вашим плейлистам, трекам и избранным артистам.
+      </div>
+      <a href="/login" class="secondary-button login-secondary-button">Войти</a>
+    </div>
+  </div>
+</div>
+{{/if}}

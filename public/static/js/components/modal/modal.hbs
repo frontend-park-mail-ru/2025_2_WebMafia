@@ -8,13 +8,12 @@
 
     <div class="edit-profile-wrapper">
       <div class="edit-profile-info">
-
         <div class="edit-avatar">
           <div class="edit-avatar-placement" id="avatarContainer">
             {{#if avatarSrc}}
-              <img src="{{ avatarSrc }}" alt="Аватар" class="profile-image" id="avatarPreview" />
+            <img src="{{ avatarSrc }}" alt="Аватар" class="profile-image" id="avatarPreview" />
             {{else}}
-              <div class="default-avatar profile-edit-avatar" id="avatarPreviewDefault">{{ avatarLetter }}</div>
+            <div class="default-avatar profile-edit-avatar" id="avatarPreviewDefault">{{ avatarLetter }}</div>
             {{/if}}
           </div>
           <div class="edit-avatar-buttons" id="avatarButtonsContainer">
@@ -23,14 +22,14 @@
         </div>
 
         <form id="{{ formId }}" class="modal-form">
-          {{{ formContent }}}
+          {{ formContent }}
           <div class="general-error" id="{{ errorId }}"></div>
         </form>
       </div>
 
       <div class="save-overlay-button">
         <button class="primary-button save-overlay-button-size" id="{{ submitBtnId }}">
-            {{ submitText }}
+          {{ submitText }}
         </button>
       </div>
     </div>

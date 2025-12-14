@@ -1,45 +1,45 @@
-  <div class="head-left">
-    <a href="/" class="logo">
-      <span><img src="{{ logoImage }}" class="wave-icon" alt="Логотип" /></span>
-      <h1 class="icon-name">Wave</h1>
-    </a>
+<div class="head-left">
+  <a href="/" class="logo">
+    <span><img src="{{ logoImage }}" class="wave-icon" alt="Логотип" /></span>
+    <h1 class="icon-name">Wave</h1>
+  </a>
+</div>
+<div class="head-right">
+  <button class="search-toggle" id="searchToggle">
+    {{> searchIcon }}
+  </button>
+  <div class="header-search-container" id="header-search-container">
+    <div class="search-icon">{{> searchIcon }}</div>
+    <input
+      type="text"
+      class="search-input"
+      id="searchInput"
+      placeholder="Что хочешь включить?"
+      value="{{ searchValue }}"
+    />
+    <div class="input-close-button">{{> close}}</div>
   </div>
-  <div class="head-right">
-    <button class="search-toggle" id="searchToggle">
-      {{> searchIcon }}
-    </button>
-    <div class="header-search-container" id="header-search-container">
-      <div class="search-icon">{{> searchIcon }}</div>
-      <input
-        type="text"
-        class="search-input"
-        id="searchInput"
-        placeholder="Что хочешь включить?"
-        value="{{ searchValue }}"
-      />
-      <div class="input-close-button">{{> close}}</div>
-    </div>
-    {{#if isAuthenticated}}
-    <div class="profile-dropdown">
-      <div class="header-username">{{ nickname }}</div>
-      <button class="profile-btn">
-        <div class="profile-avatar-header user-avatar" id="avatarHeaderContainer">
-          {{#if avatar}}
-          <img src="{{ avatar }}" alt="Ваш аватар" class="profile-image" />
-          {{else}}
-          <div class="default-avatar default-avatar-header">{{ letter }}</div>
-          {{/if}}
-        </div>
-      </button>
-      <div class="dropdown-menu">
-        <a class="dropdown-hrefs" href="/profile">Профиль</a>
-        <a class="dropdown-hrefs" id="logoutBtn" href="#">Выйти</a>
+  {{#if isAuthenticated}}
+  <div class="profile-dropdown">
+    <div class="header-username">{{ nickname }}</div>
+    <button class="profile-btn">
+      <div class="profile-avatar-header user-avatar" id="avatarHeaderContainer">
+        {{#if avatar}}
+        <img src="{{ avatar }}" alt="Ваш аватар" class="profile-image" />
+        {{else}}
+        <div class="default-avatar default-avatar-header">{{ letter }}</div>
+        {{/if}}
       </div>
+    </button>
+    <div class="dropdown-menu">
+      <a class="dropdown-hrefs" href="/profile">Профиль</a>
+      <a class="dropdown-hrefs" id="logoutBtn" href="#">Выйти</a>
     </div>
-    {{else}}
-    <div class="unauth-login-reg-container">
-      <a class="nav-link login" href="/login">Войти</a>
-      <a class="nav-link register" href="/register">Зарегистрироваться</a>
-    </div>
-    {{/if}}
   </div>
+  {{else}}
+  <div class="unauth-login-reg-container">
+    <a class="nav-link login" href="/login">Войти</a>
+    <a class="nav-link register" href="/register">Зарегистрироваться</a>
+  </div>
+  {{/if}}
+</div>

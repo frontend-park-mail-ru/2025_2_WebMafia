@@ -1,115 +1,115 @@
-    <div class="profile-wrapper" id="scrollContent">
-      {{#if isAuthenticated}}
-      <div class="profile-container">
-        <div class="blue-background-circle profile-blue-position"></div>
-        <div class="purple-background-circle profile-purple-position"></div>
-        <div class="profile-avatar user-avatar" id="avatarProfileContainer">
-          {{#if profile.avatar}}
-          <img src="{{ profile.avatar }}" alt="Ваш аватар" class="profile-image" />
-          {{else}}
-          <div class="default-avatar default-avatar-profile">{{ profile.letter }}</div>
-          {{/if}}
-        </div>
-        <div class="profile-info">
-          <div class="marquee profile-marquee-limiter">
-            <div class="marquee-inner">
-              <span class="profile-username marquee-text">{{ profile.nickname }}</span>
-            </div>
-          </div>
-          <button class="primary-button edit-button-size" id="editProfileBtn">
-            Редактировать
-            {{> pencil }}
-          </button>
-        </div>
-      </div>
-      <div class="profile-page">
-        <div class="title">
-          <div class="title-name">Топ исполнителей</div>
-        </div>
-        <div class="slider">
-          <p><i class="slide-btn left"></i></p>
-          <div class="cards" id="slidebar">
-            {{#each top_artists}}
-            <a href="/artist/{{ id }}" class="card">
-              <img src="{{ image }}" alt="{{ name }}" />
-              <p class="card-name">{{ name }}</p>
-              <p class="card-sub">{{ listeners }}</p>
-              <!--<button class="play-button play-button-placement"></button>-->
-            </a>
-            {{/each}}
-          </div>
-          <p><i class="slide-btn right"></i></p>
-        </div>
-
-        <div class="title">
-          <div class="title-name">Топ треков</div>
-        </div>
-        <div class="tracks-table tracks-table-placement">
-          {{#each top_tracks}}
-          <div class="track-row">
-            <div class="track-number">{{numeration @index}}</div>
-            <div class="track-cover-wrapper">
-              <img class="track-cover" src="{{ cover }}" alt="{{ name }}" />
-              <button
-                class="play-popular-track"
-                data-track-id="{{ id }}"
-                data-context="artist-popular"
-                data-artist-id="{{../id}}"
-              >
-                <span class="play-icon">{{> play }}</span>
-                <span class="pause-icon">{{> pause }}</span>
-              </button>
-            </div>
-            <div class="right-row-content">
-              <div class="track-name">{{ name }}</div>
-              <div class="track-performers">
-                {{#each artists}}
-                <a href="artist/{{ id }}" class="track-performer href-decoration">
-                  {{ name }}{{#unless @last}}, {{/unless}}
-                </a>
-                {{/each}}
-              </div>
-              <div class="track-plays-num">{{ plays }}</div>
-              <div class="track-album-name">
-                <a href="album/{{ album_id }}" class="track-album-name href-decoration">
-                  {{ album }}
-                </a>
-              </div>
-
-              <div class="track-like-container">
-                <button class="like-btn-track artist-like-size" data-track-id="{{ id }}">{{> likeBtn }}</button>
-                <div class="track-duration">{{ duration }}</div>
-              </div>
-            </div>
-          </div>
-          {{/each}}
-        </div>
-
-        <div class="title">
-          <div class="title-name">Подписки</div>
-        </div>
-        <div class="slider">
-          <p><i class="slide-btn left"></i></p>
-          <div class="cards" id="slidebar">
-            {{#each recent}}
-            <a href="/artist/{{ id }}" class="card">
-              <img src="{{ image }}" alt="{{ name }}" />
-              <p class="card-name">{{ name }}</p>
-              <p class="card-sub">{{ listeners }}</p>
-              <!--<button class="play-button play-button-placement"></button>-->
-            </a>
-            {{/each}}
-          </div>
-          <p><i class="slide-btn right"></i></p>
-        </div>
-      </div>
+<div class="profile-wrapper" id="scrollContent">
+  {{#if isAuthenticated}}
+  <div class="profile-container">
+    <div class="blue-background-circle profile-blue-position"></div>
+    <div class="purple-background-circle profile-purple-position"></div>
+    <div class="profile-avatar user-avatar" id="avatarProfileContainer">
+      {{#if profile.avatar}}
+      <img src="{{ profile.avatar }}" alt="Ваш аватар" class="profile-image" />
       {{else}}
-      <div class="search-alert-container">
-        <div class="search-alert-text">
-          <div class="search-alert-title">Профиль</div>
-          <div class="search-alert-subtitle">Войдите, чтобы перейти к персональным настройкам.</div>
-          <a href="/login" class="secondary-button login-secondary-button">Войти</a>
-        </div>
-      </div>
+      <div class="default-avatar default-avatar-profile">{{ profile.letter }}</div>
       {{/if}}
     </div>
+    <div class="profile-info">
+      <div class="marquee profile-marquee-limiter">
+        <div class="marquee-inner">
+          <span class="profile-username marquee-text">{{ profile.nickname }}</span>
+        </div>
+      </div>
+      <button class="primary-button edit-button-size" id="editProfileBtn">
+        Редактировать
+        {{> pencil }}
+      </button>
+    </div>
+  </div>
+  <div class="profile-page">
+    <div class="title">
+      <div class="title-name">Топ исполнителей</div>
+    </div>
+    <div class="slider">
+      <p><i class="slide-btn left"></i></p>
+      <div class="cards" id="slidebar">
+        {{#each top_artists}}
+        <a href="/artist/{{ id }}" class="card">
+          <img src="{{ image }}" alt="{{ name }}" />
+          <p class="card-name">{{ name }}</p>
+          <p class="card-sub">{{ listeners }}</p>
+          <!--<button class="play-button play-button-placement"></button>-->
+        </a>
+        {{/each}}
+      </div>
+      <p><i class="slide-btn right"></i></p>
+    </div>
+
+    <div class="title">
+      <div class="title-name">Топ треков</div>
+    </div>
+    <div class="tracks-table tracks-table-placement">
+      {{#each top_tracks}}
+      <div class="track-row">
+        <div class="track-number">{{numeration @index}}</div>
+        <div class="track-cover-wrapper">
+          <img class="track-cover" src="{{ cover }}" alt="{{ name }}" />
+          <button
+            class="play-popular-track"
+            data-track-id="{{ id }}"
+            data-context="artist-popular"
+            data-artist-id="{{../id}}"
+          >
+            <span class="play-icon">{{> play }}</span>
+            <span class="pause-icon">{{> pause }}</span>
+          </button>
+        </div>
+        <div class="right-row-content">
+          <div class="track-name">{{ name }}</div>
+          <div class="track-performers">
+            {{#each artists}}
+            <a href="artist/{{ id }}" class="track-performer href-decoration">
+              {{ name }}{{#unless @last}}, {{/unless}}
+            </a>
+            {{/each}}
+          </div>
+          <div class="track-plays-num">{{ plays }}</div>
+          <div class="track-album-name">
+            <a href="album/{{ album_id }}" class="track-album-name href-decoration">
+              {{ album }}
+            </a>
+          </div>
+
+          <div class="track-like-container">
+            <button class="like-btn-track artist-like-size" data-track-id="{{ id }}">{{> likeBtn }}</button>
+            <div class="track-duration">{{ duration }}</div>
+          </div>
+        </div>
+      </div>
+      {{/each}}
+    </div>
+
+    <div class="title">
+      <div class="title-name">Подписки</div>
+    </div>
+    <div class="slider">
+      <p><i class="slide-btn left"></i></p>
+      <div class="cards" id="slidebar">
+        {{#each recent}}
+        <a href="/artist/{{ id }}" class="card">
+          <img src="{{ image }}" alt="{{ name }}" />
+          <p class="card-name">{{ name }}</p>
+          <p class="card-sub">{{ listeners }}</p>
+          <!--<button class="play-button play-button-placement"></button>-->
+        </a>
+        {{/each}}
+      </div>
+      <p><i class="slide-btn right"></i></p>
+    </div>
+  </div>
+  {{else}}
+  <div class="search-alert-container">
+    <div class="search-alert-text">
+      <div class="search-alert-title">Профиль</div>
+      <div class="search-alert-subtitle">Войдите, чтобы перейти к персональным настройкам.</div>
+      <a href="/login" class="secondary-button login-secondary-button">Войти</a>
+    </div>
+  </div>
+  {{/if}}
+</div>

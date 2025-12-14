@@ -1,93 +1,93 @@
-    <div class="album-page" id="scrollContent">
-      <div class="blue-background-circle album-blue-position"></div>
-      <div class="purple-background-circle album-purple-position"></div>
-      <div class="album-card">
-        <div class="album-artist">
-          <img class="album-artist-avatar" src="{{ artist.avatar }}" alt="{{ artist.name }}" />
-          <a href="artist/{{ artist.id }}" title="{{ artist.name }}" class="album-artist-name href-decoration">{{
-            artist.name
-          }}</a>
-        </div>
-        <img class="album-cover {{#unless cover}}loading{{/unless}}" src="{{ cover }}" alt="{{ title }}" />
-        <div class="album-card-title">{{ title }}</div>
-        <div class="album-card-info">
-          <div class="card-sub">{{ type }}<span class="dot"></span>{{ year }}</div>
-          <div class="card-sub">{{ tracksNum }}<span class="dot"></span>{{ totalDuration }}</div>
-        </div>
-        {{#if description}}
-        <div class="card-sub album-description" id="getDescription">{{ description }}</div>
-        {{/if}}
-        <div class="album-buttons">
-          <button class="control-btn shuffle-album">{{> shuffle}}</button>
+<div class="album-page" id="scrollContent">
+  <div class="blue-background-circle album-blue-position"></div>
+  <div class="purple-background-circle album-purple-position"></div>
+  <div class="album-card">
+    <div class="album-artist">
+      <img class="album-artist-avatar" src="{{ artist.avatar }}" alt="{{ artist.name }}" />
+      <a href="artist/{{ artist.id }}" title="{{ artist.name }}" class="album-artist-name href-decoration">{{
+        artist.name
+      }}</a>
+    </div>
+    <img class="album-cover {{#unless cover}}loading{{/unless}}" src="{{ cover }}" alt="{{ title }}" />
+    <div class="album-card-title">{{ title }}</div>
+    <div class="album-card-info">
+      <div class="card-sub">{{ type }}<span class="dot"></span>{{ year }}</div>
+      <div class="card-sub">{{ tracksNum }}<span class="dot"></span>{{ totalDuration }}</div>
+    </div>
+    {{#if description}}
+    <div class="card-sub album-description" id="getDescription">{{ description }}</div>
+    {{/if}}
+    <div class="album-buttons">
+      <button class="control-btn shuffle-album">{{> shuffle}}</button>
+      <button
+        class="play-button play-button-album"
+        data-album-id="{{ id }}"
+        data-context="album-tracks"
+        data-track-id="{{ track_id }}"
+        data-first-track-id="{{ track_id }}"
+      ></button>
+      <button class="dots">{{> dots}}</button>
+      <div class="actions-menu hidden">
+        <button class="actions-item" id="albumLikeButton" data-album-id="{{ id }}" data-album-name="{{ title }}">
+          <span class="actions-item-svg {{#if is_liked}}active{{/if}}">
+            {{> likeBtn }}
+          </span>
+          <span class="actions-item-text">
+            {{#if is_liked}}
+            Удалить из библиотеки
+            {{else}}
+            Добавить в библиотеку
+            {{/if}}
+          </span>
+        </button>
+        <button class="actions-item" id="shareButton">
+          <span class="actions-item-svg">{{> share}}</span
+          >Поделиться
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="tracks-card">
+    <div class="album-table">
+      {{#each tracks}}
+      <div class="album-row">
+        <div class="album-play-wrapper">
+          <div class="album-track-number">{{numeration @index}}</div>
           <button
-            class="play-button play-button-album"
-            data-album-id="{{ id }}"
+            class="play-album-track"
+            data-track-id="{{ id }}"
             data-context="album-tracks"
-            data-track-id="{{ track_id }}"
-            data-first-track-id="{{ track_id }}"
-          ></button>
-          <button class="dots">{{> dots}}</button>
-          <div class="actions-menu hidden">
-            <button class="actions-item" id="albumLikeButton" data-album-id="{{ id }}" data-album-name="{{ title }}">
-              <span class="actions-item-svg {{#if is_liked}}active{{/if}}">
-                {{> likeBtn }}
-              </span>
-              <span class="actions-item-text">
-                {{#if is_liked}}
-                Удалить из библиотеки
-                {{else}}
-                Добавить в библиотеку
-                {{/if}}
-              </span>
+            data-album-id="{{../id}}"
+          >
+            <span class="play-icon">{{> play }}</span>
+            <span class="pause-icon">{{> pause }}</span>
+          </button>
+        </div>
+        <div class="tracks-duration-wrapper">
+          <div class="album-track-info">
+            <div class="track-name">{{ name }}</div>
+            <div class="track-plays-num">{{ plays }}</div>
+          </div>
+          <div class="track-like-container">
+            <button class="like-btn-track album-like-size {{#if is_liked}}active{{/if}}" data-track-id="{{ id }}">
+              {{> likeBtn }}
             </button>
-            <button class="actions-item" id="shareButton">
-              <span class="actions-item-svg">{{> share}}</span
-              >Поделиться
-            </button>
+            <div class="track-duration">{{ duration }}</div>
           </div>
         </div>
       </div>
-      <div class="tracks-card">
-        <div class="album-table">
-          {{#each tracks}}
-          <div class="album-row">
-            <div class="album-play-wrapper">
-              <div class="album-track-number">{{numeration @index}}</div>
-              <button
-                class="play-album-track"
-                data-track-id="{{ id }}"
-                data-context="album-tracks"
-                data-album-id="{{../id}}"
-              >
-                <span class="play-icon">{{> play }}</span>
-                <span class="pause-icon">{{> pause }}</span>
-              </button>
-            </div>
-            <div class="tracks-duration-wrapper">
-              <div class="album-track-info">
-                <div class="track-name">{{ name }}</div>
-                <div class="track-plays-num">{{ plays }}</div>
-              </div>
-              <div class="track-like-container">
-                <button class="like-btn-track album-like-size {{#if is_liked}}active{{/if}}" data-track-id="{{ id }}">
-                  {{> likeBtn }}
-                </button>
-                <div class="track-duration">{{ duration }}</div>
-              </div>
-            </div>
-          </div>
-          {{/each}}
-        </div>
-      </div>
+      {{/each}}
     </div>
-    <div class="turquoise-oval"></div>
-    <div class="overlay" id="descriptionOverlay">
-      <div class="window">
-        <div class="overlay-header">
-          <span class="album-title">{{ title }}</span>
-          <button id="closeDescriptionButton" class="close-button" aria-label="Закрыть">{{> close }}</button>
-        </div>
-        <div class="header-divider"></div>
-        <div class="card-sub all-description">{{ description }}</div>
-      </div>
+  </div>
+</div>
+<div class="turquoise-oval"></div>
+<div class="overlay" id="descriptionOverlay">
+  <div class="window">
+    <div class="overlay-header">
+      <span class="album-title">{{ title }}</span>
+      <button id="closeDescriptionButton" class="close-button" aria-label="Закрыть">{{> close }}</button>
     </div>
+    <div class="header-divider"></div>
+    <div class="card-sub all-description">{{ description }}</div>
+  </div>
+</div>
