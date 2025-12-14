@@ -1,16 +1,16 @@
 import { router } from '@/routing';
 import { scrollbar } from '@/utils/scrollbar';
-import { apiServise } from '@/data.js';
+import { apiServise } from '@/data';
 import { durationParser, getValidImage, playsParser } from '@/utils/parsers';
 import { slider } from '@/utils/slider';
 import { playTrack } from '@/playTrackBtn.js';
 import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
 import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
 import { likeTrackBtn } from '@/utils/likeTrack.js';
-import { share } from "@/utils/shareBtn.js";
+import { share } from "@/utils/shareBtn";
 import { showInfoMessage } from "@/utils/showInfoMessage";
 import { BasePage } from "@/pages/base/basePage.ts";
-import { confirmation } from "@/components/confirmation_modal/confirmationModal.js";
+import { confirmation } from "@/components/confirmation_modal/confirmationModal.ts";
 import { Artist, Album, Track } from '@/models';
 
 interface ArtistPageData {

@@ -1,8 +1,8 @@
-import { apiServise } from '@/data.js';
-import { router } from '@/routing.js';
-import { getValidImage } from '@/utils/parsers.ts';
+import { apiServise } from '@/data';
+import { router } from '@/routing';
+import { getValidImage } from '@/utils/parsers';
 import { player } from '@/components/player/player.js';
-import { confirmation } from '@/components/confirmation_modal/confirmationModal.js';
+import { confirmation } from '@/components/confirmation_modal/confirmationModal.ts';
 import { images } from '@/assets';
 
 class Header {

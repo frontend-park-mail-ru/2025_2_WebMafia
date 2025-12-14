@@ -26,7 +26,6 @@ export interface Track {
   is_liked?: boolean;
   album: Album;
   artists?: Artist[];
-  cover?: string;
 }
 
 export interface Playlist {
@@ -35,7 +34,6 @@ export interface Playlist {
   description?: string;
   avatar_url?: string;
   is_favorite?: boolean;
-  is_public?: boolean;
   tracks?: Track[];
 }
 
@@ -44,4 +42,8 @@ export interface UserProfile {
   Login: string;
   Email: string;
   AvatarURL?: string;
+}
+
+export interface Avatar {
+  avatar_url: string;
 }

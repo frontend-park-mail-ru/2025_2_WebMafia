@@ -1,7 +1,7 @@
 export const API_AVATARS_URL = 'https://wave-music.ru/avatars';
 export const API_TRACKS_URL = `https://wave-music.ru/music/tracks`;
 import { userRoutes, tracksArtistAlbumRoutes, playlistRoutes } from '@/devRoutesConfig';
-import { Artist, Album, Track, Playlist, UserProfile } from '@/models';
+import { Artist, Album, Track, Playlist, UserProfile, Avatar } from '@/models';
 
 interface ApiRequestOptions extends Omit<RequestInit, 'body'> {
   body?: any;
@@ -250,7 +250,7 @@ export class apiService {
     const formData = new FormData();
     formData.append('avatar', file);
 
-    return await this.request('/avatar', {
+    return await this.request<Avatar>('/avatar', {
       method: 'POST',
       headers: { 'X-CSRF-Token': csrfToken },
       body: formData,
@@ -259,7 +259,7 @@ export class apiService {
 
   async updatePlaylist(title: string, description: string, playlistId: string) {
     const csrfToken = await this.getCSRFToken();
-    return this.request(`/playlists/${playlistId}`, {
+    return this.request<Playlist>(`/playlists/${playlistId}`, {
       method: 'PUT',
       body: { title, description },
       headers: { 'X-CSRF-Token': csrfToken },
@@ -268,7 +268,7 @@ export class apiService {
 
   async deletePlaylistAvatar(playlistId: string) {
     const csrfToken = await this.getCSRFToken();
-    return this.request(`/playlists/${playlistId}/avatar`, {
+    await this.request(`/playlists/${playlistId}/avatar`, {
       method: 'DELETE',
       headers: { 'X-CSRF-Token': csrfToken },
     });
@@ -285,7 +285,7 @@ export class apiService {
     const formData = new FormData();
     formData.append('avatar', file);
 
-    return await this.request(`/playlists/${playlistId}/avatar`, {
+    return await this.request<Avatar>(`/playlists/${playlistId}/avatar`, {
       method: 'POST',
       body: formData,
       headers: { 'X-CSRF-Token': csrfToken },
@@ -303,7 +303,7 @@ export class apiService {
 
   async deleteAvatar() {
     const csrfToken = await this.getCSRFToken();
-    return this.request('/avatar', {
+    await this.request('/avatar', {
       method: 'DELETE',
       headers: { 'X-CSRF-Token': csrfToken },
     });
@@ -398,7 +398,7 @@ export class apiService {
   }
 
   async editUser(login?: string, email?: string, password?: string) {
-    return this.request('/profile', {
+    return this.request<UserProfile>('/profile', {
       method: 'PUT',
       body: { login, email, password },
     });
@@ -406,7 +406,7 @@ export class apiService {
 
   async logoutUser() {
     const csrfToken = await this.getCSRFToken();
-    return this.request('/logout', {
+    await this.request('/logout', {
       method: 'POST',
       headers: { 'X-CSRF-Token': csrfToken },
     });

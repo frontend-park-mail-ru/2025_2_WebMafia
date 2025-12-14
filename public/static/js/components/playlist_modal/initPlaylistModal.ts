@@ -1,21 +1,33 @@
-import { apiServise } from '@/data.js';
-import { router } from '@/routing.js';
+import { apiServise } from '@/data';
+import { router } from '@/routing';
 import { FormValidator } from '@/utils/validation';
-import { images } from "@/assets.js";
-import { getValidImage } from '@/utils/parsers.ts';
-import { confirmation } from "@/components/confirmation_modal/confirmationModal.js";
+import { images } from "@/assets";
+import { getValidImage } from '@/utils/parsers';
+import { confirmation } from "@/components/confirmation_modal/confirmationModal.ts";
+import { FormSchemas } from "@/utils/validationRules.ts";
+
+interface PlaylistData {
+  id: string;
+  title: string;
+  description: string;
+  image?: string | null;
+}
+
+type SuccessCallback = (data: PlaylistData) => void;
+type ModalMode = 'create' | 'edit';
 
 class PlaylistModalService {
-  constructor() {
-    this.mode = 'create';
-    this.playlistData = null;
-    this.onSuccessCallback = null;
-    this.overlay = null;
-    this.selectedAvatarFile = null;
-    this.isAvatarDeleted = false;
-    this.validator = null;
-    this.warnedAboutChanges = false;
-  }
+  private mode: ModalMode = 'create';
+  private playlistData: PlaylistData | null = null;
+  private onSuccessCallback: SuccessCallback | null = null;
+
+  private overlay: HTMLElement | null = null;
+  private selectedAvatarFile: File | null = null;
+  private isAvatarDeleted = false;
+  private validator: FormValidator | null = null;
+  private warnedAboutChanges = false;
+
+  private handleEsc: ((e: KeyboardEvent) => void) | null = null;
 
   openCreate() {
     this.mode = 'create';
@@ -24,17 +36,16 @@ class PlaylistModalService {
     this.render();
   }
 
-  openEdit(data, onSuccess) {
+  openEdit(data: PlaylistData, onSuccess: SuccessCallback) {
     this.mode = 'edit';
     this.playlistData = data;
     this.onSuccessCallback = onSuccess;
     this.render();
   }
 
-  render() {
-    if (document.querySelector('.modal-overlay')) {
-      document.querySelector('.modal-overlay').remove();
-    }
+  private render() {
+    const existingOverlay = document.querySelector('.modal-overlay');
+    if (existingOverlay) existingOverlay.remove();
 
     if (localStorage.getItem('isAuthenticated') !== 'true') {
       confirmation.showConfirm({
@@ -55,49 +66,52 @@ class PlaylistModalService {
       isEdit: this.mode === 'edit',
       modalTitle: this.mode === 'create' ? 'Создать плейлист' : 'Редактировать плейлист',
       submitText: this.mode === 'create' ? 'Создать' : 'Сохранить',
-      playlistImage: (this.mode === 'edit' && this.playlistData.image)
+      playlistImage: (this.mode === 'edit' && this.playlistData?.image)
         ? this.playlistData.image
         : images.defaultPlaylistPath,
-      title: this.mode === 'edit' ? this.playlistData.title : '',
-      description: this.mode === 'edit' ? this.playlistData.description : ''
+      title: this.mode === 'edit' ? this.playlistData?.title : '',
+      description: this.mode === 'edit' ? this.playlistData?.description : ''
     };
 
     const div = document.createElement('div');
     div.innerHTML = template(templateData);
-    this.overlay = div.firstElementChild;
+    this.overlay = div.firstElementChild as HTMLElement;
 
     document.body.appendChild(this.overlay);
 
-    if (this.mode === 'edit' && this.playlistData.image) this.addDeleteAvatarButton();
+    if (this.mode === 'edit' && this.playlistData?.image) {
+      this.addDeleteAvatarButton();
+    }
 
     requestAnimationFrame(() => {
-      this.overlay.classList.add('active');
+      this.overlay?.classList.add('active');
     });
 
     this.bindEvents();
   }
 
-  bindEvents() {
+  private bindEvents() {
+    if (!this.overlay) return;
     this.selectedAvatarFile = null;
     this.isAvatarDeleted = false;
     this.warnedAboutChanges = false;
 
-    const closeBtn = this.overlay.querySelector('.close-button');
-    const submitBtn = this.overlay.querySelector('#submitPlaylistOverlay');
-    const setAvatarBtn = this.overlay.querySelector('#setAvatarBtn');
+    const closeBtn = this.overlay.querySelector('.close-button') as HTMLButtonElement;
+    const submitBtn = this.overlay.querySelector('#submitPlaylistOverlay') as HTMLButtonElement;
+    const setAvatarBtn = this.overlay.querySelector('#setAvatarBtn') as HTMLButtonElement;
 
     closeBtn.addEventListener('click', () => this.close());
+
     this.overlay.addEventListener('click', (e) => {
       if (e.target === this.overlay) this.close();
     });
 
-    const handleEsc = (e) => {
+    this.handleEsc = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
-        document.removeEventListener('keydown', handleEsc);
         this.close();
       }
     };
-    document.addEventListener('keydown', handleEsc);
+    document.addEventListener('keydown', this.handleEsc);
 
     this.validator = this.initValidator();
 
@@ -107,21 +121,25 @@ class PlaylistModalService {
       const input = document.createElement('input');
       input.type = 'file';
       input.accept = 'image/*';
-      input.onchange = () => this.handleFileSelect(input.files[0]);
+      input.onchange = () => {
+        if (input.files && input.files[0]) {
+          this.handleFileSelect(input.files[0]);
+        }
+      };
       input.click();
     };
 
     submitBtn.onclick = async (e) => {
       e.preventDefault();
-      if (!this.validator.validateForm()) {
+      if (this.validator && !this.validator.validateForm()) {
         this.validator.showMessage('Необходимо заполнить название плейлиста');
         return;
       }
-      await this.handleSubmit(submitBtn, this.validator);
+      await this.handleSubmit(submitBtn);
     };
   }
 
-  handleFileSelect(file) {
+  private handleFileSelect(file: File) {
     if (!file) return;
 
     if (file.size > 5 * 1024 * 1024) {
@@ -134,41 +152,47 @@ class PlaylistModalService {
 
     const reader = new FileReader();
     reader.onload = (event) => {
-      const avatarPreview = this.overlay.querySelector('#playlistAvatar');
-      avatarPreview.src = event.target.result;
-      this.addDeleteAvatarButton();
+      const avatarPreview = this.overlay?.querySelector('#playlistAvatar') as HTMLImageElement;
+      if (avatarPreview && event.target?.result) {
+        avatarPreview.src = event.target.result as string;
+        this.addDeleteAvatarButton();
+      }
     };
     reader.readAsDataURL(file);
   }
 
-  addDeleteAvatarButton() {
-      const container = this.overlay.querySelector('#avatarButtonsContainer');
-      const avatarPreview = this.overlay.querySelector('#playlistAvatar');
+  private addDeleteAvatarButton() {
+    if (!this.overlay)
+      return;
 
-      if (container.querySelector('#deleteAvatarBtn')) return;
+    const container = this.overlay.querySelector('#avatarButtonsContainer');
+    const avatarPreview = this.overlay.querySelector('#playlistAvatar') as HTMLImageElement;
 
-      const btn = document.createElement('button');
-      btn.id = 'deleteAvatarBtn';
-      btn.className = 'secondary-button save-avatar-button-size';
-      btn.textContent = 'Удалить фото';
+    if (!container || container.querySelector('#deleteAvatarBtn')) return;
 
-      btn.addEventListener('click', (e) => {
-        e.preventDefault();
-        this.selectedAvatarFile = null;
-        this.isAvatarDeleted = true;
-        avatarPreview.src = images.defaultPlaylistPath;
-        btn.remove();
-      });
+    const btn = document.createElement('button');
+    btn.id = 'deleteAvatarBtn';
+    btn.className = 'secondary-button save-avatar-button-size';
+    btn.textContent = 'Удалить фото';
 
-      container.appendChild(btn);
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      this.selectedAvatarFile = null;
+      this.isAvatarDeleted = true;
+      avatarPreview.src = images.defaultPlaylistPath;
+      btn.remove();
+    });
+
+    container.appendChild(btn);
   }
 
-  async handleSubmit(submitBtn) {
-    const titleInput = this.overlay.querySelector('#title');
-    const descInput = this.overlay.querySelector('#description');
+  private async handleSubmit(submitBtn: HTMLButtonElement) {
+    if (!this.overlay || !this.validator) return;
+
+    const titleInput = this.overlay.querySelector('#title') as HTMLInputElement;
+    const descInput = this.overlay.querySelector('#description') as HTMLInputElement;
 
     try {
-      submitBtn.disabled = true;
       submitBtn.textContent = 'Загрузка...';
 
       const title = titleInput.value;
@@ -186,6 +210,8 @@ class PlaylistModalService {
       }
 
       else {
+        if (!this.playlistData) return;
+
         let newAvatarUrl = this.playlistData.image;
 
         if (this.selectedAvatarFile) {
@@ -212,39 +238,38 @@ class PlaylistModalService {
         this.close(true);
       }
 
-    } catch (err) {
+    } catch (err: any) {
       console.error('Ошибка:', err);
       submitBtn.disabled = false;
       submitBtn.textContent = this.mode === 'create' ? 'Создать' : 'Сохранить';
 
       let msg = 'Произошла ошибка. Попробуйте позже';
-      if (err.message === 'bad request') msg = 'Проверьте правильность данных.';
+      if (err.message === 'bad request') msg = 'Проверьте правильность данных';
       this.validator.showMessage(msg);
     }
   }
 
-  initValidator() {
-    const validators = {
-      title: (value) => value ? null : 'Назовите ваш плейлист',
-    };
-    const infoMessages = {
-      title: (value) => value ? null : 'Укажите название плейлиста',
-      description: () => 'Максимум 300 символов',
-    };
+  private initValidator() {
+    const { validators, info } = FormSchemas.playlist();
 
     const v = new FormValidator(
       'createPlaylistForm',
       validators,
-      infoMessages,
-      '.general-error'
+      info,
+      {
+        messageSelector: '.general-error',
+        submitButtonSelector: '#submitPlaylistOverlay'
+      }
     );
     v.init();
     return v;
   }
 
-  hasUnsavedChanges() {
-    const titleInput = this.overlay.querySelector('#title');
-    const descInput = this.overlay.querySelector('#description');
+  private hasUnsavedChanges() {
+    if (!this.overlay) return false;
+
+    const titleInput = this.overlay.querySelector('#title') as HTMLInputElement;
+    const descInput = this.overlay.querySelector('#description') as HTMLInputElement;
 
     const currentTitle = titleInput ? titleInput.value.trim() : '';
     const currentDesc = descInput ? descInput.value.trim() : '';
@@ -252,32 +277,37 @@ class PlaylistModalService {
     if (this.selectedAvatarFile || this.isAvatarDeleted) return true;
 
     if (this.mode === 'create') {
-        return currentTitle.length > 0 || currentDesc.length > 0;
+      return currentTitle.length > 0 || currentDesc.length > 0;
     } else {
-        const originalTitle = this.playlistData.title || '';
-        const originalDesc = this.playlistData.description || '';
+      const originalTitle = this.playlistData?.title || '';
+      const originalDesc = this.playlistData?.description || '';
 
-        return currentTitle !== originalTitle || currentDesc !== originalDesc;
+      return currentTitle !== originalTitle || currentDesc !== originalDesc;
     }
   }
 
-  close(force = false) {
+  private close(force = false) {
     if (!this.overlay) return;
 
     if (!force) {
-      if (this.hasUnsavedChanges() && !this.warnedAboutChanges) {
+      if (this.hasUnsavedChanges() && !this.warnedAboutChanges && this.validator) {
         this.validator.showMessage(`Чтобы не потерять изменения, нажми кнопку «${this.mode === 'create' ? 'Создать' : 'Сохранить'}»`, true);
         this.warnedAboutChanges = true;
         return;
       }
     }
 
+    if (this.handleEsc) {
+      document.removeEventListener('keydown', this.handleEsc);
+      this.handleEsc = null;
+    }
+
     this.overlay.classList.remove('active');
+    const overlayToRemove = this.overlay;
+    this.overlay = null;
+
     setTimeout(() => {
-      if (this.overlay) {
-        this.overlay.remove();
-        this.overlay = null;
-      }
+      overlayToRemove.remove();
     }, 300);
   }
 }

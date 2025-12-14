@@ -121,5 +121,20 @@ export const FormSchemas = {
         return errors.length ? errors : null;
       },
     } as InformationConfig
+  }),
+
+  playlist: () => ({
+    validators: {
+      title: (val) => Rules.required(val),
+    } as ValidatorsConfig,
+
+    info: {
+      title: (val) => {
+        return !val ? ['Укажите название плейлиста'] : null;
+      },
+      description: () => {
+        return ['Максимум 300 символов'];
+      }
+    } as InformationConfig
   })
 };
