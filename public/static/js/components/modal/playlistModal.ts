@@ -65,7 +65,7 @@ export class PlaylistModal extends BaseFormModal<PlaylistModalData> {
     const currentTitle = titleInput ? titleInput.value.trim() : '';
     const currentDesc = descInput ? descInput.value.trim() : '';
 
-    if (this.data.isEdit) {
+    if (!this.data.isEdit) {
       return currentTitle.length > 0 || currentDesc.length > 0;
     } else {
       const originalTitle = this.data.title || '';
