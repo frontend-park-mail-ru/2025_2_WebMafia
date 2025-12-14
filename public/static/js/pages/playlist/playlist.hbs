@@ -2,7 +2,9 @@
       <div class="blue-background-circle album-blue-position"></div>
       <div class="purple-background-circle album-purple-position"></div>
       <div class="album-card">
-        <div id="playlistAvatarContainer"><img class="album-cover {{#unless image}}loading{{/unless}}" src="{{ image }}" alt="{{ title }}"/></div>
+        <div id="playlistAvatarContainer">
+          <img class="album-cover {{#unless image}}loading{{/unless}}" src="{{ image }}" alt="{{ title }}" />
+        </div>
         <div class="album-card-title">{{ title }}</div>
         <div class="album-card-info">
           <div class="card-sub">Плейлист<span class="dot"></span>{{ date }}</div>
@@ -25,25 +27,25 @@
             data-first-track-id="{{ track_id }}"
           ></button>
           {{#unless favourite}}
-            {{#if isCreator}}
-            <button class="dots">{{> dots}}</button>
-            <div class="actions-menu hidden">
-              <button class="actions-item" id="editPlaylistButton">
-                <span class="actions-item-svg">{{> pencil }}</span
-                >Редактировать
-              </button>
-              <button class="actions-item" id="shareButton">
-                <span class="actions-item-svg">{{> share}}</span
-                >Поделиться
-              </button>
-              <button class="actions-item" id="deletePlaylistButton">
-                <span class="actions-item-svg">{{> trash}}</span
-                >Удалить
-              </button>
-            </div>
-            {{else}}
-            <button class="control-btn shuffle-album" id="shareButton">{{> share }}</button>
-            {{/if}}
+          {{#if isCreator}}
+          <button class="dots">{{> dots}}</button>
+          <div class="actions-menu hidden">
+            <button class="actions-item" id="editPlaylistButton">
+              <span class="actions-item-svg">{{> pencil }}</span
+              >Редактировать
+            </button>
+            <button class="actions-item" id="shareButton">
+              <span class="actions-item-svg">{{> share}}</span
+              >Поделиться
+            </button>
+            <button class="actions-item" id="deletePlaylistButton">
+              <span class="actions-item-svg">{{> trash}}</span
+              >Удалить
+            </button>
+          </div>
+          {{else}}
+          <button class="control-btn shuffle-album" id="shareButton">{{> share }}</button>
+          {{/if}}
           {{/unless}}
         </div>
       </div>
@@ -81,7 +83,9 @@
                 </p>
               </div>
               <div class="track-like-container">
-                <button class="like-btn-track album-like-size {{#if is_liked}}active{{/if}}" data-track-id="{{ id }}">{{> likeBtn }}</button>
+                <button class="like-btn-track album-like-size {{#if is_liked}}active{{/if}}" data-track-id="{{ id }}">
+                  {{> likeBtn }}
+                </button>
                 <div class="track-duration">{{ duration }}</div>
                 {{#unless @root.favourite}}
                 <button class="delete-btn-track" data-track-id="{{ id }}">{{> delete }}</button>

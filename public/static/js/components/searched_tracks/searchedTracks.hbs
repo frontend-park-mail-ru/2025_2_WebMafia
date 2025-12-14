@@ -1,37 +1,32 @@
 {{#each searched_tracks}}
-  <div class="album-row">
-    <div class="album-play-wrapper">
-      <img
-        class="playlist-track-cover"
-        src="{{ cover }}"
-        alt="{{ name }}"
-        onerror="this.onerror=null; this.src='static/img/default-playlist.png';"
-      />
-      <button
-        class="play-album-track"
-        data-track-id="{{ id }}"
-        data-context="album-tracks"
-        data-album-id="{{../id}}"
-      >
-        <span class="play-icon">{{> play }}</span>
-        <span class="pause-icon">{{> pause }}</span>
-      </button>
-    </div>
-    <div class="right-row-content-playlist">
-      <div class="album-track-info">
-        <div class="track-name">{{ name }}</div>
-        <p class="playlist-sub">
-          <a class="text href-decoration playlist-album" href="/album/{{ album_id }}">{{ album }}</a>
-          <span class="dot"></span>
-          {{#each artists}}
-            <a href="artist/{{ id }}" class="text href-decoration"> {{ name }}{{#unless @last}}, {{/unless}} </a>
-          {{/each}}
-        </p>
-      </div>
-      <button class="primary-button add-track-size" data-track-id="{{ id }}">
-        <div class="add-button-toggle">{{> plus}}</div>
-        <div class="add-button-name">Добавить</div>
-      </button>
-    </div>
+<div class="album-row">
+  <div class="album-play-wrapper">
+    <img
+      class="playlist-track-cover"
+      src="{{ cover }}"
+      alt="{{ name }}"
+      onerror="this.onerror=null; this.src='static/img/default-playlist.png';"
+    />
+    <button class="play-album-track" data-track-id="{{ id }}" data-context="album-tracks" data-album-id="{{../id}}">
+      <span class="play-icon">{{> play }}</span>
+      <span class="pause-icon">{{> pause }}</span>
+    </button>
   </div>
+  <div class="right-row-content-playlist">
+    <div class="album-track-info">
+      <div class="track-name">{{ name }}</div>
+      <p class="playlist-sub">
+        <a class="text href-decoration playlist-album" href="/album/{{ album_id }}">{{ album }}</a>
+        <span class="dot"></span>
+        {{#each artists}}
+        <a href="artist/{{ id }}" class="text href-decoration"> {{ name }}{{#unless @last}}, {{/unless}} </a>
+        {{/each}}
+      </p>
+    </div>
+    <button class="primary-button add-track-size" data-track-id="{{ id }}">
+      <div class="add-button-toggle">{{> plus}}</div>
+      <div class="add-button-name">Добавить</div>
+    </button>
+  </div>
+</div>
 {{/each}}

@@ -1,4 +1,4 @@
-import { apiServise, API_TRACKS_URL } from '@/data.js';
+import { apiServise, API_TRACKS_URL } from '@/data';
 import { getValidImage } from '@/utils/parsers.ts';
 import { likeChange } from '@/utils/likeTrack';
 import { setupMarquees } from '@/utils/marquee';
@@ -19,6 +19,18 @@ export class Player extends EventTarget {
     this.originalQueue = [];
     this.playQueue = [];
     this.currentContext = null;
+
+    this.channel = new BroadcastChannel('music_channel_api');
+
+    this.channel.onmessage = (event) => {
+      const { type } = event.data;
+
+      if (type === 'PLAYING') {
+        this.audio.pause();
+        this.togglePlayPauseSwitch(false);
+        localStorage.setItem('isPLaying', 'false');
+      }
+    };
   }
 
   async init() {
@@ -53,6 +65,10 @@ export class Player extends EventTarget {
       const likeBtn = playerElement.querySelector('.like-btn');
       if (likeBtn && this.onLikeClickBound) {
         likeBtn.removeEventListener('click', this.onLikeClickBound);
+      }
+      if (this.channel) {
+        this.channel.close();
+        this.channel = null;
       }
       playerElement.remove();
     }
@@ -223,6 +239,8 @@ export class Player extends EventTarget {
     }
 
     await Promise.all([this.loadTrack(trackData, context), this.audio.play()]);
+
+    this.channel.postMessage({ type: 'PLAYING' });
 
     this.togglePlayPauseSwitch(true);
     localStorage.setItem('isPlaying', 'true');
@@ -502,21 +520,25 @@ export class Player extends EventTarget {
       }
     }
 
-    volumeSlider.addEventListener('wheel', function (e) {
-      e.preventDefault();
-      e.stopPropagation();
+    volumeSlider.addEventListener(
+      'wheel',
+      function (e) {
+        e.preventDefault();
+        e.stopPropagation();
 
-      const step = 5;
-      const delta = Math.sign(e.deltaY) * -step; // Инвертируем направление
-      const currentVolume = parseInt(volumeSlider.value);
-      const newVolume = Math.max(0, Math.min(100, currentVolume + delta));
+        const step = 5;
+        const delta = Math.sign(e.deltaY) * -step; // Инвертируем направление
+        const currentVolume = parseInt(volumeSlider.value);
+        const newVolume = Math.max(0, Math.min(100, currentVolume + delta));
 
-      volumeSlider.value = newVolume;
-      updateVolumeSlider(newVolume);
+        volumeSlider.value = newVolume;
+        updateVolumeSlider(newVolume);
 
-      volumeSlider.dispatchEvent(new Event('input'));
-      volumeSlider.dispatchEvent(new Event('change'));
-    }, { passive: true });
+        volumeSlider.dispatchEvent(new Event('input'));
+        volumeSlider.dispatchEvent(new Event('change'));
+      },
+      { passive: true }
+    );
 
     updateVolumeSlider(volumeSlider.value);
     volumeSlider.addEventListener('input', function () {
@@ -564,6 +586,9 @@ export class Player extends EventTarget {
     pauseBtn.classList.add('disactive');
     playBtn.addEventListener('click', async () => {
       await this.audio.play();
+
+      this.channel.postMessage({ type: 'PLAYING' });
+
       localStorage.setItem('isPlaying', 'true');
       localStorage.setItem('currentTrackId', this.currentTrack.id);
       this.togglePlayPauseSwitch(true);
@@ -578,6 +603,9 @@ export class Player extends EventTarget {
   async togglePlayPause() {
     if (this.audio.paused) {
       await this.audio.play();
+
+      this.channel.postMessage({ type: 'PLAYING' });
+
       localStorage.setItem('isPlaying', 'true');
       this.togglePlayPauseSwitch(true);
     } else {
@@ -701,27 +729,39 @@ export class Player extends EventTarget {
       });
     }
 
-    slider.addEventListener('touchstart', () => {
-      isDraggingSlider = true;
-    }, { passive: true });
+    slider.addEventListener(
+      'touchstart',
+      () => {
+        isDraggingSlider = true;
+      },
+      { passive: true }
+    );
 
     slider.addEventListener('touchend', () => {
       isDraggingSlider = false;
     });
 
-    player.addEventListener('touchstart', (e) => {
-      if (isDraggingSlider) return;
-      startY = e.touches[0].clientY;
-      startHeight = player.offsetHeight;
-    }, { passive: true });
+    player.addEventListener(
+      'touchstart',
+      (e) => {
+        if (isDraggingSlider) return;
+        startY = e.touches[0].clientY;
+        startHeight = player.offsetHeight;
+      },
+      { passive: true }
+    );
 
-    player.addEventListener('touchmove', (e) => {
-      if (isDraggingSlider) return;
-      const dy = e.touches[0].clientY - startY;
-      let newHeight = startHeight - dy;
-      newHeight = Math.max(minHeight, Math.min(maxHeight, newHeight));
-      player.style.height = newHeight + 'px';
-    }, { passive: true });
+    player.addEventListener(
+      'touchmove',
+      (e) => {
+        if (isDraggingSlider) return;
+        const dy = e.touches[0].clientY - startY;
+        let newHeight = startHeight - dy;
+        newHeight = Math.max(minHeight, Math.min(maxHeight, newHeight));
+        player.style.height = newHeight + 'px';
+      },
+      { passive: true }
+    );
 
     player.addEventListener('touchend', (e) => {
       if (isDraggingSlider) return;

@@ -21,7 +21,7 @@ class ModalService {
       title,
       description,
       confirmText,
-      cancelText
+      cancelText,
     });
 
     const overlay = div.firstElementChild as HTMLElement;

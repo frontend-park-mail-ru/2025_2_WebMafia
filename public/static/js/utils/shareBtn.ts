@@ -1,4 +1,4 @@
-import { showInfoMessage } from "@/utils/showInfoMessage.js";
+import { showInfoMessage } from '@/utils/showInfoMessage';
 
 export function copyToClipboard(text: string) {
   navigator.clipboard.writeText(text)
@@ -15,5 +15,5 @@ export function share() {
   shareBtn.addEventListener('click', () => {
     const url = window.location.href;
     copyToClipboard(url);
-  })
+  });
 }

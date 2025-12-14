@@ -12,11 +12,11 @@ export const deletePlaylistLogic = (id: string, name: string, onSuccess?: () => 
       try {
         await apiServise.deletePlaylist(id);
         if (onSuccess) onSuccess();
-        showInfoMessage("Плейлист удалён");
+        showInfoMessage('Плейлист удалён');
       } catch (error) {
         console.error('Ошибка при удалении плейлиста:', error);
-        showInfoMessage("Не удалось удалить плейлист");
+        showInfoMessage('Не удалось удалить плейлист');
       }
-    }
+    },
   });
 };
