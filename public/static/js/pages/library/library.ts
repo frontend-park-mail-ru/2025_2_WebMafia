@@ -275,4 +275,9 @@ export class LibraryPage extends BasePage {
       });
     }
   }
+
+  public destroy() {
+    contextMenu.destroy();
+    this.pageData = null;
+  }
 }

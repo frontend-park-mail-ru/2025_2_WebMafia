@@ -1,15 +1,15 @@
 import { MainPage } from '@/pages/mainpage/mainpage.ts';
-import { notFoundPage } from '@/pages/notfoundpage/notFoundPage.js';
+import { notFoundPage } from '@/pages/notfoundpage/notFoundPage.ts';
 import { LoginPage } from '@/pages/auth/login.ts';
 import { RegistrationPage } from '@/pages/auth/register.ts';
-import { ArtistPage } from '@/pages/artist/artist.js';
-import { ProfilePage } from '@/pages/profile/profilePage.js';
+import { ArtistPage } from '@/pages/artist/artist.ts';
+import { ProfilePage } from '@/pages/profile/profilePage.ts';
 import { ArtistReleasesPage } from '@/pages/releases/artistReleasesPage.ts';
 import { ArtistTracksPage } from '@/pages/artist_tracks/artistTracksPage.js';
-import { AlbumPage } from '@/pages/album/album.js';
-import { LibraryPage } from '@/pages/library/library.js';
+import { AlbumPage } from '@/pages/album/album.ts';
+import { LibraryPage } from '@/pages/library/library.ts';
 import { SearchPage } from '@/pages/search_page/search_page.js';
-import { PlaylistPage } from '@/pages/playlist/playlist.js';
+import { PlaylistPage } from '@/pages/playlist/playlist.ts';
 
 interface Page {
   render(slug?: string): Promise<void> | void;

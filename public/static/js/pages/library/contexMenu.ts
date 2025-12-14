@@ -70,7 +70,7 @@ class ContextMenuService {
     const card = (e.target as HTMLElement).closest('.card');
     if (card && card.closest('.grid-layout')) {
       const mouseEvent = e as MouseEvent;
-      this.createAndShowMenu(mouseEvent.clientX, mouseEvent.clientY, card as HTMLElement);
+      this.createAndShowMenu(e, mouseEvent.clientX, mouseEvent.clientY, card as HTMLElement);
     }
   }
 
@@ -80,7 +80,7 @@ class ContextMenuService {
 
     this.longPressTimer = setTimeout(() => {
       const touch = e.touches[0];
-      this.createAndShowMenu(touch.clientX, touch.clientY, card as HTMLElement);
+      this.createAndShowMenu(e, touch.clientX, touch.clientY, card as HTMLElement);
     }, 500);
   }
 
@@ -94,7 +94,8 @@ class ContextMenuService {
     }
   }
 
-  private createAndShowMenu(x: number, y: number, card: HTMLElement) {
+  private createAndShowMenu(e: Event, x: number, y: number, card: HTMLElement) {
+    e.preventDefault();
     this.removeMenu();
 
     const type = card.dataset.type || 'default';
