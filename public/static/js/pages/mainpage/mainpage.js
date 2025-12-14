@@ -72,14 +72,13 @@ export class MainPage {
     }
     document.getElementById('app').innerHTML = contentTemplate(pageData);
     playerOnlyOnPlay();
-    await Promise.all([header.render(), sidebar.render(), nowPlayingcards.render()]);
-
+    await Promise.all([header.render(), sidebar.render()]);
+    nowPlayingCardSlider();
     slider.sliderFunction();
     initScrollbar();
     this.addEventListeners();
     setPlayButtonsOnAuth();
     createPlaylis();
-    nowPlayingCardSlider();
     playTrack();
   }
 

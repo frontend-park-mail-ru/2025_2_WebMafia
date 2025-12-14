@@ -1,51 +1,57 @@
 export class CommentsSocket {
-  constructor(trackId, { onMessage, onOpen, onClose, onError }) {
-    this.trackId = trackId;
+  constructor(url, token, { onMessage, onOpen, onClose, onError } = {}) {
+    this.url = url;
+    this.token = token;
     this.socket = null;
-
-    this.onMessage = onMessage;
-    this.onOpen = onOpen;
-    this.onClose = onClose;
-    this.onError = onError;
+    this.handlers = { onMessage, onOpen, onClose, onError };
   }
 
   connect() {
-    const WS_URL = `ws://localhost:8000/ws/comments?track_id=${this.trackId}`;
+    if (!this.url) {
+      console.error('WS Error: URL is missing');
+      return;
+    }
 
-    this.socket = new WebSocket(WS_URL);
+    if (!this.token) {
+      console.warn('WS Warning: csrf-token is empty');
+    }
+
+    // 👇 ВАЖНО: Sec-WebSocket-Protocol
+    this.socket = new WebSocket(this.url);
+
     this.socket.onopen = () => {
-      console.log('open');
-      this.onOpen?.();
+      console.log('WS Open');
+      this.handlers.onOpen?.();
     };
 
     this.socket.onmessage = (event) => {
       try {
         const data = JSON.parse(event.data);
-        console.log('message');
-        this.onMessage?.(data);
-      } catch {
-        console.log('Message was invalid', event.data);
+        this.handlers.onMessage?.(data);
+      } catch (e) {
+        console.error('WS Parse Error', e);
       }
     };
 
     this.socket.onerror = (err) => {
-      console.log('error');
-      this.onError?.(err);
+      console.error('WS Error', err);
+      this.handlers.onError?.(err);
     };
 
-    this.socket.onclose = () => {
-      console.log('close');
-      this.onClose?.();
+    this.socket.onclose = (event) => {
+      console.log('WS Closed', event.code);
+      this.handlers.onClose?.();
     };
   }
 
   send(data) {
-    if (this.socket.readyState === WebSocket.OPEN) {
+    if (this.socket?.readyState === WebSocket.OPEN) {
       this.socket.send(JSON.stringify(data));
     }
   }
 
   disconnect() {
-    this.socket?.();
+    this.socket?.close();
+    this.socket = null;
   }
 }

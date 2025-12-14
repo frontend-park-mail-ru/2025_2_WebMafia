@@ -5,7 +5,7 @@ import { initScrollbar } from '@/scrollbar.js';
 import { slider } from '@/slider.js';
 import { player } from '@/components/player/player.js';
 import { playTrack } from '@/playTrackBtn.js';
-import { getValidImage, playsParser } from '@/parsers.js';
+import { getValidImage, playsParser, dateParser } from '@/parsers.js';
 import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
 import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
 import { createPlaylis } from '@/utils/initCreatePlaylist';
@@ -16,13 +16,20 @@ import {
   updateCurrentTimeAndSlider,
   loadTrackInfo,
 } from '@/utils/playerFunctions.js';
-import { CommentsSocket } from '@/utils/webSocketConnect.js';
 
 export class trackComments {
   async render(id) {
+    const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+
     let pageData = {
-      isAuthenticated: localStorage.getItem('isAuthenticated') === 'true',
+      isAuthenticated: isAuthenticated,
     };
+
+    // if (this.socket) {
+    //   this.socket.disconnect();
+    //   this.socket = null;
+    // }
+
     if (!pageData.isAuthenticated) {
       localStorage.clear();
     }
@@ -34,11 +41,15 @@ export class trackComments {
 
     try {
       const data = await apiServise.loadTrackById(id);
-      const profileData = await apiServise.getProfileData();
       const artistId = data.artists[0].id;
       const artistData = await apiServise.getArtistPageData(artistId, pageData.isAuthenticated);
       const playerContext = player.currentContext;
+      const commentsData = await apiServise.GetTrackComments(id);
+
+      console.log('Data Comments', commentsData);
+
       pageData = {
+        isAuthenticated: isAuthenticated,
         id: data.album.id,
         title: data.title,
         type: data.album.type,
@@ -56,27 +67,26 @@ export class trackComments {
         listeners: playsParser(artistData.artist.play_count) || 0,
         player_context: playerContext,
       };
-      // pageData.tracks = (data.tracks || []).map((track) => {
-      //   totalDuration += track.duration_s;
-      //   return {
-      //     id: track.id,
-      //     name: track.title,
-      //     plays: playsParser(track.play_count),
-      //     duration: durationParser(track.duration_s),
-      //     is_liked: track.is_liked,
-      //   };
-      // });
-      pageData.avatar = data.AvatarURL ? getValidImage(data.AvatarURL) : data.AvatarURL;
-      pageData.nickname = profileData.Login;
-      pageData.letter = pageData.nickname ? pageData.nickname[0].toUpperCase() : '';
+
+      pageData.comment = (commentsData || []).map((comment) => ({
+        id: comment.id,
+        text: comment.text,
+        track_id: comment.track_id,
+        avatar: comment.user_avatar ? getValidImage(comment.user_avatar) : null,
+        nickname: comment.user_login,
+        letter: comment.user_login ? comment.user_login[0].toUpperCase() : 'U',
+        created_at: dateParser(comment.created_at),
+      }));
     } catch (error) {
-      console.error('Failed to load main page data:', error);
+      console.error('Failed to load comment page data:', error);
       alert('Не удалось загрузить страницу c комментами.');
       return;
     }
+
     document.getElementById('app').innerHTML = contentTemplate(pageData);
     playerOnlyOnPlay();
     await Promise.all([header.render(), sidebar.render()]);
+
     slider.sliderFunction();
     initScrollbar();
     setPlayButtonsOnAuth();
@@ -84,13 +94,95 @@ export class trackComments {
     nowPlayingCardSlider();
     sliderColorChange();
     loadTrackInfo(player.currentTrack);
+
     player.audio.addEventListener('timeupdate', () => {
       updateCurrentTimeAndSlider();
     });
     setInitialPLayTime();
+
     this.setupPageLogic(id);
     playTrack();
-    CommentsSocket(id);
+
+    // Инициализация сокета
+    if (isAuthenticated) {
+      try {
+        await apiServise.getCSRFToken();
+        this.initSocket(id);
+      } catch (e) {
+        console.error('Failed to fetch token for WS:', e);
+      }
+    } else {
+      console.warn('User is not authenticated, socket not initialized');
+    }
+  }
+
+  initSocket(trackId) {
+    this.socket = apiServise.createTrackSocket(trackId, {
+      onOpen: () => console.log('WebSocket connected for comments'),
+      onMessage: (data) => this.handleNewComment(data),
+      onError: (err) => console.error('WebSocket error:', err),
+      onClose: () => console.log('WebSocket connection closed'),
+    });
+    this.socket.connect();
+  }
+
+  handleNewComment(data) {
+    if (!data) return;
+
+    const commentData = Array.isArray(data) ? data[0] : data;
+
+    let dateStr = 'Just now';
+    if (commentData.created_at) {
+      try {
+        dateStr = new Date(commentData.created_at).toLocaleDateString();
+      } catch (e) {
+        console.log(e);
+      }
+    }
+
+    const commentObj = {
+      nickname: commentData.user_login || 'User',
+      text: commentData.text,
+      time: dateStr,
+      avatar: commentData.user_avatar ? getValidImage(commentData.user_avatar) : null,
+      letter: (commentData.user_login || 'U')[0].toUpperCase(),
+    };
+
+    const commentsContainer = document.querySelector('.comments-container');
+    if (!commentsContainer) return;
+
+    const commentDiv = document.createElement('div');
+    commentDiv.className = 'comment-container';
+
+    const avatarHtml = commentObj.avatar
+      ? `<img src="${commentObj.avatar}" alt="Ваш аватар" class="profile-image" />`
+      : `<div class="default-avatar default-avatar-header">${commentObj.letter}</div>`;
+
+    commentDiv.innerHTML = `
+        <div class="profile-avatar-header user-avatar">
+            ${avatarHtml}
+        </div>
+        <div class="comment-info-container">
+            <div class="comment-info-header">
+                <div class="comment-author">${commentObj.nickname}</div>
+                <span class="dot"></span>
+                <div class="comment-time">${commentObj.time}</div>
+            </div>
+            <div class="comment-text">
+                ${commentObj.text}
+            </div>
+        </div>
+    `;
+
+    const form = document.getElementById('createCommentsForm');
+
+    if (form && form.nextSibling) {
+      const list = document.getElementById('commentsList');
+      if (!list) return;
+      list.prepend(commentDiv);
+    } else {
+      commentsContainer.appendChild(commentDiv);
+    }
   }
 
   setupPageLogic(pageTrackId) {
@@ -113,6 +205,32 @@ export class trackComments {
           player.nextTrack();
         }
       });
+    }
+
+    const commentForm = document.getElementById('createCommentsForm');
+
+    if (commentForm) {
+      const newCommentForm = commentForm.cloneNode(true);
+      commentForm.parentNode.replaceChild(newCommentForm, commentForm);
+      const newTitleInput = newCommentForm.querySelector('#title');
+      const newErrorDiv = newCommentForm.querySelector('#titleError');
+
+      newCommentForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const text = newTitleInput.value.trim();
+
+        if (this.socket) {
+          const payload = { text: text };
+          this.socket.send(payload);
+          newTitleInput.value = '';
+        } else {
+          if (newErrorDiv) newErrorDiv.textContent = 'Ошибка соединения. Обновите страницу.';
+          console.error('Socket is not initialized');
+        }
+      });
+    } else {
+      console.error('Form createCommentsForm not found in DOM');
     }
   }
 

@@ -23,6 +23,7 @@ export const tracksArtistAlbumRoutes = [
   '/albums/:id/tracks',
   '/genres/:id/tracks',
   '/tracks/:id/listen',
+  '/comments/tracks/:id',
 ];
 
 export const playlistRoutes = [
