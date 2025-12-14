@@ -2,30 +2,16 @@ import { setupMarquees } from '@/marquee.js';
 import { player } from '@/components/player/player.js';
 import { getValidImage } from '@/parsers.js';
 
-export function setInitialPLayTime() {
-  const duration_ms = player.currentTrack.duration_s;
-  const timeRegulator = document.querySelector('.remote-slider-comments');
-  const storedTime = parseFloat(localStorage.getItem('playTime'));
-  timeRegulator.value = storedTime;
-  player.audio.currentTime = storedTime;
-  const percent = (storedTime / duration_ms) * 100;
-  timeRegulator.style.setProperty('--progress', percent + '%');
-  updateCurrentTimeAndSlider();
-}
-
 export function sliderColorChange() {
   const timeRegulator = document.querySelector('.remote-slider-comments');
-  timeRegulator.addEventListener(
-    'input',
-    function () {
-      const sliderElement = timeRegulator;
-      const value = sliderElement.value;
-      sliderElement.style.setProperty('--progress', value + '%');
-      const duration_ms = player.currentTrack.duration_s;
-      const newTime = (value / 100) * duration_ms;
-      player.audio.currentTime = newTime;
-    }.bind(player)
-  );
+  timeRegulator.addEventListener('input', function () {
+    const sliderElement = timeRegulator;
+    const value = sliderElement.value;
+    sliderElement.style.setProperty('--progress', value + '%');
+    const duration_ms = player.currentTrack.duration_s;
+    const newTime = (value / 100) * duration_ms;
+    player.audio.currentTime = newTime;
+  });
 }
 
 export function updateCurrentTimeAndSlider() {

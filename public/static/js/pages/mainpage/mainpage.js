@@ -10,7 +10,7 @@ import { getValidImage, playsParser } from '@/parsers.js';
 import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
 import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
 import { setupMarquees } from '@/marquee.js';
-import { createPlaylis } from '@/utils/initCreatePlaylist';
+// import { createPlaylis } from '@/utils/initCreatePlaylist';
 import { nowPlayingcards } from '@/components/now_playing_cards/nowPlayingCards.js';
 import { nowPlayingCardSlider } from '@/utils/nowPlayingCardsLogic.js';
 
@@ -78,8 +78,7 @@ export class MainPage {
     initScrollbar();
     this.addEventListeners();
     setPlayButtonsOnAuth();
-    createPlaylis();
-    this.nowPlayingCardSlider();
+    // createPlaylis();
     playTrack();
   }
 

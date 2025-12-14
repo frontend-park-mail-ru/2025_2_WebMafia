@@ -147,13 +147,13 @@
           <p><i class="slide-btn left"></i></p>
           <div class="cards" id="slidebar">
             {{#each similar_artists}}
-            <a href="artist/{{ id }}" class="card">
+            <div data-artist-id="{{id}}" class="card similar_artist">
               <img src="{{ image }}" alt="{{ name }}" />
               <div class="card-bottom-info">
                 <p class="card-name">{{ name }}</p>
                 <p class="card-sub">{{ listeners }}</p>
               </div>
-            </a>
+            </div>
             {{/each}}
           </div>
           <p><i class="slide-btn right"></i></p>

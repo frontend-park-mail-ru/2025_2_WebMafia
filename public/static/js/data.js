@@ -632,20 +632,15 @@ export class apiServises {
   }
 
   async GetTrackComments(id) {
-    try {
-      return this.request(`/comments/tracks/${id}`);
-    } catch {
-      console.error('Failed to subscribe to artist');
-      return [];
-    }
+    return this.request(`/comments/tracks/${id}`);
   }
 
-  createTrackSocket(trackId, handlers) {
+  createTrackSocket(trackId, token, handlers) {
     let baseUrl = import.meta.env.DEV ? 'ws://localhost:8081' : this.baseURL.replace(/^http/, 'ws');
 
     const wsUrl = `${baseUrl}/api/v1/ws/comments/tracks/${trackId}`;
 
-    return new CommentsSocket(wsUrl, handlers);
+    return new CommentsSocket(wsUrl, token, handlers);
   }
 }
 

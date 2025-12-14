@@ -7,7 +7,7 @@
             <div class="right-side">
                 <img src="{{artist.avatar}}" alt="фото альбома" class="track-cover-comment {{#unless id}}loading{{/unless}}">
                 <div class="comments-artist-info">
-                    <div class="track-comment-artist href-decoration">{{artist.name}}</div>
+                    <div class="track-comment-artist href-decoration" data-artist-id="{{ artist.id }}">{{artist.name}}</div>
                     <div class="track-plays-num comments">{{listeners}}</div>
                 </div>
             </div>
@@ -33,12 +33,16 @@
                     <button class="play-button play-button-album comments" data-album-id="{{ id }}" data-context="{{player_context}}" data-track-id="{{ track_id }}" data-first-track-id="{{ track_id }}"></button>
                     <div class="comments-artist-info">
                         <div class="track-name">{{title}}</div>
-                        <div class="track-performer href-decoration">{{artist.name}}</div>
+                        <div class="track-performer href-decoration" data-artist-id="{{ artist.id }}">{{artist.name}}</div>
                     </div>
                 </div>
                 <div class="left-side">
-                    <button class="control-btn black prev">{{> nextTrack}}</button>
-                    <button class="control-btn black next">{{> nextTrack }}</button>
+                    <button
+                    class="like-btn-track artist-like-size {{#if is_liked}}active{{/if}} comment"
+                    data-track-id="{{ track_id }}"
+                  >
+                    {{> likeBtn }}
+                  </button>
                 </div>
             </div>
                 
@@ -63,7 +67,7 @@
             </div>
             </div>
         </form>
-
+        <div id="commentsList"></div>
         {{#each comment}}
             <div class="comment-container">
                 <div class="profile-avatar-header user-avatar" id="avatarHeaderContainer">
@@ -85,7 +89,9 @@
                 </div>
             </div>
         {{/each}}
-        <div id="commentsList"></div>
+        <div id="bubblesStream" class="bubbles-stream-container">
+            <!-- Сюда JS будет генерировать bubble-unit -->
+        </div>
       </div>
     </div>
   </div>

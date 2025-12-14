@@ -11,16 +11,9 @@ export class CommentsSocket {
       console.error('WS Error: URL is missing');
       return;
     }
-
-    if (!this.token) {
-      console.warn('WS Warning: csrf-token is empty');
-    }
-
-    // 👇 ВАЖНО: Sec-WebSocket-Protocol
-    this.socket = new WebSocket(this.url);
+    this.socket = new WebSocket(`${this.url}?csrf_token=${this.token}`);
 
     this.socket.onopen = () => {
-      console.log('WS Open');
       this.handlers.onOpen?.();
     };
 

@@ -6,29 +6,28 @@ import { slider } from '@/slider.js';
 import { player } from '@/components/player/player.js';
 import { playTrack } from '@/playTrackBtn.js';
 import { getValidImage, playsParser, dateParser } from '@/parsers.js';
-import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
 import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
-import { createPlaylis } from '@/utils/initCreatePlaylist';
 import { nowPlayingCardSlider } from '@/utils/nowPlayingCardsLogic.js';
-import {
-  setInitialPLayTime,
-  sliderColorChange,
-  updateCurrentTimeAndSlider,
-  loadTrackInfo,
-} from '@/utils/playerFunctions.js';
+import { sliderColorChange, updateCurrentTimeAndSlider, loadTrackInfo } from '@/utils/playerFunctions.js';
+import { subscribeArtist } from '@/utils/subscribeArtist.js';
+import { spawnBubble, injectBubbleStyles } from '@/utils/commentAnimation.js';
+import { likeTrackBtn } from '@/utils/likeTrack.js';
+import { router } from '@/routing.js';
+import { share } from '@/utils/shareBtn.js';
 
 export class trackComments {
   async render(id) {
+    injectBubbleStyles();
     const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
 
     let pageData = {
       isAuthenticated: isAuthenticated,
     };
 
-    // if (this.socket) {
-    //   this.socket.disconnect();
-    //   this.socket = null;
-    // }
+    if (this.socket) {
+      this.socket.disconnect();
+      this.socket = null;
+    }
 
     if (!pageData.isAuthenticated) {
       localStorage.clear();
@@ -45,9 +44,6 @@ export class trackComments {
       const artistData = await apiServise.getArtistPageData(artistId, pageData.isAuthenticated);
       const playerContext = player.currentContext;
       const commentsData = await apiServise.GetTrackComments(id);
-
-      console.log('Data Comments', commentsData);
-
       pageData = {
         isAuthenticated: isAuthenticated,
         id: data.album.id,
@@ -68,7 +64,7 @@ export class trackComments {
         player_context: playerContext,
       };
 
-      pageData.comment = (commentsData || []).map((comment) => ({
+      const parsedComments = (commentsData || []).map((comment) => ({
         id: comment.id,
         text: comment.text,
         track_id: comment.track_id,
@@ -77,6 +73,15 @@ export class trackComments {
         letter: comment.user_login ? comment.user_login[0].toUpperCase() : 'U',
         created_at: dateParser(comment.created_at),
       }));
+
+      pageData.comment = parsedComments;
+
+      const randomComments = [...parsedComments].sort(() => 0.5 - Math.random()).slice(0, 2);
+      randomComments.forEach((comment, index) => {
+        setTimeout(() => {
+          spawnBubble(comment);
+        }, index * 1500);
+      });
     } catch (error) {
       console.error('Failed to load comment page data:', error);
       alert('Не удалось загрузить страницу c комментами.');
@@ -89,8 +94,6 @@ export class trackComments {
 
     slider.sliderFunction();
     initScrollbar();
-    setPlayButtonsOnAuth();
-    createPlaylis();
     nowPlayingCardSlider();
     sliderColorChange();
     loadTrackInfo(player.currentTrack);
@@ -98,16 +101,18 @@ export class trackComments {
     player.audio.addEventListener('timeupdate', () => {
       updateCurrentTimeAndSlider();
     });
-    setInitialPLayTime();
 
     this.setupPageLogic(id);
+    likeTrackBtn();
+    share();
     playTrack();
+    subscribeArtist();
+    this.addEventListeners();
 
-    // Инициализация сокета
     if (isAuthenticated) {
       try {
-        await apiServise.getCSRFToken();
-        this.initSocket(id);
+        const token = await apiServise.getCSRFToken();
+        this.initSocket(id, token);
       } catch (e) {
         console.error('Failed to fetch token for WS:', e);
       }
@@ -116,8 +121,20 @@ export class trackComments {
     }
   }
 
-  initSocket(trackId) {
-    this.socket = apiServise.createTrackSocket(trackId, {
+  addEventListeners() {
+    const author = document.querySelectorAll('.track-comment-artist, .track-performer');
+    if (author) {
+      author.forEach((author) => {
+        author.addEventListener('click', () => {
+          const artist_id = author.dataset.artistId;
+          router.navigate(`/artist/${artist_id}`);
+        });
+      });
+    }
+  }
+
+  initSocket(trackId, token) {
+    this.socket = apiServise.createTrackSocket(trackId, token, {
       onOpen: () => console.log('WebSocket connected for comments'),
       onMessage: (data) => this.handleNewComment(data),
       onError: (err) => console.error('WebSocket error:', err),
@@ -183,6 +200,9 @@ export class trackComments {
     } else {
       commentsContainer.appendChild(commentDiv);
     }
+    setTimeout(() => {
+      spawnBubble(commentObj);
+    }, 100);
   }
 
   setupPageLogic(pageTrackId) {
