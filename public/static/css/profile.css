@@ -100,6 +100,11 @@
   width: 200px;
 }
 
+.edit-button-size svg {
+  height: 24px;
+  width: 24px;
+}
+
 .primary-button:hover {
   background-position: left top;
 }
@@ -154,6 +159,7 @@
 .window {
   background: #fff;
   max-width: 50%;
+  width: 100%;
   padding: 40px;
   border-radius: 20px;
   transform: translateY(-500px);
@@ -168,31 +174,8 @@
   opacity: 1;
 }
 
-@keyframes shake {
-  0% {
-    transform: translateY(0) translateX(0);
-  }
-  20% {
-    transform: translateX(-5px);
-  }
-  40% {
-    transform: translateX(5px);
-  }
-  60% {
-    transform: translateX(-5px);
-  }
-  80% {
-    transform: translateX(5px);
-  }
-  100% {
-    transform: translateX(0);
-  }
-}
-
-.window.highlight {
-  animation: shake 0.4s ease;
-  border: 2px solid #a766ff;
-  border-radius: 20px;
+#editProfileForm {
+  width: 100%;
 }
 
 .secondary-button {

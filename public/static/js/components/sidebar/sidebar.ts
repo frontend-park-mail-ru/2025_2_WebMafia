@@ -1,4 +1,4 @@
-import { playlistModal } from "@/components/playlist_modal/initPlaylistModal.js";
+import { playlistModal } from "@/components/modal/playlistModal.ts";
 
 class Sidebar {
   private container!: HTMLElement;
@@ -50,7 +50,7 @@ class Sidebar {
     if (!createButton) return;
     createButton.addEventListener('click', (e) => {
         e.preventDefault();
-        playlistModal.openCreate();
+        playlistModal.open({ isEdit: false });
     });
   }
 }

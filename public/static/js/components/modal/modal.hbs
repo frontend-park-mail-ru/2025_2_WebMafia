@@ -1,0 +1,38 @@
+<div class="overlay">
+  <div class="window">
+    <div class="overlay-header">
+      <h2 class="title-name">{{ modalTitle }}</h2>
+      <button class="close-button" aria-label="Закрыть">{{> close }}</button>
+    </div>
+    <div class="header-divider"></div>
+
+    <div class="edit-profile-wrapper">
+      <div class="edit-profile-info">
+
+        <div class="edit-avatar">
+          <div class="edit-avatar-placement" id="avatarContainer">
+            {{#if avatarSrc}}
+              <img src="{{ avatarSrc }}" alt="Аватар" class="profile-image" id="avatarPreview" />
+            {{else}}
+              <div class="default-avatar profile-edit-avatar" id="avatarPreviewDefault">{{ avatarLetter }}</div>
+            {{/if}}
+          </div>
+          <div class="edit-avatar-buttons" id="avatarButtonsContainer">
+            <button id="setAvatarBtn" class="secondary-button save-avatar-button-size">Выбрать фото</button>
+          </div>
+        </div>
+
+        <form id="{{ formId }}">
+            {{{ formContent }}}
+            <div class="general-error" id="{{ errorId }}"></div>
+        </form>
+      </div>
+
+      <div class="save-overlay-button">
+        <button class="primary-button save-overlay-button-size" id="{{ submitBtnId }}">
+            {{ submitText }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

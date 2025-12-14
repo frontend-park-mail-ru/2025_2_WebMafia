@@ -30,6 +30,12 @@ handlebars public/static/js/components/confirmation_modal/confirmationModal.hbs 
 
 handlebars public/static/js/components/playlist_modal/playlistModal.hbs -f public/static/js/components/playlist_modal/playlistModal.tmpl.js
 
+handlebars public/static/js/components/modal/modal.hbs -f public/static/js/components/modal/modal.tmpl.js
+
+handlebars public/static/js/components/modal/playlistInputs.hbs -f public/static/js/components/modal/playlistInputs.tmpl.js
+
+handlebars public/static/js/components/modal/profileInputs.hbs -f public/static/js/components/modal/profileInputs.tmpl.js
+
 handlebars public/static/js/components/sidebar/sidebar.hbs -f public/static/js/components/sidebar/sidebar.tmpl.js
 
 handlebars public/static/js/components/player/player.hbs -f public/static/js/components/player/player.tmpl.js
