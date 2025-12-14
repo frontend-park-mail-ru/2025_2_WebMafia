@@ -1,6 +1,4 @@
 <div class="section" id="section">
-  {{!-- {{> header}} --}}
-
   <div class="layout">
     {{> sidebar}}
     <div class="page" id="scrollContent">
@@ -60,24 +58,29 @@
                 <div class="track-name-artists-container">
                   <div class="track-name">{{ name }}</div>
                   <div class="track-performers">
-                    {{!-- {{#each @root.artists}} --}}
+                    <!-- {{#each @root.artists}} -->
                     <a href="artist/{{ artist_id }}" class="text href-decoration">
-                      {{!-- {{ name }}{{#unless @last}}, {{/unless}} --}}
-                      {{artist}}
+                      <!-- {{ name }}{{#unless @last}}, {{/unless}} -->
+                      {{ artist }}
                     </a>
-                    {{!-- {{/each}} --}}
+                    <!-- {{/each}} -->
                   </div>
                 </div>
-                
+
                 <div class="track-like-container">
-                  <button class="like-btn-track artist-like-size {{#if is_liked}}active{{/if}}" data-track-id="{{ id }}">{{> likeBtn }}</button>
+                  <button
+                    class="like-btn-track artist-like-size {{#if is_liked}}active{{/if}}"
+                    data-track-id="{{ id }}"
+                  >
+                    {{> likeBtn }}
+                  </button>
                 </div>
                 <div class="track-duration">{{ duration }}</div>
               </div>
             </div>
             {{/each}}
           </div>
-          {{!-- <a class="secondary-button show-tracks-button" href="/artist/{{ id }}/tracks">Показать все</a> --}}
+          <!-- <a class="secondary-button show-tracks-button" href="/artist/{{ id }}/tracks">Показать все</a> -->
         </div>
 
         {{/if}}

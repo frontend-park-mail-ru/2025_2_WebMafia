@@ -4,11 +4,11 @@ export function persistence() {
   window.addEventListener('storage', () => {
     const currentPlayingtrack = localStorage.getItem('isPlaying');
     if (currentPlayingtrack === 'true') {
-      player.togglePlayPauseSwitch(true);
-      player.audio.play();
+      // player.togglePlayPauseSwitch(true);
+      // player.audio.play();
     } else {
-      player.togglePlayPauseSwitch(false);
-      player.audio.pause();
+      // player.togglePlayPauseSwitch(false);
+      // player.audio.pause();
     }
   });
 }

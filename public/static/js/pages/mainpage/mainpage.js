@@ -79,6 +79,7 @@ export class MainPage {
     this.addEventListeners();
     setPlayButtonsOnAuth();
     createPlaylis();
+    this.nowPlayingCardSlider();
     playTrack();
   }
 

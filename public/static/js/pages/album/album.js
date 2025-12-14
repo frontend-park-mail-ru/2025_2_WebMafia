@@ -9,9 +9,9 @@ import { playTrack } from '@/playTrackBtn.js';
 import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
 import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
 import { likeTrackBtn } from '@/utils/likeTrack.js';
-import { createPlaylis } from '@/utils/initCreatePlaylist';
-import { albumPlaylistButtons } from "@/utils/albumPlaylistButtons.js";
-import { share } from "@/utils/shareBtn.js";
+import { albumPlaylistButtons } from '@/utils/albumPlaylistButtons.js';
+import { share } from '@/utils/shareBtn.js';
+import { showInfoMessage } from '@/utils/showInfoMessage.js';
 
 export class AlbumPage {
   async render(id) {
@@ -75,10 +75,9 @@ export class AlbumPage {
     document.querySelector('head title').textContent = pageData.title;
     playerOnlyOnPlay();
     await Promise.all([header.render(), sidebar.render()]);
-    createPlaylis();
     slider.sliderFunction();
     initScrollbar();
-    this.addEventListeners();
+    this.albumLikeButton();
     setPlayButtonsOnAuth();
     likeTrackBtn();
     playTrack();
@@ -86,25 +85,49 @@ export class AlbumPage {
     share();
   }
 
-  addEventListeners() {
+  albumLikeButton() {
     const likeButton = document.getElementById('albumLikeButton');
     if (likeButton) {
       likeButton.addEventListener('click', async () => {
         const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
         if (!isAuthenticated) {
-            router.navigate('/login');
-            return;
+          router.navigate('/login');
+          return;
         }
 
         const albumId = likeButton.dataset.albumId;
-        const isLiked = likeButton.classList.contains('active');
+        const albumName = likeButton.dataset.albumName || 'Альбом';
+        const likeIcon = likeButton.querySelector('.actions-item-svg');
+        const likeText = likeButton.querySelector('.actions-item-text');
+
+        const wasLiked = likeIcon.classList.contains('active');
+        const newLikedState = !wasLiked;
+
+        const renderState = (isLiked) => {
+          if (isLiked) {
+            likeIcon.classList.add('active');
+            likeText.textContent = 'Удалить из библиотеки';
+          } else {
+            likeIcon.classList.remove('active');
+            likeText.textContent = 'Добавить в библиотеку';
+          }
+        };
+
+        renderState(newLikedState);
         likeButton.disabled = true;
 
         try {
-          await apiServise.toggleAlbumLike(albumId, !isLiked);
-          likeButton.classList.toggle('active');
+          await apiServise.toggleAlbumLike(albumId, newLikedState);
+
+          if (newLikedState) {
+            showInfoMessage(`Альбом «${albumName}» добавлен в библиотеку`);
+          } else {
+            showInfoMessage(`Альбом «${albumName}» удалён из библиотеки`);
+          }
         } catch (error) {
           console.error('Failed to like album:', error);
+          renderState(wasLiked);
+          showInfoMessage('Ошибка при обновлении библиотеки. Попробуйте позже.');
         } finally {
           likeButton.disabled = false;
         }

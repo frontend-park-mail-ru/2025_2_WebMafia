@@ -1,11 +1,5 @@
 class ModalService {
-  showConfirm({
-    title,
-    description,
-    confirmText = 'Удалить',
-    cancelText = 'Закрыть',
-    onConfirm
-  }) {
+  showConfirm({ title, description, confirmText = 'Удалить', cancelText = 'Закрыть', onConfirm }) {
     const template = Handlebars.templates['confirmationModal.hbs'];
     const div = document.createElement('div');
 
@@ -13,7 +7,7 @@ class ModalService {
       title,
       description,
       confirmText,
-      cancelText
+      cancelText,
     });
 
     const overlay = div.firstElementChild;
@@ -24,6 +18,7 @@ class ModalService {
 
     const close = () => {
       overlay.classList.remove('active');
+      document.removeEventListener('keydown', handleEsc);
       setTimeout(() => {
         overlay.remove();
       }, 300);
@@ -45,7 +40,6 @@ class ModalService {
     const handleEsc = (e) => {
       if (e.key === 'Escape') {
         close();
-        document.removeEventListener('keydown', handleEsc);
       }
     };
     document.addEventListener('keydown', handleEsc);

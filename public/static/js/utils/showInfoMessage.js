@@ -1,20 +1,20 @@
 export function showInfoMessage(text) {
-    const section = document.getElementById("section");
+  const section = document.getElementById('section');
 
-    const msg = document.createElement("div");
-    msg.className = "inform-message";
-    msg.textContent = text;
+  const msg = document.createElement('div');
+  msg.className = 'inform-message';
+  msg.textContent = text;
 
-    section.appendChild(msg);
+  section.appendChild(msg);
 
+  requestAnimationFrame(() => {
     requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-            msg.classList.add("visible");
-        });
+      msg.classList.add('visible');
     });
+  });
 
-    setTimeout(() => {
-        msg.classList.remove("visible");
-        msg.addEventListener("transitionend", () => msg.remove());
-    }, 4000);
+  setTimeout(() => {
+    msg.classList.remove('visible');
+    msg.addEventListener('transitionend', () => msg.remove());
+  }, 4000);
 }

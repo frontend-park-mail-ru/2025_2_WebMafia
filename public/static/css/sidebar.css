@@ -57,8 +57,8 @@
 .menu-item svg {
   stroke: black;
   transition:
-      fill 0.3s ease,
-      stroke 0.3s ease;
+    fill 0.3s ease,
+    stroke 0.3s ease;
   width: 24px;
   height: 24px;
 }
@@ -125,14 +125,14 @@
 }
 
 .sidebar .header-divider {
-  width: 90%;
+  width: 220px;
   background: #aaacb5;
   margin: 20px 0;
 }
 
-.sidebar-secondary-button {
-  cursor: pointer !important;
-  width: 190px !important;
+.sidebar .secondary-button {
+  cursor: pointer;
+  width: 190px;
 }
 
 @media (max-width: 1150px) {
@@ -146,7 +146,8 @@
     gap: 20px;
   }
 
-  .menu-item, .menu .secondary-button {
+  .menu-item,
+  .menu .secondary-button {
     flex: 1;
     text-align: center;
     display: flex;
@@ -159,8 +160,8 @@
     font-weight: 600;
   }
 
-  .sidebar-secondary-button {
-    width: auto !important;
+  .sidebar .secondary-button {
+    width: auto;
   }
 
   .menu-item.active .icon-path {
@@ -172,9 +173,9 @@
     stroke: url(#menuGradient);
   }
 
-  .menu-item.active {
+  /* .menu-item.active {
     color: black;
-  }
+  } */
 
   .menu-item.active {
     border-radius: 0;
@@ -192,7 +193,8 @@
     padding: 0;
   }
 
-  .menu-item svg, .menu .secondary-button svg {
+  .menu-item svg,
+  .menu .secondary-button svg {
     width: 32px;
     height: 32px;
   }
@@ -208,8 +210,8 @@
 }
 
 @media (max-height: 350px) and (min-width: 800px) {
-  .sidebar-secondary-button {
-    display: none !important;
+  .sidebar .secondary-button {
+    display: none;
   }
 }
 
@@ -239,7 +241,8 @@
     padding: 0;
   }
 
-  .menu-item, .menu .secondary-button {
+  .menu-item,
+  .menu .secondary-button {
     flex: 1;
     text-align: center;
     display: flex;
@@ -268,7 +271,8 @@
     left: 0;
   }
 
-  .menu .secondary-button:active, .menu .secondary-button:hover {
+  .menu .secondary-button:active,
+  .menu .secondary-button:hover {
     background: transparent;
   }
 }

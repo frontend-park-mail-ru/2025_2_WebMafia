@@ -71,7 +71,6 @@
   font-size: 12px;
 }
 
-
 .album-cover {
   margin: 13px 0;
   width: 270px;
@@ -176,6 +175,7 @@
   display: flex;
   flex-direction: column;
   min-width: 0;
+  margin-right: 15px;
 }
 
 .play-icon,
@@ -227,6 +227,7 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
+  min-width: 0;
 }
 
 .overlay-header {
@@ -282,17 +283,9 @@
   .like-btn-track {
     opacity: 1;
   }
-
-  .delete-btn-track {
-    opacity: 1;
-  }
 }
 
 @media (max-width: 1250px) {
-  .album-play-wrapper {
-    margin-right: 0;
-  }
-
   .album-card {
     top: 20px;
     margin: 20px;
@@ -335,13 +328,14 @@
     top: auto;
     width: 90%;
     padding: 25px 30px;
-    margin: 20px 0 0 0;
+    margin: 20px 0 0;
     box-sizing: border-box;
   }
 
   .tracks-card {
+    flex-grow: unset;
     padding: 10px 5px;
-    margin: 20px 0 40px 0;
+    margin: 20px 0 40px;
     width: 90%;
     box-sizing: border-box;
   }
@@ -361,7 +355,7 @@
   }
 
   .album-row {
-    padding: 5px 0 5px 5px;
+    padding: 5px 15px 5px 5px;
     height: 60px;
   }
 

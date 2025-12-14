@@ -5,7 +5,9 @@
       <div class="blue-background-circle album-blue-position"></div>
       <div class="purple-background-circle album-purple-position"></div>
       <div class="album-card">
-        <div id="playlistAvatarContainer"><img class="album-cover {{#unless cover}}loading{{/unless}}" src="{{ cover }}" alt="{{ title }}"/></div>
+        <div id="playlistAvatarContainer">
+          <img class="album-cover {{#unless image}}loading{{/unless}}" src="{{ image }}" alt="{{ title }}" />
+        </div>
         <div class="album-card-title">{{ title }}</div>
         <div class="album-card-info">
           <div class="card-sub">Плейлист<span class="dot"></span>{{ date }}</div>
@@ -28,6 +30,7 @@
             data-first-track-id="{{ track_id }}"
           ></button>
           {{#unless favourite}}
+          {{#if isCreator}}
           <button class="dots">{{> dots}}</button>
           <div class="actions-menu hidden">
             <button class="actions-item" id="editPlaylistButton">
@@ -43,6 +46,9 @@
               >Удалить
             </button>
           </div>
+          {{else}}
+          <button class="control-btn shuffle-album" id="shareButton">{{> share }}</button>
+          {{/if}}
           {{/unless}}
         </div>
       </div>
@@ -80,7 +86,9 @@
                 </p>
               </div>
               <div class="track-like-container">
-                <button class="like-btn-track album-like-size {{#if is_liked}}active{{/if}}" data-track-id="{{ id }}">{{> likeBtn }}</button>
+                <button class="like-btn-track album-like-size {{#if is_liked}}active{{/if}}" data-track-id="{{ id }}">
+                  {{> likeBtn }}
+                </button>
                 <div class="track-duration">{{ duration }}</div>
                 {{#unless @root.favourite}}
                 <button class="delete-btn-track" data-track-id="{{ id }}">{{> delete }}</button>
@@ -91,8 +99,9 @@
           {{/each}}
         </div>
         {{#unless favourite}}
+        <<<<<<< HEAD
         {{#if tracks}}
-          <div class="header-divider" id="playlistTracksDivider"></div>
+        <div class="header-divider" id="playlistTracksDivider"></div>
         {{/if}}
         <div class="playlist-search-title">Давай добавим что-нибудь в твой плейлист</div>
         <div class="playlist-search-container">
@@ -106,6 +115,25 @@
           />
         </div>
         <div class="tracks-table" id="searchedTracksContainer"></div>
+        =======
+        {{#if isCreator}}
+        {{#if tracks}}
+        <div class="header-divider" id="playlistTracksDivider"></div>
+        {{/if}}
+        <div class="playlist-search-title">Давай добавим что-нибудь в твой плейлист</div>
+        <div class="playlist-search-container">
+          <div class="search-icon">{{> searchIcon }}</div>
+          <input
+            type="text"
+            class="search-input"
+            id="searchTracks"
+            placeholder="Название трека"
+            value="{{ searchValue }}"
+          />
+        </div>
+        <div class="tracks-table" id="searchedTracksContainer"></div>
+        {{/if}}
+        >>>>>>> dev
         {{/unless}}
       </div>
     </div>
@@ -120,6 +148,7 @@
         <div class="card-sub all-description" id="allDescription">{{ description }}</div>
       </div>
     </div>
+    <<<<<<< HEAD
     <div class="overlay" id="editPlaylistOverlay">
       <div class="window">
         <div class="overlay-header">
@@ -134,9 +163,13 @@
                 <img src="{{ cover }}" alt="Аватар плейлиста" class="profile-image" />
               </div>
               <div class="edit-avatar-buttons" id="editPlaylistAvatarButtons">
-                <button id="setPlaylistAvatarButton" class="secondary-button save-avatar-button-size">Выбрать фото</button>
+                <button id="setPlaylistAvatarButton" class="secondary-button save-avatar-button-size">
+                  Выбрать фото
+                </button>
                 {{#if isCover}}
-                <button id="deletePlaylistAvatarButton" class="secondary-button save-avatar-button-size">Удалить фото</button>
+                <button id="deletePlaylistAvatarButton" class="secondary-button save-avatar-button-size">
+                  Удалить фото
+                </button>
                 {{/if}}
               </div>
             </div>
@@ -144,7 +177,13 @@
               <div class="form-group">
                 <label for="title">Название</label>
                 <div class="input-wrapper">
-                  <input type="text" id="titlePlaylist" name="titlePlaylist" placeholder="Добавь название" value="{{ title }}" />
+                  <input
+                    type="text"
+                    id="titlePlaylist"
+                    name="titlePlaylist"
+                    placeholder="Добавь название"
+                    value="{{ title }}"
+                  />
                   <div class="error-message" id="titlePlaylistError"></div>
                   <div class="validation-message" id="titleInformation"></div>
                 </div>
@@ -158,7 +197,8 @@
                     id="descriptionPlaylist"
                     name="descriptionPlaylist"
                     placeholder="Добавь описание (необязательно)"
-                  >{{ description }}</textarea>
+                    >{{ description }}</textarea
+                  >
                   <div class="error-message" id="descriptionPlaylistError"></div>
                   <div class="validation-message" id="descriptionInformation"></div>
                 </div>
@@ -180,21 +220,19 @@
           <span class="album-title">Вы точно хотите удалить плейлист?</span>
           <button id="closeWarningBtnPlaylist" class="close-button" aria-label="Закрыть">{{> close }}</button>
         </div>
-        <div class="card-sub all-description">Плейлист {{title}} будет удалён из библиотеки</div>
+        <div class="card-sub all-description">Плейлист {{ title }} будет удалён из библиотеки</div>
         <div class="warning-btns-overlay">
           <div class="save-overlay-button">
-          <button class="primary-button close-warning save-avatar-button-size" id="cancelActionPlaylist">
-            Закрыть
-          </button>
+            <button class="primary-button close-warning save-avatar-button-size" id="cancelActionPlaylist">
+              Закрыть
+            </button>
+          </div>
+          <div class="save-overlay-button">
+            <button class="primary-button save-overlay-button-size" id="confirmActionPlaylist">Удалить</button>
+          </div>
         </div>
-        <div class="save-overlay-button">
-          <button class="primary-button save-overlay-button-size" id="confirmActionPlaylist">
-            Удалить
-          </button>
-        </div>
-        </div>
-        
       </div>
     </div>
+    ======= >>>>>>> dev
   </div>
 </div>

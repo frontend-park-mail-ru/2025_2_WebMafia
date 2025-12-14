@@ -35,8 +35,8 @@ export function durationParser(duration) {
 }
 
 export function durationToSec(d) {
-    const [m, s] = d.split(':').map(Number);
-    return m * 60 + s;
+  const [m, s] = d.split(':').map(Number);
+  return m * 60 + s;
 }
 
 export function totalDurationParser(duration) {
@@ -60,7 +60,7 @@ export function totalDurationParser(duration) {
 }
 
 export function tracksNumParser(count) {
-  if (count == null || count < 0) return '';
+  if (count == null || count < 0) return '0 треков';
   return `${count} ${pluralize(count, 'трек', 'трека', 'треков')}`;
 }
 

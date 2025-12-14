@@ -1,5 +1,4 @@
 <div class="section" id="section">
-  {{!-- {{> header}} --}}
   <div class="layout">
     {{> sidebar}}
     {{#if isAuthenticated}}
@@ -38,7 +37,13 @@
           </button>
           <div class="library-search-container">
             <div class="search-icon">{{> searchIcon }}</div>
-            <input type="text" class="search-input" id="librarySearchInput" placeholder="Искать в библиотеке" value="{{ searchValue }}"/>
+            <input
+              type="text"
+              class="search-input"
+              id="librarySearchInput"
+              placeholder="Искать в библиотеке"
+              value="{{ searchValue }}"
+            />
             <div class="input-close-button">{{> close}}</div>
           </div>
         </div>
@@ -48,69 +53,17 @@
       </div>
     </div>
     {{else}}
-      <div class="profile-wrapper" id="scrollContent">
-        <div class="search-alert-container">
-          <div class="search-alert-text">
-            <div class="search-alert-title">Библиотека</div>
-            <div class="search-alert-subtitle">Войдите, чтобы открыть доступ к вашим плейлистам, трекам и избранным артистам.</div>
-            <a href="/login" class="secondary-button login-secondary-button">Войти</a>
+    <div class="profile-wrapper" id="scrollContent">
+      <div class="search-alert-container">
+        <div class="search-alert-text">
+          <div class="search-alert-title">Библиотека</div>
+          <div class="search-alert-subtitle">
+            Войдите, чтобы открыть доступ к вашим плейлистам, трекам и избранным артистам.
           </div>
-        </div>
-      </div>
-    {{/if}}
-    <div class="overlay" id="createPlaylistOverlay">
-      <div class="window">
-        <div class="overlay-header">
-          <h2 class="title-name">Создать плейлист</h2>
-          <button id="closeOverlayButton" class="close-button" aria-label="Закрыть">{{> close }}</button>
-        </div>
-        <div class="header-divider"></div>
-        <div class="edit-profile-wrapper">
-          <div class="edit-profile-info">
-            <div class="edit-avatar">
-              <div class="edit-avatar-placement">
-                <img
-                  src="static/img/default-playlist.png"
-                  alt="Аватар плейлиста"
-                  class="profile-image"
-                  id="playlistAvatar"
-                />
-              </div>
-              <div class="edit-avatar-buttons" id="editAvatarButtons">
-                <button id="setAvatarButton" class="secondary-button save-avatar-button-size">Выбрать фото</button>
-              </div>
-            </div>
-            <form id="createPlaylistForm">
-              <div class="form-group">
-                <label for="title">Название</label>
-                <div class="input-wrapper">
-                  <input type="text" id="title" name="title" placeholder="Добавь название" />
-                  <div class="error-message" id="titleError"></div>
-                  <div class="validation-message" id="titleInformation"></div>
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label for="description">Описание</label>
-                <div class="input-wrapper">
-                  <textarea
-                    maxlength="300"
-                    id="description"
-                    name="description"
-                    placeholder="Добавь описание (необязательно)"
-                  ></textarea>
-                  <div class="validation-message" id="descriptionInformation"></div>
-                </div>
-              </div>
-
-              <div class="general-error" id="generalError"></div>
-            </form>
-          </div>
-          <div class="save-overlay-button">
-            <button class="primary-button save-overlay-button-size" id="savePlaylistButton">Создать</button>
-          </div>
+          <a href="/login" class="secondary-button login-secondary-button">Войти</a>
         </div>
       </div>
     </div>
+    {{/if}}
   </div>
 </div>
