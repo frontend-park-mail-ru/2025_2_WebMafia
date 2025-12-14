@@ -340,7 +340,7 @@ export class apiService {
   async getPlaylistPageData(id: string, isAuthenticated: boolean) {
     try {
       if (id === 'LM')
-        return await this.request<{ tracks: Track[] }>('/playlists/favorite').catch(() => ({ tracks: [] }));
+        return await this.request<Playlist>('/playlists/favorite').catch(() => ({} as Playlist));
 
       const playlist = await this.request<Playlist>(`/playlists/${id}`).catch(() => ({} as Playlist));
 
@@ -533,24 +533,18 @@ export class apiService {
 
   async toggleSubscribeToArtist(id: string, subscribe: boolean) {
      const csrfToken = await this.getCSRFToken();
-     return this.request(`/favorite/artists/${id}`, {
+     await this.request(`/favorite/artists/${id}`, {
         method: subscribe ? 'POST' : 'DELETE',
         headers: { 'X-CSRF-Token': csrfToken },
      });
   }
 
   async toggleAlbumLike(id: string, like: boolean) {
-    try {
-      const csrfToken = await this.getCSRFToken();
-
-      return this.request(`/favorite/albums/${id}`, {
-        method: like ? 'POST' : 'DELETE',
-        headers: { 'X-CSRF-Token': csrfToken },
-      });
-    } catch {
-      console.error('Failed to subscribe to artist');
-      return [];
-    }
+    const csrfToken = await this.getCSRFToken();
+    await this.request(`/favorite/albums/${id}`, {
+      method: like ? 'POST' : 'DELETE',
+      headers: { 'X-CSRF-Token': csrfToken },
+    });
   }
 }
 

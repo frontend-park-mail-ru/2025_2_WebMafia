@@ -13,6 +13,7 @@ export interface Album {
   title: string;
   avatar_url?: string;
   release_date?: string;
+  description?: string;
   type?: string;
   is_liked?: boolean;
   artists?: Artist[];
@@ -28,13 +29,36 @@ export interface Track {
   artists?: Artist[];
 }
 
+export interface MappedTrack {
+  id: string;
+  name: string;
+  album?: string;
+  album_id?: string;
+  cover?: string;
+  artists?: Artist[];
+  plays: string;
+  duration: string;
+  duration_s?: number;
+  is_liked?: boolean;
+  num?: number;
+}
+
 export interface Playlist {
   id: string;
   title: string;
   description?: string;
   avatar_url?: string;
   is_favorite?: boolean;
+  created_at?: string,
+  creator_id?: string,
   tracks?: Track[];
+}
+
+export interface PlaylistSuccessData {
+  id: string;
+  title: string;
+  description: string;
+  image: string | null;
 }
 
 export interface UserProfile {

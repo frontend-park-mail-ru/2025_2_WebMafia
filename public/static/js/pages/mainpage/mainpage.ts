@@ -22,7 +22,7 @@ export class MainPage extends BasePage {
   //Тож для ремувивентлистнеров
   private clickHandlers: Array<{ el: Element, fn: EventListener }> = [];
 
-  async renderContent(contentContainer: HTMLElement): Promise<void> {
+  protected async renderContent(contentContainer: HTMLElement): Promise<void> {
     let pageData: MainPageData = {
       isAuthenticated: localStorage.getItem('isAuthenticated') === 'true',
       artists: [],

@@ -1,5 +1,7 @@
 import { FormValidator, ValidatorsConfig, InformationConfig } from '@/utils/validation';
 import { images } from '@/assets';
+import {confirmation} from "@/components/confirmation_modal/confirmationModal.ts";
+import {router} from "@/routing.ts";
 
 export interface BaseModal {
   modalId: string;
@@ -26,6 +28,7 @@ export abstract class BaseFormModal<TData> {
   protected abstract handleSubmit(btn: HTMLButtonElement): Promise<void>;
   protected abstract getValidationConfig(): { validators: ValidatorsConfig, info: InformationConfig };
   protected abstract hasUnsavedChanges(): boolean;
+  protected abstract updateAvatarPreview(src: string | null): void;
 
   protected afterRenderHook(): void {}
 
@@ -33,6 +36,19 @@ export abstract class BaseFormModal<TData> {
     this.data = data;
     const existing = document.querySelector('.overlay');
     if (existing) existing.remove();
+
+    if (localStorage.getItem('isAuthenticated') !== 'true') {
+      confirmation.showConfirm({
+        title: 'Хочешь создать плейлист?',
+        description: `Создание плейлистов доступном в твоём <b>Wave Music</b> аккаунте`,
+        confirmText: 'Войти',
+        cancelText: 'Закрыть',
+        onConfirm: () => {
+          router.navigate('/login')
+        }
+      });
+      return;
+    }
 
     const config = this.getModalConfig();
     const layoutTemplate = Handlebars.templates['modal.hbs'];
@@ -105,18 +121,6 @@ export abstract class BaseFormModal<TData> {
       this.renderDeleteAvatarBtn();
     };
     reader.readAsDataURL(file);
-  }
-
-  protected updateAvatarPreview(src: string | null) {
-    const container = document.getElementById('avatarContainer');
-    if (!container) return;
-
-    if (src) {
-      container.innerHTML = `<img src="${src}" class="profile-image" id="avatarPreview" />`;
-    } else {
-      const config = this.getModalConfig();
-      container.innerHTML = `<div class="default-avatar profile-edit-avatar">${config.avatarLetter || ''}</div>`;
-    }
   }
 
   protected renderDeleteAvatarBtn() {

@@ -51,9 +51,9 @@ export class ProfileModal extends BaseFormModal<ProfileModalData> {
   }
 
   protected hasUnsavedChanges(): boolean {
-    if (!this.overlay) return false;
+    if (!this.overlay || !this.data) return false;
 
-    if (this.selectedAvatarFile || this.isAvatarDeleted) return true;
+    if (this.selectedAvatarFile || (this.isAvatarDeleted && this.data.avatar)) return true;
 
     const emailInput = this.overlay.querySelector('#email') as HTMLInputElement;
     const loginInput = this.overlay.querySelector('#login') as HTMLInputElement;
@@ -63,14 +63,25 @@ export class ProfileModal extends BaseFormModal<ProfileModalData> {
     const currentLogin = loginInput ? loginInput.value : '';
     const currentPass = passInput ? passInput.value : '';
 
-    const originalEmail = this.data?.email || '';
-    const originalLogin = this.data?.nickname || '';
+    const originalEmail = this.data.email || '';
+    const originalLogin = this.data.nickname || '';
 
     if (currentEmail !== originalEmail || currentLogin !== originalLogin || currentPass.length > 0) {
       return true;
     }
 
     return false;
+  }
+
+  protected updateAvatarPreview(src: string | null) {
+    const container = document.getElementById('avatarContainer');
+    if (!container) return;
+
+    if (src) {
+      container.innerHTML = `<img src="${src}" class="profile-image" id="avatarPreview" />`;
+    } else {
+      container.innerHTML = `<div class="default-avatar profile-edit-avatar">${this.data?.letter || ''}</div>`;
+    }
   }
 
   protected async handleSubmit(btn: HTMLButtonElement): Promise<void> {

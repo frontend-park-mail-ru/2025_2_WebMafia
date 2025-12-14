@@ -158,7 +158,7 @@
 
 .window {
   background: #fff;
-  max-width: 50%;
+  max-width: 750px;
   width: 100%;
   padding: 40px;
   border-radius: 20px;
@@ -174,7 +174,7 @@
   opacity: 1;
 }
 
-#editProfileForm {
+.modal-form {
   width: 100%;
 }
 

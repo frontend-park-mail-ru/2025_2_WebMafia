@@ -24,7 +24,7 @@ interface ProfilePageData {
 export class ProfilePage extends BasePage {
   private currentProfileData: ProfileModalData | null = null;
 
-  async renderContent(contentContainer: HTMLElement) {
+  protected async renderContent(contentContainer: HTMLElement) {
     const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
     const pageData: ProfilePageData = {
       isAuthenticated,
@@ -85,10 +85,10 @@ export class ProfilePage extends BasePage {
       titleEl.textContent = pageData.profile.nickname;
     }
 
-    this.afterRender();
+    this.initComponents();
   }
 
-  private afterRender() {
+  private initComponents() {
     playerOnlyOnPlay();
     slider.init();
     scrollbar.init();

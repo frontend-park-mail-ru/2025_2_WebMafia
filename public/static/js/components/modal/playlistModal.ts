@@ -4,6 +4,7 @@ import { router } from '@/routing';
 import { images } from '@/assets';
 import { FormSchemas } from '@/utils/validationRules';
 import { getValidImage } from '@/utils/parsers';
+import { PlaylistSuccessData } from "@/models.ts";
 
 export interface PlaylistModalData {
   id?: string;
@@ -11,13 +12,6 @@ export interface PlaylistModalData {
   description?: string;
   image?: string;
   isEdit: boolean;
-}
-
-export interface PlaylistSuccessData {
-  id: string;
-  title: string;
-  description: string;
-  image: string | null;
 }
 
 export class PlaylistModal extends BaseFormModal<PlaylistModalData> {
@@ -54,10 +48,16 @@ export class PlaylistModal extends BaseFormModal<PlaylistModalData> {
     return FormSchemas.playlist();
   }
 
+  protected updateAvatarPreview(src: string | null) {
+    const container = document.querySelector('#avatarContainer img') as HTMLImageElement;
+    if (!container) return;
+    container.src = src || images.defaultPlaylistPath;
+  }
+
   protected hasUnsavedChanges(): boolean {
     if (!this.overlay || !this.data) return false;
 
-    if (this.selectedAvatarFile || this.isAvatarDeleted) return true;
+    if (this.selectedAvatarFile || (this.isAvatarDeleted && this.data.image && this.data.image !== images.defaultPlaylistPath)) return true;
 
     const titleInput = this.overlay.querySelector('#title') as HTMLInputElement;
     const descInput = this.overlay.querySelector('#description') as HTMLInputElement;

@@ -28,7 +28,7 @@ interface ArtistPageData {
 }
 
 export class ArtistPage extends BasePage {
-  async renderContent(contentContainer: HTMLElement, artistId: string) {
+  protected async renderContent(contentContainer: HTMLElement, artistId: string) {
     const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
     let pageData: ArtistPageData = {
       isAuthenticated: isAuthenticated,
