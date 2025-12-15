@@ -1,11 +1,12 @@
 class ModalService {
-  showConfirm({ title, description, confirmText = 'Удалить', cancelText = 'Закрыть', onConfirm }) {
+  showConfirm({ title, description, formatingText, confirmText = 'Удалить', cancelText = 'Закрыть', onConfirm }) {
     const template = Handlebars.templates['confirmationModal.hbs'];
     const div = document.createElement('div');
 
     div.innerHTML = template({
       title,
       description,
+      formatingText,
       confirmText,
       cancelText,
     });

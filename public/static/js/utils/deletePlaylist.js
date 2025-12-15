@@ -5,7 +5,8 @@ import { showInfoMessage } from '@/utils/showInfoMessage.js';
 export const deletePlaylistLogic = (id, name, onSuccess) => {
   confirmation.showConfirm({
     title: 'Вы точно хотите удалить плейлист?',
-    description: `Плейлист <b>«${name || ''}»</b> будет удалён <b>безвозвратно</b>`,
+    description: `Плейлист «${name || ''}» будет удалён`,
+    formatingText: 'безвозвратно',
     confirmText: 'Удалить',
     cancelText: 'Отмена',
     onConfirm: async () => {

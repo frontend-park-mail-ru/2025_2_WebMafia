@@ -1,6 +1,7 @@
 export const API_AVATARS_URL = 'https://wave-music.ru/avatars';
 export const API_TRACKS_URL = `https://wave-music.ru/music/tracks`;
 import { userRoutes, tracksArtistAlbumRoutes, playlistRoutes } from '@/devRoutesConfig.js';
+import { CommentsSocket } from '@/utils/webSocketConnect.js';
 
 export class apiServises {
   constructor() {
@@ -628,6 +629,18 @@ export class apiServises {
       console.error('Failed to subscribe to artist');
       return [];
     }
+  }
+
+  async GetTrackComments(id) {
+    return this.request(`/comments/tracks/${id}`);
+  }
+
+  createTrackSocket(trackId, token, handlers) {
+    let baseUrl = import.meta.env.DEV ? 'ws://localhost:8081' : this.baseURL.replace(/^http/, 'ws');
+
+    const wsUrl = `${baseUrl}/api/v1/ws/comments/tracks/${trackId}`;
+
+    return new CommentsSocket(wsUrl, token, handlers);
   }
 }
 

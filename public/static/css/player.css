@@ -36,6 +36,7 @@
   width: 32px;
   height: 32px;
   padding: 0;
+  cursor: pointer;
 }
 
 .like-btn svg {
@@ -123,11 +124,13 @@
   max-width: 55%;
 }
 
-.track-time {
+.track-time,
+.track-time-comments {
   flex-shrink: 0;
 }
 
-.track-time.current {
+.track-time.current,
+.track-time-comments.current {
   width: 34px;
 }
 
@@ -286,7 +289,24 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  width: clamp(60px, 15vw, 150px);
+  width: clamp(60px, 15vw, 200px);
+}
+
+.player-right svg {
+  width: 30px;
+  height: 30px;
+}
+
+.goToCommentsBtn {
+  background: none;
+  cursor: pointer;
+  border: none;
+  margin-right: 5px;
+  transition: color 0.3s ease;
+}
+
+.goToCommentsBtn:hover {
+  transform: scale(1.1);
 }
 
 .volume-slider {
@@ -445,7 +465,7 @@
   .player.expanded .track-time,
   .player.expanded .shuffle,
   .player.expanded .prev,
-  .player.expanded .repeat {
+  .player.expanded .repeat .player.expanded .track-time-comments {
     display: block;
   }
 
@@ -511,7 +531,9 @@
   }
 
   .player.expanded .track-time.current,
-  .player.expanded .track-time.total {
+  .player.expanded .track-time.total,
+  .player.expanded .track-time-comments.current,
+  .player.expanded .track-time-comments.total {
     position: absolute;
     bottom: -25px;
     display: block;
@@ -524,6 +546,16 @@
   }
 
   .player.expanded .track-time.total {
+    right: 0;
+    transform: translateY(0);
+  }
+
+  .player.expanded .track-time-comments.current {
+    left: 0;
+    transform: translateY(0);
+  }
+
+  .player.expanded .track-time-comments.total {
     right: 0;
     transform: translateY(0);
   }
@@ -565,7 +597,8 @@
   .shuffle,
   .prev,
   .repeat,
-  .repeat-one {
+  .repeat-one,
+  .track-time-comments {
     display: none;
   }
 
