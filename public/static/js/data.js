@@ -636,9 +636,9 @@ export class apiServises {
   }
 
   createTrackSocket(trackId, token, handlers) {
-    let baseUrl = import.meta.env.DEV ? 'ws://localhost:8081' : this.baseURL.replace(/^http/, 'ws');
+    let baseUrl = import.meta.env.DEV ? 'ws://localhost:8081/api/v1' : this.baseURL.replace(/^http/, 'ws');
 
-    const wsUrl = `${baseUrl}/api/v1/ws/comments/tracks/${trackId}`;
+    const wsUrl = `${baseUrl}/ws/comments/tracks/${trackId}`;
 
     return new CommentsSocket(wsUrl, token, handlers);
   }
