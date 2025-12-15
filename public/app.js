@@ -8,7 +8,7 @@ if ('serviceWorker' in navigator) {
 }
 
 import { player } from '@/components/player/player.js';
-import { router } from '@/routing.js';
+import { router } from '@/routing.ts';
 import { persistence } from '@/utils/persistence.js';
 import { spaceToggle } from '@/utils/playerSpace.js';
 

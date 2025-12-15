@@ -164,6 +164,48 @@
   margin: 0;
 }
 
+.input-wrapper {
+  padding-bottom: 7px;
+}
+
+.send-coment-btn {
+  border: #d0bbbb 1px solid;
+  border-radius: 12px;
+  background: none;
+  width: 47px;
+  height: 47px;
+  align-items: center;
+  justify-content: center;
+  margin-left: 5px;
+  cursor: pointer;
+}
+
+.send-coment-btn:hover {
+  border: #636363 1px solid;
+  transform: scale(1.05);
+}
+
+.send-coment-btn svg {
+  width: 25px;
+  height: 25px;
+  transform: translateX(0) translateY(2px);
+}
+
+.error-message-comment {
+  color: #e74c3c;
+  font-size: 14px;
+  display: none;
+  pointer-events: none;
+  bottom: -20px;
+  left: 0;
+  position: absolute;
+}
+
+.error-message-comment.show {
+  display: block;
+  margin-bottom: 10px;
+}
+
 .comments-title-name {
   font-weight: 600;
   font-size: 32px;
