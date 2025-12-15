@@ -103,7 +103,6 @@ export class PlaylistPage {
       alert('Не удалось загрузить страницу плейлиста.');
       return;
     }
-    console.log(pageData);
 
     document.getElementById('app').innerHTML = contentTemplate(pageData);
     document.querySelector('head title').textContent = pageData.title;
