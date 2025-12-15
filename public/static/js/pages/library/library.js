@@ -110,6 +110,7 @@ export class LibraryPage {
     document.getElementById('app').innerHTML = contentTemplate(pageData);
     document.querySelector('.grid-layout').innerHTML = gridTemplate(pageData);
     playerOnlyOnPlay();
+    await Promise.all([header.render(), sidebar.render()]);
     initScrollbar();
     playTrack();
     setPlayButtonsOnAuth();

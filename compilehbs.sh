@@ -96,4 +96,7 @@ handlebars public/static/js/pages/track_comments/trackComments.hbs -f public/sta
 
 handlebars public/static/js/partials/goToCommentsBtn.hbs -f public/static/js/partials/goToCommentsBtn.tmpl.js
 
+handlebars public/static/js/partials/sendComentBtn.hbs -f public/static/js/partials/sendComentBtn.tmpl.js
+
+
 
