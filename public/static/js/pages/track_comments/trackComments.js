@@ -240,13 +240,67 @@ export class trackComments {
     if (commentForm) {
       const newCommentForm = commentForm.cloneNode(true);
       commentForm.parentNode.replaceChild(newCommentForm, commentForm);
-      const newTitleInput = newCommentForm.querySelector('#title');
-      const newErrorDiv = newCommentForm.querySelector('#titleError');
+      const newTitleInput = newCommentForm.querySelector('#title-comment');
+      const newErrorDiv = newCommentForm.querySelector('#titleErrorCom');
+      const sendBtn = document.querySelector('.send-coment-btn');
+      sendBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+
+        const text = newTitleInput.value.trim();
+
+        if (text.length > 200) {
+          if (newErrorDiv) {
+            newErrorDiv.classList.add('show');
+            newErrorDiv.textContent = 'Максимум 200 символов';
+          }
+          return;
+        }
+
+        if (text.length == 0) {
+          if (newErrorDiv) {
+            newErrorDiv.classList.add('show');
+            newErrorDiv.textContent = 'Нельзя отправить пустой коммент';
+          }
+          return;
+        }
+
+        if (newErrorDiv) {
+          newErrorDiv.classList.remove('show');
+          newErrorDiv.textContent = '';
+        }
+
+        if (this.socket) {
+          const payload = { text: text };
+          this.socket.send(payload);
+          newTitleInput.value = '';
+        } else {
+          if (newErrorDiv) {
+            newErrorDiv.textContent = 'Ошибка соединения. Обновите страницу.';
+          }
+          console.error('Socket is not initialized');
+        }
+      });
 
       newCommentForm.addEventListener('submit', (e) => {
         e.preventDefault();
 
         const text = newTitleInput.value.trim();
+
+        if (text.length > 200) {
+          if (newErrorDiv) {
+            newErrorDiv.textContent = 'Максимум 200 символов';
+          }
+          return;
+        }
+
+        if (text.length == 0) {
+          if (newErrorDiv) {
+            newErrorDiv.textContent = 'Нельзя отправить пустой коммент';
+          }
+          return;
+        }
+
+        if (newErrorDiv) newErrorDiv.textContent = '';
 
         if (this.socket) {
           const payload = { text: text };

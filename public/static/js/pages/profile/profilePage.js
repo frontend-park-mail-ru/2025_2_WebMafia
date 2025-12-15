@@ -27,6 +27,7 @@ export class ProfilePage {
     const contentTemplate = Handlebars.templates['profilePage.hbs'];
     document.getElementById('app').innerHTML = contentTemplate(pageData);
     document.querySelector('head title').textContent = 'Wave Music';
+    await Promise.all([header.render(), sidebar.render()]);
 
     if (!pageData.isAuthenticated) {
       await Promise.all([header.render(), sidebar.render()]);
