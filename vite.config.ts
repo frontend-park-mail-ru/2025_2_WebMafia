@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite';
 import string from 'vite-plugin-string';
+import checker from 'vite-plugin-checker';
 import { fileURLToPath, URL } from 'node:url';
 
 export default defineConfig({
@@ -9,6 +10,8 @@ export default defineConfig({
     outDir: '../dist',
     emptyOutDir: true,
     manifest: true,
+    target: 'es2022',
+    sourcemap: false,
   },
   server: {
     port: 8090,
@@ -22,6 +25,9 @@ export default defineConfig({
   plugins: [
     string({
       include: '**/*.hbs',
+    }),
+    checker({
+      typescript: true,
     }),
   ],
 });

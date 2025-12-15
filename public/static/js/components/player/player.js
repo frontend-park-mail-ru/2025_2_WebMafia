@@ -2,7 +2,7 @@ import { apiServise, API_TRACKS_URL } from '@/data';
 import { getValidImage } from '@/utils/parsers.ts';
 import { likeChange } from '@/utils/likeTrack';
 import { setupMarquees } from '@/utils/marquee';
-import { router } from '@/routing.js';
+import { router } from '@/routing.ts';
 
 export class Player extends EventTarget {
   constructor() {

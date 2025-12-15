@@ -1,6 +1,6 @@
 import { BasePage } from '@/pages/base/basePage.ts';
-import { apiServise } from '@/data.js';
-import { router } from '@/routing.js';
+import { apiServise } from '@/data.ts';
+import { router } from '@/routing.ts';
 import { scrollbar } from '@/utils/scrollbar';
 import { slider } from '@/utils/slider';
 import { nowPlayingSlider } from "@/pages/mainpage/nowPlayingSlider";
@@ -9,7 +9,7 @@ import { playTrack } from '@/playTrackBtn.js';
 import { getValidImage, playsParser, dateParser } from '@/utils/parsers';
 import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
 import { sliderColorChange, updateCurrentTimeAndSlider, loadTrackInfo } from '@/utils/playerFunctions.js';
-import { initSubscribeButton } from '@/utils/subscribeArtist'; // Наша новая утилита
+import { initSubscribeButton } from '@/utils/subscribeArtist';
 import { spawnBubble, injectBubbleStyles } from '@/utils/commentAnimation.js';
 import { likeTrackBtn } from '@/utils/likeTrack.js';
 import { share } from '@/utils/shareBtn.js';
@@ -252,7 +252,7 @@ export class TrackCommentsPage extends BasePage {
     const newForm = form.cloneNode(true) as HTMLFormElement;
     form.parentNode?.replaceChild(newForm, form);
 
-    const input = newForm.querySelector('#title') as HTMLInputElement;
+    const input = newForm.querySelector('#title-comment') as HTMLInputElement;
     const errorDiv = newForm.querySelector('#titleError');
 
     const submitHandler = (e: Event) => {

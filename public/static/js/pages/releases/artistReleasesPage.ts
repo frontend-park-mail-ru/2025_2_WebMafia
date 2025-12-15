@@ -1,5 +1,5 @@
-import { apiServise } from '@/data.js';
-import { router } from '@/routing.js';
+import { apiServise } from '@/data.ts';
+import { router } from '@/routing.ts';
 import { scrollbar } from '@/utils/scrollbar';
 import { getValidImage } from '@/utils/parsers.ts';
 import { playTrack } from '@/playTrackBtn.js';

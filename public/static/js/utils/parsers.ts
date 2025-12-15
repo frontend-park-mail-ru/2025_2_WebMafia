@@ -1,4 +1,4 @@
-import { API_AVATARS_URL } from '@/data.js';
+import { API_AVATARS_URL } from '@/data.ts';
 
 export function pluralize(number: number, one: string, few: string, many: string): string {
   const n = Math.floor(number);

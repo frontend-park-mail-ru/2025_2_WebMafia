@@ -1,6 +1,6 @@
 import { scrollbar } from '@/utils/scrollbar';
-import { router } from '@/routing.js';
-import { apiServise } from '@/data.js';
+import { router } from '@/routing.ts';
+import { apiServise } from '@/data.ts';
 import { durationParser, getValidImage, playsParser } from '@/utils/parsers.ts';
 import { header } from '@/components/header/header.js';
 import { sidebar } from '@/components/sidebar/sidebar.js';

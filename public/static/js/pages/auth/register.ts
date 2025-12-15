@@ -1,6 +1,6 @@
 import { Auth } from './auth.ts';
 import { FormValidator } from '@/utils/validation';
-import { apiServise } from '@/data.js';
+import { apiServise } from '@/data.ts';
 import { initPasswordShowing } from '@/eye';
 import { FormSchemas } from '@/utils/validationRules';
 

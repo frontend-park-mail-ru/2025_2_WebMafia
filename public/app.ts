@@ -2,15 +2,15 @@ if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker
       .register('/sw.js')
-      .then((reg) => console.log('Service Worker зарегистрирован!', reg))
-      .catch((err) => console.error('Ошибка регистрации Service Worker:', err));
+      .then((reg) => console.log('SW зарегистрирован:', reg))
+      .catch((err) => console.error('Ошибка SW:', err));
   });
 }
 
-import { player } from '@/components/player/player.js';
-import { router } from '@/routing.ts';
-import { persistence } from '@/utils/persistence.js';
-import { spaceToggle } from '@/utils/playerSpace.js';
+import { player } from '@/components/player/player';
+import { router } from '@/routing';
+import { persistence } from '@/utils/persistence';
+import { spaceToggle } from '@/utils/playerSpace';
 
 import.meta.glob('@/pages/**/*.tmpl.js', { eager: true });
 import.meta.glob('@/partials/**/*.tmpl.js', { eager: true });
@@ -21,19 +21,27 @@ function startApp() {
   initializePage();
 }
 
-document.addEventListener('DOMContentLoaded', startApp);
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', startApp);
+} else {
+  startApp();
+}
 
 function registerPartials() {
   const hbsFiles = import.meta.glob(['@/partials/**/*.hbs', '@/components/**/*.hbs'], { eager: true });
 
   for (const path in hbsFiles) {
-    const name = path.split('/').pop().replace('.hbs', '');
-    const templateKey = name + '.hbs';
-    Handlebars.registerPartial(name, Handlebars.templates[templateKey]);
+    const fileName = path.split('/').pop(); // "sidebar.hbs"
+    if (!fileName) continue;
+    const name = fileName.replace('.hbs', ''); // "sidebar"
+    const templateKey = fileName;
+    if (Handlebars.templates[templateKey]) {
+      Handlebars.registerPartial(name, Handlebars.templates[templateKey]);
+    }
   }
 
-  Handlebars.registerHelper('numeration', function (value) {
-    return parseInt(value) + 1;
+  Handlebars.registerHelper('numeration', function (value: string | number) {
+    return parseInt(String(value)) + 1;
   });
 }
 

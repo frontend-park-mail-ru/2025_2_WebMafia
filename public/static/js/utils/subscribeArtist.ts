@@ -1,5 +1,5 @@
-import { apiServise } from '@/data.js';
-import { router } from '@/routing.js';
+import { apiServise } from '@/data.ts';
+import { router } from '@/routing.ts';
 import { confirmation } from '@/components/confirmation_modal/confirmationModal.ts';
 import { showInfoMessage } from '@/utils/showInfoMessage';
 

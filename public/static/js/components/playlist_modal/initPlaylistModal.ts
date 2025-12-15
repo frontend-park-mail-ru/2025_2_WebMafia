@@ -51,7 +51,6 @@ class PlaylistModalService {
       confirmation.showConfirm({
         title: 'Создать плейлист',
         description: `Создание плейлистов не доступно на вашем аккаунте`,
-        formatingText: 'Wave Music',
         confirmText: 'Войти',
         cancelText: 'Закрыть',
         onConfirm: () => {
