@@ -46,6 +46,7 @@ export class PlaylistPage {
       const data = await apiServise.getPlaylistPageData(id, pageData.isAuthenticated);
       const firstTrackId = data.tracks && data.tracks.length > 0 ? data.tracks[0].id : null;
       pageData = {
+        id: id,
         favourite: true,
         date: 'Создан автоматически',
         title: 'Понравившиеся треки',
