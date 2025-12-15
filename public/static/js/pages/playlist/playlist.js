@@ -46,6 +46,7 @@ export class PlaylistPage {
       const data = await apiServise.getPlaylistPageData(id, pageData.isAuthenticated);
       const firstTrackId = data.tracks && data.tracks.length > 0 ? data.tracks[0].id : null;
       pageData = {
+        id: id,
         favourite: true,
         date: 'Создан автоматически',
         title: 'Понравившиеся треки',
@@ -102,6 +103,7 @@ export class PlaylistPage {
       alert('Не удалось загрузить страницу плейлиста.');
       return;
     }
+    console.log(pageData);
 
     document.getElementById('app').innerHTML = contentTemplate(pageData);
     document.querySelector('head title').textContent = pageData.title;
