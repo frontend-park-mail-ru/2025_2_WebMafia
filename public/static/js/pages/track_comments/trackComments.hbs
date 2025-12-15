@@ -1,0 +1,109 @@
+<div class="section" id="section">
+  <div class="layout">
+    {{> sidebar}}
+    <div class="page" id="scrollContent">
+      <div class="track-info-container comments">
+        <div class="track-info-artist-container">
+          <div class="right-side">
+            <img
+              src="{{ artist.avatar }}"
+              alt="фото альбома"
+              class="track-cover-comment {{#unless id}}loading{{/unless}}"
+            />
+            <div class="comments-artist-info">
+              <div class="track-comment-artist href-decoration" data-artist-id="{{ artist.id }}">{{ artist.name }}</div>
+              <div class="track-plays-num comments">{{ listeners }}</div>
+            </div>
+          </div>
+          <div class="left-side">
+            <button class="share-button black" id="shareButton">{{> share }}</button>
+            <button
+              class="primary-outline-button artist-subscription {{#unless id}}loading{{/unless}}"
+              id="artistSubscribeButton"
+              data-artist-id="{{ artist.id }}"
+              data-artist-name="{{ artist.name }}"
+              data-is-subscribed="{{ isSubscribed }}"
+            >
+              {{#if isSubscribed}}
+              Отписаться
+              {{else}}
+              Подписаться
+              {{/if}}
+            </button>
+          </div>
+        </div>
+        <div class="track-info-comments">
+          <div class="track-cover-and-buttons">
+            <div class="right-side">
+              <button
+                class="play-button play-button-album comments"
+                data-album-id="{{ id }}"
+                data-context="{{ player_context }}"
+                data-track-id="{{ track_id }}"
+                data-first-track-id="{{ track_id }}"
+              ></button>
+              <div class="comments-artist-info">
+                <div class="track-name">{{ title }}</div>
+                <div class="track-performer href-decoration" data-artist-id="{{ artist.id }}">{{ artist.name }}</div>
+              </div>
+            </div>
+            <div class="left-side">
+              <button
+                class="like-btn-track artist-like-size {{#if is_liked}}active{{/if}} comment"
+                data-track-id="{{ track_id }}"
+              >
+                {{> likeBtn }}
+              </button>
+            </div>
+          </div>
+
+          <div class="progress-remote-comments">
+            <span class="track-time-comments current">-:--</span>
+            <div class="remote-container-comments">
+              <input type="range" min="0" max="100" value="0" class="remote-slider-comments" />
+            </div>
+            <span class="track-time-comments total">-:--</span>
+          </div>
+        </div>
+      </div>
+      <div class="comments-container">
+        <div class="header-divider"></div>
+        <div class="comments-title-name">Оставьте комментарий</div>
+        <form id="createCommentsForm">
+          <div class="form-group">
+            <div class="input-wrapper">
+              <input type="text" id="title-comment" name="title" placeholder="Напишите комментарий" />
+              <button class="send-coment-btn">{{> sendComentBtn }}</button>
+              <div class="error-message-comment" id="titleErrorCom"></div>
+            </div>
+          </div>
+        </form>
+        <div id="commentsList"></div>
+        {{#each comment}}
+        <div class="comment-container">
+          <div class="profile-avatar-header user-avatar" id="avatarHeaderContainer">
+            {{#if avatar}}
+            <img src="{{ avatar }}" alt="Ваш аватар" class="profile-image" />
+            {{else}}
+            <div class="default-avatar default-avatar-header">{{ letter }}</div>
+            {{/if}}
+          </div>
+          <div class="comment-info-container">
+            <div class="comment-info-header">
+              <div class="comment-author">{{ nickname }}</div>
+              <span class="dot"></span>
+              <div class="comment-time">{{ created_at }}</div>
+            </div>
+            <div class="comment-text">
+              {{ text }}
+            </div>
+          </div>
+        </div>
+        {{/each}}
+        <div id="bubblesStream" class="bubbles-stream-container">
+          <!-- Сюда JS будет генерировать bubble-unit -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

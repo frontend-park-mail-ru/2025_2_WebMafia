@@ -4,6 +4,7 @@ import { fileURLToPath, URL } from 'node:url';
 
 export default defineConfig({
   root: 'public',
+  envDir: '..',
   build: {
     outDir: '../dist',
     emptyOutDir: true,

@@ -3,15 +3,20 @@ import { apiServise } from '@/data.js';
 import { router } from '@/routing.js';
 import { initPasswordShowing } from '@/eye.js';
 import { player } from '@/components/player/player.js';
+import { images } from '@/assets';
 
 export class LoginPage {
   async render() {
     const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
     if (isAuthenticated) {
-      router.navigate('/');
+      router.navigate('/profile');
     }
+    let pageData = {
+      logo: images.wavePath,
+    };
     const contentTemplate = Handlebars.templates['login.hbs'];
-    document.getElementById('app').innerHTML = contentTemplate();
+    document.getElementById('app').innerHTML = contentTemplate(pageData);
+    document.querySelector('head title').textContent = 'Wave Music';
     initPasswordShowing();
     this.initValidation();
   }
@@ -51,12 +56,10 @@ export class LoginPage {
       try {
         const response = await apiServise.loginUser(login, password);
 
-        console.log('Login successful:', response);
-
         localStorage.setItem('isAuthenticated', 'true');
+        localStorage.setItem('uid', response.id);
 
         router.navigate('/');
-        await player.init();
       } catch (error) {
         let msg = 'Ошибка авторизации.';
         if (error.message === 'unauthorized') msg = 'Неверное имя пользователя или пароль.';

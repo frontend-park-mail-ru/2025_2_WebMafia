@@ -115,7 +115,7 @@
   transform: translateY(-10px);
   pointer-events: none;
   transition: all 0.3s ease;
-  padding: 10px 15px 10px 15px;
+  padding: 10px 15px;
 }
 
 .dropdown-menu.show {
@@ -202,8 +202,13 @@
   stroke-width: 2.5;
 }
 
-.search-toggle, .input-close-button {
+.search-toggle,
+.input-close-button {
   display: none;
+}
+
+.formating-text {
+  font-weight: 600;
 }
 
 @media (max-width: 950px) {
@@ -294,8 +299,8 @@
     opacity: 0;
     transform: translateY(10px);
     transition:
-    opacity 0.35s ease 0.08s,
-    transform 0.35s ease 0.08s;
+      opacity 0.35s ease 0.08s,
+      transform 0.35s ease 0.08s;
   }
 
   .header-search-container.active .search-input {

@@ -1,5 +1,4 @@
 <div class="section" id="section">
-  {{> header}}
   <div class="layout">
     {{> sidebar}}
     <div class="page-wrapper" id="scrollContent">
@@ -14,7 +13,20 @@
         <div class="artist-name">{{ name }}</div>
         <div class="artist-interaction">
           <div class="listeners-num">{{ listeners }}</div>
-          <button class="primary-outline-button artist-subscription">Подписаться</button>
+          <button
+            class="primary-outline-button artist-subscription {{#unless id}}loading{{/unless}}"
+            id="artistSubscribeButton"
+            data-artist-id="{{ id }}"
+            data-artist-name="{{ name }}"
+            data-is-subscribed="{{ isSubscribed }}"
+          >
+            {{#if isSubscribed}}
+            Отписаться
+            {{else}}
+            Подписаться
+            {{/if}}
+          </button>
+          <button class="share-button {{#unless id}}loading{{/unless}}" id="shareButton">{{> share }}</button>
         </div>
         {{#if description}}
         <p class="artist-description">{{ description }}</p>
@@ -56,14 +68,19 @@
                 <div class="track-plays-num">{{ plays }}</div>
                 <div class="track-album-name">
                   <a href="album/{{ album_id }}" class="track-album-name href-decoration">
-                  {{ album }}
+                    {{ album }}
                   </a>
                 </div>
-                
+
                 <div class="track-like-container">
-                  <button class="like-btn-track artist-like-size {{#if is_liked}}active{{/if}}" data-track-id="{{ id }}">{{> likeBtn }}</button>
+                  <button
+                    class="like-btn-track artist-like-size {{#if is_liked}}active{{/if}}"
+                    data-track-id="{{ id }}"
+                  >
+                    {{> likeBtn }}
+                  </button>
+                  <div class="track-duration">{{ duration }}</div>
                 </div>
-                <div class="track-duration">{{ duration }}</div>
               </div>
             </div>
             {{/each}}
@@ -130,13 +147,13 @@
           <p><i class="slide-btn left"></i></p>
           <div class="cards" id="slidebar">
             {{#each similar_artists}}
-            <a href="artist/{{ id }}" class="card">
+            <div data-artist-id="{{ id }}" class="card similar_artist">
               <img src="{{ image }}" alt="{{ name }}" />
               <div class="card-bottom-info">
                 <p class="card-name">{{ name }}</p>
                 <p class="card-sub">{{ listeners }}</p>
               </div>
-            </a>
+            </div>
             {{/each}}
           </div>
           <p><i class="slide-btn right"></i></p>

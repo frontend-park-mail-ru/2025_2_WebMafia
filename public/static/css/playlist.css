@@ -1,26 +1,18 @@
-.dots,
-.pencil {
+.dots {
   all: unset;
   cursor: pointer;
 }
 
-.dots svg,
-.pencil svg {
+/* .dots svg {
   transition: all 0.3s ease;
-}
+} */
 
 .dots svg {
   width: 26px;
   height: 26px;
 }
 
-.pencil svg {
-  width: 22px;
-  height: 22px;
-}
-
-.dots:hover svg,
-.pencil:hover svg {
+.dots:hover svg {
   fill: #a766ff;
 }
 
@@ -30,6 +22,7 @@
 
 .actions-menu {
   position: absolute;
+  width: max-content;
   background: #e6e9f5;
   color: black;
   border: #d0bbbb solid 2px;
@@ -55,14 +48,28 @@
   font-size: 18px;
   font-weight: 500;
   box-sizing: border-box;
+  color: #1e1e1e;
 }
 
-.pencil-svg {
-  transition: fill 0.3s ease;
+.actions-item-svg {
+  display: flex;
+  align-items: center;
 }
 
-.actions-item:hover .pencil-svg {
-  fill: #9c58e0;
+.actions-item-svg svg {
+  stroke: #1e1e1e;
+  width: 22px;
+  height: 22px;
+  transition: stroke 0.3s ease;
+}
+
+.actions-item-svg.active svg {
+  stroke: url(#menuGradient);
+  fill: url(#menuGradient);
+}
+
+.actions-item:hover .actions-item-svg svg {
+  stroke: #9c58e0;
 }
 
 .actions-item:hover {
@@ -118,11 +125,11 @@
   font-size: 20px;
   font-weight: 600;
   margin-left: 13px;
-  margin-top: 5px
+  margin-top: 5px;
 }
 
 .tracks-card .header-divider {
-  margin: 0 10px 15px 10px;
+  margin: 0 10px 15px;
 }
 
 .right-row-content-playlist {
@@ -154,23 +161,15 @@
   gap: 15px;
 }
 
-.primary-button.close-warning {
-  background: #e6e8ef;
-  height: 30px;
-  color: #000;
+.warning-sub {
+  margin-top: 20px;
+  font-size: 20px;
+  font-weight: 400;
 }
 
-.primary-button.close-warning:hover {
- background: #c7cad3;
-}
-
-.tracks-duration-wrapper.playlists {
-  flex: 1;
-  display: grid;
-  grid-template-columns: 70% 15% 10% 5%;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
+.warning-title {
+  font-weight: 600;
+  font-size: 28px;
 }
 
 .delete-btn-track {
@@ -178,17 +177,21 @@
   border: none;
   cursor: pointer;
   padding: 0;
+  opacity: 0;
 }
 
 .delete-btn-track svg {
   stroke: #555;
   width: 26px;
   height: 26px;
+  transition:
+    stroke 0.3s ease,
+    transform 0.3s ease;
 }
 
 .delete-btn-track:hover svg {
-  transform: scale(1.03);
-  stroke: #a766ff;
+  transform: scale(1.1);
+  stroke: url(#menuGradient);
 }
 
 .add-button-toggle {
@@ -202,17 +205,23 @@
   height: 20px;
 }
 
-@media (max-width: 1000px) {
-  .tracks-duration-wrapper.playlists {
-    grid-template-columns: 74% 13% 13%;
+@media (hover: none) and (pointer: coarse) {
+  .delete-btn-track {
+    opacity: 1;
   }
+}
 
+@media (max-width: 1000px) {
   .right-row-content-playlist {
     display: grid;
     grid-template-columns: 80% 20%;
   }
 
-  .playlist-track-number, .playlist-sub .dot, .playlist-album, .add-button-name, .playlists .track-duration {
+  .playlist-track-number,
+  .playlist-sub .dot,
+  .playlist-album,
+  .add-button-name,
+  .playlists .track-duration {
     display: none;
   }
 
@@ -238,7 +247,8 @@
     opacity: 1;
   }
 
-  .playlist-search-container .search-icon, .add-button-toggle {
+  .playlist-search-container .search-icon,
+  .add-button-toggle {
     display: block;
   }
 
@@ -246,12 +256,14 @@
     width: 20px;
   }
 
-  .playlist .album-play-wrapper, .playlist-unfav .album-play-wrapper {
+  .playlist .album-play-wrapper,
+  .playlist-unfav .album-play-wrapper {
     margin: 0 5px;
   }
 
-  .playlist, .playlist-unfav {
-    padding: 5px;
+  .playlist,
+  .playlist-unfav {
+    padding: 5px 20px 5px 5px;
   }
 
   .playlist-track-cover {
@@ -261,5 +273,14 @@
 
   .playlist-sub {
     margin-top: 0;
+  }
+
+  .warning-sub {
+    margin-top: 8px;
+    font-size: 18px;
+  }
+
+  .warning-title {
+    font-size: 24px;
   }
 }

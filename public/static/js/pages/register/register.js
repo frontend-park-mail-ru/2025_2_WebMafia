@@ -3,15 +3,20 @@ import { apiServise } from '@/data.js';
 import { router } from '@/routing.js';
 import { initPasswordShowing } from '@/eye.js';
 import { player } from '@/components/player/player.js';
+import { images } from '@/assets';
 
 export class RegistrationPage {
   async render() {
     const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
     if (isAuthenticated) {
-      router.navigate('/');
+      router.navigate('/profile');
     }
+    let pageData = {
+      logo: images.wavePath,
+    };
     const contentTemplate = Handlebars.templates['register.hbs'];
-    document.getElementById('app').innerHTML = contentTemplate();
+    document.getElementById('app').innerHTML = contentTemplate(pageData);
+    document.querySelector('head title').textContent = 'Wave Music';
     initPasswordShowing();
     this.initValidation();
   }
@@ -93,17 +98,13 @@ export class RegistrationPage {
 
       try {
         await apiServise.registerUser(login, email, password);
-        console.log('Registration successful');
 
-        console.log('Attempting auto-login after registration...');
-        await apiServise.loginUser(login, password);
-
-        console.log('Auto-login successful');
+        const response = await apiServise.loginUser(login, password);
 
         localStorage.setItem('isAuthenticated', 'true');
+        localStorage.setItem('uid', response.id);
 
         router.navigate('/');
-        await player.init();
       } catch (error) {
         let msg = 'Ошибка регистрации';
         if (error.message === 'resource conflict') msg = 'Пользователь с такими данными уже существует';

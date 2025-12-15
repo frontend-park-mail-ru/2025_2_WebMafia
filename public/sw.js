@@ -1,5 +1,6 @@
 const CACHE_VERSION = 'v1.3';
 const CACHE_NAME = `wave-music-${CACHE_VERSION}`;
+const IMAGE_CACHE = 'wave-images';
 
 const APP_SHELL_URLS = [
   '/',
@@ -20,36 +21,53 @@ const APP_SHELL_URLS = [
   '/static/css/now_play_slider.css',
   '/static/css/player.css',
   '/static/css/sidebar.css',
-  '/static/img/default-album.png',
-  '/static/img/default-artist.png',
-  '/static/img/default-playlist.png',
-  '/static/img/liked_tracks.png',
-  '/static/img/logo.png',
-  '/static/img/wave.png',
   'https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.runtime.min.js',
 ];
 
 self.addEventListener('install', (event) => {
   console.log('[SW] Установка');
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      console.log('[SW] Кэширование оболочки');
-      return cache.addAll(APP_SHELL_URLS);
-    })
-  );
+  event.waitUntil(async () => {
+    const cache = await caches.open(CACHE_NAME);
+    cache.addAll(APP_SHELL_URLS);
+    const assetsModule = await fetch('/assets.js').then((r) => r.text());
+    const matches = assetsModule.match(/"\/assets\/[^"]+\.(png|jpg|jpeg|webp|svg)"/g) || [];
+
+    const imageUrls = matches.map((s) => s.replace(/"/g, ''));
+
+    await cache.addAll(imageUrls);
+  });
 });
 
 self.addEventListener('activate', (event) => {
-  console.log('[SW] Активация');
+  console.log('[SW] activate');
   event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(cacheNames.filter((name) => name !== CACHE_NAME).map((name) => caches.delete(name)));
-    })
+    caches
+      .keys()
+      .then((names) =>
+        Promise.all(
+          names.filter((name) => ![CACHE_NAME, IMAGE_CACHE].includes(name)).map((name) => caches.delete(name))
+        )
+      )
   );
+
+  self.clients.claim();
 });
 
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') {
+    return;
+  }
+  if (event.request.destination === 'image' && !event.request.url.includes('/assets/')) {
+    event.respondWith(
+      caches.open(IMAGE_CACHE).then(async (cache) => {
+        const cached = await cache.match(event.request);
+        if (cached) return cached;
+
+        const res = await fetch(event.request);
+        if (res.ok) cache.put(event.request, res.clone());
+        return res;
+      })
+    );
     return;
   }
 

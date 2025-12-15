@@ -1,25 +1,9 @@
 <div class="section" id="section">
-  {{> header}}
-
   <div class="layout">
     {{> sidebar}}
     <div class="page" id="scrollContent">
       {{#if isAuthenticated}}
-      <div class="now-playing-container">
-        <button class="current-card-btn prev"></button>
-        <div class="card-slider">
-          <div class="now-playing-container-card">
-            <img src="" alt="" />
-          </div>
-          <div class="now-playing-container-card">
-            <img src="" alt="" />
-          </div>
-          <div class="now-playing-container-card">
-            <img src="" alt="" />
-          </div>
-        </div>
-        <button class="current-card-btn next"></button>
-      </div>
+      {{> nowPlayingCards}}
       {{/if}}
 
       <!-- Артисты -->

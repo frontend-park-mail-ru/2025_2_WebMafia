@@ -15,7 +15,7 @@
 .profile-page {
   box-sizing: content-box;
   background-color: #ffffff;
-  padding: 23px 0 0 23px;
+  padding: 23px 0 23px 23px;
   color: black;
   flex: 1;
   transition: overflow-y 0.3s ease;
@@ -83,7 +83,7 @@
   justify-content: center;
   gap: 12px;
   border-radius: 14px;
-  padding: 10px 15px 10px 15px;
+  padding: 10px 15px;
   background: linear-gradient(157deg, #7e4dff, #a766ff, #da96ff) right bottom;
   background-size: 150% 150%;
   transition:
@@ -108,7 +108,7 @@
   fill: #fafafa;
 }
 
-/*Для показа кружочков на заднем фоне*/
+/* Для показа кружочков на заднем фоне */
 .profile-avatar,
 .profile-info {
   position: relative;
@@ -126,7 +126,7 @@
 }
 
 .tracks-table-placement {
-  margin: 20px 0 24px 0;
+  margin: 20px 0 24px;
 }
 
 .overlay {
@@ -153,6 +153,7 @@
 
 .window {
   background: #fff;
+  max-width: 50%;
   padding: 40px;
   border-radius: 20px;
   transform: translateY(-500px);
@@ -171,18 +172,23 @@
   0% {
     transform: translateY(0) translateX(0);
   }
+
   20% {
     transform: translateX(-5px);
   }
+
   40% {
     transform: translateX(5px);
   }
+
   60% {
     transform: translateX(-5px);
   }
+
   80% {
     transform: translateX(5px);
   }
+
   100% {
     transform: translateX(0);
   }
@@ -203,7 +209,7 @@
   align-items: center;
   justify-content: center;
   gap: 12px;
-  padding: 10px 15px 10px 15px;
+  padding: 10px 15px;
   cursor: pointer;
 }
 
@@ -225,7 +231,8 @@
 }
 
 .save-overlay-button-size {
-  height: 30px;
+  height: 25px;
+  font-size: 20px;
 }
 
 .edit-profile-info {
@@ -276,17 +283,27 @@
   0% {
     transform: translateX(0);
   }
+
   90% {
     transform: translateX(calc(-50% - 35px));
   }
+
   100% {
     transform: translateX(calc(-50% - 35px));
   }
 }
+
 @media (max-width: 1000px) {
   .profile-avatar {
     height: 200px;
   }
+}
+
+.login-secondary-button {
+  width: 100px;
+  height: 20px;
+  margin-top: 10px;
+  font-size: 18px;
 }
 
 @media (max-width: 900px) {
@@ -364,7 +381,8 @@
     padding: 10px;
     background: linear-gradient(157deg, #7e4dff, #a766ff, #da96ff) right bottom;
     background-size: 150% 150%;
-    transition: background-position 0.5s ease,
+    transition:
+      background-position 0.5s ease,
       background 0.5s ease;
     font-size: 18px;
   }
@@ -384,8 +402,9 @@
   }
 
   .window {
-    padding: 30px 10px;
-    width: 93%;
+    padding: 30px 20px;
+    width: 90%;
+    max-width: unset;
   }
 
   .edit-profile-info {
@@ -401,7 +420,7 @@
   .edit-avatar {
     flex-direction: row;
     justify-content: center;
-    margin: 0 0 20px 0;
+    margin: 0 0 20px;
     gap: 15px;
   }
 

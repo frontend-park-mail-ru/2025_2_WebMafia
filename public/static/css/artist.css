@@ -4,7 +4,7 @@
   justify-content: flex-end;
   align-items: flex-start;
   min-height: 450px;
-  padding: 30px 30px 25px 30px;
+  padding: 30px 30px 25px;
   border-radius: 20px;
   box-shadow: 0 5px 80px 8px rgba(26, 25, 30, 0.4);
   color: #fafafa;
@@ -42,8 +42,9 @@
   background: #4e4e4e;
 }
 
-#customScrollbarThumb.dragging {
-  background: #2e2e2e !important;
+#customScrollbarThumb.dragging,
+#customScrollbar:hover #customScrollbarThumb.dragging {
+  background: #2e2e2e;
 }
 
 .page-wrapper {
@@ -63,7 +64,7 @@
   color: black;
   flex: 1;
   transition: overflow-y 0.3s ease;
-  padding: 25px 12px 0 12px;
+  padding: 25px 12px 0;
 }
 
 .artist-name {
@@ -86,7 +87,7 @@
   all: unset;
   display: inline-flex;
   align-items: center;
-  padding: 10px 15px 10px 15px;
+  padding: 10px 15px;
   border-radius: 14px;
   border: 3px solid #9c58e0;
   color: #9c58e0;
@@ -98,6 +99,10 @@
   font-size: 20px;
   font-weight: 600;
   height: 15px;
+}
+
+.loading {
+  display: none;
 }
 
 .artist-description {
@@ -178,7 +183,7 @@
 .right-row-content {
   flex: 1;
   display: grid;
-  grid-template-columns: 31% 20% 18% 17% 6% 8%;
+  grid-template-columns: 30% 20% 20% 20% 10%;
   align-items: center;
   gap: 8px;
 }
@@ -224,7 +229,6 @@
 }
 
 .play-popular-track svg {
-  fill: #fafafa;
   height: 18px;
   width: 18px;
 }
@@ -309,6 +313,7 @@
   gap: 10px;
   display: flex;
   align-items: center;
+  justify-content: center;
 }
 
 .like-btn-track {
@@ -325,7 +330,7 @@
 .like-btn-track svg {
   fill: none;
   stroke: #555;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
 }
 
 .artist-like-size svg {
@@ -334,13 +339,13 @@
 }
 
 .like-btn-track:hover svg {
-  stroke: #a866eb;
+  stroke: url(#menuGradient);
   transform: scale(1.1);
 }
 
 .like-btn-track.active svg {
-  fill: #a866eb;
-  stroke: #a866eb;
+  stroke: url(#menuGradient);
+  fill: url(#menuGradient);
 }
 
 .track-row:hover .like-btn-track,
@@ -349,8 +354,49 @@
   opacity: 1;
 }
 
+.share-button {
+  background: inherit;
+  border: none;
+  cursor: pointer;
+}
+
+.share-button svg {
+  width: 32px;
+  height: 32px;
+  stroke: #fafafa;
+  transition: transform 0.3s ease;
+}
+
+.share-button:hover svg {
+  transform: scale(1.1);
+}
+
+.inform-message {
+  position: fixed;
+  background: #e6e9f5;
+  left: 50%;
+  bottom: 25px;
+  padding: 22px;
+  font-size: 20px;
+  font-weight: 600;
+  border-radius: 20px;
+  transform: translateX(-50%) translateY(20px);
+  transition:
+    transform 0.35s ease,
+    opacity 0.35s ease;
+  opacity: 0;
+  z-index: 9999;
+}
+
+.inform-message.visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
 @media (max-width: 900px) {
-  .track-performers, .track-duration, .track-album-name {
+  .track-performers,
+  .track-duration,
+  .track-album-name {
     display: none;
   }
 
@@ -478,7 +524,7 @@
   }
 
   .artist-page {
-    padding: 0 0 20px 0;
+    padding: 0 0 20px;
   }
 
   .show-tracks-button {
@@ -492,5 +538,14 @@
 
   .show-all {
     font-size: 18px;
+  }
+
+  .share-button svg {
+    width: 28px;
+    height: 28px;
+  }
+
+  .share-button {
+    padding: 0;
   }
 }

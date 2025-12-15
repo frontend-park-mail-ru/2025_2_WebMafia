@@ -1,8 +1,8 @@
 <div class="section" id="section">
-  {{> header}}
   <div class="layout">
     {{> sidebar}}
     <div class="profile-wrapper" id="scrollContent">
+      {{#if isAuthenticated}}
       <div class="profile-container">
         <div class="blue-background-circle profile-blue-position"></div>
         <div class="purple-background-circle profile-purple-position"></div>
@@ -67,20 +67,22 @@
               <div class="track-name">{{ name }}</div>
               <div class="track-performers">
                 {{#each artists}}
-                <a href="artist/{{ id }}" class="track-performer href-decoration"> {{ name }}{{#unless @last}}, {{/unless}} </a>
+                <a href="artist/{{ id }}" class="track-performer href-decoration">
+                  {{ name }}{{#unless @last}}, {{/unless}}
+                </a>
                 {{/each}}
               </div>
               <div class="track-plays-num">{{ plays }}</div>
               <div class="track-album-name">
                 <a href="album/{{ album_id }}" class="track-album-name href-decoration">
-                {{ album }}
-              </a>
+                  {{ album }}
+                </a>
               </div>
-              
+
               <div class="track-like-container">
                 <button class="like-btn-track artist-like-size" data-track-id="{{ id }}">{{> likeBtn }}</button>
+                <div class="track-duration">{{ duration }}</div>
               </div>
-              <div class="track-duration">{{ duration }}</div>
             </div>
           </div>
           {{/each}}
@@ -104,6 +106,15 @@
           <p><i class="slide-btn right"></i></p>
         </div>
       </div>
+      {{else}}
+      <div class="search-alert-container">
+        <div class="search-alert-text">
+          <div class="search-alert-title">Профиль</div>
+          <div class="search-alert-subtitle">Войдите, чтобы перейти к персональным настройкам.</div>
+          <a href="/login" class="secondary-button login-secondary-button">Войти</a>
+        </div>
+      </div>
+      {{/if}}
     </div>
     <div class="overlay" id="editProfileOverlay">
       <div class="window">

@@ -9,7 +9,8 @@ import { playTrack } from '@/playTrackBtn.js';
 import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
 import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
 import { likeTrackBtn } from '@/utils/likeTrack.js';
-import { createPlaylis } from '@/utils/initCreatePlaylist';
+import { share } from '@/utils/shareBtn.js';
+import { subscribeArtist } from '@/utils/subscribeArtist.js';
 
 export class ArtistPage {
   async render(id) {
@@ -24,13 +25,15 @@ export class ArtistPage {
     const contentTemplateWithoutData = Handlebars.templates['artistPage.hbs'];
     document.getElementById('app').innerHTML = contentTemplateWithoutData(pageData);
     document.querySelector('head title').textContent = 'Wave music';
+    await Promise.all([header.render(), sidebar.render()]);
 
     try {
-      const data = await apiServise.getArtistPageData(id);
+      const data = await apiServise.getArtistPageData(id, pageData.isAuthenticated);
       pageData.id = data.artist.id;
       pageData.name = data.artist ? data.artist.name : 'Unknown Artist';
       pageData.artist_header = getValidImage('artists/' + data.artist.header_url, 'default-artist.png');
       pageData.description = data.artist.description;
+      pageData.isSubscribed = data.artist.isSubscribed;
       pageData.listeners = playsParser(data.artist.play_count) || 0;
       pageData.similar_artists = (data.similar_artists || []).map((artist) => ({
         id: artist.id,
@@ -86,16 +89,26 @@ export class ArtistPage {
     document.querySelector('head title').textContent = pageData.name;
     playerOnlyOnPlay();
     await Promise.all([header.render(), sidebar.render()]);
-    createPlaylis();
     slider.sliderFunction();
     initScrollbar();
     this.addEventListeners();
     setPlayButtonsOnAuth();
     likeTrackBtn();
     playTrack();
+    share();
+    subscribeArtist();
   }
 
   addEventListeners() {
+    const author = document.querySelectorAll('.card.similar_artist');
+    if (author) {
+      author.forEach((author) => {
+        author.addEventListener('click', () => {
+          const artist_id = author.dataset.artistId;
+          router.navigate(`/artist/${artist_id}`);
+        });
+      });
+    }
     const showInfoBtn = document.getElementById('showArtistDescription');
     const container = document.querySelector('.artist-container');
 
@@ -116,7 +129,7 @@ export class ArtistPage {
           }, 600);
         } else {
           wrapper.style.setProperty('-webkit-line-clamp', 'unset');
-          wrapper.style.maxHeight = wrapper.scrollHeight + 48 + 'px';
+          wrapper.style.maxHeight = wrapper.scrollHeight + 52 + 'px';
           container.style.minHeight = height + wrapper.scrollHeight - 35 + 'px';
         }
 

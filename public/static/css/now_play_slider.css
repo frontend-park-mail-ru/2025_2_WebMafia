@@ -5,24 +5,13 @@
   justify-content: space-between;
   width: 100%;
   max-width: 900px;
-  margin: 40px auto 10px auto;
+  margin: 40px auto 10px;
   padding: 0 20px;
   box-sizing: border-box;
 }
 
 .now-playing-container.none_play {
   display: none;
-}
-
-.hidden {
-  opacity: 0 !important;
-  pointer-events: none;
-  transform: scale(0.8);
-  visibility: hidden;
-  transition:
-    opacity 0.5s ease,
-    transform 0.5s ease;
-  box-shadow: none;
 }
 
 .card-fade-out {
