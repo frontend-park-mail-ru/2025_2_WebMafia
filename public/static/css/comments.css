@@ -1,110 +1,108 @@
 .track-info-container.comments {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 10px 35px 10px 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 35px 10px 25px;
 }
 
-.track-info-artist-container{
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background-color: #EAE2FF;
-    border-radius: 20px;
-    padding: 15px;
+.track-info-artist-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #eae2ff;
+  border-radius: 20px;
+  padding: 15px;
 }
 
 .right-side {
-    display: flex;
-    align-items: center;
-    gap: 20px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
 }
 
 .track-cover-comment {
-    width: 76px;
-    height: 76px;
-    border-radius: 20px;
+  width: 76px;
+  height: 76px;
+  border-radius: 20px;
 }
 
 .track-comment-artist {
-    font-size: 30px;
-    font-weight: 600;
-    color: black;
-    cursor: pointer;
+  font-size: 30px;
+  font-weight: 600;
+  color: black;
+  cursor: pointer;
 }
 
 .left-side {
-    display: flex;
-    align-self: center;
-    gap: 20px;
+  display: flex;
+  align-self: center;
+  gap: 20px;
 }
 
 .share-button.black {
-    color: black;
+  color: black;
 }
 
 .track-plays-num.comments {
-    text-align: left;
+  text-align: left;
 }
 
-.track-cover-and-buttons {  
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+.track-cover-and-buttons {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
-
 
 .control-btn.black svg {
-    stroke: black;
+  stroke: black;
 }
 
 .control-btn.black:hover svg {
-    stroke: #a766ff;
+  stroke: #a766ff;
 }
 
 .track-info-comments {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    padding: 15px;
-    position: relative;
-    transition: all 0.4s ease;
-    border-bottom: 3px solid transparent; 
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 15px;
+  position: relative;
+  transition: all 0.4s ease;
+  border-bottom: 3px solid transparent;
 }
 
 .track-info-comments.active-track {
-    opacity: 1;
-    filter: none; 
+  opacity: 1;
+  filter: none;
 }
 
 .track-info-comments.inactive-track {
-    opacity: 0.6; 
+  opacity: 0.6;
 }
-
 
 .track-info-comments.inactive-track .remote-container-comments {
-    opacity: 0.5;
-    pointer-events: none;
+  opacity: 0.5;
+  pointer-events: none;
 }
 
-.track-info-comments.inactive-track input[type="range"] {
-    cursor: default;
+.track-info-comments.inactive-track input[type='range'] {
+  cursor: default;
 }
 
 .track-info-comments.inactive-track .play-button-album {
-    filter: none;
-    opacity: 0.8; 
+  filter: none;
+  opacity: 0.8;
 }
 
 .track-performer {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .like-btn-track.comment {
-    opacity: 1;
+  opacity: 1;
 }
 
 .progress-remote-comments {
@@ -123,7 +121,7 @@
   flex: 1;
   cursor: pointer;
   display: flex;
-  
+
   --progress: 0%;
 }
 
@@ -163,154 +161,153 @@
 }
 
 .play-button-album.comments {
-    margin: 0;
+  margin: 0;
 }
 
 .comments-title-name {
-    font-weight: 600;
-    font-size: 32px;
-    color: rgb(0, 0, 0);
-    margin: 20px 0;
+  font-weight: 600;
+  font-size: 32px;
+  color: rgb(0, 0, 0);
+  margin: 20px 0;
 }
 
 .comments-container {
-    padding: 15px 25px 15px 15px;
+  padding: 15px 25px 15px 15px;
 }
 
 .comment-container {
-    display: flex;
-    flex-direction: row;
-    gap: 15px;
-    margin-bottom: 15px;
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  margin-bottom: 15px;
 }
 
 .comment-info-container {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
 }
 
 .comment-info-header {
-    display: flex;
-    flex-direction: row;
-    gap: 5px;
-    align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  align-items: center;
 }
 
 .comment-author {
-    font-size: 24px;
-    font-weight: 600;
+  font-size: 24px;
+  font-weight: 600;
 }
 
 .comment-time {
-    font-size: 16px;
+  font-size: 16px;
 }
 
 .comment-text {
-    font-size: 16px;
+  font-size: 16px;
 }
 
 /* Контейнер для летающих пузырьков - поверх всего, клики пропускает */
 .bubbles-stream-container {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    width: 300px;
-    height: 100vh;
-    pointer-events: none; 
-    z-index: 90;
-    overflow: hidden;
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 300px;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 90;
+  overflow: hidden;
 }
 
 .bubble-unit {
-    position: absolute;
-    bottom: -70px;
-    right: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    width: 100%;
-    opacity: 0;
-    animation: bubble-float-up linear forwards;
+  position: absolute;
+  bottom: -70px;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  width: 100%;
+  opacity: 0;
+  animation: bubble-float-up linear forwards;
 }
 
 .bubble-avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    margin-left: 10px;
-    background: linear-gradient(135deg, #7fd8e6 14.9%, #e556fd 100%);
-    border: 3px solid #fff;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #fff;
-    font-weight: bold;
-    flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-left: 10px;
+  background: linear-gradient(135deg, #7fd8e6 14.9%, #e556fd 100%);
+  border: 3px solid #fff;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: bold;
+  flex-shrink: 0;
 }
 
 .bubble-avatar img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .bubble-content {
-    background: #a8b5eb;
-    padding: 8px 12px;
-    border-radius: 20px;
-    backdrop-filter: blur(4px);
-    color: rgb(0, 0, 0);
-    font-size: 14px;
-    max-width: 200px;
-    max-height: 50px;
-    display: flex;
-    flex-direction: row-reverse;
+  background: #a8b5eb;
+  padding: 8px 12px;
+  border-radius: 20px;
+  backdrop-filter: blur(4px);
+  color: rgb(0, 0, 0);
+  font-size: 14px;
+  max-width: 200px;
+  max-height: 50px;
+  display: flex;
+  flex-direction: row-reverse;
 }
 
 .bubble-data {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: normal;
-    display: flex;
-    flex-direction: column;
-    text-align: right;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  display: flex;
+  flex-direction: column;
+  text-align: right;
 }
 
 .bubble-author {
-    font-size: 12px;
-    font-weight: 700;
-    color: rgb(255, 255, 255);
-    margin-bottom: 2px;
+  font-size: 12px;
+  font-weight: 700;
+  color: rgb(255, 255, 255);
+  margin-bottom: 2px;
 }
 
 .bubble-text {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: normal;
-
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
 }
 
 @keyframes bubble-float-up {
-    0% {
-        transform: translateY(0) scale(0.9);
-        opacity: 0;
-    }
+  0% {
+    transform: translateY(0) scale(0.9);
+    opacity: 0;
+  }
 
-    10% {
-        opacity: 1;
-        transform: translateY(-40px) scale(1) ;
-    }
+  10% {
+    opacity: 1;
+    transform: translateY(-40px) scale(1);
+  }
 
-    60% {
-        opacity: 1;
-        transform: translateY(-250px) scale(0.9);
-    }
+  60% {
+    opacity: 1;
+    transform: translateY(-250px) scale(0.9);
+  }
 
-    100% {
-        transform: translateY(-500px) scale(1);
-        opacity: 0;
-    }
+  100% {
+    transform: translateY(-500px) scale(1);
+    opacity: 0;
+  }
 }

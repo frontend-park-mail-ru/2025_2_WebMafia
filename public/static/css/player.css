@@ -465,8 +465,7 @@
   .player.expanded .track-time,
   .player.expanded .shuffle,
   .player.expanded .prev,
-  .player.expanded .repeat
-  .player.expanded .track-time-comments {
+  .player.expanded .repeat .player.expanded .track-time-comments {
     display: block;
   }
 
@@ -552,13 +551,13 @@
   }
 
   .player.expanded .track-time-comments.current {
-    left: 0; 
-    transform: translateY(0); 
+    left: 0;
+    transform: translateY(0);
   }
 
-  .player.expanded .track-time-comments.total { 
-    right: 0; 
-    transform: translateY(0); 
+  .player.expanded .track-time-comments.total {
+    right: 0;
+    transform: translateY(0);
   }
 
   .player.expanded .remote-container {
