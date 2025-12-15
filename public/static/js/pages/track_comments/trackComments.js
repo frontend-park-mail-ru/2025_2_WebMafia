@@ -171,6 +171,10 @@ export class trackComments {
     const commentDiv = document.createElement('div');
     commentDiv.className = 'comment-container';
 
+    const commentText = document.createElement('div');
+    commentText.className = 'comment-text';
+    commentText.textContent = commentObj.text;
+
     const avatarHtml = commentObj.avatar
       ? `<img src="${commentObj.avatar}" alt="Ваш аватар" class="profile-image" />`
       : `<div class="default-avatar default-avatar-header">${commentObj.letter}</div>`;
@@ -181,15 +185,19 @@ export class trackComments {
         </div>
         <div class="comment-info-container">
             <div class="comment-info-header">
-                <div class="comment-author">${commentObj.nickname}</div>
+                <div class="comment-author"></div>
                 <span class="dot"></span>
-                <div class="comment-time">${commentObj.time}</div>
-            </div>
-            <div class="comment-text">
-                ${commentObj.text}
+                <div class="comment-time"></div>
             </div>
         </div>
     `;
+
+    const commentInfoContainer = commentDiv.querySelector('.comment-info-container');
+    commentDiv.querySelector('.comment-author').textContent = commentObj.nickname;
+    commentDiv.querySelector('.comment-time').textContent = commentObj.time;
+
+    commentInfoContainer.appendChild(commentText);
+    commentsContainer.appendChild(commentDiv);
 
     const form = document.getElementById('createCommentsForm');
 

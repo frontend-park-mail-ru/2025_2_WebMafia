@@ -62,7 +62,8 @@ export class Header {
 
         confirmation.showConfirm({
           title: 'Выход из аккаунта',
-          description: `Вы уверены, что хотите выйти из аккаунта <b>Wave Music</b>?`,
+          description: 'Вы уверены, что хотите выйти из аккаунта',
+          formatingText: 'Wave Music?',
           confirmText: 'Выйти',
           cancelText: 'Отмена',
           onConfirm: async () => {
