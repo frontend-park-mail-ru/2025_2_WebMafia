@@ -2,6 +2,7 @@
   "name": "webmafia",
   "version": "1.0.0",
   "description": "Frontend-часть для музыкального сервиса Wave Music. Веб-приложение разработано на JavaScript с использованием Handlebars шаблонов, предоставляющее современный пользовательский интерфейс для работы с музыкой.",
+  "type": "module",
   "main": "server.js",
   "scripts": {
     "dev": "vite",
