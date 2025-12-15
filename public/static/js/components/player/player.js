@@ -2,6 +2,7 @@ import { apiServise, API_TRACKS_URL } from '@/data';
 import { getValidImage } from '@/utils/parsers.ts';
 import { likeChange } from '@/utils/likeTrack';
 import { setupMarquees } from '@/utils/marquee';
+import { router } from '@/routing.js';
 
 export class Player extends EventTarget {
   constructor() {
@@ -210,6 +211,16 @@ export class Player extends EventTarget {
       this.onLikeClickBound = this.handleLikeClick.bind(this);
       likeBtn.addEventListener('click', this.onLikeClickBound);
     }
+    const commentBtn = document.querySelector('.goToCommentsBtn');
+    if (commentBtn) {
+      commentBtn.removeEventListener('click', this.handleCommentClick);
+      this.handleCommentClick = () => {
+        if (this.currentTrack) {
+          router.navigate(`/comments/${this.currentTrack.id}`);
+        }
+      };
+      commentBtn.addEventListener('click', this.handleCommentClick);
+    }
     this.audio.addEventListener('timeupdate', () => {
       this.updateCurrentTimeAndSlider();
     });
@@ -282,6 +293,11 @@ export class Player extends EventTarget {
       } else {
         likeBtn.classList.remove('active');
       }
+    }
+
+    const goToCommentsBtn = document.querySelector('.goToCommentsBtn');
+    if (goToCommentsBtn) {
+      goToCommentsBtn.dataset.trackId = track.id;
     }
 
     let file_url = track.file_url;

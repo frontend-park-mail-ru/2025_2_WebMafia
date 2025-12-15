@@ -38,6 +38,8 @@ export class ProfilePage extends BasePage {
     const titleEl = document.querySelector('head title');
     if (titleEl) titleEl.textContent = 'Wave Music';
 
+    if (!isAuthenticated) return;
+
     try {
       const [data, profile] = await Promise.all([
         apiServise.getProfilePageData(),

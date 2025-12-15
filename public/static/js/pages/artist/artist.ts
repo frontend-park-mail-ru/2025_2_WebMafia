@@ -10,8 +10,8 @@ import { likeTrackBtn } from '@/utils/likeTrack.js';
 import { share } from "@/utils/shareBtn";
 import { showInfoMessage } from "@/utils/showInfoMessage";
 import { BasePage } from "@/pages/base/basePage.ts";
-import { confirmation } from "@/components/confirmation_modal/confirmationModal.ts";
 import { Artist, Album, Track } from '@/models';
+import { initSubscribeButton } from "@/utils/subscribeArtist.ts";
 
 interface ArtistPageData {
   isAuthenticated: boolean;
@@ -114,7 +114,7 @@ export class ArtistPage extends BasePage {
     scrollbar.init();
 
     this.initDescriptionToggle();
-    this.initSubscribeButton();
+    initSubscribeButton();
     setPlayButtonsOnAuth();
     likeTrackBtn();
     playTrack();
@@ -148,50 +148,6 @@ export class ArtistPage extends BasePage {
       }
 
       container.classList.toggle('expanded');
-    });
-  }
-
-  private initSubscribeButton() {
-    const subscribeButton = document.getElementById('artistSubscribeButton') as HTMLButtonElement;
-    if (!subscribeButton) return;
-    subscribeButton.addEventListener('click', async () => {
-      const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
-      if (!isAuthenticated) {
-        confirmation.showConfirm({
-          title: 'Оформить подписку',
-          description: `Подписки на исполнителей доступны в вашем <b>Wave Music</b> аккаунте`,
-          confirmText: 'Войти',
-          cancelText: 'Закрыть',
-          onConfirm: () => {
-            router.navigate('/login')
-          }
-        });
-        return;
-      }
-
-      const artistId = subscribeButton.dataset.artistId;
-      const artistName = subscribeButton.dataset.artistName;
-      const isSubscribed = subscribeButton.dataset.isSubscribed === 'true';
-      if (!artistId) return;
-      subscribeButton.disabled = true;
-
-      try {
-        await apiServise.toggleSubscribeToArtist(artistId, !isSubscribed);
-
-        subscribeButton.dataset.isSubscribed = isSubscribed ? 'false' : 'true';
-        if (isSubscribed) {
-          subscribeButton.innerText = 'Подписаться';
-          showInfoMessage(`Вы отписались от «${artistName || ''}»`);
-        }
-        else {
-          subscribeButton.innerText = 'Отписаться';
-          showInfoMessage(`Вы подписались на «${artistName || ''}»`);
-        }
-      } catch (error) {
-        console.error('Failed to subscribe to artist:', error);
-      } finally {
-        subscribeButton.disabled = false;
-      }
     });
   }
 }

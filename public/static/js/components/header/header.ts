@@ -34,6 +34,8 @@ class Header {
       pageData.letter = pageData.nickname ? pageData.nickname[0].toUpperCase() : '';
     } catch (error) {
       console.error('Failed to load header user data:', error);
+      localStorage.removeItem('isAuthenticated');
+      router.navigate('/');
       return;
     }
 

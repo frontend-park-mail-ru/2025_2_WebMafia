@@ -50,7 +50,8 @@ class PlaylistModalService {
     if (localStorage.getItem('isAuthenticated') !== 'true') {
       confirmation.showConfirm({
         title: 'Создать плейлист',
-        description: `Создание плейлистов доступном в вашем <b>Wave Music</b> аккаунте`,
+        description: `Создание плейлистов не доступно на вашем аккаунте`,
+        formatingText: 'Wave Music',
         confirmText: 'Войти',
         cancelText: 'Закрыть',
         onConfirm: () => {

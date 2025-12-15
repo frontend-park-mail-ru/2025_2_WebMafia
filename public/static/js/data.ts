@@ -1,7 +1,8 @@
 export const API_AVATARS_URL = 'https://wave-music.ru/avatars';
 export const API_TRACKS_URL = `https://wave-music.ru/music/tracks`;
 import { userRoutes, tracksArtistAlbumRoutes, playlistRoutes } from '@/devRoutesConfig';
-import { Artist, Album, Track, Playlist, UserProfile, Avatar } from '@/models';
+import { Artist, Album, Track, Playlist, UserProfile, Avatar, WebSocketHandlers, Comment } from '@/models';
+import { CommentsSocket } from "@/utils/webSocketConnect";
 
 interface ApiRequestOptions extends Omit<RequestInit, 'body'> {
   body?: any;
@@ -10,6 +11,7 @@ interface ApiRequestOptions extends Omit<RequestInit, 'body'> {
 export class apiService {
   private baseURL: string;
   private dataURL: string;
+  private wsBaseURL: string;
   private playlistURL: string;
   private csrfToken: string | null = null;
   private playlistIdCache: string | null = null;
@@ -21,6 +23,7 @@ export class apiService {
   constructor() {
     this.baseURL = import.meta.env.VITE_API_BASE_URL as string;
     this.dataURL = import.meta.env.VITE_API_DATA_URL as string;
+    this.wsBaseURL = import.meta.env.VITE_API_WS_URL as string;
     this.playlistURL = import.meta.env.VITE_API_PLAYLIST_URL as string;
 
     if (import.meta.env.DEV) {
@@ -86,7 +89,7 @@ export class apiService {
     return await response.json() as Promise<T>;
   }
 
-  private async getCSRFToken(): Promise<string> {
+  async getCSRFToken(): Promise<string> {
     if (this.csrfToken) return this.csrfToken;
     try {
       const data = await this.request<{ csrf_token: string }>('/csrf-token');
@@ -545,6 +548,56 @@ export class apiService {
       method: like ? 'POST' : 'DELETE',
       headers: { 'X-CSRF-Token': csrfToken },
     });
+  }
+
+  async getTrackCommentsPageData(trackId: string, isAuthenticated: boolean) {
+    try {
+      const [track, comments] = await Promise.all([
+        this.loadTrackById(trackId),
+        this.request<Comment[]>(`/comments/tracks/${trackId}`).catch(() => [])
+      ]);
+
+      if (!track || !track.id) {
+        throw new Error('Track not found');
+      }
+
+      const artistId = track.artists?.[0]?.id;
+      let artist = {} as Artist;
+
+      if (artistId) {
+        const promises: Promise<any>[] = [
+          this.request<Artist>(`/artists/${artistId}`).catch(() => ({} as Artist))
+        ];
+
+        if (isAuthenticated) {
+          promises.push(this.request<Artist[]>('/favorite/artists').catch(() => []));
+        }
+
+        const [artistData, favoriteArtists] = await Promise.all(promises);
+
+        artist = artistData;
+
+        if (isAuthenticated && favoriteArtists) {
+          const isSubscribed = (favoriteArtists as Artist[]).some(a => a.id === artist.id);
+          artist.isSubscribed = isSubscribed;
+        }
+      }
+
+      return {
+        track,
+        comments: comments || [],
+        artist
+      };
+
+    } catch (error) {
+      console.error('Failed to load track comments page data:', error);
+      throw error;
+    }
+  }
+
+  createTrackSocket(trackId: string, token: string, handlers: WebSocketHandlers<Comment>) {
+    const wsUrl = `${this.wsBaseURL}/ws/comments/tracks/${trackId}`;
+    return new CommentsSocket<Comment>(wsUrl, token, handlers);
   }
 }
 

@@ -5,11 +5,12 @@ import { RegistrationPage } from '@/pages/auth/register.ts';
 import { ArtistPage } from '@/pages/artist/artist.ts';
 import { ProfilePage } from '@/pages/profile/profilePage.ts';
 import { ArtistReleasesPage } from '@/pages/releases/artistReleasesPage.ts';
-import { ArtistTracksPage } from '@/pages/artist_tracks/artistTracksPage.js';
+import { ArtistTracksPage } from '@/pages/artist_tracks/artistTracksPage.ts';
 import { AlbumPage } from '@/pages/album/album.ts';
 import { LibraryPage } from '@/pages/library/library.ts';
 import { SearchPage } from '@/pages/search_page/search_page.js';
 import { PlaylistPage } from '@/pages/playlist/playlist.ts';
+import { TrackCommentsPage } from '@/pages/track_comments/trackComments.ts';
 
 interface Page {
   render(slug?: string): Promise<void> | void;
@@ -58,6 +59,10 @@ class Router {
         component: new PlaylistPage(),
       },
       { pattern: /^\/playlist\/(LM)$/, component: new PlaylistPage() },
+      {
+        pattern: /^\/comments\/([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})$/,
+        component: new TrackCommentsPage(),
+      },
     ];
     this.handleLocation = this.handleLocation.bind(this);
   }

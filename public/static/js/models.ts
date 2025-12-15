@@ -71,3 +71,23 @@ export interface UserProfile {
 export interface Avatar {
   avatar_url: string;
 }
+
+export interface Comment {
+  id: string;
+  text: string;
+  track_id?: string;
+  user_login?: string;
+  user_avatar?: string;
+  created_at?: string;
+  avatar?: string | null;
+  nickname?: string;
+  letter?: string;
+  time?: string;
+}
+
+export interface WebSocketHandlers<T = any> {
+  onMessage: (data: T) => void;
+  onOpen?: () => void;
+  onClose?: (code: number) => void;
+  onError?: (error: Event) => void;
+}

@@ -207,6 +207,10 @@
   display: none;
 }
 
+.formating-text {
+  font-weight: 600;
+}
+
 @media (max-width: 950px) {
   .head {
     height: 64px;

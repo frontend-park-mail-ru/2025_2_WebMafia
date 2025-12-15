@@ -95,3 +95,11 @@ handlebars public/static/js/partials/delete.hbs -f public/static/js/partials/del
 handlebars public/static/js/partials/repeatOne.hbs -f public/static/js/partials/repeatOne.tmpl.js
 
 handlebars public/static/js/partials/share.hbs -f public/static/js/partials/share.tmpl.js
+
+handlebars public/static/js/components/now_playing_cards/nowPlayingCards.hbs -f public/static/js/components/now_playing_cards/nowPlayingCards.tmpl.js
+
+handlebars public/static/js/pages/track_comments/trackComments.hbs -f public/static/js/pages/track_comments/trackComments.tmpl.js
+
+handlebars public/static/js/partials/goToCommentsBtn.hbs -f public/static/js/partials/goToCommentsBtn.tmpl.js
+
+
