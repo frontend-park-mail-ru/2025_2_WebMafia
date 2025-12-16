@@ -1,20 +1,12 @@
 <aside class="sidebar" id="sidebar">
-  <nav class="menu" id="scrollContent">
+  <nav class="menu">
     <a class="menu-item home" href="/">{{> homeIcon}} Главная</a>
     <a class="menu-item profile" href="/profile">{{> profile}} Профиль</a>
-    <a class="menu-item library" href="/library">{{> libraryIcon}} Моя музыка</a>
+    <a class="menu-item library" href="/library">{{> libraryIcon}} Библиотека</a>
     <div class="header-divider"></div>
     <button class="secondary-button sidebar-secondary-button" id="sidebarCreatePlaylistButton">
       {{> plus}} Создать
     </button>
-    {{#each library}}
-      <a class="menu-item my-media" href="/{{ href }}" data-type="{{ type }}" data-id="{{ id }}" data-name="{{ name }}">
-        <div id="playlistCover" class="playlistCover sidebar">
-          <img src="{{ image }}" alt="{{ name }}" class="playlist-cover sidebar" />
-        </div>
-        <div class="playlist-name-sidebar">{{ name }}</div> 
-      </a>
-    {{/each}}
   </nav>
 </aside>
 <div class="purple-background-circle sidebar-purple-position"></div>
