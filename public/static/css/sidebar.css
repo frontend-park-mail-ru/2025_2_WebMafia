@@ -97,9 +97,7 @@
 
 .menu-item.my-media:last-of-type {
   margin-bottom: 10px;
-  
 }
- 
 
 .menu-item:hover svg {
   stroke: #a766ff;
@@ -160,9 +158,9 @@
   width: 220px;
   background: #aaacb5;
   margin: 20px 0;
-  height: 1px;         
-  min-height: 1px;   
-  flex-shrink: 0;    
+  height: 1px;
+  min-height: 1px;
+  flex-shrink: 0;
 }
 
 .sidebar .secondary-button {
@@ -255,7 +253,6 @@
   .sidebar .secondary-button {
     margin: 0;
   }
-
 }
 
 @media (max-height: 350px) and (min-width: 800px) {

@@ -8,12 +8,12 @@
       {{> plus}} Создать
     </button>
     {{#each library}}
-      <a class="menu-item my-media" href="/{{ href }}" data-type="{{ type }}" data-id="{{ id }}" data-name="{{ name }}">
-        <div id="playlistCover" class="playlistCover sidebar">
-          <img src="{{ image }}" alt="{{ name }}" class="playlist-cover sidebar" />
-        </div>
-        <div class="playlist-name-sidebar">{{ name }}</div> 
-      </a>
+    <a class="menu-item my-media" href="/{{ href }}" data-type="{{ type }}" data-id="{{ id }}" data-name="{{ name }}">
+      <div id="playlistCover" class="playlistCover sidebar">
+        <img src="{{ image }}" alt="{{ name }}" class="playlist-cover sidebar" />
+      </div>
+      <div class="playlist-name-sidebar">{{ name }}</div>
+    </a>
     {{/each}}
   </nav>
 </aside>
