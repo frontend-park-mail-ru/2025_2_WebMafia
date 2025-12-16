@@ -29,12 +29,24 @@ export class Player extends EventTarget {
       if (type === 'PLAYING') {
         this.audio.pause();
         this.togglePlayPauseSwitch(false);
-        localStorage.setItem('isPLaying', 'false');
+        localStorage.setItem('isPlaying', 'false');
       }
     };
   }
 
   async init() {
+    if (!this.channel) {
+      this.channel = new BroadcastChannel('music_channel_api');
+      this.channel.onmessage = (event) => {
+        const { type } = event.data;
+
+        if (type === 'PLAYING') {
+          this.audio.pause();
+          this.togglePlayPauseSwitch(false);
+          localStorage.setItem('isPlaying', 'false');
+        }
+      };
+    }
     await this.updateVisibility();
   }
 
