@@ -35,8 +35,8 @@ export function playTrack() {
             await player.init();
             await player.loadAndPlayTrackById(trackId, context);
           }
-        } catch {
-          console.error('No play');
+        } catch (error) {
+          console.error('No play', error);
         }
       } else {
         await player.togglePlayPause();
