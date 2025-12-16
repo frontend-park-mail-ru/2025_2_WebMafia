@@ -58,6 +58,7 @@ export class LoginPage {
 
         localStorage.setItem('isAuthenticated', 'true');
         localStorage.setItem('uid', response.id);
+        apiServise.csrfToken = null;
 
         router.navigate('/');
       } catch (error) {
