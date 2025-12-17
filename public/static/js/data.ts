@@ -599,6 +599,19 @@ export class apiService {
     const wsUrl = `${this.wsBaseURL}/ws/comments/tracks/${trackId}`;
     return new CommentsSocket<Comment>(wsUrl, token, handlers);
   }
+
+  async generatePlaylistDescription(id: string) {
+    try {
+      const csrfToken = await this.getCSRFToken();
+      return this.request<{ description: string }>(`/playlists/${id}/generate`, {
+        method: 'POST',
+        headers: { 'X-CSRF-Token': csrfToken }
+      });
+    } catch (error) {
+      console.error('Failed to generate description:', error);
+      throw error;
+    }
+  }
 }
 
 export const apiServise = new apiService();

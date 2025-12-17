@@ -1,144 +1,129 @@
-<div class="section" id="section">
-  <div class="layout">
-    {{> sidebar}}
-    <div class="page" id="scrollContent">
-      {{#if best_result}}
-      <div class="seach-pagre-layout">
-        <!-- Лучшее совпадение -->
-        <div class="best-result-container">
-          <div class="best-result-title">
-            <div class="title-name">Лучшее совпадение</div>
+<div class="page" id="scrollContent">
+  {{#if best_result}}
+  <div class="seach-pagre-layout">
+    <!-- Лучшее совпадение -->
+    <div class="best-result-container">
+      <div class="best-result-title">
+        <div class="title-name">Лучшее совпадение</div>
+      </div>
+      {{#with best_result}}
+      <div data-href="{{ href }}" class="best-result-card click-event-card">
+        <img src="{{ image }}" alt="{{ name }}" />
+        <p class="best-result-card-name">{{ name }}</p>
+        <div class="best-result-card-information">
+          {{ type }}
+          <p class="best-result-card-sub card-sub-limiter">
+            {{#if artist}}
+            <span class="dot"></span>
+            <a class="best-result-text href-decoration" href="/artist/{{ artist_id }}">{{ artist }}</a>
+            {{/if}}
+          </p>
+        </div>
+      </div>
+      {{/with}}
+    </div>
+
+    <!-- Треки -->
+    {{#if tracks}}
+    <div class="popular-tracks-search">
+      <div class="title">
+        <div class="title-name">Треки</div>
+      </div>
+      <div class="tracks-table">
+        {{#each tracks}}
+        <div class="track-row">
+          <div class="track-number">{{numeration @index}}</div>
+          <div class="track-cover-wrapper">
+            <img class="track-cover" src="{{ image }}" alt="{{ name }}" />
+            <button
+              class="play-popular-track"
+              data-track-id="{{ id }}"
+              data-context="search-tracks"
+            >
+              <span class="play-icon">{{> play }}</span>
+              <span class="pause-icon">{{> pause }}</span>
+            </button>
           </div>
-          {{#with best_result}}
-          <div
-            data-href="{{#if duration}} /album/{{ album_id }} {{else}} {{#if artist_id}}/album/{{
-              id
-            }}{{else}}/artist/{{ id }} {{/if}}
-                                {{/if}} "
-            class="best-result-card click-event-card"
-          >
-            <img src="{{ image }}" alt="{{ name }}" />
-            <p class="best-result-card-name">{{ name }}</p>
-            <div class="best-result-card-information">
-              {{ type }}
-              <p class="best-result-card-sub card-sub-limiter">
+          <div class="right-row-content-search">
+            <div class="track-name-artists-container">
+              <div class="track-name">{{ name }}</div>
+              <div class="track-performers">
                 {{#if artist}}
-                <span class="dot"></span>
-                <a class="best-result-text href-decoration" href="/artist/{{ artist_id }}">{{ artist }}</a>
+                <a href="/artist/{{ artist_id }}" class="text href-decoration">
+                  {{ artist }}
+                </a>
                 {{/if}}
-              </p>
-            </div>
-          </div>
-          {{/with}}
-        </div>
-
-        <!-- Треки -->
-        {{#if tracks}}
-        <div class="popular-tracks-search">
-          <div class="title">
-            <div class="title-name">Треки</div>
-          </div>
-          <div class="tracks-table">
-            {{#each tracks}}
-            <div class="track-row">
-              <div class="track-number">{{numeration @index}}</div>
-              <div class="track-cover-wrapper">
-                <img class="track-cover" src="{{ image }}" alt="{{ name }}" />
-                <button
-                  class="play-popular-track"
-                  data-track-id="{{ id }}"
-                  data-context="artist-popular"
-                  data-artist-id="{{../id}}"
-                >
-                  <span class="play-icon">{{> play }}</span>
-                  <span class="pause-icon">{{> pause }}</span>
-                </button>
-              </div>
-              <div class="right-row-content-search">
-                <div class="track-name-artists-container">
-                  <div class="track-name">{{ name }}</div>
-                  <div class="track-performers">
-                    <!-- {{#each @root.artists}} -->
-                    <a href="artist/{{ artist_id }}" class="text href-decoration">
-                      <!-- {{ name }}{{#unless @last}}, {{/unless}} -->
-                      {{ artist }}
-                    </a>
-                    <!-- {{/each}} -->
-                  </div>
-                </div>
-
-                <div class="track-like-container">
-                  <button
-                    class="like-btn-track artist-like-size {{#if is_liked}}active{{/if}}"
-                    data-track-id="{{ id }}"
-                  >
-                    {{> likeBtn }}
-                  </button>
-                </div>
-                <div class="track-duration">{{ duration }}</div>
               </div>
             </div>
-            {{/each}}
-          </div>
-          <!-- <a class="secondary-button show-tracks-button" href="/artist/{{ id }}/tracks">Показать все</a> -->
-        </div>
 
-        {{/if}}
-      </div>
-
-      <!-- Альбомы -->
-      {{#if albums}}
-      <div class="title">
-        <div class="title-name">Альбомы</div>
-      </div>
-      <div class="slider">
-        <i class="slide-btn left"></i>
-        <div class="cards" id="slidebar">
-          {{#each albums}}
-          <div data-href="/album/{{ id }}" class="card click-event-card">
-            <img src="{{ image }}" alt="{{ name }}" />
-            <p class="card-name">{{ name }}</p>
-            <p class="card-sub card-sub-limiter">
-              {{ type }}
-              <span class="dot"></span>
-              <a class="text href-decoration" href="/artist/{{ artist_id }}">{{ artist }}</a>
-            </p>
+            <div class="track-like-container">
+              <button
+                class="like-btn-track artist-like-size {{#if is_liked}}active{{/if}}"
+                data-track-id="{{ id }}"
+              >
+                {{> likeBtn }}
+              </button>
+            </div>
+            <div class="track-duration">{{ duration }}</div>
           </div>
-          {{/each}}
         </div>
-        <i class="slide-btn right"></i>
+        {{/each}}
       </div>
-      {{/if}}
+    </div>
+    {{/if}}
+  </div>
 
-      <!-- Артисты -->
-      {{#if artists}}
-      <div class="title">
-        <div class="title-name">Артисты</div>
+  <!-- Альбомы -->
+  {{#if albums}}
+  <div class="title">
+    <div class="title-name">Альбомы</div>
+  </div>
+  <div class="slider">
+    <i class="slide-btn left"></i>
+    <div class="cards" id="slidebar">
+      {{#each albums}}
+      <div data-href="{{ href }}" class="card click-event-card">
+        <img src="{{ image }}" alt="{{ name }}" />
+        <p class="card-name">{{ name }}</p>
+        <p class="card-sub card-sub-limiter">
+          {{ type }}
+          <span class="dot"></span>
+          <a class="text href-decoration" href="/artist/{{ artist_id }}">{{ artist }}</a>
+        </p>
       </div>
-      <div class="slider">
-        <p><i class="slide-btn left"></i></p>
-        <div class="cards" id="slidebar">
-          {{#each artists}}
-          <a href="/artist/{{ id }}" class="card">
-            <img src="{{ image }}" alt="{{ name }}" />
-            <p class="card-name">{{ name }}</p>
-            <p class="card-sub">{{ listeners }}</p>
-          </a>
-          {{/each}}
-        </div>
-        <p><i class="slide-btn right"></i></p>
+      {{/each}}
+    </div>
+    <i class="slide-btn right"></i>
+  </div>
+  {{/if}}
+
+  <!-- Артисты -->
+  {{#if artists}}
+  <div class="title">
+    <div class="title-name">Артисты</div>
+  </div>
+  <div class="slider">
+    <p><i class="slide-btn left"></i></p>
+    <div class="cards" id="slidebar">
+      {{#each artists}}
+      <a href="{{ href }}" class="card">
+        <img src="{{ image }}" alt="{{ name }}" />
+        <p class="card-name">{{ name }}</p>
+        <p class="card-sub">{{ listeners }}</p>
+      </a>
+      {{/each}}
+    </div>
+    <p><i class="slide-btn right"></i></p>
+  </div>
+  {{/if}}
+  {{else}}
+  <div class="search-alert-container">
+    <div class="search-alert-text">
+      <div class="search-alert-title">
+        Извините, по запросу <span class="alert-input-text">"{{ titleName }}"</span> ничего не нашлось.
       </div>
-      {{/if}}
-      {{else}}
-      <div class="search-alert-container">
-        <div class="search-alert-text">
-          <div class="search-alert-title">
-            Извините, по запросу <span class="alert-input-text">"{{ titleName }}"</span> ничего не нашлось.
-          </div>
-          <div class="search-alert-subtitle">Проверь, нет ли опечаток, сократи запрос или перефразируй его.</div>
-        </div>
-      </div>
-      {{/if}}
+      <div class="search-alert-subtitle">Проверь, нет ли опечаток, сократи запрос или перефразируй его.</div>
     </div>
   </div>
+  {{/if}}
 </div>

@@ -209,7 +209,7 @@
 
 .save-overlay-button-size {
   height: 25px;
-  font-size: 20px;
+  font-size: 22px;
 }
 
 .edit-profile-info {
@@ -221,6 +221,7 @@
   display: flex;
   justify-content: flex-end;
   margin-top: 30px;
+  gap: 15px;
 }
 
 .edit-avatar-buttons {

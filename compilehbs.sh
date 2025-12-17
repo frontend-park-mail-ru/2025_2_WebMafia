@@ -36,6 +36,8 @@ handlebars public/static/js/components/modal/playlistInputs.hbs -f public/static
 
 handlebars public/static/js/components/modal/profileInputs.hbs -f public/static/js/components/modal/profileInputs.tmpl.js
 
+handlebars public/static/js/components/modal/AIButton.hbs -f public/static/js/components/modal/AIButton.tmpl.js
+
 handlebars public/static/js/components/sidebar/sidebar.hbs -f public/static/js/components/sidebar/sidebar.tmpl.js
 
 handlebars public/static/js/components/player/player.hbs -f public/static/js/components/player/player.tmpl.js
@@ -101,3 +103,5 @@ handlebars public/static/js/pages/track_comments/trackComments.hbs -f public/sta
 handlebars public/static/js/partials/goToCommentsBtn.hbs -f public/static/js/partials/goToCommentsBtn.tmpl.js
 
 handlebars public/static/js/partials/sendComentBtn.hbs -f public/static/js/partials/sendComentBtn.tmpl.js
+
+handlebars public/static/js/partials/AI.hbs -f public/static/js/partials/AI.tmpl.js

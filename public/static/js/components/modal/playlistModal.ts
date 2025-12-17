@@ -24,6 +24,13 @@ export class PlaylistModal extends BaseFormModal<PlaylistModalData> {
 
   protected getModalConfig(): BaseModal {
     const isEdit = this.data?.isEdit;
+
+    let aiButtonHtml = '';
+    if (isEdit) {
+      const btnTemplate = Handlebars.templates['AIButton.hbs'];
+      aiButtonHtml = btnTemplate({});
+    }
+
     return {
       modalId: 'playlistOverlay',
       modalTitle: isEdit ? 'Редактировать плейлист' : 'Создать плейлист',
@@ -32,7 +39,8 @@ export class PlaylistModal extends BaseFormModal<PlaylistModalData> {
       submitText: isEdit ? 'Сохранить' : 'Создать',
       errorId: 'generalError',
       avatarSrc: (isEdit && this.data?.image) ? this.data.image : images.defaultPlaylistPath,
-      avatarLetter: ''
+      avatarLetter: '',
+      extraFooterContent: aiButtonHtml
     };
   }
 
@@ -42,6 +50,49 @@ export class PlaylistModal extends BaseFormModal<PlaylistModalData> {
       title: this.data?.title || '',
       description: this.data?.description || ''
     });
+  }
+
+  protected afterRenderHook() {
+    const generateBtn = document.getElementById('generateDescBtn') as HTMLButtonElement;
+
+    if (generateBtn && this.data?.id) {
+      generateBtn.addEventListener('click', async (e) => {
+        e.preventDefault();
+        await this.handleGenerateDescription(generateBtn);
+      });
+    }
+  }
+
+  private async handleGenerateDescription(btn: HTMLButtonElement) {
+    const descriptionInput = document.getElementById('description') as HTMLTextAreaElement;
+    if (!descriptionInput || !this.data?.id) return;
+
+    const originalContent = btn.innerHTML;
+
+    try {
+      btn.disabled = true;
+      btn.innerText = 'Генерируем...';
+
+      const response = await apiServise.generatePlaylistDescription(this.data.id);
+      console.log(response);
+
+      if (response && response.description) {
+        descriptionInput.value = response.description;
+
+        descriptionInput.dispatchEvent(new Event('input'));
+
+        this.validator?.showMessage('Описание сгенерировано!', true);
+      } else {
+        this.validator?.showMessage('Не удалось сгенерировать описание');
+      }
+
+    } catch (error) {
+      console.error('AI Generation error:', error);
+      this.validator?.showMessage('Ошибка генерации. Попробуйте позже');
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = originalContent;
+    }
   }
 
   protected getValidationConfig() {

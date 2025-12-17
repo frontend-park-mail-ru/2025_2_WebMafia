@@ -12,6 +12,7 @@ export interface BaseModal {
   errorId: string;
   avatarSrc?: string | null;
   avatarLetter?: string;
+  extraFooterContent?: string;
 }
 
 export abstract class BaseFormModal<TData> {
