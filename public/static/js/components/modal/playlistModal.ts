@@ -65,7 +65,8 @@ export class PlaylistModal extends BaseFormModal<PlaylistModalData> {
 
   private async handleGenerateDescription(btn: HTMLButtonElement) {
     const descriptionInput = document.getElementById('description') as HTMLTextAreaElement;
-    if (!descriptionInput || !this.data?.id) return;
+    const titleInput = document.getElementById('title') as HTMLInputElement;
+    if (!descriptionInput || !titleInput ||  !this.data?.id) return;
 
     const originalContent = btn.innerHTML;
 
@@ -74,12 +75,17 @@ export class PlaylistModal extends BaseFormModal<PlaylistModalData> {
       btn.innerText = 'Генерируем...';
 
       const response = await apiServise.generatePlaylistDescription(this.data.id);
-      console.log(response);
 
-      if (response && response.description) {
-        descriptionInput.value = response.description;
+      if (response) {
+        if (response.title) {
+          titleInput.value = response.title;
+          titleInput.dispatchEvent(new Event('input'));
+        }
 
-        descriptionInput.dispatchEvent(new Event('input'));
+        if (response.description) {
+          descriptionInput.value = response.description;
+          descriptionInput.dispatchEvent(new Event('input'));
+        }
 
         this.validator?.showMessage('Описание сгенерировано!', true);
       } else {

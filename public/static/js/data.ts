@@ -387,6 +387,8 @@ export class apiService {
   }
 
   async loginUser(login: string, password: string) {
+    this.csrfToken = null;
+    this.playlistIdCache = null;
     return this.request<{ id: string }>('/login', {
       method: 'POST',
       body: { login, password },
@@ -394,6 +396,8 @@ export class apiService {
   }
 
   async registerUser(login: string, email: string, password: string) {
+    this.csrfToken = null;
+    this.playlistIdCache = null;
     return this.request<{ id: string }>('/register', {
       method: 'POST',
       body: { login, email, password },
@@ -409,10 +413,15 @@ export class apiService {
 
   async logoutUser() {
     const csrfToken = await this.getCSRFToken();
-    await this.request('/logout', {
-      method: 'POST',
-      headers: { 'X-CSRF-Token': csrfToken },
-    });
+    try {
+      await this.request('/logout', {
+        method: 'POST',
+        headers: { 'X-CSRF-Token': csrfToken },
+      });
+    } finally {
+      this.csrfToken = null;
+      this.playlistIdCache = null;
+    }
   }
 
   async incrementTrackListenCount(id: string) {
@@ -603,7 +612,7 @@ export class apiService {
   async generatePlaylistDescription(id: string) {
     try {
       const csrfToken = await this.getCSRFToken();
-      return this.request<{ description: string }>(`/playlists/${id}/generate`, {
+      return this.request<{ title: string; description: string }>(`/playlist/${id}/generate`, {
         method: 'POST',
         headers: { 'X-CSRF-Token': csrfToken }
       });
