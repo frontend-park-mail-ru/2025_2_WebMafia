@@ -69,7 +69,7 @@
     <form id="createCommentsForm">
       <div class="form-group">
         <div class="input-wrapper">
-          <input type="text" id="title-comment" name="title" placeholder="Напишите комментарий" />
+          <input maxlength="200" type="text" id="title-comment" name="title" placeholder="Напишите комментарий" />
           <button class="send-coment-btn">{{> sendComentBtn }}</button>
           <div class="error-message-comment" id="titleErrorCom"></div>
         </div>

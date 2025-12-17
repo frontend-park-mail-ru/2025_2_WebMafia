@@ -47,11 +47,7 @@ export class TrackCommentsPage extends BasePage {
   private boundTrackChange: EventListener | null = null;
   private boundTimeUpdate: EventListener | null = null;
 
-  protected async renderContent(container: HTMLElement, trackId?: string): Promise<void> {
-    if (!trackId) {
-      router.navigate('/not-found');
-      return;
-    }
+  protected async renderContent(container: HTMLElement, trackId: string): Promise<void> {
     this.trackId = trackId;
 
     const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
@@ -85,7 +81,7 @@ export class TrackCommentsPage extends BasePage {
         artist: {
           id: artist?.id || '',
           name: artist?.name || 'Unknown',
-          avatar: getValidImage(`artists/${artist?.header_url || artist?.avatar_url}`, images.defaultArtistPath),
+          avatar: getValidImage(`artists/${artist?.avatar_url}`, images.defaultArtistPath),
         },
 
         description: track.album?.description,
