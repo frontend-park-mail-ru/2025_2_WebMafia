@@ -1,11 +1,12 @@
 import { showInfoMessage } from '@/utils/showInfoMessage';
 
 export function copyToClipboard(text: string) {
-  navigator.clipboard.writeText(text)
-    .then(() => showInfoMessage("Ссылка скопирована в буфер обмена"))
-    .catch(err => {
-      console.error("Ошибка копирования:", err);
-      showInfoMessage("Не удалось скопировать ссылку");
+  navigator.clipboard
+    .writeText(text)
+    .then(() => showInfoMessage('Ссылка скопирована в буфер обмена'))
+    .catch((err) => {
+      console.error('Ошибка копирования:', err);
+      showInfoMessage('Не удалось скопировать ссылку');
     });
 }
 

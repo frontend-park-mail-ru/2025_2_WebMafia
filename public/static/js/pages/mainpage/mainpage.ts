@@ -2,13 +2,13 @@ import { apiServise } from '@/data.ts';
 import { router } from '@/routing.ts';
 import { scrollbar } from '@/utils/scrollbar';
 import { slider } from '@/utils/slider';
-import { nowPlayingSlider } from "@/pages/mainpage/nowPlayingSlider";
+import { nowPlayingSlider } from '@/pages/mainpage/nowPlayingSlider';
 import { playTrack } from '@/playTrackBtn.js';
 import { getValidImage, playsParser } from '@/utils/parsers.ts';
 import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
 import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
-import { BasePage } from "@/pages/base/basePage.ts";
-import { showInfoMessage } from "@/utils/showInfoMessage";
+import { BasePage } from '@/pages/base/basePage.ts';
+import { showInfoMessage } from '@/utils/showInfoMessage';
 import { Artist, Album, Track } from '@/models';
 
 interface MainPageData {
@@ -20,7 +20,7 @@ interface MainPageData {
 
 export class MainPage extends BasePage {
   //Тож для ремувивентлистнеров
-  private clickHandlers: Array<{ el: Element, fn: EventListener }> = [];
+  private clickHandlers: Array<{ el: Element; fn: EventListener }> = [];
 
   protected async renderContent(contentContainer: HTMLElement): Promise<void> {
     let pageData: MainPageData = {

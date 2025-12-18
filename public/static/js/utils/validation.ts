@@ -25,7 +25,12 @@ export class FormValidator {
 
   public onSubmit: (formData: FormData) => void;
 
-  constructor(formId: string, validators: ValidatorsConfig, information: InformationConfig, options: ValidatorOptions = {}) {
+  constructor(
+    formId: string,
+    validators: ValidatorsConfig,
+    information: InformationConfig,
+    options: ValidatorOptions = {}
+  ) {
     this.form = document.getElementById(formId) as HTMLFormElement;
     this.validators = validators;
     this.information = information;
@@ -145,8 +150,7 @@ export class FormValidator {
 
     if (info) {
       this.showInfo(input.name, info);
-    }
-    else {
+    } else {
       this.hideInfo(input.name);
     }
     return !info;

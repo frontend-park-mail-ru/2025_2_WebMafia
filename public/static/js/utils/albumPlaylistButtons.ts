@@ -1,4 +1,4 @@
-import { player } from "@/components/player/player";
+import { player } from '@/components/player/player';
 
 export function albumPlaylistButtons(): void {
   const getDescriptionButton = document.getElementById('getDescription');

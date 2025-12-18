@@ -9,7 +9,7 @@
     {
       "files": "*.hbs",
       "options": {
-        "parser": "angular"
+        "parser": "glimmer"
       }
     }
   ]

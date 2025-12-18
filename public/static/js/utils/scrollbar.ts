@@ -97,8 +97,8 @@ class CustomScrollbar {
       this.container.addEventListener('touchend', () => {
         setTimeout(() => this.hide(), 400);
       });
-    }
-    else {// show/hide on hover
+    } else {
+      // show/hide on hover
       this.container.addEventListener('pointerenter', () => this.show());
       this.container.addEventListener('pointerleave', () => {
         if (!this.isDragging) {
@@ -156,7 +156,7 @@ class CustomScrollbar {
     this.track.style.opacity = '1';
   }
 
-  private  hide(): void {
+  private hide(): void {
     this.track.style.opacity = '0';
   }
 }

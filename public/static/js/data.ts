@@ -2,7 +2,7 @@ export const API_AVATARS_URL = 'https://wave-music.ru/avatars';
 export const API_TRACKS_URL = `https://wave-music.ru/music/tracks`;
 import { userRoutes, tracksArtistAlbumRoutes, playlistRoutes } from '@/devRoutesConfig';
 import { Artist, Album, Track, Playlist, UserProfile, Avatar, WebSocketHandlers, Comment } from '@/models';
-import { CommentsSocket } from "@/utils/webSocketConnect";
+import { CommentsSocket } from '@/utils/webSocketConnect';
 
 interface ApiRequestOptions extends Omit<RequestInit, 'body'> {
   body?: any;
@@ -86,7 +86,7 @@ export class apiService {
       return {} as T;
     }
 
-    return await response.json() as Promise<T>;
+    return (await response.json()) as Promise<T>;
   }
 
   async getCSRFToken(): Promise<string> {
@@ -121,7 +121,7 @@ export class apiService {
       const [albums, popularTracks, artist, similarArtists] = await Promise.all([
         this.request<Album[]>(`/artists/${id}/albums?limit=10`).catch(() => []),
         this.request<Track[]>(`/artists/${id}/tracks?limit=5`).catch(() => []),
-        this.request<Artist>(`/artists/${id}`).catch(() => ({} as Artist)),
+        this.request<Artist>(`/artists/${id}`).catch(() => ({}) as Artist),
         this.request<Artist[]>('/artists?limit=10').catch(() => []),
       ]);
 
@@ -161,7 +161,7 @@ export class apiService {
     try {
       const [albums, artist] = await Promise.all([
         this.request<Album[]>(`/artists/${id}/albums`).catch(() => []),
-        this.request<Artist>(`/artists/${id}`).catch(() => ({} as Artist)),
+        this.request<Artist>(`/artists/${id}`).catch(() => ({}) as Artist),
       ]);
       return { albums, artist };
     } catch (error) {
@@ -174,7 +174,7 @@ export class apiService {
     try {
       const [tracks, artist] = await Promise.all([
         this.request<Track[]>(`/artists/${id}/tracks`).catch(() => []),
-        this.request<Artist>(`/artists/${id}`).catch(() => ({} as Artist)),
+        this.request<Artist>(`/artists/${id}`).catch(() => ({}) as Artist),
       ]);
 
       let processedTracks = tracks;
@@ -280,7 +280,7 @@ export class apiService {
   async uploadPlaylistAvatar(file: File, playlistId: string) {
     const csrfToken = await this.getCSRFToken();
 
-    const playlist = await this.request<Playlist>(`/playlists/${playlistId}`).catch(() => ({} as Playlist));
+    const playlist = await this.request<Playlist>(`/playlists/${playlistId}`).catch(() => ({}) as Playlist);
     if (playlist.avatar_url) {
       await this.deletePlaylistAvatar(playlistId);
     }
@@ -315,23 +315,23 @@ export class apiService {
   async getAlbumPageData(id: string, isAuthenticated: boolean) {
     try {
       const [album, tracks] = await Promise.all([
-        this.request<Album>(`/albums/${id}`).catch(() => ({} as Album)),
+        this.request<Album>(`/albums/${id}`).catch(() => ({}) as Album),
         this.request<Track[]>(`/albums/${id}/tracks`).catch(() => []),
       ]);
 
       const result = { album, tracks };
-      if(!isAuthenticated) return result;
+      if (!isAuthenticated) return result;
 
       const [likedTracks, likedAlbums] = await Promise.all([
         this.getFavoriteTrackIds(),
-        this.request<Album[]>('/favorite/albums').catch(() => [])
+        this.request<Album[]>('/favorite/albums').catch(() => []),
       ]);
 
-      if (likedAlbums.some(a => a.id === album.id)) {
+      if (likedAlbums.some((a) => a.id === album.id)) {
         result.album.is_liked = true;
       }
       if (likedTracks) {
-        result.tracks = tracks.map(t => ({...t, is_liked: likedTracks.has(t.id)}));
+        result.tracks = tracks.map((t) => ({ ...t, is_liked: likedTracks.has(t.id) }));
       }
       return result;
     } catch (error) {
@@ -342,13 +342,11 @@ export class apiService {
 
   async getPlaylistPageData(id: string, isAuthenticated: boolean) {
     try {
-      if (id === 'LM')
-        return await this.request<Playlist>('/playlists/favorite').catch(() => ({} as Playlist));
+      if (id === 'LM') return await this.request<Playlist>('/playlists/favorite').catch(() => ({}) as Playlist);
 
-      const playlist = await this.request<Playlist>(`/playlists/${id}`).catch(() => ({} as Playlist));
+      const playlist = await this.request<Playlist>(`/playlists/${id}`).catch(() => ({}) as Playlist);
 
-      if (!isAuthenticated)
-        return playlist;
+      if (!isAuthenticated) return playlist;
 
       const likedTrackIds = await this.getFavoriteTrackIds();
       if (likedTrackIds && playlist.tracks) {
@@ -451,12 +449,14 @@ export class apiService {
 
     try {
       const all = await this.request<Playlist[]>('/playlists/my');
-      const fav = all.find(p => p.is_favorite);
+      const fav = all.find((p) => p.is_favorite);
       if (fav) {
         this.playlistIdCache = fav.id;
         return fav.id;
       }
-    } catch (e) { console.error(e); }
+    } catch (e) {
+      console.error(e);
+    }
     return null;
   }
 
@@ -521,8 +521,7 @@ export class apiService {
   async searchTrack(name: string, isAuthenticated: boolean) {
     let tracks = await this.request<Track[]>(`/tracks/search?q=${name}&limit=5`).catch(() => []);
 
-    if (!isAuthenticated)
-      return tracks;
+    if (!isAuthenticated) return tracks;
 
     const likedTrackIds = await this.getFavoriteTrackIds();
     if (likedTrackIds) {
@@ -544,11 +543,11 @@ export class apiService {
   }
 
   async toggleSubscribeToArtist(id: string, subscribe: boolean) {
-     const csrfToken = await this.getCSRFToken();
-     await this.request(`/favorite/artists/${id}`, {
-        method: subscribe ? 'POST' : 'DELETE',
-        headers: { 'X-CSRF-Token': csrfToken },
-     });
+    const csrfToken = await this.getCSRFToken();
+    await this.request(`/favorite/artists/${id}`, {
+      method: subscribe ? 'POST' : 'DELETE',
+      headers: { 'X-CSRF-Token': csrfToken },
+    });
   }
 
   async toggleAlbumLike(id: string, like: boolean) {
@@ -563,7 +562,7 @@ export class apiService {
     try {
       const [track, comments] = await Promise.all([
         this.loadTrackById(trackId),
-        this.request<Comment[]>(`/comments/tracks/${trackId}`).catch(() => [])
+        this.request<Comment[]>(`/comments/tracks/${trackId}`).catch(() => []),
       ]);
 
       if (!track || !track.id) {
@@ -574,9 +573,7 @@ export class apiService {
       let artist = {} as Artist;
 
       if (artistId) {
-        const promises: Promise<any>[] = [
-          this.request<Artist>(`/artists/${artistId}`).catch(() => ({} as Artist))
-        ];
+        const promises: Promise<any>[] = [this.request<Artist>(`/artists/${artistId}`).catch(() => ({}) as Artist)];
 
         if (isAuthenticated) {
           promises.push(this.request<Artist[]>('/favorite/artists').catch(() => []));
@@ -587,7 +584,7 @@ export class apiService {
         artist = artistData;
 
         if (isAuthenticated && favoriteArtists) {
-          const isSubscribed = (favoriteArtists as Artist[]).some(a => a.id === artist.id);
+          const isSubscribed = (favoriteArtists as Artist[]).some((a) => a.id === artist.id);
           artist.isSubscribed = isSubscribed;
         }
       }
@@ -595,9 +592,8 @@ export class apiService {
       return {
         track,
         comments: comments || [],
-        artist
+        artist,
       };
-
     } catch (error) {
       console.error('Failed to load track comments page data:', error);
       throw error;
@@ -614,7 +610,7 @@ export class apiService {
       const csrfToken = await this.getCSRFToken();
       return this.request<{ title: string; description: string }>(`/playlist/${id}/generate`, {
         method: 'POST',
-        headers: { 'X-CSRF-Token': csrfToken }
+        headers: { 'X-CSRF-Token': csrfToken },
       });
     } catch (error) {
       console.error('Failed to generate description:', error);

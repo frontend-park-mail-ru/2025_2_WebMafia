@@ -19,10 +19,10 @@ import { images } from '@/assets';
 import { albumPlaylistButtons } from '@/utils/albumPlaylistButtons';
 import { share } from '@/utils/shareBtn';
 import { deletePlaylistLogic } from '@/utils/deletePlaylist';
-import { playlistModal } from "@/components/modal/playlistModal";
-import { showInfoMessage } from "@/utils/showInfoMessage";
-import {MappedTrack, PlaylistSuccessData, Track} from "@/models.ts";
-import { BasePage } from "@/pages/base/basePage.ts";
+import { playlistModal } from '@/components/modal/playlistModal';
+import { showInfoMessage } from '@/utils/showInfoMessage';
+import { MappedTrack, PlaylistSuccessData, Track } from '@/models.ts';
+import { BasePage } from '@/pages/base/basePage.ts';
 
 interface PlaylistPageData {
   isAuthenticated: boolean;
@@ -76,7 +76,7 @@ export class PlaylistPage extends BasePage {
         tracks: [],
         tracksNum: '',
         totalDuration: '',
-        track_id: firstTrackId
+        track_id: firstTrackId,
       };
       if (playlistId !== 'LM') {
         this.favourite = false;
@@ -190,15 +190,18 @@ export class PlaylistPage extends BasePage {
 
       if (!this.playlistData.id) return;
 
-      playlistModal.open({
-        isEdit: true,
-        id: this.playlistData.id,
-        title: this.playlistData.title,
-        description: this.playlistData.description,
-        image: this.playlistData.image || undefined
-      }, (newData: PlaylistSuccessData) => {
-        this.updatePlaylistUI(newData);
-      });
+      playlistModal.open(
+        {
+          isEdit: true,
+          id: this.playlistData.id,
+          title: this.playlistData.title,
+          description: this.playlistData.description,
+          image: this.playlistData.image || undefined,
+        },
+        (newData: PlaylistSuccessData) => {
+          this.updatePlaylistUI(newData);
+        }
+      );
     });
   }
 
@@ -281,7 +284,7 @@ export class PlaylistPage extends BasePage {
       e.stopPropagation();
 
       const trackId = (btn as HTMLElement).dataset.trackId;
-      const track = this.currentSearchResults.find(t => t.id === trackId);
+      const track = this.currentSearchResults.find((t) => t.id === trackId);
 
       if (track && this.playlistData.id) {
         await apiServise.addTrackToPlaylist(trackId!, this.playlistData.id);
@@ -314,34 +317,34 @@ export class PlaylistPage extends BasePage {
 
   private addTrackToTable(track: Track) {
     const table = document.getElementById('addedTracksTable');
-      if (!table) return;
+    if (!table) return;
 
-      const num = table.querySelectorAll('.album-row').length + 1;
+    const num = table.querySelectorAll('.album-row').length + 1;
 
-      const trackData = {
-          id: track.id,
-          name: track.title,
-          num: num,
-          cover: getValidImage(`albums/${track.album?.avatar_url}`, images.defaultAlbumPath),
-          duration: durationParser(track.duration_s),
-          album: track.album?.title,
-          artists: track.artists,
-          is_liked: track.is_liked
-      };
+    const trackData = {
+      id: track.id,
+      name: track.title,
+      num: num,
+      cover: getValidImage(`albums/${track.album?.avatar_url}`, images.defaultAlbumPath),
+      duration: durationParser(track.duration_s),
+      album: track.album?.title,
+      artists: track.artists,
+      is_liked: track.is_liked,
+    };
 
-      const rowHtml = Handlebars.templates['trackRow.hbs'](trackData);
-      table.insertAdjacentHTML('beforeend', rowHtml);
+    const rowHtml = Handlebars.templates['trackRow.hbs'](trackData);
+    table.insertAdjacentHTML('beforeend', rowHtml);
 
-      this.totalDurationSec += track.duration_s;
-      this.updateStats(num);
+    this.totalDurationSec += track.duration_s;
+    this.updateStats(num);
 
-      if (num === 1) {
-          const searchTitle = document.querySelector('.playlist-search-title');
-          searchTitle?.insertAdjacentHTML('beforebegin', '<div class="header-divider" id="playlistTracksDivider"></div>');
-      }
+    if (num === 1) {
+      const searchTitle = document.querySelector('.playlist-search-title');
+      searchTitle?.insertAdjacentHTML('beforebegin', '<div class="header-divider" id="playlistTracksDivider"></div>');
+    }
 
-      likeTrackBtn();
-      playTrack();
+    likeTrackBtn();
+    playTrack();
   }
 
   private initDeleteTrackButton() {

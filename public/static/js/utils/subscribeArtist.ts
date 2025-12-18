@@ -2,7 +2,7 @@ import { apiServise } from '@/data.ts';
 import { router } from '@/routing.ts';
 import { confirmation } from '@/components/confirmation_modal/confirmationModal.ts';
 import { showInfoMessage } from '@/utils/showInfoMessage';
-import { images } from "@/assets.ts";
+import { images } from '@/assets.ts';
 
 export function initSubscribeButton(buttonIdOrElement: string | HTMLElement = 'artistSubscribeButton'): void {
   let btn: HTMLButtonElement | null = null;
@@ -28,7 +28,7 @@ export function initSubscribeButton(buttonIdOrElement: string | HTMLElement = 'a
         cancelText: 'Закрыть',
         onConfirm: () => {
           router.navigate('/login');
-        }
+        },
       });
       return;
     }
@@ -53,21 +53,22 @@ export function initSubscribeButton(buttonIdOrElement: string | HTMLElement = 'a
 
       if (newState) {
         btn.innerText = 'Отписаться';
-        window.dispatchEvent(new CustomEvent('sidebar:create', {
-          detail: {
-            id: artistId,
-            name: artistName,
-            image: artistAvatar,
-            type: 'Артист',
-          }
-        }));
+        window.dispatchEvent(
+          new CustomEvent('sidebar:create', {
+            detail: {
+              id: artistId,
+              name: artistName,
+              image: artistAvatar,
+              type: 'Артист',
+            },
+          })
+        );
         showInfoMessage(`Вы подписались на «${artistName}»`);
       } else {
         btn.innerText = 'Подписаться';
         window.dispatchEvent(new CustomEvent(`sidebar:remove`, { detail: { id: artistId } }));
         showInfoMessage(`Вы отписались от «${artistName}»`);
       }
-
     } catch (error) {
       console.error('Failed to subscribe/unsubscribe:', error);
       showInfoMessage('Не удалось изменить подписку');

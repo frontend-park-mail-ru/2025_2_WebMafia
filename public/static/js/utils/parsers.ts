@@ -15,7 +15,7 @@ export function playsParser(plays: number): string {
   const formatter = new Intl.NumberFormat('ru-RU', {
     notation: 'compact',
     compactDisplay: 'short',
-    maximumFractionDigits: 1
+    maximumFractionDigits: 1,
   });
 
   const value = formatter.format(plays);
@@ -29,8 +29,8 @@ export function durationParser(duration: number): string {
 }
 
 export function durationToSec(d: string): number {
-    const [m, s] = d.split(':').map(Number);
-    return m * 60 + s;
+  const [m, s] = d.split(':').map(Number);
+  return m * 60 + s;
 }
 
 export function totalDurationParser(duration: number): string {

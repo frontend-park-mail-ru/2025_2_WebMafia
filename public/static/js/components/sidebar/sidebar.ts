@@ -1,9 +1,9 @@
-import { playlistModal } from "@/components/modal/playlistModal.ts";
-import { Album, Artist, LibraryItem, Playlist } from "@/models.ts";
-import { images } from "@/assets.ts";
-import { apiServise } from "@/data.ts";
-import { getValidImage } from "@/utils/parsers.ts";
-import { scrollbar } from "@/utils/scrollbar.ts";
+import { playlistModal } from '@/components/modal/playlistModal.ts';
+import { Album, Artist, LibraryItem, Playlist } from '@/models.ts';
+import { images } from '@/assets.ts';
+import { apiServise } from '@/data.ts';
+import { getValidImage } from '@/utils/parsers.ts';
+import { scrollbar } from '@/utils/scrollbar.ts';
 
 interface SidebarUpdateEvent extends CustomEvent {
   detail: { id: string; name: string; image: string };
@@ -12,7 +12,7 @@ interface SidebarRemoveEvent extends CustomEvent {
   detail: { id: string };
 }
 interface SidebarCreateEvent extends CustomEvent {
-  detail: { id: string; name: string; image: string, type: 'Плейлист' | 'Артист' | 'Альбом' | 'EP' | 'Сингл'; };
+  detail: { id: string; name: string; image: string; type: 'Плейлист' | 'Артист' | 'Альбом' | 'EP' | 'Сингл' };
 }
 
 class Sidebar {
@@ -32,7 +32,7 @@ class Sidebar {
     this.container.innerHTML = contentTemplate({});
 
     const templateData = {
-      library: [] as LibraryItem[]
+      library: [] as LibraryItem[],
     };
 
     const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
@@ -46,7 +46,7 @@ class Sidebar {
           image: images.likedTracksPath,
           type: 'Плейлист',
           href: 'playlist/LM',
-          created_at: new Date()
+          created_at: new Date(),
         });
 
         if (data.playlists) {
@@ -58,40 +58,39 @@ class Sidebar {
                 image: getValidImage(p.avatar_url, images.defaultPlaylistPath),
                 type: 'Плейлист',
                 href: `playlist/${p.id}`,
-                created_at: new Date(p.created_at || 0)
+                created_at: new Date(p.created_at || 0),
               });
             }
           });
         }
 
         data.albums.forEach((a: Album) => {
-           templateData.library.push({
-             id: a.id,
-             name: a.title,
-             image: getValidImage(`albums/${a.avatar_url}`, images.defaultAlbumPath),
-             type: 'Альбом',
-             href: `album/${a.id}`,
-             created_at: new Date(a.created_at || 0)
-           });
+          templateData.library.push({
+            id: a.id,
+            name: a.title,
+            image: getValidImage(`albums/${a.avatar_url}`, images.defaultAlbumPath),
+            type: 'Альбом',
+            href: `album/${a.id}`,
+            created_at: new Date(a.created_at || 0),
+          });
         });
 
         data.artists.forEach((a: Artist) => {
-           templateData.library.push({
-             id: a.id,
-             name: a.name,
-             image: getValidImage(`artists/${a.avatar_url}`, images.defaultArtistPath),
-             type: 'Артист',
-             href: `artist/${a.id}`,
-             created_at: new Date(a.created_at || 0)
-           });
+          templateData.library.push({
+            id: a.id,
+            name: a.name,
+            image: getValidImage(`artists/${a.avatar_url}`, images.defaultArtistPath),
+            type: 'Артист',
+            href: `artist/${a.id}`,
+            created_at: new Date(a.created_at || 0),
+          });
         });
 
         templateData.library.sort((a: LibraryItem, b: LibraryItem) => {
-            const timeA = a.created_at ? a.created_at.getTime() : 0;
-            const timeB = b.created_at ? b.created_at.getTime() : 0;
-            return timeB - timeA;
+          const timeA = a.created_at ? a.created_at.getTime() : 0;
+          const timeB = b.created_at ? b.created_at.getTime() : 0;
+          return timeB - timeA;
         });
-
       } catch (e) {
         console.error('Sidebar data fetch error:', e);
       }
@@ -122,8 +121,7 @@ class Sidebar {
       const href = link.getAttribute('href');
       if (href === currentPath) {
         link.classList.add('active');
-      }
-      else {
+      } else {
         link.classList.remove('active');
       }
     });
@@ -144,8 +142,8 @@ class Sidebar {
     const createButton = document.getElementById('sidebarCreatePlaylistButton');
     if (!createButton) return;
     createButton.addEventListener('click', (e) => {
-        e.preventDefault();
-        playlistModal.open({ isEdit: false });
+      e.preventDefault();
+      playlistModal.open({ isEdit: false });
     });
   }
 
@@ -178,11 +176,11 @@ class Sidebar {
     if (!sidebarContent) return;
 
     const itemData = {
-        id,
-        name,
-        image: image || images.defaultPlaylistPath,
-        type,
-        href: this.getHrefByType(type, id)
+      id,
+      name,
+      image: image || images.defaultPlaylistPath,
+      type,
+      href: this.getHrefByType(type, id),
     };
 
     const template = Handlebars.templates['sidebarItem.hbs'];
@@ -205,9 +203,12 @@ class Sidebar {
 
   private getHrefByType(type: string, id: string): string {
     switch (type) {
-      case 'Плейлист': return `playlist/${id}`;
-      case 'Артист': return `artist/${id}`;
-      default: return `album/${id}`;
+      case 'Плейлист':
+        return `playlist/${id}`;
+      case 'Артист':
+        return `artist/${id}`;
+      default:
+        return `album/${id}`;
     }
   }
 }

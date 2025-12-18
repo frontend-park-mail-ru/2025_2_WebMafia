@@ -7,13 +7,13 @@ import { playTrack } from '@/playTrackBtn';
 import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth';
 import { playerOnlyOnPlay } from '@/playerOnlyOnplay';
 import { likeTrackBtn } from '@/utils/likeTrack';
-import { albumPlaylistButtons } from "@/utils/albumPlaylistButtons";
-import { share } from "@/utils/shareBtn";
-import { showInfoMessage } from "@/utils/showInfoMessage";
-import { BasePage } from "@/pages/base/basePage.ts";
-import { images } from "@/assets";
-import {confirmation} from "@/components/confirmation_modal/confirmationModal.ts";
-import { MappedTrack, Track } from "@/models.ts";
+import { albumPlaylistButtons } from '@/utils/albumPlaylistButtons';
+import { share } from '@/utils/shareBtn';
+import { showInfoMessage } from '@/utils/showInfoMessage';
+import { BasePage } from '@/pages/base/basePage.ts';
+import { images } from '@/assets';
+import { confirmation } from '@/components/confirmation_modal/confirmationModal.ts';
+import { MappedTrack, Track } from '@/models.ts';
 
 interface AlbumPageData {
   isAuthenticated: boolean;
@@ -133,8 +133,8 @@ export class AlbumPage extends BasePage {
           confirmText: 'Войти',
           cancelText: 'Закрыть',
           onConfirm: () => {
-            router.navigate('/login')
-          }
+            router.navigate('/login');
+          },
         });
         return;
       }
@@ -168,20 +168,21 @@ export class AlbumPage extends BasePage {
         await apiServise.toggleAlbumLike(albumId, newLikedState);
 
         if (newLikedState) {
-          window.dispatchEvent(new CustomEvent('sidebar:create', {
-            detail: {
-              id: albumId,
-              name: albumName,
-              image: albumCover,
-              type: albumType,
-            }
-          }));
+          window.dispatchEvent(
+            new CustomEvent('sidebar:create', {
+              detail: {
+                id: albumId,
+                name: albumName,
+                image: albumCover,
+                type: albumType,
+              },
+            })
+          );
           showInfoMessage(`Альбом «${albumName}» добавлен в библиотеку`);
         } else {
           window.dispatchEvent(new CustomEvent(`sidebar:remove`, { detail: { id: albumId } }));
           showInfoMessage(`Альбом «${albumName}» удалён из библиотеки`);
         }
-
       } catch (error) {
         console.error('Failed to like album:', error);
         renderState(wasLiked);

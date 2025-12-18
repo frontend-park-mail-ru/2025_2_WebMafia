@@ -9,14 +9,11 @@ const getVal = (formId: string, name: string) => () => {
 export const Rules = {
   required: (val: string) => (val.trim() ? null : 'Обязательно для заполнения'),
 
-  minLength: (min: number) => (val: string) =>
-    val.length < min ? `Минимум ${min} символов` : null,
+  minLength: (min: number) => (val: string) => (val.length < min ? `Минимум ${min} символов` : null),
 
-  maxLength: (max: number) => (val: string) =>
-    val.length > max ? `Максимум ${max} символов` : null,
+  maxLength: (max: number) => (val: string) => (val.length > max ? `Максимум ${max} символов` : null),
 
-  email: (val: string) =>
-    /\S+@\S+\.\S+/.test(val) ? null : 'Некорректный формат',
+  email: (val: string) => (/\S+@\S+\.\S+/.test(val) ? null : 'Некорректный формат'),
 
   optional: (rule: (val: string) => string | null) => (val: string) => {
     if (!val) return null;
@@ -26,7 +23,7 @@ export const Rules = {
   matchValue: (getReference: () => string, msg: string) => (val: string) => {
     if (!val) return null;
     return val === getReference() ? null : msg;
-  }
+  },
 };
 
 export const FormSchemas = {
@@ -39,7 +36,7 @@ export const FormSchemas = {
     info: {
       login: (val) => Rules.minLength(5)(val) || Rules.maxLength(35)(val),
       password: (val) => Rules.minLength(8)(val),
-    } as InformationConfig
+    } as InformationConfig,
   }),
 
   registration: (formId: string) => ({
@@ -62,7 +59,7 @@ export const FormSchemas = {
 
         const confirmVal = getVal(formId, 'passwordConfirm')();
         if (confirmVal && val !== confirmVal) {
-           errs.push('Пароли не совпадают');
+          errs.push('Пароли не совпадают');
         }
         return errs.length ? errs : null;
       },
@@ -73,8 +70,8 @@ export const FormSchemas = {
         if (val.length < 8) errs.push('Минимум 8 символов');
         if (passVal && val !== passVal) errs.push('Пароли не совпадают');
         return errs.length ? errs : null;
-      }
-    } as InformationConfig
+      },
+    } as InformationConfig,
   }),
 
   profile: (formId: string) => ({
@@ -120,7 +117,7 @@ export const FormSchemas = {
         }
         return errors.length ? errors : null;
       },
-    } as InformationConfig
+    } as InformationConfig,
   }),
 
   playlist: () => ({
@@ -134,7 +131,7 @@ export const FormSchemas = {
       },
       description: () => {
         return ['Максимум 300 символов'];
-      }
-    } as InformationConfig
-  })
+      },
+    } as InformationConfig,
+  }),
 };

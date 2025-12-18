@@ -9,8 +9,8 @@ import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth';
 import { playerOnlyOnPlay } from '@/playerOnlyOnplay';
 import { likeTrackBtn } from '@/utils/likeTrack';
 import { images } from '@/assets';
-import { showInfoMessage } from "@/utils/showInfoMessage";
-import { Album, Artist, Track } from "@/models.ts";
+import { showInfoMessage } from '@/utils/showInfoMessage';
+import { Album, Artist, Track } from '@/models.ts';
 
 interface SearchItem {
   id: string;
@@ -37,7 +37,7 @@ interface SearchPageContext {
 }
 
 export class SearchPage extends BasePage {
-  private clickHandlers: Array<{ el: Element, fn: EventListener }> = [];
+  private clickHandlers: Array<{ el: Element; fn: EventListener }> = [];
 
   protected async renderContent(container: HTMLElement, query: string): Promise<void> {
     const decodedName = decodeURIComponent(query);
@@ -50,7 +50,7 @@ export class SearchPage extends BasePage {
       best_result: null,
       artists: [],
       albums: [],
-      tracks: []
+      tracks: [],
     });
 
     document.querySelector('head title')!.textContent = `Поиск ${decodedName}`;
@@ -70,7 +70,7 @@ export class SearchPage extends BasePage {
         listeners: playsParser(artist.play_count || 0),
         image: getValidImage(`artists/${artist.avatar_url}`, images.defaultArtistPath),
         type: 'Артист',
-        href: `/artist/${artist.id}`
+        href: `/artist/${artist.id}`,
       }));
 
       const albums: SearchItem[] = (albumData || []).map((album: Album) => ({
@@ -80,7 +80,7 @@ export class SearchPage extends BasePage {
         artist: album.artists?.[0]?.name || 'Unknown Artist',
         artist_id: album.artists?.[0]?.id,
         type: album.type,
-        href: `/album/${album.id}`
+        href: `/album/${album.id}`,
       }));
 
       const tracks: SearchItem[] = (trackData || []).map((track: Track) => ({
@@ -93,7 +93,7 @@ export class SearchPage extends BasePage {
         artist_id: track.album?.artists?.[0]?.id,
         type: 'Трек',
         is_liked: track.is_liked,
-        href: `/album/${track.album?.id}`
+        href: `/album/${track.album?.id}`,
       }));
 
       let bestResult: SearchItem | null = null;
@@ -108,13 +108,12 @@ export class SearchPage extends BasePage {
         artists,
         albums,
         tracks,
-        hasResults: !!bestResult
+        hasResults: !!bestResult,
       };
 
       container.innerHTML = template(pageData);
 
       this.afterRender();
-
     } catch (error) {
       console.error('Search page error:', error);
       showInfoMessage('Ошибка при поиске');

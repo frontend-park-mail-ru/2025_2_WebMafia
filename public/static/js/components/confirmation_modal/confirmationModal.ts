@@ -7,13 +7,7 @@ export interface ConfirmModalOptions {
 }
 
 class ModalService {
-  showConfirm({
-    title,
-    description,
-    confirmText = 'Удалить',
-    cancelText = 'Закрыть',
-    onConfirm
-  }: ConfirmModalOptions) {
+  showConfirm({ title, description, confirmText = 'Удалить', cancelText = 'Закрыть', onConfirm }: ConfirmModalOptions) {
     const template = Handlebars.templates['confirmationModal.hbs'];
 
     const div = document.createElement('div');
@@ -31,7 +25,9 @@ class ModalService {
     });
 
     const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') { close(); }
+      if (e.key === 'Escape') {
+        close();
+      }
     };
 
     const close = () => {

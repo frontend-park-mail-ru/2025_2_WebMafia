@@ -116,7 +116,8 @@
   color: #fafafa;
 }
 
-.menu-item:hover, .menu-item:hover .sidebar-item-sub {
+.menu-item:hover,
+.menu-item:hover .sidebar-item-sub {
   color: #a766ff;
 }
 

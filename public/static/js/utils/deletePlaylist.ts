@@ -1,6 +1,6 @@
 import { apiServise } from '@/data';
-import { confirmation } from "@/components/confirmation_modal/confirmationModal.ts";
-import { showInfoMessage } from "@/utils/showInfoMessage";
+import { confirmation } from '@/components/confirmation_modal/confirmationModal.ts';
+import { showInfoMessage } from '@/utils/showInfoMessage';
 
 export const deletePlaylistLogic = (id: string, name: string, onSuccess?: () => void) => {
   confirmation.showConfirm({

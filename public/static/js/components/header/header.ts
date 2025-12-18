@@ -106,8 +106,7 @@ class Header {
     const inputCloseButton = document.querySelector('.input-close-button');
     const headLeft = document.querySelector('.head-left') as HTMLElement;
 
-    if (!searchToggle || !searchContainer || !searchInput || !inputCloseButton || !headLeft)
-      return;
+    if (!searchToggle || !searchContainer || !searchInput || !inputCloseButton || !headLeft) return;
 
     searchToggle.addEventListener('click', (e) => {
       e.preventDefault();
@@ -134,8 +133,7 @@ class Header {
     const profileBtn = document.querySelector('.profile-btn');
     const dropDownMenu = document.querySelector('.dropdown-menu');
 
-    if (!profileBtn || !dropDownMenu)
-      return;
+    if (!profileBtn || !dropDownMenu) return;
 
     profileBtn.addEventListener('click', (e) => {
       e.stopPropagation();

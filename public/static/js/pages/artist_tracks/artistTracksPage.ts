@@ -6,9 +6,9 @@ import { playTrack } from '@/playTrackBtn';
 import { playerOnlyOnPlay } from '@/playerOnlyOnplay';
 import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth';
 import { likeTrackBtn } from '@/utils/likeTrack';
-import { MappedTrack, Track } from "@/models";
-import { BasePage } from "@/pages/base/basePage.ts";
-import { showInfoMessage } from "@/utils/showInfoMessage.ts";
+import { MappedTrack, Track } from '@/models';
+import { BasePage } from '@/pages/base/basePage.ts';
+import { showInfoMessage } from '@/utils/showInfoMessage.ts';
 
 interface ArtistTracksContext {
   isAuthenticated: boolean;

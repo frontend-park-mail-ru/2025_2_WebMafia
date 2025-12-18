@@ -11,5 +11,5 @@ export const images = {
   defaultPlaylistPath,
   defaultArtistPath,
   likedTracksPath,
-  wavePath
+  wavePath,
 } as const;

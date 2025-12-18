@@ -7,11 +7,11 @@ import { playTrack } from '@/playTrackBtn.js';
 import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
 import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
 import { likeTrackBtn } from '@/utils/likeTrack.js';
-import { share } from "@/utils/shareBtn";
-import { showInfoMessage } from "@/utils/showInfoMessage";
-import { BasePage } from "@/pages/base/basePage.ts";
+import { share } from '@/utils/shareBtn';
+import { showInfoMessage } from '@/utils/showInfoMessage';
+import { BasePage } from '@/pages/base/basePage.ts';
 import { Artist, Album, Track } from '@/models';
-import { initSubscribeButton } from "@/utils/subscribeArtist.ts";
+import { initSubscribeButton } from '@/utils/subscribeArtist.ts';
 
 interface ArtistPageData {
   isAuthenticated: boolean;

@@ -71,7 +71,7 @@ class NowPlayingCardsSlider {
     this.applyDataToCards(data);
   }
 
-  private applyDataToCards({ prev, current, next }: { prev: TrackData, current: TrackData, next: TrackData }): void {
+  private applyDataToCards({ prev, current, next }: { prev: TrackData; current: TrackData; next: TrackData }): void {
     const prevCard = document.querySelector('.card-position-prev');
     const nextCard = document.querySelector('.card-position-next');
 
@@ -105,7 +105,7 @@ class NowPlayingCardsSlider {
     const cards = [
       document.querySelector('.card-position-prev'),
       document.querySelector('.card-position-current'),
-      document.querySelector('.card-position-next')
+      document.querySelector('.card-position-next'),
     ];
 
     cards.forEach((card, index) => {
@@ -157,24 +157,26 @@ class NowPlayingCardsSlider {
 
     if (!current || !prev || !next) return;
 
-    [current, prev, next].forEach(c => c.classList.remove('card-position-current', 'card-position-prev', 'card-position-next'));
+    [current, prev, next].forEach((c) =>
+      c.classList.remove('card-position-current', 'card-position-prev', 'card-position-next')
+    );
 
     if (direction === 'next') {
-        current.classList.add('card-position-prev');
-        next.classList.add('card-position-current');
+      current.classList.add('card-position-prev');
+      next.classList.add('card-position-current');
 
-        prev.style.transition = 'none';
-        prev.classList.add('card-position-next');
-        void prev.offsetWidth;
-        prev.style.transition = '';
+      prev.style.transition = 'none';
+      prev.classList.add('card-position-next');
+      void prev.offsetWidth;
+      prev.style.transition = '';
     } else {
-        current.classList.add('card-position-next');
-        prev.classList.add('card-position-current');
+      current.classList.add('card-position-next');
+      prev.classList.add('card-position-current');
 
-        next.style.transition = 'none';
-        next.classList.add('card-position-prev');
-        void next.offsetWidth;
-        next.style.transition = '';
+      next.style.transition = 'none';
+      next.classList.add('card-position-prev');
+      void next.offsetWidth;
+      next.style.transition = '';
     }
 
     setTimeout(() => {
@@ -190,14 +192,14 @@ class NowPlayingCardsSlider {
 
   private setupButtons(): void {
     this.nextBtn?.addEventListener('click', async () => {
-        if (this.isAnimating) return;
-        this.shiftCards('next');
-        await player.nextTrack();
+      if (this.isAnimating) return;
+      this.shiftCards('next');
+      await player.nextTrack();
     });
     this.prevBtn?.addEventListener('click', async () => {
-        if (this.isAnimating) return;
-        this.shiftCards('prev');
-        await player.prevTrack();
+      if (this.isAnimating) return;
+      this.shiftCards('prev');
+      await player.prevTrack();
     });
   }
 
@@ -208,9 +210,13 @@ class NowPlayingCardsSlider {
     let touchStartX = 0;
     let touchEndX = 0;
 
-    slider.addEventListener('touchstart', (e: any) => {
-      touchStartX = e.changedTouches[0].clientX;
-    }, { passive: true });
+    slider.addEventListener(
+      'touchstart',
+      (e: any) => {
+        touchStartX = e.changedTouches[0].clientX;
+      },
+      { passive: true }
+    );
 
     slider.addEventListener('touchend', (e: any) => {
       touchEndX = e.changedTouches[0].clientX;

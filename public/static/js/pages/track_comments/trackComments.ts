@@ -3,7 +3,7 @@ import { apiServise } from '@/data.ts';
 import { router } from '@/routing.ts';
 import { scrollbar } from '@/utils/scrollbar';
 import { slider } from '@/utils/slider';
-import { nowPlayingSlider } from "@/pages/mainpage/nowPlayingSlider";
+import { nowPlayingSlider } from '@/pages/mainpage/nowPlayingSlider';
 import { player } from '@/components/player/player.js';
 import { playTrack } from '@/playTrackBtn.js';
 import { getValidImage, playsParser, dateParser } from '@/utils/parsers';
@@ -15,7 +15,7 @@ import { likeTrackBtn } from '@/utils/likeTrack.js';
 import { share } from '@/utils/shareBtn.js';
 import { CommentsSocket } from '@/utils/webSocketConnect.ts';
 import { images } from '@/assets';
-import { showInfoMessage } from "@/utils/showInfoMessage";
+import { showInfoMessage } from '@/utils/showInfoMessage';
 import { Comment } from '@/models';
 
 interface TrackCommentsContext {
@@ -43,7 +43,7 @@ export class TrackCommentsPage extends BasePage {
   private socket: CommentsSocket<Comment> | null = null;
   private trackId: string | null = null;
 
-  private clickHandlers: Array<{ el: Element, fn: EventListener }> = [];
+  private clickHandlers: Array<{ el: Element; fn: EventListener }> = [];
   private boundTrackChange: EventListener | null = null;
   private boundTimeUpdate: EventListener | null = null;
 
@@ -56,7 +56,7 @@ export class TrackCommentsPage extends BasePage {
     const template = Handlebars.templates['trackComments.hbs'];
     container.innerHTML = template({
       isAuthenticated,
-      comments: []
+      comments: [],
     });
 
     const titleEl = document.querySelector('head title');
@@ -94,15 +94,14 @@ export class TrackCommentsPage extends BasePage {
           nickname: c.user_login,
           avatar: c.user_avatar ? getValidImage(c.user_avatar) : null,
           letter: c.user_login ? c.user_login[0].toUpperCase() : 'U',
-          time: dateParser(c.created_at)
-        }))
+          time: dateParser(c.created_at),
+        })),
       };
 
       container.innerHTML = template(pageData);
       if (titleEl) titleEl.textContent = pageData.title || 'Wave Music';
 
       this.initComponents(pageData);
-
     } catch (error: any) {
       console.error('TrackCommentsPage load error:', error);
       if (error.response?.status === 404) {
@@ -123,7 +122,7 @@ export class TrackCommentsPage extends BasePage {
 
     sliderColorChange();
     if (player.currentTrack) {
-        loadTrackInfo(player.currentTrack);
+      loadTrackInfo(player.currentTrack);
     }
 
     this.setupPageLogic();
@@ -179,7 +178,7 @@ export class TrackCommentsPage extends BasePage {
         onOpen: () => console.log('WS connected'),
         onMessage: (data) => this.handleNewComment(data),
         onError: (err) => console.error('WS Error:', err),
-        onClose: () => console.log('WS closed')
+        onClose: () => console.log('WS closed'),
       });
 
       this.socket.connect();
@@ -199,7 +198,7 @@ export class TrackCommentsPage extends BasePage {
       time: 'Только что',
       avatar: commentData.user_avatar ? getValidImage(commentData.user_avatar) : null,
       letter: (commentData.user_login || 'U')[0].toUpperCase(),
-      track_id: commentData.track_id
+      track_id: commentData.track_id,
     };
 
     const commentsContainer = document.querySelector('.comments-container');
@@ -232,9 +231,9 @@ export class TrackCommentsPage extends BasePage {
     } else {
       const form = document.getElementById('createCommentsForm');
       if (form && form.nextSibling) {
-         form.parentNode?.insertBefore(commentDiv, form.nextSibling);
+        form.parentNode?.insertBefore(commentDiv, form.nextSibling);
       } else {
-         commentsContainer.appendChild(commentDiv);
+        commentsContainer.appendChild(commentDiv);
       }
     }
 
@@ -276,30 +275,30 @@ export class TrackCommentsPage extends BasePage {
     this.updatePageStatus(this.trackId);
 
     this.boundTrackChange = (e: Event) => {
-        const customEvent = e as CustomEvent;
-        const currentId = customEvent.detail?.current?.id;
-        if (this.trackId) {
-            this.updatePageStatus(this.trackId, currentId);
-        }
+      const customEvent = e as CustomEvent;
+      const currentId = customEvent.detail?.current?.id;
+      if (this.trackId) {
+        this.updatePageStatus(this.trackId, currentId);
+      }
     };
     player.addEventListener('trackchange', this.boundTrackChange);
 
     this.boundTimeUpdate = () => {
-        if (document.querySelector('.track-info-comments.active-track')) {
-            updateCurrentTimeAndSlider();
-        }
+      if (document.querySelector('.track-info-comments.active-track')) {
+        updateCurrentTimeAndSlider();
+      }
     };
     player.audio.addEventListener('timeupdate', this.boundTimeUpdate);
 
     const container = document.querySelector('.track-info-comments');
     if (container) {
-        const clickHandler = (e: Event) => {
-            const target = e.target as HTMLElement;
-            if (target.closest('.prev')) player.prevTrack();
-            if (target.closest('.next')) player.nextTrack();
-        };
-        container.addEventListener('click', clickHandler);
-        this.clickHandlers.push({ el: container, fn: clickHandler });
+      const clickHandler = (e: Event) => {
+        const target = e.target as HTMLElement;
+        if (target.closest('.prev')) player.prevTrack();
+        if (target.closest('.next')) player.nextTrack();
+      };
+      container.addEventListener('click', clickHandler);
+      this.clickHandlers.push({ el: container, fn: clickHandler });
     }
   }
 

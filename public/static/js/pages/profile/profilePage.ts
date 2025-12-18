@@ -9,9 +9,9 @@ import { playTrack } from '@/playTrackBtn.js';
 import { likeTrackBtn } from '@/utils/likeTrack.js';
 import { setupMarquees } from '@/utils/marquee';
 import { images } from '@/assets';
-import { BasePage } from "@/pages/base/basePage.ts";
-import { ProfileModalData, profileModal } from "@/components/modal/profileModal.ts";
-import {Artist, Track} from "@/models.ts";
+import { BasePage } from '@/pages/base/basePage.ts';
+import { ProfileModalData, profileModal } from '@/components/modal/profileModal.ts';
+import { Artist, Track } from '@/models.ts';
 
 interface ProfilePageData {
   isAuthenticated: boolean;
@@ -41,15 +41,12 @@ export class ProfilePage extends BasePage {
     if (!isAuthenticated) return;
 
     try {
-      const [data, profile] = await Promise.all([
-        apiServise.getProfilePageData(),
-        apiServise.getProfileData()
-      ]);
+      const [data, profile] = await Promise.all([apiServise.getProfilePageData(), apiServise.getProfileData()]);
       this.currentProfileData = {
         nickname: profile.Login,
         email: profile.Email,
         avatar: profile.AvatarURL ? getValidImage(profile.AvatarURL) : null,
-        letter: profile.Login ? profile.Login[0].toUpperCase() : '?'
+        letter: profile.Login ? profile.Login[0].toUpperCase() : '?',
       };
       pageData.profile = { ...this.currentProfileData };
       pageData.top_artists = (data.top_artists || []).map((artist: Artist) => ({

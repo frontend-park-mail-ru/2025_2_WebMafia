@@ -4,7 +4,7 @@ import { router } from '@/routing';
 import { images } from '@/assets';
 import { FormSchemas } from '@/utils/validationRules';
 import { getValidImage } from '@/utils/parsers';
-import { PlaylistSuccessData } from "@/models.ts";
+import { PlaylistSuccessData } from '@/models.ts';
 
 export interface PlaylistModalData {
   id?: string;
@@ -38,9 +38,9 @@ export class PlaylistModal extends BaseFormModal<PlaylistModalData> {
       submitBtnId: 'submitPlaylistOverlay',
       submitText: isEdit ? 'Сохранить' : 'Создать',
       errorId: 'generalError',
-      avatarSrc: (isEdit && this.data?.image) ? this.data.image : images.defaultPlaylistPath,
+      avatarSrc: isEdit && this.data?.image ? this.data.image : images.defaultPlaylistPath,
       avatarLetter: '',
-      extraFooterContent: aiButtonHtml
+      extraFooterContent: aiButtonHtml,
     };
   }
 
@@ -48,7 +48,7 @@ export class PlaylistModal extends BaseFormModal<PlaylistModalData> {
     const template = Handlebars.templates['playlistInputs.hbs'];
     return template({
       title: this.data?.title || '',
-      description: this.data?.description || ''
+      description: this.data?.description || '',
     });
   }
 
@@ -66,7 +66,7 @@ export class PlaylistModal extends BaseFormModal<PlaylistModalData> {
   private async handleGenerateDescription(btn: HTMLButtonElement) {
     const descriptionInput = document.getElementById('description') as HTMLTextAreaElement;
     const titleInput = document.getElementById('title') as HTMLInputElement;
-    if (!descriptionInput || !titleInput ||  !this.data?.id) return;
+    if (!descriptionInput || !titleInput || !this.data?.id) return;
 
     const originalContent = btn.innerHTML;
 
@@ -91,7 +91,6 @@ export class PlaylistModal extends BaseFormModal<PlaylistModalData> {
       } else {
         this.validator?.showMessage('Не удалось сгенерировать описание');
       }
-
     } catch (error) {
       console.error('AI Generation error:', error);
       this.validator?.showMessage('Ошибка генерации. Попробуйте позже');
@@ -114,7 +113,11 @@ export class PlaylistModal extends BaseFormModal<PlaylistModalData> {
   protected hasUnsavedChanges(): boolean {
     if (!this.overlay || !this.data) return false;
 
-    if (this.selectedAvatarFile || (this.isAvatarDeleted && this.data.image && this.data.image !== images.defaultPlaylistPath)) return true;
+    if (
+      this.selectedAvatarFile ||
+      (this.isAvatarDeleted && this.data.image && this.data.image !== images.defaultPlaylistPath)
+    )
+      return true;
 
     const titleInput = this.overlay.querySelector('#title') as HTMLInputElement;
     const descInput = this.overlay.querySelector('#description') as HTMLInputElement;
@@ -148,7 +151,6 @@ export class PlaylistModal extends BaseFormModal<PlaylistModalData> {
       } else {
         await this.handleCreate(title, description);
       }
-
     } catch (err: any) {
       console.error('Playlist Modal Error:', err);
       btn.disabled = false;
@@ -172,14 +174,16 @@ export class PlaylistModal extends BaseFormModal<PlaylistModalData> {
     }
 
     this.close(true);
-    window.dispatchEvent(new CustomEvent('sidebar:create', {
-      detail: {
-        id: response.id,
-        name: title,
-        image: finalImage || images.defaultPlaylistPath,
-        type: 'Плейлист',
-      }
-    }));
+    window.dispatchEvent(
+      new CustomEvent('sidebar:create', {
+        detail: {
+          id: response.id,
+          name: title,
+          image: finalImage || images.defaultPlaylistPath,
+          type: 'Плейлист',
+        },
+      })
+    );
     router.navigate(`/playlist/${response.id}`);
   }
 
@@ -198,20 +202,22 @@ export class PlaylistModal extends BaseFormModal<PlaylistModalData> {
       await apiServise.updatePlaylist(title, description, id);
     }
 
-    window.dispatchEvent(new CustomEvent('sidebar:update', {
-      detail: {
-        id,
-        name: title,
-        image: newAvatarUrl || images.defaultPlaylistPath
-      }
-    }));
+    window.dispatchEvent(
+      new CustomEvent('sidebar:update', {
+        detail: {
+          id,
+          name: title,
+          image: newAvatarUrl || images.defaultPlaylistPath,
+        },
+      })
+    );
 
     if (this.onSuccessCallback) {
       this.onSuccessCallback({
         id,
         title,
         description,
-        image: newAvatarUrl
+        image: newAvatarUrl,
       });
     }
 

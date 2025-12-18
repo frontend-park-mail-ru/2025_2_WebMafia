@@ -6,7 +6,7 @@ export interface Artist {
   play_count: number;
   description?: string;
   isSubscribed?: boolean;
-  created_at?: string,
+  created_at?: string;
 }
 
 export interface Album {
@@ -15,7 +15,7 @@ export interface Album {
   avatar_url?: string;
   release_date?: string;
   description?: string;
-  created_at?: string,
+  created_at?: string;
   type?: string;
   is_liked?: boolean;
   artists?: Artist[];
@@ -27,7 +27,7 @@ export interface Track {
   duration_s: number;
   play_count: number;
   is_liked?: boolean;
-  created_at?: string,
+  created_at?: string;
   album: Album;
   artists?: Artist[];
 }
@@ -52,8 +52,8 @@ export interface Playlist {
   description?: string;
   avatar_url?: string;
   is_favorite?: boolean;
-  created_at?: string,
-  creator_id?: string,
+  created_at?: string;
+  creator_id?: string;
   tracks?: Track[];
 }
 

@@ -1,7 +1,7 @@
 import { FormValidator, ValidatorsConfig, InformationConfig } from '@/utils/validation';
 import { images } from '@/assets';
-import {confirmation} from "@/components/confirmation_modal/confirmationModal.ts";
-import {router} from "@/routing.ts";
+import { confirmation } from '@/components/confirmation_modal/confirmationModal.ts';
+import { router } from '@/routing.ts';
 
 export interface BaseModal {
   modalId: string;
@@ -27,7 +27,7 @@ export abstract class BaseFormModal<TData> {
   protected abstract getModalConfig(): BaseModal;
   protected abstract getFormHtml(): string;
   protected abstract handleSubmit(btn: HTMLButtonElement): Promise<void>;
-  protected abstract getValidationConfig(): { validators: ValidatorsConfig, info: InformationConfig };
+  protected abstract getValidationConfig(): { validators: ValidatorsConfig; info: InformationConfig };
   protected abstract hasUnsavedChanges(): boolean;
   protected abstract updateAvatarPreview(src: string | null): void;
 
@@ -45,8 +45,8 @@ export abstract class BaseFormModal<TData> {
         confirmText: 'Войти',
         cancelText: 'Закрыть',
         onConfirm: () => {
-          router.navigate('/login')
-        }
+          router.navigate('/login');
+        },
       });
       return;
     }
@@ -56,7 +56,7 @@ export abstract class BaseFormModal<TData> {
 
     const html = layoutTemplate({
       ...config,
-      formContent: this.getFormHtml()
+      formContent: this.getFormHtml(),
     });
 
     this.createDOM(html);
@@ -89,14 +89,14 @@ export abstract class BaseFormModal<TData> {
 
     const setAvatarBtn = document.getElementById('setAvatarBtn') as HTMLButtonElement;
     setAvatarBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        const input = document.createElement('input');
-        input.type = 'file';
-        input.accept = 'image/*';
-        input.onchange = () => {
-             if (input.files?.[0]) this.handleFileSelect(input.files[0]);
-        };
-        input.click();
+      e.preventDefault();
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = 'image/*';
+      input.onchange = () => {
+        if (input.files?.[0]) this.handleFileSelect(input.files[0]);
+      };
+      input.click();
     });
 
     const config = this.getModalConfig();
@@ -145,7 +145,7 @@ export abstract class BaseFormModal<TData> {
   private initValidator(config: BaseModal) {
     const { validators, info } = this.getValidationConfig();
     this.validator = new FormValidator(config.formId, validators, info, {
-      messageSelector: `#${config.errorId}`
+      messageSelector: `#${config.errorId}`,
     });
     this.validator.init();
   }

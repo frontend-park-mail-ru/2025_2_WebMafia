@@ -5,8 +5,8 @@ import { getValidImage } from '@/utils/parsers.ts';
 import { playTrack } from '@/playTrackBtn.js';
 import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
 import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
-import { BasePage } from "@/pages/base/basePage.ts";
-import { showInfoMessage } from "@/utils/showInfoMessage.ts";
+import { BasePage } from '@/pages/base/basePage.ts';
+import { showInfoMessage } from '@/utils/showInfoMessage.ts';
 
 interface ArtistReleasesPageData {
   id?: string;
@@ -43,13 +43,13 @@ export class ArtistReleasesPage extends BasePage {
       pageData.name = data.artist.name;
       pageData.id = data.artist.id;
       pageData.albums = data.albums
-        .filter(album => {
+        .filter((album) => {
           if (isSingles) {
             return album.type === 'Сингл' || album.type === 'EP';
           }
           return album.type === 'Альбом';
         })
-        .map(album => ({
+        .map((album) => ({
           id: album.id,
           name: album.title,
           cover: getValidImage(`albums/${album.avatar_url}`, 'default-album.png'),

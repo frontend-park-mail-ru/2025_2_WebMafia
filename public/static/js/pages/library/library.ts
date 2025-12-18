@@ -7,8 +7,8 @@ import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth';
 import { playerOnlyOnPlay } from '@/playerOnlyOnplay';
 import { images } from '@/assets';
 import { showInfoMessage } from '@/utils/showInfoMessage';
-import { playlistModal } from "@/components/modal/playlistModal";
-import { BasePage } from "@/pages/base/basePage.ts";
+import { playlistModal } from '@/components/modal/playlistModal';
+import { BasePage } from '@/pages/base/basePage.ts';
 import { contextMenu } from './contexMenu.ts';
 
 interface LibraryItem {
@@ -64,46 +64,55 @@ export class LibraryPage extends BasePage {
         created_at: new Date(),
         sub: tracksNumParser(data.favourite_tracks?.length || 0),
         href: 'playlist/LM',
-        type: 'Плейлист'
+        type: 'Плейлист',
       };
       this.addItem(likedItem, 'playlists');
 
       data.artists.forEach((artist: any) => {
-        this.addItem({
-          id: artist.id,
-          name: artist.name,
-          image: getValidImage(`artists/${artist.avatar_url}`, images.defaultArtistPath),
-          created_at: new Date(artist.created_at),
-          type: 'Артист',
-          sub: playsParser(artist.play_count || 0),
-          href: `artist/${artist.id}`
-        }, 'artists');
+        this.addItem(
+          {
+            id: artist.id,
+            name: artist.name,
+            image: getValidImage(`artists/${artist.avatar_url}`, images.defaultArtistPath),
+            created_at: new Date(artist.created_at),
+            type: 'Артист',
+            sub: playsParser(artist.play_count || 0),
+            href: `artist/${artist.id}`,
+          },
+          'artists'
+        );
       });
 
       data.albums.forEach((album: any) => {
-        this.addItem({
-          id: album.id,
-          name: album.title,
-          image: getValidImage(`albums/${album.avatar_url}`, images.defaultAlbumPath),
-          sub: album.artists?.[0]?.name || 'Unknown',
-          created_at: new Date(album.created_at),
-          type: album.type,
-          href: `album/${album.id}`
-        }, 'albums');
+        this.addItem(
+          {
+            id: album.id,
+            name: album.title,
+            image: getValidImage(`albums/${album.avatar_url}`, images.defaultAlbumPath),
+            sub: album.artists?.[0]?.name || 'Unknown',
+            created_at: new Date(album.created_at),
+            type: album.type,
+            href: `album/${album.id}`,
+          },
+          'albums'
+        );
       });
 
       data.playlists.forEach((playlist: any) => {
         if (!playlist.is_favorite) {
-          this.addItem({
-            id: playlist.id,
-            name: playlist.title,
-            description: playlist.description,
-            image: getValidImage(playlist.avatar_url, images.defaultPlaylistPath),
-            created_at: new Date(playlist.created_at),
-            sub: tracksNumParser(playlist.tracks?.length || 0),
-            type: 'Плейлист',
-            href: `playlist/${playlist.id}`
-          }, 'playlists');
+          this.addItem(
+            {
+              id: playlist.id,
+              name: playlist.title,
+              description: playlist.description,
+              image: getValidImage(playlist.avatar_url, images.defaultPlaylistPath),
+              created_at: new Date(playlist.created_at),
+              sub: tracksNumParser(playlist.tracks?.length || 0),
+              type: 'Плейлист',
+              href: `playlist/${playlist.id}`,
+            },
+            'playlists'
+          );
         }
       });
 
@@ -157,13 +166,13 @@ export class LibraryPage extends BasePage {
     if (typeInCard === 'Плейлист') categoryKey = 'playlists';
     else if (typeInCard === 'Артист') categoryKey = 'artists';
 
-    const libIndex = this.pageData.library.findIndex(item => item.id === id);
+    const libIndex = this.pageData.library.findIndex((item) => item.id === id);
     if (libIndex !== -1) {
       this.pageData.library.splice(libIndex, 1);
     }
 
     const categoryArray = this.pageData[categoryKey] as LibraryItem[];
-    const catIndex = categoryArray.findIndex(item => item.id === id);
+    const catIndex = categoryArray.findIndex((item) => item.id === id);
     if (catIndex !== -1) {
       categoryArray.splice(catIndex, 1);
     }
@@ -182,7 +191,7 @@ export class LibraryPage extends BasePage {
 
   private handleItemUpdate(id: string, newData: { title: string; description: string; image: string | null }) {
     if (!this.pageData) return;
-    const item = this.pageData.playlists.find(p => p.id === id);
+    const item = this.pageData.playlists.find((p) => p.id === id);
     if (item) {
       item.name = newData.title;
       item.description = newData.description;
@@ -200,7 +209,7 @@ export class LibraryPage extends BasePage {
     const closeButton = rightSearchContainer?.querySelector('.input-close-button');
     const originalParent = rightSearchContainer?.parentElement;
 
-    createPlaylistButtons.forEach(btn => {
+    createPlaylistButtons.forEach((btn) => {
       btn.addEventListener('click', (e) => {
         e.preventDefault();
         playlistModal.open({ isEdit: false });
@@ -254,8 +263,7 @@ export class LibraryPage extends BasePage {
             });
             button.style.display = 'none';
             gridContainer.innerHTML = gridTemplate(this.pageData);
-          }
-          else if (isActivating) {
+          } else if (isActivating) {
             button.classList.remove('secondary-button');
             button.classList.add('primary-button');
             disableSort.style.display = 'flex';

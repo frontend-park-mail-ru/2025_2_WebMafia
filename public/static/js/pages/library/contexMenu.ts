@@ -4,8 +4,8 @@ import { showInfoMessage } from '@/utils/showInfoMessage';
 import { apiServise } from '@/data';
 import { playlistModal } from '@/components/modal/playlistModal.ts';
 import { images } from '@/assets';
-import { deletePlaylistLogic } from "@/utils/deletePlaylist";
-import { getValidImage } from "@/utils/parsers";
+import { deletePlaylistLogic } from '@/utils/deletePlaylist';
+import { getValidImage } from '@/utils/parsers';
 
 type MenuAction = 'edit' | 'share' | 'delete' | 'deleteFromLibrary' | 'unsubscribe';
 
@@ -16,7 +16,10 @@ interface MenuItem {
 }
 
 export type RemoveCallback = (id: string, type: string, card: HTMLElement) => void;
-export type UpdateCallback = (id: string, newData: { title: string; description: string; image: string | null }) => void;
+export type UpdateCallback = (
+  id: string,
+  newData: { title: string; description: string; image: string | null }
+) => void;
 
 class ContextMenuService {
   private activeMenu: HTMLElement | null = null;
@@ -116,13 +119,13 @@ class ContextMenuService {
     this.positionMenu(x, y);
 
     this.activeMenu.addEventListener('click', (ev) => {
-       const btn = (ev.target as HTMLElement).closest('.actions-item') as HTMLElement;
-       if(btn) {
-         ev.stopPropagation();
-         const action = btn.dataset.action as MenuAction;
-         this.handleAction(action, id, name, type, href, card);
-         this.removeMenu();
-       }
+      const btn = (ev.target as HTMLElement).closest('.actions-item') as HTMLElement;
+      if (btn) {
+        ev.stopPropagation();
+        const action = btn.dataset.action as MenuAction;
+        this.handleAction(action, id, name, type, href, card);
+        this.removeMenu();
+      }
     });
   }
 
@@ -154,8 +157,10 @@ class ContextMenuService {
               this.onRemove?.(id, type, card);
               window.dispatchEvent(new CustomEvent(`sidebar:remove`, { detail: { id } }));
               showInfoMessage(`Вы удалили «${name}» из библиотеки`);
-            } catch(e) { console.error(e); }
-          }
+            } catch (e) {
+              console.error(e);
+            }
+          },
         });
         break;
 
@@ -171,8 +176,10 @@ class ContextMenuService {
               this.onRemove?.(id, type, card);
               window.dispatchEvent(new CustomEvent(`sidebar:remove`, { detail: { id } }));
               showInfoMessage(`Вы отписались от «${name}»`);
-            } catch(e) { console.error(e); }
-          }
+            } catch (e) {
+              console.error(e);
+            }
+          },
         });
         break;
     }
@@ -181,33 +188,36 @@ class ContextMenuService {
   private async editPlaylist(id: string, card: HTMLElement) {
     try {
       const data = await apiServise.getPlaylistPageData(id, true);
-      if(!data.id) return;
+      if (!data.id) return;
 
       const imageSrc = getValidImage(data.avatar_url, images.defaultPlaylistPath);
 
-      playlistModal.open({
-        isEdit: true,
-        id: data.id,
-        title: data.title,
-        description: data.description || '',
-        image: imageSrc
-      }, (newData) => {
-        const titleEl = card.querySelector('.card-name');
-        if (titleEl) titleEl.textContent = newData.title;
-        card.dataset.name = newData.title;
+      playlistModal.open(
+        {
+          isEdit: true,
+          id: data.id,
+          title: data.title,
+          description: data.description || '',
+          image: imageSrc,
+        },
+        (newData) => {
+          const titleEl = card.querySelector('.card-name');
+          if (titleEl) titleEl.textContent = newData.title;
+          card.dataset.name = newData.title;
 
-        const img = card.querySelector('.playlist-cover') as HTMLImageElement;
-        if (img) img.src = newData.image || images.defaultPlaylistPath;
+          const img = card.querySelector('.playlist-cover') as HTMLImageElement;
+          if (img) img.src = newData.image || images.defaultPlaylistPath;
 
-        this.onUpdate?.(id, {
-          title: newData.title,
-          description: newData.description,
-          image: newData.image
-        });
+          this.onUpdate?.(id, {
+            title: newData.title,
+            description: newData.description,
+            image: newData.image,
+          });
 
-        showInfoMessage('Изменения успешно сохранены!');
-      });
-    } catch(e) {
+          showInfoMessage('Изменения успешно сохранены!');
+        }
+      );
+    } catch (e) {
       console.error(e);
       showInfoMessage('Не удалось загрузить данные');
     }
@@ -233,19 +243,19 @@ class ContextMenuService {
 
   private getMenuItems(type: string): MenuItem[] {
     const config: Record<string, MenuItem[]> = {
-      'Плейлист': [
+      Плейлист: [
         { text: 'Редактировать', icon: 'pencil', action: 'edit' },
         { text: 'Поделиться', icon: 'share', action: 'share' },
-        { text: 'Удалить', icon: 'trash', action: 'delete' }
+        { text: 'Удалить', icon: 'trash', action: 'delete' },
       ],
-      'Артист': [
+      Артист: [
         { text: 'Отписаться', icon: 'close', action: 'unsubscribe' },
         { text: 'Поделиться', icon: 'share', action: 'share' },
       ],
-      'default': [
+      default: [
         { text: 'Удалить из библиотеки', icon: 'close', action: 'deleteFromLibrary' },
         { text: 'Поделиться', icon: 'share', action: 'share' },
-      ]
+      ],
     };
     return config[type] || config['default'];
   }

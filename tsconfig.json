@@ -23,10 +23,6 @@
       "@/*": ["public/static/js/*"]
     }
   },
-  "include": [
-    "public/static/js/**/*",
-    "vite.config.ts",
-    "public/app.ts"
-  ],
+  "include": ["public/static/js/**/*", "vite.config.ts", "public/app.ts"],
   "exclude": ["node_modules"]
 }

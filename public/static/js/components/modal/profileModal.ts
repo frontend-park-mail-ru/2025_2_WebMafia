@@ -4,7 +4,7 @@ import { initPasswordShowing } from '@/eye';
 import { FormSchemas } from '@/utils/validationRules';
 import { getValidImage } from '@/utils/parsers';
 import { setupMarquees } from '@/utils/marquee';
-import { showInfoMessage } from "@/utils/showInfoMessage";
+import { showInfoMessage } from '@/utils/showInfoMessage';
 
 export interface ProfileModalData {
   nickname: string;
@@ -30,7 +30,7 @@ export class ProfileModal extends BaseFormModal<ProfileModalData> {
       submitText: 'Сохранить изменения',
       errorId: 'generalErrorProfile',
       avatarSrc: this.data?.avatar,
-      avatarLetter: this.data?.letter || '?'
+      avatarLetter: this.data?.letter || '?',
     };
   }
 
@@ -38,7 +38,7 @@ export class ProfileModal extends BaseFormModal<ProfileModalData> {
     const template = Handlebars.templates['profileInputs.hbs'];
     return template({
       email: this.data?.email,
-      nickname: this.data?.nickname
+      nickname: this.data?.nickname,
     });
   }
 
@@ -110,9 +110,8 @@ export class ProfileModal extends BaseFormModal<ProfileModalData> {
       let newLogin = this.data?.nickname || '';
       let newEmail = this.data?.email || '';
 
-      const isInfoChanged = email !== this.data?.email ||
-                            login !== this.data?.nickname ||
-                            (password && password.length > 0);
+      const isInfoChanged =
+        email !== this.data?.email || login !== this.data?.nickname || (password && password.length > 0);
 
       if (isInfoChanged) {
         const response = await apiServise.editUser(login, email, password || undefined);
@@ -125,14 +124,13 @@ export class ProfileModal extends BaseFormModal<ProfileModalData> {
           nickname: newLogin,
           email: newEmail,
           avatar: newAvatarUrl,
-          letter: newLogin[0] ? newLogin[0].toUpperCase() : '?'
+          letter: newLogin[0] ? newLogin[0].toUpperCase() : '?',
         });
       }
 
       setupMarquees();
       this.close(true);
       showInfoMessage('Изменения успешно сохранены!');
-
     } catch (err: any) {
       console.error('Profile Edit Error:', err);
       btn.disabled = false;
