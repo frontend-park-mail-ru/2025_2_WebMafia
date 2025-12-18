@@ -36,6 +36,8 @@ handlebars public/static/js/components/modal/AIButton.hbs -f public/static/js/co
 
 handlebars public/static/js/components/sidebar/sidebar.hbs -f public/static/js/components/sidebar/sidebar.tmpl.js
 
+handlebars public/static/js/components/sidebar/sidebarItem.hbs -f public/static/js/components/sidebar/sidebarItem.tmpl.js
+
 handlebars public/static/js/components/player/player.hbs -f public/static/js/components/player/player.tmpl.js
 
 handlebars public/static/js/components/searched_tracks/searchedTracks.hbs -f public/static/js/components/searched_tracks/searchedTracks.tmpl.js

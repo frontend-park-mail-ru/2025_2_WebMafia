@@ -28,7 +28,13 @@
       ></button>
       <button class="dots">{{> dots}}</button>
       <div class="actions-menu hidden">
-        <button class="actions-item" id="albumLikeButton" data-album-id="{{ id }}" data-album-name="{{ title }}">
+        <button
+          class="actions-item"
+          id="albumLikeButton"
+          data-album-id="{{ id }}"
+          data-album-name="{{ title }}"
+          data-album-cover="{{ cover }}"
+          data-album-type="{{ type }}">
           <span class="actions-item-svg {{#if is_liked}}active{{/if}}">
             {{> likeBtn }}
           </span>

@@ -141,6 +141,8 @@ export class AlbumPage extends BasePage {
 
       const albumId = likeButton.dataset.albumId;
       const albumName = likeButton.dataset.albumName || 'Альбом';
+      const albumCover = likeButton.dataset.albumCover || images.defaultAlbumPath;
+      const albumType = likeButton.dataset.albumType || 'Альбом';
       const likeIcon = likeButton.querySelector('.actions-item-svg');
       const likeText = likeButton.querySelector('.actions-item-text');
 
@@ -166,8 +168,17 @@ export class AlbumPage extends BasePage {
         await apiServise.toggleAlbumLike(albumId, newLikedState);
 
         if (newLikedState) {
+          window.dispatchEvent(new CustomEvent('sidebar:create', {
+            detail: {
+              id: albumId,
+              name: albumName,
+              image: albumCover,
+              type: albumType,
+            }
+          }));
           showInfoMessage(`Альбом «${albumName}» добавлен в библиотеку`);
         } else {
+          window.dispatchEvent(new CustomEvent(`sidebar:remove`, { detail: { id: albumId } }));
           showInfoMessage(`Альбом «${albumName}» удалён из библиотеки`);
         }
 

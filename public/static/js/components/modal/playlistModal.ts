@@ -164,11 +164,22 @@ export class PlaylistModal extends BaseFormModal<PlaylistModalData> {
   private async handleCreate(title: string, description: string) {
     const response = await apiServise.createPlaylist(title, description);
 
+    let finalImage = null;
+
     if (this.selectedAvatarFile) {
-      await apiServise.uploadPlaylistAvatar(this.selectedAvatarFile, response.id);
+      const avatarRes = await apiServise.uploadPlaylistAvatar(this.selectedAvatarFile, response.id);
+      finalImage = getValidImage(avatarRes.avatar_url, images.defaultPlaylistPath);
     }
 
     this.close(true);
+    window.dispatchEvent(new CustomEvent('sidebar:create', {
+      detail: {
+        id: response.id,
+        name: title,
+        image: finalImage || images.defaultPlaylistPath,
+        type: 'Плейлист',
+      }
+    }));
     router.navigate(`/playlist/${response.id}`);
   }
 
@@ -186,6 +197,14 @@ export class PlaylistModal extends BaseFormModal<PlaylistModalData> {
     if (title !== this.data?.title || description !== this.data?.description) {
       await apiServise.updatePlaylist(title, description, id);
     }
+
+    window.dispatchEvent(new CustomEvent('sidebar:update', {
+      detail: {
+        id,
+        name: title,
+        image: newAvatarUrl || images.defaultPlaylistPath
+      }
+    }));
 
     if (this.onSuccessCallback) {
       this.onSuccessCallback({

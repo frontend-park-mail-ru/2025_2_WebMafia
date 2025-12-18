@@ -1,7 +1,20 @@
 <nav class="menu">
   <a class="menu-item home" href="/">{{> homeIcon}} Главная</a>
   <a class="menu-item profile" href="/profile">{{> profile}} Профиль</a>
-  <a class="menu-item library" href="/library">{{> libraryIcon}} Библиотека</a>
+  <a class="menu-item library" href="/library">{{> libraryIcon}} Моя музыка</a>
   <div class="header-divider"></div>
-  <button class="secondary-button sidebar-secondary-button" id="sidebarCreatePlaylistButton">{{> plus}} Создать</button>
+  <button class="secondary-button sidebar-secondary-button" id="sidebarCreatePlaylistButton">
+    {{> plus}} Создать
+  </button>
+  <div class="menu sidebar-user-items" id="scrollContent">
+  {{#each library}}
+    <a class="menu-item my-media" href="/{{ href }}" data-id="{{ id }}">
+      <img src="{{ image }}" alt="{{ name }}" class="sidebar-image sidebar" />
+      <div class="sidebar-library-item-info">
+        <div class="sidebar-item-name">{{ name }}</div>
+        <div class="sidebar-item-sub">{{ type }}</div>
+      </div>
+    </a>
+  {{/each}}
+  </div>
 </nav>

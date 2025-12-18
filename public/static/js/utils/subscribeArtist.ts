@@ -2,6 +2,7 @@ import { apiServise } from '@/data.ts';
 import { router } from '@/routing.ts';
 import { confirmation } from '@/components/confirmation_modal/confirmationModal.ts';
 import { showInfoMessage } from '@/utils/showInfoMessage';
+import { images } from "@/assets.ts";
 
 export function initSubscribeButton(buttonIdOrElement: string | HTMLElement = 'artistSubscribeButton'): void {
   let btn: HTMLButtonElement | null = null;
@@ -34,11 +35,12 @@ export function initSubscribeButton(buttonIdOrElement: string | HTMLElement = 'a
 
     const artistId = btn.dataset.artistId;
     const artistName = btn.dataset.artistName || 'Артист';
+    const artistAvatar = btn.dataset.artistAvatar || images.defaultArtistPath;
     const isSubscribed = btn.dataset.isSubscribed === 'true';
 
     if (!artistId) {
-        console.error('Artist ID is missing on subscribe button');
-        return;
+      console.error('Artist ID is missing on subscribe button');
+      return;
     }
 
     try {
@@ -51,9 +53,18 @@ export function initSubscribeButton(buttonIdOrElement: string | HTMLElement = 'a
 
       if (newState) {
         btn.innerText = 'Отписаться';
+        window.dispatchEvent(new CustomEvent('sidebar:create', {
+          detail: {
+            id: artistId,
+            name: artistName,
+            image: artistAvatar,
+            type: 'Артист',
+          }
+        }));
         showInfoMessage(`Вы подписались на «${artistName}»`);
       } else {
         btn.innerText = 'Подписаться';
+        window.dispatchEvent(new CustomEvent(`sidebar:remove`, { detail: { id: artistId } }));
         showInfoMessage(`Вы отписались от «${artistName}»`);
       }
 

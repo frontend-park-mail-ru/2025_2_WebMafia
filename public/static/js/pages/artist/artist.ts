@@ -18,6 +18,7 @@ interface ArtistPageData {
   id?: string;
   name?: string;
   artist_header?: string;
+  artist_avatar?: string;
   description?: string;
   isSubscribed?: boolean;
   listeners?: string;
@@ -52,6 +53,7 @@ export class ArtistPage extends BasePage {
       pageData.id = data.artist.id;
       pageData.name = data.artist.name;
       pageData.artist_header = getValidImage(`artists/${data.artist.header_url}`, 'default-artist.png');
+      pageData.artist_avatar = getValidImage(`artists/${data.artist.avatar_url}`, 'default-artist.png');
       pageData.description = data.artist.description;
       pageData.isSubscribed = data.artist.isSubscribed;
       pageData.listeners = playsParser(data.artist.play_count || 0);

@@ -6,6 +6,7 @@ export interface Artist {
   play_count: number;
   description?: string;
   isSubscribed?: boolean;
+  created_at?: string,
 }
 
 export interface Album {
@@ -14,6 +15,7 @@ export interface Album {
   avatar_url?: string;
   release_date?: string;
   description?: string;
+  created_at?: string,
   type?: string;
   is_liked?: boolean;
   artists?: Artist[];
@@ -25,6 +27,7 @@ export interface Track {
   duration_s: number;
   play_count: number;
   is_liked?: boolean;
+  created_at?: string,
   album: Album;
   artists?: Artist[];
 }
@@ -90,4 +93,16 @@ export interface WebSocketHandlers<T = any> {
   onOpen?: () => void;
   onClose?: (code: number) => void;
   onError?: (error: Event) => void;
+}
+
+export interface LibraryItem {
+  id?: string;
+  name: string;
+  image: string;
+  created_at: Date;
+  type: 'Плейлист' | 'Артист' | 'Альбом' | 'Сингл' | 'EP';
+  sub?: string;
+  href: string;
+  description?: string;
+  default_avatar?: string;
 }

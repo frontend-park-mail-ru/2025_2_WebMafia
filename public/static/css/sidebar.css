@@ -9,6 +9,7 @@
   border-radius: 30px;
   overflow: hidden;
   margin-left: 10px;
+  z-index: 10;
 }
 
 .primary-button.login {
@@ -20,7 +21,7 @@
 }
 
 .menu {
-  margin-top: 15px;
+  margin-top: 20px;
   display: flex;
   flex-direction: column;
 }
@@ -28,8 +29,8 @@
 .menu-item {
   all: unset;
   justify-content: flex-start;
-  align-items: flex-start;
-  width: 190px;
+  align-items: center;
+  width: 200px;
   font-size: 20px;
   font-weight: 600;
   color: rgb(0, 0, 0);
@@ -69,16 +70,53 @@
   stroke: #fafafa;
 }
 
+.sidebar-image {
+  min-width: 40px;
+  min-height: 40px;
+  padding: 0;
+  margin: 0;
+  width: 40px;
+  height: 40px;
+}
+
+.sidebar-library-item-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.menu-item.my-media:last-of-type {
+  margin-bottom: 10px;
+}
+
+.sidebar-item-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.sidebar-item-sub {
+  color: #636363;
+  font-size: 14px;
+  font-weight: 500;
+  margin-top: 3px;
+  transition: color 0.3s ease;
+}
+
 .menu-item:hover svg {
   stroke: #a766ff;
 }
 
 .menu-item.active:hover,
-.menu-item.active {
+.menu-item.active,
+.menu-item.active:hover .sidebar-item-sub,
+.menu-item.active .sidebar-item-sub {
   color: #fafafa;
 }
 
-.menu-item:hover {
+.menu-item:hover, .menu-item:hover .sidebar-item-sub {
   color: #a766ff;
 }
 
@@ -125,14 +163,17 @@
 }
 
 .sidebar .header-divider {
-  width: 220px;
+  width: 230px;
   background: #aaacb5;
   margin: 20px 0;
+  height: 1px;
+  min-height: 1px;
+  flex-shrink: 0;
 }
 
 .sidebar .secondary-button {
   cursor: pointer;
-  width: 190px;
+  width: 200px;
 }
 
 @media (max-width: 1150px) {
@@ -160,6 +201,10 @@
     font-weight: 600;
   }
 
+  .menu-item.my-media {
+    display: none;
+  }
+
   .sidebar .secondary-button {
     width: auto;
   }
@@ -173,14 +218,11 @@
     stroke: url(#menuGradient);
   }
 
-  /* .menu-item.active {
-    color: black;
-  } */
-
   .menu-item.active {
     border-radius: 0;
     background: transparent;
     background-size: auto;
+    color: black;
   }
 
   .sidebar .header-divider {
@@ -274,5 +316,9 @@
   .menu .secondary-button:active,
   .menu .secondary-button:hover {
     background: transparent;
+  }
+
+  .second {
+    display: none;
   }
 }

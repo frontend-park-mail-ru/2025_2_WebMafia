@@ -152,6 +152,7 @@ class ContextMenuService {
             try {
               await apiServise.toggleAlbumLike(id, false);
               this.onRemove?.(id, type, card);
+              window.dispatchEvent(new CustomEvent(`sidebar:remove`, { detail: { id } }));
               showInfoMessage(`Вы удалили «${name}» из библиотеки`);
             } catch(e) { console.error(e); }
           }
@@ -168,6 +169,7 @@ class ContextMenuService {
             try {
               await apiServise.toggleSubscribeToArtist(id, false);
               this.onRemove?.(id, type, card);
+              window.dispatchEvent(new CustomEvent(`sidebar:remove`, { detail: { id } }));
               showInfoMessage(`Вы отписались от «${name}»`);
             } catch(e) { console.error(e); }
           }

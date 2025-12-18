@@ -612,7 +612,7 @@ export class apiService {
   async generatePlaylistDescription(id: string) {
     try {
       const csrfToken = await this.getCSRFToken();
-      return this.request<{ title: string; description: string }>(`/playlists/${id}/generate`, {
+      return this.request<{ title: string; description: string }>(`/playlist/${id}/generate`, {
         method: 'POST',
         headers: { 'X-CSRF-Token': csrfToken }
       });
