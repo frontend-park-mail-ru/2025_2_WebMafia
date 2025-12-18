@@ -160,6 +160,7 @@ export class Player extends EventTarget {
           }
           // this.playQueue = tracks;
         } catch (error) {
+          console.log(error);
           this.playQueue = [];
           this.originalQueue = [];
         }

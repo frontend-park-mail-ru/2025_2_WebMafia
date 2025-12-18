@@ -2,31 +2,54 @@ import js from '@eslint/js';
 import prettier from 'eslint-plugin-prettier';
 import prettierConfig from 'eslint-config-prettier';
 import globals from 'globals';
-import { defineConfig } from 'eslint/config';
+import tseslint from 'typescript-eslint';
 
-export default defineConfig([
+export default tseslint.config(
   {
-    files: ['**/*.{js,mjs,cjs,ts}'],
-    ignores: ['**/*.tmpl.js'],
+    ignores: ['**/*.tmpl.js', 'dist', 'node_modules'],
+  },
+  {
+    files: ['**/*.{js,mjs,cjs}'],
+    extends: [js.configs.recommended],
     languageOptions: {
       globals: {
         ...globals.browser,
         ...globals.node,
         Handlebars: 'readonly',
       },
-      ecmaVersion: 'latest',
       sourceType: 'module',
+      ecmaVersion: 'latest',
     },
+    rules: {
+      'no-unused-vars': 'warn',
+      'no-console': 'off',
+      '@typescript-eslint/no-require-imports': 'off',
+    },
+  },
+  {
+    files: ['**/*.ts'],
+    extends: [...tseslint.configs.recommended],
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+        ...globals.node,
+      },
+    },
+    rules: {
+      'no-console': 'off',
+      'no-unused-vars': 'off',
+      '@typescript-eslint/no-unused-vars': 'warn',
+    },
+  },
+  {
+    files: ['**/*.{js,mjs,cjs,ts}'],
     plugins: {
       prettier,
     },
     rules: {
-      ...js.configs.recommended.rules,
       ...prettierConfig.rules,
       'prettier/prettier': 'error',
-      'no-unused-vars': 'warn',
-      'no-console': 'off',
       'linebreak-style': 'off',
     },
-  },
-]);
+  }
+);

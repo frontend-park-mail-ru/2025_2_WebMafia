@@ -88,7 +88,7 @@ export interface Comment {
   time?: string;
 }
 
-export interface WebSocketHandlers<T = any> {
+export interface WebSocketHandlers<T = Comment> {
   onMessage: (data: T) => void;
   onOpen?: () => void;
   onClose?: (code: number) => void;
@@ -105,4 +105,14 @@ export interface LibraryItem {
   href: string;
   description?: string;
   default_avatar?: string;
+}
+
+interface HttpError {
+  response?: {
+    status: number;
+  };
+}
+
+export function isHttpError(error: unknown): error is HttpError {
+  return typeof error === 'object' && error !== null && 'response' in error;
 }

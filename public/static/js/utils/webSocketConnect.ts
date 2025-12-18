@@ -1,6 +1,6 @@
-import { WebSocketHandlers } from '@/models.ts';
+import { Comment, WebSocketHandlers } from '@/models.ts';
 
-export class CommentsSocket<T = any> {
+export class CommentsSocket<T = Comment> {
   private url: string;
   private token: string;
   private socket: WebSocket | null = null;

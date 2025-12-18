@@ -11,13 +11,13 @@ import { setupMarquees } from '@/utils/marquee';
 import { images } from '@/assets';
 import { BasePage } from '@/pages/base/basePage.ts';
 import { ProfileModalData, profileModal } from '@/components/modal/profileModal.ts';
-import { Artist, Track } from '@/models.ts';
+import { Artist, MappedTrack, Track } from '@/models.ts';
 
 interface ProfilePageData {
   isAuthenticated: boolean;
   profile?: { nickname: string; email: string; avatar: string | null; letter: string };
   top_artists: Array<{ id: string; name: string; listeners: string; image: string }>;
-  top_tracks: Array<any>;
+  top_tracks: Array<MappedTrack>;
   recent: Array<{ id: string; name: string; listeners: string; image: string }>;
 }
 

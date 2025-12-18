@@ -21,7 +21,7 @@ import { share } from '@/utils/shareBtn';
 import { deletePlaylistLogic } from '@/utils/deletePlaylist';
 import { playlistModal } from '@/components/modal/playlistModal';
 import { showInfoMessage } from '@/utils/showInfoMessage';
-import { MappedTrack, PlaylistSuccessData, Track } from '@/models.ts';
+import { isHttpError, MappedTrack, PlaylistSuccessData, Track } from '@/models.ts';
 import { BasePage } from '@/pages/base/basePage.ts';
 import { confirmation } from '@/components/confirmation_modal/confirmationModal.ts';
 
@@ -45,7 +45,7 @@ export class PlaylistPage extends BasePage {
   private playlistData: Partial<PlaylistSuccessData> = {};
   private favourite = true;
   private totalDurationSec = 0;
-  private currentSearchResults: any[] = [];
+  private currentSearchResults: Track[] = [];
 
   private boundPlayerLikeHandler: EventListener | null = null;
 
@@ -118,10 +118,10 @@ export class PlaylistPage extends BasePage {
       if (pageData.title && titleEl) {
         titleEl.textContent = pageData.title;
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Failed to load playlist page data:', error);
 
-      if (error.response && error.response.status === 404) {
+      if (isHttpError(error) && error.response?.status === 404) {
         router.navigate('/not-found');
         return;
       }
@@ -268,10 +268,10 @@ export class PlaylistPage extends BasePage {
     const searchedTracksContainer = document.getElementById('searchedTracksContainer');
     if (!searchedTracksContainer || !searchTracks) return;
 
-    let timeout: any;
+    let timeout: number | undefined;
     searchTracks.addEventListener('input', (e) => {
       clearTimeout(timeout);
-      timeout = setTimeout(async () => {
+      timeout = window.setTimeout(async () => {
         const val = (e.target as HTMLInputElement).value.trim();
         if (!val) {
           searchedTracksContainer.innerHTML = '';
@@ -301,7 +301,7 @@ export class PlaylistPage extends BasePage {
     this.currentSearchResults = tracks;
 
     const tracksTemplate = Handlebars.templates['searchedTracks.hbs'];
-    let pageData = {
+    const pageData = {
       searched_tracks: tracks.map((track) => ({
         id: track.id,
         name: track.title,

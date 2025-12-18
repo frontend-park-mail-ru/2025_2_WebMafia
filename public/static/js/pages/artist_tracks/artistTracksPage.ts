@@ -6,7 +6,7 @@ import { playTrack } from '@/playTrackBtn';
 import { playerOnlyOnPlay } from '@/playerOnlyOnplay';
 import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth';
 import { likeTrackBtn } from '@/utils/likeTrack';
-import { MappedTrack, Track } from '@/models';
+import { isHttpError, MappedTrack, Track } from '@/models';
 import { BasePage } from '@/pages/base/basePage.ts';
 import { showInfoMessage } from '@/utils/showInfoMessage.ts';
 
@@ -50,10 +50,10 @@ export class ArtistTracksPage extends BasePage {
           is_liked: track.is_liked,
         }));
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Failed to load artist tracks page data:', error);
 
-      if (error.response && error.response.status === 404) {
+      if (isHttpError(error) && error.response?.status === 404) {
         router.navigate('/not-found');
         return;
       }

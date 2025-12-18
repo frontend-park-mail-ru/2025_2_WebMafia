@@ -10,13 +10,14 @@ import { showInfoMessage } from '@/utils/showInfoMessage';
 import { playlistModal } from '@/components/modal/playlistModal';
 import { BasePage } from '@/pages/base/basePage.ts';
 import { contextMenu } from './contexMenu.ts';
+import { Album, Artist, isHttpError, Playlist } from '@/models.ts';
 
 interface LibraryItem {
   id?: string;
   name: string;
   image: string;
   created_at: Date;
-  type: 'Плейлист' | 'Артист' | 'Альбом' | 'Сингл' | 'EP';
+  type: string;
   sub: string;
   href: string;
   description?: string;
@@ -68,13 +69,13 @@ export class LibraryPage extends BasePage {
       };
       this.addItem(likedItem, 'playlists');
 
-      data.artists.forEach((artist: any) => {
+      data.artists.forEach((artist: Artist) => {
         this.addItem(
           {
             id: artist.id,
             name: artist.name,
             image: getValidImage(`artists/${artist.avatar_url}`, images.defaultArtistPath),
-            created_at: new Date(artist.created_at),
+            created_at: new Date(artist.created_at || 0),
             type: 'Артист',
             sub: playsParser(artist.play_count || 0),
             href: `artist/${artist.id}`,
@@ -83,22 +84,22 @@ export class LibraryPage extends BasePage {
         );
       });
 
-      data.albums.forEach((album: any) => {
+      data.albums.forEach((album: Album) => {
         this.addItem(
           {
             id: album.id,
             name: album.title,
             image: getValidImage(`albums/${album.avatar_url}`, images.defaultAlbumPath),
             sub: album.artists?.[0]?.name || 'Unknown',
-            created_at: new Date(album.created_at),
-            type: album.type,
+            created_at: new Date(album.created_at || 0),
+            type: album.type || '',
             href: `album/${album.id}`,
           },
           'albums'
         );
       });
 
-      data.playlists.forEach((playlist: any) => {
+      data.playlists.forEach((playlist: Playlist) => {
         if (!playlist.is_favorite) {
           this.addItem(
             {
@@ -106,7 +107,7 @@ export class LibraryPage extends BasePage {
               name: playlist.title,
               description: playlist.description,
               image: getValidImage(playlist.avatar_url, images.defaultPlaylistPath),
-              created_at: new Date(playlist.created_at),
+              created_at: new Date(playlist.created_at || 0),
               sub: tracksNumParser(playlist.tracks?.length || 0),
               type: 'Плейлист',
               href: `playlist/${playlist.id}`,
@@ -117,10 +118,10 @@ export class LibraryPage extends BasePage {
       });
 
       this.pageData?.library.sort((a, b) => b.created_at.getTime() - a.created_at.getTime());
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Failed to load library page data:', error);
 
-      if (error.response && error.response.status === 404) {
+      if (isHttpError(error) && error.response?.status === 404) {
         router.navigate('/not-found');
         return;
       }

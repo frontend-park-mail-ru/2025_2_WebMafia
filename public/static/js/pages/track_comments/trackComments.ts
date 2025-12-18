@@ -16,7 +16,7 @@ import { share } from '@/utils/shareBtn.js';
 import { CommentsSocket } from '@/utils/webSocketConnect.ts';
 import { images } from '@/assets';
 import { showInfoMessage } from '@/utils/showInfoMessage';
-import { Comment } from '@/models';
+import { Comment, isHttpError } from '@/models';
 
 interface TrackCommentsContext {
   isAuthenticated: boolean;
@@ -88,7 +88,7 @@ export class TrackCommentsPage extends BasePage {
         track_id: track.id,
         player_context: player.currentContext,
 
-        comments: comments.map((c: any) => ({
+        comments: comments.map((c: Comment) => ({
           id: c.id,
           text: c.text,
           nickname: c.user_login,
@@ -102,9 +102,9 @@ export class TrackCommentsPage extends BasePage {
       if (titleEl) titleEl.textContent = pageData.title || 'Wave Music';
 
       this.initComponents(pageData);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('TrackCommentsPage load error:', error);
-      if (error.response?.status === 404) {
+      if (isHttpError(error) && error.response?.status === 404) {
         router.navigate('/not-found');
         return;
       }
@@ -187,7 +187,7 @@ export class TrackCommentsPage extends BasePage {
     }
   }
 
-  private handleNewComment(data: any) {
+  private handleNewComment(data: Comment[] | Comment) {
     if (!data) return;
     const commentData = Array.isArray(data) ? data[0] : data;
 

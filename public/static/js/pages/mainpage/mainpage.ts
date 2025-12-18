@@ -9,7 +9,7 @@ import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
 import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
 import { BasePage } from '@/pages/base/basePage.ts';
 import { showInfoMessage } from '@/utils/showInfoMessage';
-import { Artist, Album, Track } from '@/models';
+import { Artist, Album, Track, isHttpError } from '@/models';
 
 interface MainPageData {
   isAuthenticated: boolean;
@@ -23,7 +23,7 @@ export class MainPage extends BasePage {
   private clickHandlers: Array<{ el: Element; fn: EventListener }> = [];
 
   protected async renderContent(contentContainer: HTMLElement): Promise<void> {
-    let pageData: MainPageData = {
+    const pageData: MainPageData = {
       isAuthenticated: localStorage.getItem('isAuthenticated') === 'true',
       artists: [],
       albums: [],
@@ -61,10 +61,10 @@ export class MainPage extends BasePage {
         artists: track.artists,
         album_id: track.album?.id,
       }));
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Failed to load main page data:', error);
 
-      if (error.response?.status === 404) {
+      if (isHttpError(error) && error.response?.status === 404) {
         router.navigate('/not-found');
         return;
       }

@@ -27,8 +27,8 @@ export class LoginPage extends Auth {
       try {
         const response = await apiServise.loginUser(login, password);
         this.handleLoginSuccess(response);
-      } catch (error: any) {
-        this.handleApiError(error, validator);
+      } catch (error: unknown) {
+        this.handleApiError(error as Error, validator);
       }
     };
 
