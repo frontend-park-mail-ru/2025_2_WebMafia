@@ -34,21 +34,15 @@
           data-album-id="{{ id }}"
           data-album-name="{{ title }}"
           data-album-cover="{{ cover }}"
-          data-album-type="{{ type }}">
-          <span class="actions-item-svg {{#if is_liked}}active{{/if}}">
-            {{> likeBtn }}
-          </span>
+          data-album-type="{{ type }}"
+        >
+          <span class="actions-item-svg {{#if is_liked}}active{{/if}}"> {{> likeBtn }} </span>
           <span class="actions-item-text">
-            {{#if is_liked}}
-            Удалить из библиотеки
-            {{else}}
-            Добавить в библиотеку
-            {{/if}}
+            {{#if is_liked}} Удалить из библиотеки {{else}} Добавить в библиотеку {{/if}}
           </span>
         </button>
         <button class="actions-item" id="shareButton">
-          <span class="actions-item-svg">{{> share}}</span
-          >Поделиться
+          <span class="actions-item-svg">{{> share}}</span>Поделиться
         </button>
       </div>
     </div>

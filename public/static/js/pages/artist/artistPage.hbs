@@ -18,11 +18,7 @@
         data-artist-avatar="{{ artist_avatar }}"
         data-is-subscribed="{{ isSubscribed }}"
       >
-        {{#if isSubscribed}}
-        Отписаться
-        {{else}}
-        Подписаться
-        {{/if}}
+        {{#if isSubscribed}} Отписаться {{else}} Подписаться {{/if}}
       </button>
       <button class="share-button {{#unless id}}loading{{/unless}}" id="shareButton">{{> share }}</button>
     </div>
@@ -106,9 +102,7 @@
         <p><i class="slide-btn right"></i></p>
       </div>
     </div>
-    {{/if}}
-
-    {{#if singls}}
+    {{/if}} {{#if singls}}
     <div class="title">
       <div class="title-name">Синглы и EP</div>
       <a class="show-all href-decoration" href="/artist/{{ id }}/singles">Показать все</a>

@@ -5,12 +5,8 @@
       <div class="library-header-container">
         <div class="title-name">Библиотека</div>
         <div class="library-events-buttons">
-          <button class="search-toggle" id="librarySearchToggle">
-            {{> searchIcon }}
-          </button>
-          <button class="create-playlist-toggle create-playlist-button">
-            {{> plus}}
-          </button>
+          <button class="search-toggle" id="librarySearchToggle">{{> searchIcon }}</button>
+          <button class="create-playlist-toggle create-playlist-button">{{> plus}}</button>
         </div>
       </div>
       <div class="sort-buttons">
@@ -18,20 +14,15 @@
         <button class="secondary-button" data-name="playlists">Плейлисты</button>
         {{#if artists}}
         <button class="secondary-button" data-name="artists">Артисты</button>
-        {{/if}}
-        {{#if albums}}
+        {{/if}} {{#if albums}}
         <button class="secondary-button" data-name="albums">Альбомы</button>
-        {{/if}}
-        {{#if tracks}}
+        {{/if}} {{#if tracks}}
         <button class="secondary-button">Треки</button>
         {{/if}}
       </div>
     </div>
     <div class="right-content">
-      <button class="primary-button create-playlist-button">
-        {{> plus}}
-        Создать плейлист
-      </button>
+      <button class="primary-button create-playlist-button">{{> plus}} Создать плейлист</button>
       <div class="library-search-container">
         <div class="search-icon">{{> searchIcon }}</div>
         <input
@@ -45,9 +36,7 @@
       </div>
     </div>
   </div>
-  <div class="grid-layout">
-    {{> libraryGrid}}
-  </div>
+  <div class="grid-layout">{{> libraryGrid}}</div>
 </div>
 {{else}}
 <div class="profile-wrapper" id="scrollContent">

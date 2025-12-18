@@ -26,27 +26,22 @@
         data-track-id="{{ track_id }}"
         data-first-track-id="{{ track_id }}"
       ></button>
-      {{#unless favourite}}
-      {{#if isCreator}}
+      {{#unless favourite}} {{#if isCreator}}
       <button class="dots">{{> dots}}</button>
       <div class="actions-menu hidden">
         <button class="actions-item" id="editPlaylistButton">
-          <span class="actions-item-svg">{{> pencil }}</span
-          >Редактировать
+          <span class="actions-item-svg">{{> pencil }}</span>Редактировать
         </button>
         <button class="actions-item" id="shareButton">
-          <span class="actions-item-svg">{{> share}}</span
-          >Поделиться
+          <span class="actions-item-svg">{{> share}}</span>Поделиться
         </button>
         <button class="actions-item" id="deletePlaylistButton">
-          <span class="actions-item-svg">{{> trash}}</span
-          >Удалить
+          <span class="actions-item-svg">{{> trash}}</span>Удалить
         </button>
       </div>
       {{else}}
       <button class="control-btn shuffle-album" id="shareButton">{{> share }}</button>
-      {{/if}}
-      {{/unless}}
+      {{/if}} {{/unless}}
     </div>
   </div>
   <div class="tracks-card">
@@ -101,9 +96,7 @@
         {{/if}}
       {{/each}}
     </div>
-    {{#unless favourite}}
-    {{#if isCreator}}
-    {{#if tracks}}
+    {{#unless favourite}} {{#if isCreator}} {{#if tracks}}
     <div class="header-divider" id="playlistTracksDivider"></div>
     {{/if}}
     <div class="playlist-search-title">Давай добавим что-нибудь в твой плейлист</div>
@@ -118,8 +111,7 @@
       />
     </div>
     <div class="tracks-table" id="searchedTracksContainer"></div>
-    {{/if}}
-    {{/unless}}
+    {{/if}} {{/unless}}
   </div>
 </div>
 <div class="turquoise-oval"></div>

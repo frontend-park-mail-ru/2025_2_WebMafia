@@ -22,11 +22,7 @@
           data-artist-avatar="{{ artist.avatar }}"
           data-is-subscribed="{{ isSubscribed }}"
         >
-          {{#if isSubscribed}}
-          Отписаться
-          {{else}}
-          Подписаться
-          {{/if}}
+          {{#if isSubscribed}} Отписаться {{else}} Подписаться {{/if}}
         </button>
       </div>
     </div>
@@ -92,9 +88,7 @@
           <span class="dot"></span>
           <div class="comment-time">{{ time }}</div>
         </div>
-        <div class="comment-text">
-          {{ text }}
-        </div>
+        <div class="comment-text">{{ text }}</div>
       </div>
     </div>
     {{/each}}

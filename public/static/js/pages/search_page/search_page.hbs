@@ -35,11 +35,7 @@
           <div class="track-number">{{numeration @index}}</div>
           <div class="track-cover-wrapper">
             <img class="track-cover" src="{{ image }}" alt="{{ name }}" />
-            <button
-              class="play-popular-track"
-              data-track-id="{{ id }}"
-              data-context="search-tracks"
-            >
+            <button class="play-popular-track" data-track-id="{{ id }}" data-context="search-tracks">
               <span class="play-icon">{{> play }}</span>
               <span class="pause-icon">{{> pause }}</span>
             </button>
@@ -49,18 +45,13 @@
               <div class="track-name">{{ name }}</div>
               <div class="track-performers">
                 {{#if artist}}
-                <a href="/artist/{{ artist_id }}" class="text href-decoration">
-                  {{ artist }}
-                </a>
+                <a href="/artist/{{ artist_id }}" class="text href-decoration"> {{ artist }} </a>
                 {{/if}}
               </div>
             </div>
 
             <div class="track-like-container">
-              <button
-                class="like-btn-track artist-like-size {{#if is_liked}}active{{/if}}"
-                data-track-id="{{ id }}"
-              >
+              <button class="like-btn-track artist-like-size {{#if is_liked}}active{{/if}}" data-track-id="{{ id }}">
                 {{> likeBtn }}
               </button>
             </div>
@@ -115,8 +106,7 @@
     </div>
     <p><i class="slide-btn right"></i></p>
   </div>
-  {{/if}}
-  {{else}}
+  {{/if}} {{else}}
   <div class="search-alert-container">
     <div class="search-alert-text">
       <div class="search-alert-title">

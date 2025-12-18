@@ -1,29 +1,29 @@
-<div class='page' id='scrollContent'>
+<div class="page" id="scrollContent">
   {{#if isAuthenticated}}
-    <div class='now-playing-container'>
-      <button class='current-card-btn prev'></button>
-      <div class='card-slider'>
-        <div class='now-playing-container-card'>
-          <img src='' alt='' />
-        </div>
-        <div class='now-playing-container-card'>
-          <img src='' alt='' />
-        </div>
-        <div class='now-playing-container-card'>
-          <img src='' alt='' />
-        </div>
+  <div class="now-playing-container">
+    <button class="current-card-btn prev"></button>
+    <div class="card-slider">
+      <div class="now-playing-container-card">
+        <img src="" alt="" />
       </div>
-      <button class='current-card-btn next'></button>
+      <div class="now-playing-container-card">
+        <img src="" alt="" />
+      </div>
+      <div class="now-playing-container-card">
+        <img src="" alt="" />
+      </div>
     </div>
+    <button class="current-card-btn next"></button>
+  </div>
   {{/if}}
 
   <!-- Артисты -->
-  <div class='title'>
-    <div class='title-name'>Артисты</div>
+  <div class="title">
+    <div class="title-name">Артисты</div>
   </div>
-  <div class='slider'>
-    <p><i class='slide-btn left'></i></p>
-    <div class='cards' id='slidebar'>
+  <div class="slider">
+    <p><i class="slide-btn left"></i></p>
+    <div class="cards" id="slidebar">
       {{#each artists}}
         <a href='/artist/{{id}}' class='card'>
           <img src='{{image}}' alt='{{name}}' />
@@ -34,55 +34,55 @@
             data-context="artist_tracks" data-artist-id="{{ id }}"></button> -->
       {{/each}}
     </div>
-    <p><i class='slide-btn right'></i></p>
+    <p><i class="slide-btn right"></i></p>
   </div>
 
   <!-- Альбомы -->
-  <div class='title'>
-    <div class='title-name'>Альбомы</div>
+  <div class="title">
+    <div class="title-name">Альбомы</div>
   </div>
-  <div class='slider'>
-    <i class='slide-btn left'></i>
-    <div class='cards' id='slidebar'>
+  <div class="slider">
+    <i class="slide-btn left"></i>
+    <div class="cards" id="slidebar">
       {{#each albums}}
-        <div data-href='/album/{{id}}' class='card click-event-card'>
-          <img src='{{image}}' alt='{{name}}' />
-          <p class='card-name'>{{name}}</p>
-          <p class='card-sub card-sub-limiter'>
-            {{type}}
-            <span class='dot'></span>
-            <a class='text href-decoration' href='/artist/{{artist_id}}'>{{artist}}</a>
-          </p>
-          <!--<button class="play-button play-button-placement" data-album-id="{{ id }}"></button>-->
-        </div>
+      <div data-href="/album/{{id}}" class="card click-event-card">
+        <img src="{{image}}" alt="{{name}}" />
+        <p class="card-name">{{name}}</p>
+        <p class="card-sub card-sub-limiter">
+          {{type}}
+          <span class="dot"></span>
+          <a class="text href-decoration" href="/artist/{{artist_id}}">{{artist}}</a>
+        </p>
+        <!--<button class="play-button play-button-placement" data-album-id="{{ id }}"></button>-->
+      </div>
       {{/each}}
     </div>
-    <i class='slide-btn right'></i>
+    <i class="slide-btn right"></i>
   </div>
 
   <!-- Треки -->
-  <div class='title'>
-    <div class='title-name'>Треки</div>
+  <div class="title">
+    <div class="title-name">Треки</div>
   </div>
-  <div class='slider'>
-    <p><i class='slide-btn left'></i></p>
-    <div class='cards tracks' id='slidebar'>
+  <div class="slider">
+    <p><i class="slide-btn left"></i></p>
+    <div class="cards tracks" id="slidebar">
       {{#each tracks}}
-        <div class='card-tracks'>
-          <div class='card-track-content click-event-card' data-href='/album/{{album_id}}'>
-            <img src='{{image}}' alt='{{name}}' />
-            <div class='track-content'>
-              <p class='card-name-track'>{{name}}</p>
-              {{#each artists}}
-                <a class='card-sub-track href-decoration' href='/artist/{{id}}'>{{name}}</a>
-              {{/each}}
-            </div>
+      <div class="card-tracks">
+        <div class="card-track-content click-event-card" data-href="/album/{{album_id}}">
+          <img src="{{image}}" alt="{{name}}" />
+          <div class="track-content">
+            <p class="card-name-track">{{name}}</p>
+            {{#each artists}}
+            <a class="card-sub-track href-decoration" href="/artist/{{id}}">{{name}}</a>
+            {{/each}}
           </div>
-
-          <button class='play-button play-button-track' data-track-id='{{id}}'></button>
         </div>
+
+        <button class="play-button play-button-track" data-track-id="{{id}}"></button>
+      </div>
       {{/each}}
     </div>
-    <p><i class='slide-btn right'></i></p>
+    <p><i class="slide-btn right"></i></p>
   </div>
 </div>
