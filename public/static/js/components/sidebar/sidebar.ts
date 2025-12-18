@@ -113,6 +113,7 @@ class Sidebar {
     window.addEventListener('sidebar:update', (e) => this.handleUpdate(e as SidebarUpdateEvent));
     window.addEventListener('sidebar:remove', (e) => this.handleRemove(e as SidebarRemoveEvent));
     window.addEventListener('sidebar:create', (e) => this.handleCreate(e as SidebarCreateEvent));
+    window.addEventListener('sidebar:clear', () => this.handleClear());
   }
 
   private activePath() {
@@ -154,7 +155,7 @@ class Sidebar {
     const item = this.container.querySelector(`.menu-item[data-id="${id}"]`);
     if (!item) return;
 
-    const titleEl = item.querySelector('.playlist-name-sidebar');
+    const titleEl = item.querySelector('.sidebar-item-name');
     if (titleEl) titleEl.textContent = name;
 
     const imgEl = item.querySelector('img');
@@ -199,6 +200,11 @@ class Sidebar {
     }
 
     this.activePath();
+  }
+
+  private handleClear() {
+    const sidebarContent = document.querySelector('.sidebar-user-items');
+    if (sidebarContent) sidebarContent.innerHTML = '';
   }
 
   private getHrefByType(type: string, id: string): string {

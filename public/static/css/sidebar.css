@@ -77,6 +77,7 @@
   margin: 0;
   width: 40px;
   height: 40px;
+  object-fit: cover;
 }
 
 .sidebar-library-item-info {
@@ -241,6 +242,10 @@
     width: 32px;
     height: 32px;
   }
+
+  .sidebar-user-items {
+    display: none;
+  }
 }
 
 @media (max-height: 500px) and (min-width: 800px) {
@@ -319,6 +324,7 @@
     background: transparent;
   }
 
+  .sidebar-user-items,
   .second {
     display: none;
   }

@@ -87,6 +87,7 @@ class Header {
 
               const headerContainer = document.getElementById('header');
               if (headerContainer) headerContainer.innerHTML = '';
+              window.dispatchEvent(new CustomEvent('sidebar:clear'));
 
               player.destroy();
               router.navigate('/');
@@ -138,6 +139,13 @@ class Header {
     profileBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       dropDownMenu.classList.toggle('show');
+    });
+
+    dropDownMenu.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement;
+      if (target.closest('a')) {
+        dropDownMenu.classList.remove('show');
+      }
     });
 
     this.boundDocumentClick = (e: Event) => {

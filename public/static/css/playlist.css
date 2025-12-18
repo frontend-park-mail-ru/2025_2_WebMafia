@@ -167,6 +167,11 @@
   font-weight: 400;
 }
 
+.warning-sub svg {
+  width: 20px;
+  height: 20px;
+}
+
 .warning-title {
   font-weight: 600;
   font-size: 28px;

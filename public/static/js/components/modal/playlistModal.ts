@@ -12,6 +12,8 @@ export interface PlaylistModalData {
   description?: string;
   image?: string;
   isEdit: boolean;
+  hasTracks?: boolean;
+  autoGenerate?: boolean;
 }
 
 export class PlaylistModal extends BaseFormModal<PlaylistModalData> {
@@ -26,7 +28,7 @@ export class PlaylistModal extends BaseFormModal<PlaylistModalData> {
     const isEdit = this.data?.isEdit;
 
     let aiButtonHtml = '';
-    if (isEdit) {
+    if (isEdit && this.data?.hasTracks) {
       const btnTemplate = Handlebars.templates['AIButton.hbs'];
       aiButtonHtml = btnTemplate({});
     }
@@ -60,6 +62,12 @@ export class PlaylistModal extends BaseFormModal<PlaylistModalData> {
         e.preventDefault();
         await this.handleGenerateDescription(generateBtn);
       });
+
+      if (this.data.autoGenerate) {
+        setTimeout(() => {
+          generateBtn.click();
+        }, 300);
+      }
     }
   }
 
@@ -77,16 +85,8 @@ export class PlaylistModal extends BaseFormModal<PlaylistModalData> {
       const response = await apiServise.generatePlaylistDescription(this.data.id);
 
       if (response) {
-        if (response.title) {
-          titleInput.value = response.title;
-          titleInput.dispatchEvent(new Event('input'));
-        }
-
-        if (response.description) {
-          descriptionInput.value = response.description;
-          descriptionInput.dispatchEvent(new Event('input'));
-        }
-
+        if (response.title) titleInput.value = response.title;
+        if (response.description) descriptionInput.value = response.description;
         this.validator?.showMessage('Описание сгенерировано!', true);
       } else {
         this.validator?.showMessage('Не удалось сгенерировать описание');
@@ -202,6 +202,7 @@ export class PlaylistModal extends BaseFormModal<PlaylistModalData> {
       await apiServise.updatePlaylist(title, description, id);
     }
 
+    console.log(id, title, newAvatarUrl);
     window.dispatchEvent(
       new CustomEvent('sidebar:update', {
         detail: {

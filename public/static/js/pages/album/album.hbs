@@ -3,7 +3,7 @@
   <div class="purple-background-circle album-purple-position"></div>
   <div class="album-card">
     <div class="album-artist">
-      <img class="album-artist-avatar" src="{{ artist.avatar }}" alt="{{ artist.name }}" />
+      <img class="album-artist-avatar {{#unless artist.avatar}}loading{{/unless}}" src="{{ artist.avatar }}" alt="{{ artist.name }}" />
       <a href="artist/{{ artist.id }}" title="{{ artist.name }}" class="album-artist-name href-decoration">{{
         artist.name
       }}</a>

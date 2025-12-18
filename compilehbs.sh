@@ -22,6 +22,14 @@ handlebars public/static/js/components/library_grid/libraryGrid.hbs -f public/st
 
 handlebars public/static/js/pages/library/library.hbs -f public/static/js/pages/library/library.tmpl.js
 
+handlebars public/static/js/pages/album/album.hbs -f public/static/js/pages/album/album.tmpl.js
+
+handlebars public/static/js/pages/playlist/playlist.hbs -f public/static/js/pages/playlist/playlist.tmpl.js
+
+handlebars public/static/js/pages/playlist/generateDescription.hbs -f public/static/js/pages/playlist/generateDescription.tmpl.js
+
+handlebars public/static/js/pages/playlist/generateConfirm.hbs -f public/static/js/pages/playlist/generateConfirm.tmpl.js
+
 handlebars public/static/js/components/header/header.hbs -f public/static/js/components/header/header.tmpl.js
 
 handlebars public/static/js/components/context_menu/contextMenu.hbs -f public/static/js/components/context_menu/contextMenu.tmpl.js
@@ -43,10 +51,6 @@ handlebars public/static/js/components/player/player.hbs -f public/static/js/com
 handlebars public/static/js/components/searched_tracks/searchedTracks.hbs -f public/static/js/components/searched_tracks/searchedTracks.tmpl.js
 
 handlebars public/static/js/components/tracks_row/trackRow.hbs -f public/static/js/components/tracks_row/trackRow.tmpl.js
-
-handlebars public/static/js/pages/album/album.hbs -f public/static/js/pages/album/album.tmpl.js
-
-handlebars public/static/js/pages/playlist/playlist.hbs -f public/static/js/pages/playlist/playlist.tmpl.js
 
 handlebars public/static/js/partials/eyeOpen.hbs -f public/static/js/partials/eyeOpen.tmpl.js
 

@@ -23,6 +23,7 @@ import { playlistModal } from '@/components/modal/playlistModal';
 import { showInfoMessage } from '@/utils/showInfoMessage';
 import { MappedTrack, PlaylistSuccessData, Track } from '@/models.ts';
 import { BasePage } from '@/pages/base/basePage.ts';
+import { confirmation } from '@/components/confirmation_modal/confirmationModal.ts';
 
 interface PlaylistPageData {
   isAuthenticated: boolean;
@@ -187,8 +188,9 @@ export class PlaylistPage extends BasePage {
 
     editPlaylistButton.addEventListener('click', (e) => {
       e.preventDefault();
-
       if (!this.playlistData.id) return;
+
+      const tracksCount = document.querySelectorAll('#addedTracksTable .album-row').length;
 
       playlistModal.open(
         {
@@ -197,6 +199,8 @@ export class PlaylistPage extends BasePage {
           title: this.playlistData.title,
           description: this.playlistData.description,
           image: this.playlistData.image || undefined,
+          hasTracks: tracksCount > 0,
+          autoGenerate: false,
         },
         (newData: PlaylistSuccessData) => {
           this.updatePlaylistUI(newData);
@@ -341,6 +345,32 @@ export class PlaylistPage extends BasePage {
     if (num === 1) {
       const searchTitle = document.querySelector('.playlist-search-title');
       searchTitle?.insertAdjacentHTML('beforebegin', '<div class="header-divider" id="playlistTracksDivider"></div>');
+      const descriptionTemplate = Handlebars.templates['generateDescription.hbs'];
+      const confirmTemplate = Handlebars.templates['generateConfirm.hbs'];
+      confirmation.showConfirm({
+        title: 'Первый трек добавлен!',
+        description: descriptionTemplate({}),
+        confirmText: confirmTemplate({}),
+        cancelText: 'Позже',
+        onConfirm: () => {
+          if (!this.playlistData.id) return;
+
+          playlistModal.open(
+            {
+              isEdit: true,
+              id: this.playlistData.id,
+              title: this.playlistData.title,
+              description: this.playlistData.description,
+              image: this.playlistData.image || undefined,
+              hasTracks: true,
+              autoGenerate: true,
+            },
+            (newData: PlaylistSuccessData) => {
+              this.updatePlaylistUI(newData);
+            }
+          );
+        },
+      });
     }
 
     likeTrackBtn();

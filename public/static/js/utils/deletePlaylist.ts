@@ -12,8 +12,7 @@ export const deletePlaylistLogic = (id: string, name: string, onSuccess?: () => 
       try {
         await apiServise.deletePlaylist(id);
         if (onSuccess) onSuccess();
-        // @ts-ignore
-        window.dispatchEvent(new CustomEvent(`sidebar:remove`, { id }));
+        window.dispatchEvent(new CustomEvent(`sidebar:remove`, { detail: { id } }));
         showInfoMessage('Плейлист удалён');
       } catch (error) {
         console.error('Ошибка при удалении плейлиста:', error);
