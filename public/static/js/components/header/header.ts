@@ -5,6 +5,15 @@ import { player } from '@/components/player/player.js';
 import { confirmation } from '@/components/confirmation_modal/confirmationModal.ts';
 import { images } from '@/assets';
 
+interface HeaderData {
+  isAuthenticated: boolean;
+  searchValue: string;
+  logoImage: string;
+  avatar?: string;
+  nickname?: string;
+  letter?: string;
+}
+
 class Header {
   private boundDocumentClick: ((e: Event) => void) | null = null;
 
@@ -13,7 +22,7 @@ class Header {
     if (!container || container.innerHTML.trim() !== '') return;
 
     const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
-    let pageData: any = {
+    const pageData: HeaderData = {
       isAuthenticated: isAuthenticated,
       searchValue: searchValue,
       logoImage: images.logoPath,
@@ -79,8 +88,9 @@ class Header {
           onConfirm: async () => {
             try {
               await apiServise.logoutUser();
-            } catch (error: any) {
-              console.error('Logout request failed:', error.message);
+            } catch (error: unknown) {
+              const err = error as Error;
+              console.error('Logout request failed:', err.message);
             } finally {
               localStorage.clear();
               this.destroy();

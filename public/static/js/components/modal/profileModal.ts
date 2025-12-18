@@ -131,14 +131,15 @@ export class ProfileModal extends BaseFormModal<ProfileModalData> {
       setupMarquees();
       this.close(true);
       showInfoMessage('Изменения успешно сохранены!');
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Profile Edit Error:', err);
       btn.disabled = false;
       btn.textContent = 'Сохранить изменения';
 
       let msg = 'Не удалось сохранить изменения.';
-      if (err.message?.includes('conflict')) msg = 'Пользователь с такими данными уже существует.';
-      if (err.message?.includes('bad request')) msg = 'Проверьте правильность введенных данных.';
+      const error = err as Error;
+      if (error.message?.includes('conflict')) msg = 'Пользователь с такими данными уже существует.';
+      if (error.message?.includes('bad request')) msg = 'Проверьте правильность введенных данных.';
 
       this.validator?.showMessage(msg);
     }

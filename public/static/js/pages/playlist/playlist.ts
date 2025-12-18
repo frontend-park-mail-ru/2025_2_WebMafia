@@ -21,7 +21,7 @@ import { share } from '@/utils/shareBtn';
 import { deletePlaylistLogic } from '@/utils/deletePlaylist';
 import { playlistModal } from '@/components/modal/playlistModal';
 import { showInfoMessage } from '@/utils/showInfoMessage';
-import { MappedTrack, PlaylistSuccessData, Track } from '@/models.ts';
+import { isHttpError, MappedTrack, PlaylistSuccessData, Track } from '@/models.ts';
 import { BasePage } from '@/pages/base/basePage.ts';
 import { confirmation } from '@/components/confirmation_modal/confirmationModal.ts';
 
@@ -45,7 +45,7 @@ export class PlaylistPage extends BasePage {
   private playlistData: Partial<PlaylistSuccessData> = {};
   private favourite = true;
   private totalDurationSec = 0;
-  private currentSearchResults: any[] = [];
+  private currentSearchResults: Track[] = [];
 
   private boundPlayerLikeHandler: EventListener | null = null;
 
@@ -118,10 +118,12 @@ export class PlaylistPage extends BasePage {
       if (pageData.title && titleEl) {
         titleEl.textContent = pageData.title;
       }
-    } catch (error: any) {
+
+      this.initComponents(pageData);
+    } catch (error: unknown) {
       console.error('Failed to load playlist page data:', error);
 
-      if (error.response && error.response.status === 404) {
+      if (isHttpError(error) && error.response?.status === 404) {
         router.navigate('/not-found');
         return;
       }
@@ -130,10 +132,9 @@ export class PlaylistPage extends BasePage {
       return;
     }
 
-    this.initComponents();
   }
 
-  private initComponents() {
+  private initComponents(pageData: PlaylistPageData) {
     playerOnlyOnPlay();
     slider.init();
     scrollbar.init();
@@ -144,10 +145,12 @@ export class PlaylistPage extends BasePage {
     albumPlaylistButtons();
     share();
 
-    this.addEventListeners();
+    this.addEventListeners(pageData);
   }
 
-  private addEventListeners() {
+  private addEventListeners(pageData: PlaylistPageData) {
+    this.tracksCheck(pageData);
+
     if (this.favourite) {
       this.initFavoriteLogic();
       return;
@@ -158,6 +161,19 @@ export class PlaylistPage extends BasePage {
     this.initSearchTracks();
     this.initDeleteTrackButton();
   }
+
+  private tracksCheck(pageData: PlaylistPageData) {
+  const playButton = document.querySelector('.play-button-playlist') as HTMLButtonElement;
+  if (!playButton) return;
+
+  const hasNoTracks = pageData.tracks.length === 0;
+  
+  if (hasNoTracks) {
+    playButton.classList.add('inactive');
+  } else {
+    playButton.classList.remove('inactive');
+  }
+}
 
   private initFavoriteLogic() {
     this.boundPlayerLikeHandler = (e: Event) => {
@@ -268,10 +284,10 @@ export class PlaylistPage extends BasePage {
     const searchedTracksContainer = document.getElementById('searchedTracksContainer');
     if (!searchedTracksContainer || !searchTracks) return;
 
-    let timeout: any;
+    let timeout: number | undefined;
     searchTracks.addEventListener('input', (e) => {
       clearTimeout(timeout);
-      timeout = setTimeout(async () => {
+      timeout = window.setTimeout(async () => {
         const val = (e.target as HTMLInputElement).value.trim();
         if (!val) {
           searchedTracksContainer.innerHTML = '';
@@ -301,7 +317,7 @@ export class PlaylistPage extends BasePage {
     this.currentSearchResults = tracks;
 
     const tracksTemplate = Handlebars.templates['searchedTracks.hbs'];
-    let pageData = {
+    const pageData = {
       searched_tracks: tracks.map((track) => ({
         id: track.id,
         name: track.title,
@@ -334,6 +350,7 @@ export class PlaylistPage extends BasePage {
       album: track.album?.title,
       artists: track.artists,
       is_liked: track.is_liked,
+      album_id: track.album.id,
     };
 
     const rowHtml = Handlebars.templates['trackRow.hbs'](trackData);
@@ -372,7 +389,13 @@ export class PlaylistPage extends BasePage {
         },
       });
     }
-
+    if (num > 0) {
+    const playButton = document.querySelector('.play-button-playlist') as HTMLButtonElement;
+    if (playButton) {
+        playButton.classList.remove('inactive');
+        playButton.disabled = false;
+      }
+    }
     likeTrackBtn();
     playTrack();
   }
@@ -396,8 +419,32 @@ export class PlaylistPage extends BasePage {
 
         row.remove();
         this.renumberTracks();
+
+        this.updatePlayButtonState();
       }
     });
+  }
+
+  private updatePlayButtonState() {
+    const table = document.getElementById('addedTracksTable');
+    const playButton = document.querySelector('.play-button-playlist') as HTMLButtonElement;
+    
+    if (!table || !playButton) return;
+
+    // Считаем количество оставшихся строк
+    const tracksCount = table.querySelectorAll('.album-row').length;
+    const hasTracks = tracksCount > 0;
+
+    if (hasTracks) {
+      playButton.classList.remove('inactive');
+      playButton.disabled = false;
+    } else {
+      playButton.classList.add('inactive');
+      playButton.disabled = true;
+    }
+    
+    // Опционально: обновляем общую статистику (количество треков в шапке)
+    this.updateStats(tracksCount); 
   }
 
   private renumberTracks() {

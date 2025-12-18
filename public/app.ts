@@ -9,7 +9,6 @@ if ('serviceWorker' in navigator) {
 
 import { player } from '@/components/player/player';
 import { router } from '@/routing';
-import { persistence } from '@/utils/persistence';
 import { spaceToggle } from '@/utils/playerSpace';
 
 import.meta.glob('@/pages/**/*.tmpl.js', { eager: true });
@@ -47,7 +46,6 @@ function registerPartials() {
 
 function initializePage() {
   registerPartials();
-  persistence();
   spaceToggle();
   const currentTrack = localStorage.getItem('currentTrackId');
   const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';

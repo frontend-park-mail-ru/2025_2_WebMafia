@@ -23,7 +23,7 @@ export type UpdateCallback = (
 
 class ContextMenuService {
   private activeMenu: HTMLElement | null = null;
-  private longPressTimer: any = null;
+  private longPressTimer: number | undefined | null = null;
 
   private onRemove: RemoveCallback | null = null;
   private onUpdate: UpdateCallback | null = null;
@@ -81,14 +81,14 @@ class ContextMenuService {
     const card = (e.target as HTMLElement).closest('.card');
     if (!card || !card.closest('.grid-layout')) return;
 
-    this.longPressTimer = setTimeout(() => {
+    this.longPressTimer = window.setTimeout(() => {
       const touch = e.touches[0];
       this.createAndShowMenu(e, touch.clientX, touch.clientY, card as HTMLElement);
     }, 500);
   }
 
   private clearLongPress() {
-    clearTimeout(this.longPressTimer);
+    if (this.longPressTimer) clearTimeout(this.longPressTimer);
   }
 
   private handleGlobalClick(e: Event) {

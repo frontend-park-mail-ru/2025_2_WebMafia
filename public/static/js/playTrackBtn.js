@@ -1,5 +1,4 @@
 import { player } from '@/components/player/player.js';
-import { apiServise } from './data';
 
 export function playTrack() {
   const playBtn = document.querySelectorAll(

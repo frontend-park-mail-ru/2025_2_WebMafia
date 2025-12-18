@@ -13,7 +13,7 @@ import { showInfoMessage } from '@/utils/showInfoMessage';
 import { BasePage } from '@/pages/base/basePage.ts';
 import { images } from '@/assets';
 import { confirmation } from '@/components/confirmation_modal/confirmationModal.ts';
-import { MappedTrack, Track } from '@/models.ts';
+import { isHttpError, MappedTrack, Track } from '@/models.ts';
 
 interface AlbumPageData {
   isAuthenticated: boolean;
@@ -38,7 +38,7 @@ interface AlbumPageData {
 export class AlbumPage extends BasePage {
   protected async renderContent(contentContainer: HTMLElement, albumId: string) {
     const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
-    let pageData: AlbumPageData = {
+    const pageData: AlbumPageData = {
       isAuthenticated: isAuthenticated,
       tracks: [],
     };
@@ -88,10 +88,10 @@ export class AlbumPage extends BasePage {
       });
       pageData.totalDuration = totalDurationParser(totalDuration);
       pageData.tracksNum = tracksNumParser(pageData.tracks.length);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Failed to load album page data:', error);
 
-      if (error.response && error.response.status === 404) {
+      if (isHttpError(error) && error.response?.status === 404) {
         router.navigate('/not-found');
         return;
       }
@@ -105,13 +105,14 @@ export class AlbumPage extends BasePage {
       titleEl.textContent = pageData.title;
     }
 
-    this.initComponents();
+    this.initComponents(pageData);
   }
 
-  private initComponents() {
+  private initComponents(pageData: AlbumPageData) {
     playerOnlyOnPlay();
     slider.init();
     scrollbar.init();
+    this.tracksCheck(pageData);
 
     this.initLikeButton();
     setPlayButtonsOnAuth();
@@ -120,6 +121,19 @@ export class AlbumPage extends BasePage {
     albumPlaylistButtons();
     share();
   }
+
+  private tracksCheck(pageData: AlbumPageData) {
+  const playButton = document.querySelector('.play-button-album') as HTMLButtonElement;
+  if (!playButton) return;
+
+  const hasNoTracks = pageData.tracks.length === 0;
+  
+  if (hasNoTracks) {
+    playButton.classList.add('inactive');
+  } else {
+    playButton.classList.remove('inactive');
+  }
+}
 
   private initLikeButton() {
     const likeButton = document.getElementById('albumLikeButton') as HTMLButtonElement;

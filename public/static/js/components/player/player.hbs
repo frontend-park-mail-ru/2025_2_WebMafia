@@ -35,8 +35,19 @@
 
   <!-- Правая часть -->
   <div class="player-right">
+    <div class="switch-container">
+      <span class="switch-label">Live comments</span>
+      <button class="switch-comments" id="toggleComments" aria-label="Переключить комментарии">
+        <span class="switch-circle"></span>
+      </button>
+    </div>
     <button class="goToCommentsBtn" data-track-id="{{ id }}">{{> goToCommentsBtn}}</button>
     {{> volumeBar }}
     <input type="range" min="0" max="100" value="50" class="volume-slider" />
   </div>
+
+  <div id="bubblesStream" class="bubbles-stream-container"></div>
+
 </div>
+
+

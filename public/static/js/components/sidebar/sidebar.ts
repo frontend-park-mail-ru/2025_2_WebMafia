@@ -17,6 +17,7 @@ interface SidebarCreateEvent extends CustomEvent {
 
 class Sidebar {
   private container!: HTMLElement;
+  private isGlobalListenersAttached = false;
 
   public async render() {
     const sidebar = document.getElementById('sidebar');
@@ -105,6 +106,9 @@ class Sidebar {
     this.addMenuListeners();
     this.createPlaylistButton();
 
+    if (this.isGlobalListenersAttached) return;
+
+
     scrollbar.init();
 
     window.addEventListener('popstate', () => this.activePath());
@@ -114,6 +118,8 @@ class Sidebar {
     window.addEventListener('sidebar:remove', (e) => this.handleRemove(e as SidebarRemoveEvent));
     window.addEventListener('sidebar:create', (e) => this.handleCreate(e as SidebarCreateEvent));
     window.addEventListener('sidebar:clear', () => this.handleClear());
+
+    this.isGlobalListenersAttached = true;
   }
 
   private activePath() {
@@ -203,8 +209,9 @@ class Sidebar {
   }
 
   private handleClear() {
-    const sidebarContent = document.querySelector('.sidebar-user-items');
-    if (sidebarContent) sidebarContent.innerHTML = '';
+    if (this.container) {
+      this.container.innerHTML = '';
+    }
   }
 
   private getHrefByType(type: string, id: string): string {

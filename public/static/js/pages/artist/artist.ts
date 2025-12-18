@@ -10,8 +10,9 @@ import { likeTrackBtn } from '@/utils/likeTrack.js';
 import { share } from '@/utils/shareBtn';
 import { showInfoMessage } from '@/utils/showInfoMessage';
 import { BasePage } from '@/pages/base/basePage.ts';
-import { Artist, Album, Track } from '@/models';
+import { Artist, Album, Track, MappedTrack, isHttpError } from '@/models';
 import { initSubscribeButton } from '@/utils/subscribeArtist.ts';
+import { images } from '@/assets.ts';
 
 interface ArtistPageData {
   isAuthenticated: boolean;
@@ -23,7 +24,7 @@ interface ArtistPageData {
   isSubscribed?: boolean;
   listeners?: string;
   similar_artists: Array<{ id: string; name: string; listeners: string; image: string }>;
-  popular_tracks: Array<any>;
+  popular_tracks: Array<MappedTrack>;
   albums: Array<{ id: string; name: string; cover: string; year: string; type?: string }>;
   singls: Array<{ id: string; name: string; cover: string; year: string; type?: string }>;
 }
@@ -31,7 +32,7 @@ interface ArtistPageData {
 export class ArtistPage extends BasePage {
   protected async renderContent(contentContainer: HTMLElement, artistId: string) {
     const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
-    let pageData: ArtistPageData = {
+    const pageData: ArtistPageData = {
       isAuthenticated: isAuthenticated,
       albums: [],
       popular_tracks: [],
@@ -61,7 +62,7 @@ export class ArtistPage extends BasePage {
         id: artist.id,
         name: artist.name,
         listeners: playsParser(artist.play_count || 0),
-        image: getValidImage(`artists/${artist.avatar_url}`, 'default-artist.png'),
+        image: getValidImage(`artists/${artist.avatar_url}`, images.defaultArtistPath),
       }));
       pageData.popular_tracks = (data.popular_tracks || []).map((track: Track) => ({
         id: track.id,
@@ -70,7 +71,7 @@ export class ArtistPage extends BasePage {
         album: track.album.title,
         album_id: track.album.id,
         duration: durationParser(track.duration_s),
-        cover: getValidImage(`albums/${track.album?.avatar_url}`, 'default-album.png'),
+        cover: getValidImage(`albums/${track.album?.avatar_url}`, images.defaultAlbumPath),
         artists: track.artists,
         is_liked: track.is_liked,
       }));
@@ -78,7 +79,7 @@ export class ArtistPage extends BasePage {
         const item = {
           id: album.id,
           name: album.title,
-          cover: getValidImage(`albums/${album.avatar_url}`, 'default-album.png'),
+          cover: getValidImage(`albums/${album.avatar_url}`, images.defaultAlbumPath),
           year: album.release_date ? album.release_date.slice(0, 4) : '',
           type: album.type,
         };
@@ -89,10 +90,10 @@ export class ArtistPage extends BasePage {
           pageData.albums.push(item);
         }
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Failed to load artist page data:', error);
 
-      if (error.response && error.response.status === 404) {
+      if (isHttpError(error) && error.response?.status === 404) {
         router.navigate('/not-found');
         return;
       }

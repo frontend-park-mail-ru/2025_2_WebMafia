@@ -7,6 +7,7 @@ import { setPlayButtonsOnAuth } from '@/setPlayButtonsOnAuth.js';
 import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
 import { BasePage } from '@/pages/base/basePage.ts';
 import { showInfoMessage } from '@/utils/showInfoMessage.ts';
+import { isHttpError } from '@/models.ts';
 
 interface ArtistReleasesPageData {
   id?: string;
@@ -23,7 +24,7 @@ export class ArtistReleasesPage extends BasePage {
 
   async renderContent(contentContainer: HTMLElement, artistId: string) {
     const isSingles = this.isSinglesPage();
-    let pageData: ArtistReleasesPageData = {
+    const pageData: ArtistReleasesPageData = {
       releaseTypeTitle: isSingles ? 'Синглы и EP' : 'Альбомы',
       isSingles: isSingles,
       albums: [],
@@ -56,10 +57,10 @@ export class ArtistReleasesPage extends BasePage {
           year: album.release_date?.slice(0, 4) ?? '',
           type: album.type,
         }));
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Failed to load artist albums page data:', error);
 
-      if (error.response && error.response.status === 404) {
+      if (isHttpError(error) && error.response?.status === 404) {
         router.navigate('/not-found');
         return;
       }

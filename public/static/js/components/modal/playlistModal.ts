@@ -151,13 +151,14 @@ export class PlaylistModal extends BaseFormModal<PlaylistModalData> {
       } else {
         await this.handleCreate(title, description);
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Playlist Modal Error:', err);
       btn.disabled = false;
       btn.textContent = this.data?.isEdit ? 'Сохранить' : 'Создать';
 
       let msg = 'Произошла ошибка. Попробуйте позже';
-      if (err.message?.includes('bad request')) msg = 'Проверьте правильность данных';
+      const error = err as Error;
+      if (error.message?.includes('bad request')) msg = 'Проверьте правильность данных';
 
       this.validator?.showMessage(msg);
     }

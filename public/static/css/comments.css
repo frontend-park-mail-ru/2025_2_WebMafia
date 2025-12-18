@@ -252,9 +252,13 @@
 }
 
 /* Контейнер для летающих пузырьков - поверх всего, клики пропускает */
+.bubbles-stream-container.inactive {
+  display: none;
+}
+
 .bubbles-stream-container {
   position: fixed;
-  bottom: 30px;
+  bottom: 0;
   right: 30px;
   width: 300px;
   height: 100vh;

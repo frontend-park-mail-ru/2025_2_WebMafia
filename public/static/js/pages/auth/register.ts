@@ -29,8 +29,8 @@ export class RegistrationPage extends Auth {
         await apiServise.registerUser(login, email, password);
         const response = await apiServise.loginUser(login, password);
         this.handleLoginSuccess(response);
-      } catch (error: any) {
-        this.handleApiError(error, validator);
+      } catch (error: unknown) {
+        this.handleApiError(error as Error, validator);
       }
     };
 

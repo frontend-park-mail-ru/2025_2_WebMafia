@@ -47,7 +47,7 @@
             <button
               class="play-popular-track"
               data-track-id="{{ id }}"
-              data-context="artist-popular"
+              data-context="artist_tracks"
               data-artist-id="{{../id}}"
             >
               <span class="play-icon">{{> play }}</span>
@@ -58,14 +58,14 @@
             <div class="track-name">{{ name }}</div>
             <div class="track-performers">
               {{#each artists}}
-              <a href="artist/{{ id }}" class="track-performer href-decoration">
+              <a href="/artist/{{ id }}" class="track-performer href-decoration">
                 {{ name }}{{#unless @last}}, {{/unless}}
               </a>
               {{/each}}
             </div>
             <div class="track-plays-num">{{ plays }}</div>
             <div class="track-album-name">
-              <a href="album/{{ album_id }}" class="track-album-name href-decoration">
+              <a href="/album/{{ album_id }}" class="track-album-name href-decoration">
                 {{ album }}
               </a>
             </div>

@@ -3,6 +3,7 @@ import { getValidImage } from '@/utils/parsers.ts';
 import { likeChange } from '@/utils/likeTrack';
 import { setupMarquees } from '@/utils/marquee';
 import { router } from '@/routing.ts';
+import { spawnBubble, injectBubbleStyles } from '@/utils/commentAnimation.js';
 
 export class Player extends EventTarget {
   constructor() {
@@ -21,6 +22,9 @@ export class Player extends EventTarget {
     this.playQueue = [];
     this.currentContext = null;
 
+    this.commentSocket = null;
+    injectBubbleStyles();
+
     this.channel = new BroadcastChannel('music_channel_api');
 
     this.channel.onmessage = (event) => {
@@ -32,6 +36,118 @@ export class Player extends EventTarget {
         localStorage.setItem('isPlaying', 'false');
       }
     };
+  }
+
+  async initCommentSocket(trackId) {
+    if (this.commentSocket && this.commentSocket.trackId === String(trackId)) return;
+
+    this.closeCommentSocket();
+
+    try {
+      const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+      if (!isAuthenticated) return;
+
+      const token = await apiServise.getCSRFToken();
+
+      this.commentSocket = apiServise.createTrackSocket(trackId, token, {
+        onOpen: () => console.log(`Comments WS connected for track ${trackId}`),
+        onMessage: (data) => this.handleIncomingComment(data),
+        onError: (err) => console.error('Comments WS Error:', err),
+        onClose: () => console.log('Comments WS closed'),
+      });
+
+      this.commentSocket.trackId = String(trackId);
+      this.commentSocket.connect();
+
+      const data = await apiServise.getTrackCommentsPageData(trackId, true);
+      if (data.comments && data.comments.length > 0) {
+        this.startInitialBubbles(data.comments);
+      }
+    } catch (e) {
+      console.error('Failed to init comments in player:', e);
+    }
+  }
+
+  handleIncomingComment(data) {
+    const commentData = Array.isArray(data) ? data[0] : data;
+    if (!commentData) return;
+    
+    const commentObj = {
+      ...commentData,
+      avatar: commentData.user_avatar ? getValidImage(commentData.user_avatar) : null,
+      letter: (commentData.user_login || 'U')[0].toUpperCase(),
+      track_id: commentData.track_id
+    };
+
+    
+
+    spawnBubble(commentObj);
+
+    window.dispatchEvent(new CustomEvent('comment:received', { detail: commentObj }));
+  }
+
+  startInitialBubbles(comments) {
+    const bubblesContainer = document.querySelector('.bubbles-stream-container');
+    bubblesContainer.classList.remove('inactive');
+    const randomComments = [...comments].sort(() => 0.5 - Math.random());
+    randomComments.forEach((c, i) => {
+      setTimeout(() => {
+        if (this.currentTrack && String(this.currentTrack.id) === this.commentSocket?.trackId) {
+          spawnBubble({
+            ...c,
+            avatar: c.user_avatar ? getValidImage(c.user_avatar) : null,
+            letter: (c.user_login || 'U')[0].toUpperCase(),
+          });
+        }
+      }, i * 8500);
+    });
+  }
+
+  closeCommentSocket() {
+    if (this.commentSocket) {
+      this.commentSocket.disconnect();
+      this.commentSocket = null;
+    }
+    const bubblesContainer = document.querySelector('.bubbles-stream-container');
+    bubblesContainer.classList.add('inactive');
+  }
+
+  sendComment(text) {
+    if (this.commentSocket) {
+      this.commentSocket.send({ text });
+      return true;
+    }
+    return false;
+  }
+
+  switchComments() {
+    const toggleBtn = document.getElementById('toggleComments');
+    const bubblesStream = document.getElementById('bubblesStream');
+
+    if (!toggleBtn || !bubblesStream) return;
+
+    
+    const storedValue = localStorage.getItem('commentsEnabled');
+    const isCommentsEnabled = storedValue === null ? true : storedValue === 'true';
+
+    if (isCommentsEnabled) {
+        toggleBtn.classList.add('active');
+        bubblesStream.classList.add('show');
+    }
+
+    toggleBtn.addEventListener('click', () => {
+        const isActive = toggleBtn.classList.toggle('active');
+        
+        if (isActive) {
+            bubblesStream.classList.add('show');
+            localStorage.setItem('commentsEnabled', 'true');
+            console.log('Комментарии включены');
+        } else {
+            bubblesStream.classList.remove('show');
+            localStorage.setItem('commentsEnabled', 'false');
+            console.log('Комментарии выключены');
+        }
+    });
   }
 
   async init() {
@@ -65,6 +181,7 @@ export class Player extends EventTarget {
   }
 
   async destroy() {
+    this.closeCommentSocket();
     const playerElement = document.querySelector('.player');
     if (playerElement) {
       this.audio.removeEventListener('timeupdate', this.handleTimeUpdate);
@@ -109,6 +226,7 @@ export class Player extends EventTarget {
       clearTimeout(this.listenIncrementTimeout);
     }
     this.currentTrack = trackData;
+    this.initCommentSocket(trackData.id);
     this.loadTrackInfo(this.currentTrack);
     localStorage.setItem('currentTrackId', this.currentTrack.id);
     const LISTEN_DELAY = 15000;
@@ -160,6 +278,7 @@ export class Player extends EventTarget {
           }
           // this.playQueue = tracks;
         } catch (error) {
+          console.log(error);
           this.playQueue = [];
           this.originalQueue = [];
         }
@@ -210,6 +329,7 @@ export class Player extends EventTarget {
     this.trackSwitching();
     this.initShaffleBtn();
     this.initRepeatBtn();
+    this.switchComments();
 
     const storedTrackId = localStorage.getItem('currentTrackId');
     let storedTrackData = await this.getDataTrackById(storedTrackId);

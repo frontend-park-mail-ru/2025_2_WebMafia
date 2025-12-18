@@ -5,7 +5,7 @@ import { Artist, Album, Track, Playlist, UserProfile, Avatar, WebSocketHandlers,
 import { CommentsSocket } from '@/utils/webSocketConnect';
 
 interface ApiRequestOptions extends Omit<RequestInit, 'body'> {
-  body?: any;
+  body?: BodyInit | Record<string, unknown> | null;
 }
 
 export class apiService {
@@ -69,10 +69,15 @@ export class apiService {
       credentials: 'include',
       headers,
       ...options,
+      body: undefined,
     };
 
-    if (options.body && !isFormData) {
-      config.body = JSON.stringify(options.body);
+    if (options.body) {
+      if (isFormData || typeof options.body === 'string' || options.body instanceof Blob) {
+        config.body = options.body as BodyInit;
+      } else {
+        config.body = JSON.stringify(options.body);
+      }
     }
 
     const response = await fetch(url, config);
@@ -573,18 +578,12 @@ export class apiService {
       let artist = {} as Artist;
 
       if (artistId) {
-        const promises: Promise<any>[] = [this.request<Artist>(`/artists/${artistId}`).catch(() => ({}) as Artist)];
-
-        if (isAuthenticated) {
-          promises.push(this.request<Artist[]>('/favorite/artists').catch(() => []));
-        }
-
-        const [artistData, favoriteArtists] = await Promise.all(promises);
-
+        const artistData = await this.request<Artist>(`/artists/${artistId}`).catch(() => ({}) as Artist);
         artist = artistData;
 
-        if (isAuthenticated && favoriteArtists) {
-          const isSubscribed = (favoriteArtists as Artist[]).some((a) => a.id === artist.id);
+        if (isAuthenticated) {
+          const favoriteArtists = await this.request<Artist[]>('/favorite/artists').catch(() => []);
+          const isSubscribed = favoriteArtists.some((a) => a.id === artist.id);
           artist.isSubscribed = isSubscribed;
         }
       }
@@ -600,7 +599,7 @@ export class apiService {
     }
   }
 
-  createTrackSocket(trackId: string, token: string, handlers: WebSocketHandlers<Comment>) {
+  createTrackSocket(trackId: string, token: string, handlers: WebSocketHandlers) {
     const wsUrl = `${this.wsBaseURL}/ws/comments/tracks/${trackId}`;
     return new CommentsSocket<Comment>(wsUrl, token, handlers);
   }

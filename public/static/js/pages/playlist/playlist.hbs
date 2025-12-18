@@ -78,7 +78,7 @@
               <a class="text href-decoration playlist-album" href="/album/{{ album_id }}">{{ album }}</a>
               <span class="dot"></span>
               {{#each artists}}
-              <a href="artist/{{ id }}" class="text href-decoration"> {{ name }}{{#unless @last}}, {{/unless}} </a>
+              <a href="/artist/{{ id }}" class="text href-decoration"> {{ name }}{{#unless @last}}, {{/unless}} </a>
               {{/each}}
             </p>
           </div>
@@ -93,6 +93,12 @@
           </div>
         </div>
       </div>
+      {{else}}
+        {{#if @root.favourite}}
+          <div class="no-tracks-message">
+            <p>Вы ещё не добавили ни одного трека в <b>понравившиеся</b></p>
+          </div>
+        {{/if}}
       {{/each}}
     </div>
     {{#unless favourite}}

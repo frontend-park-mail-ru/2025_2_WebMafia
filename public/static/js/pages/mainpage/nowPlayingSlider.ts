@@ -15,6 +15,12 @@ interface CardData {
   img: string;
 }
 
+interface PlayerTrackChangeEvent {
+  prev?: TrackData;
+  current?: TrackData;
+  next?: TrackData;
+}
+
 class NowPlayingCardsSlider {
   private prevBtn: HTMLElement | null = null;
   private nextBtn: HTMLElement | null = null;
@@ -22,7 +28,7 @@ class NowPlayingCardsSlider {
 
   private isAnimating = false;
   private animationDuration = 500;
-  private pendingTrackData: any = null;
+  private pendingTrackData: PlayerTrackChangeEvent | null = null;
   private cardsData: CardData[] = [];
 
   private boundPlayerSync: (e: CustomEvent) => void;
@@ -45,7 +51,7 @@ class NowPlayingCardsSlider {
       { img: '/static/img/default-album.png', name: '', id: null },
     ];
 
-    // @ts-ignore
+    // @ts-expect-error aaaaa
     player.addEventListener('trackchange', this.boundPlayerSync);
 
     this.setupGestures();
@@ -59,11 +65,11 @@ class NowPlayingCardsSlider {
   }
 
   public destroy(): void {
-    // @ts-ignore
+    // @ts-expect-error aaaa
     player.removeEventListener('trackchange', this.boundPlayerSync);
   }
 
-  private playerSliderDataSync(data: any): void {
+  private playerSliderDataSync(data: PlayerTrackChangeEvent): void {
     if (this.isAnimating) {
       this.pendingTrackData = data;
       return;
@@ -71,11 +77,11 @@ class NowPlayingCardsSlider {
     this.applyDataToCards(data);
   }
 
-  private applyDataToCards({ prev, current, next }: { prev: TrackData; current: TrackData; next: TrackData }): void {
+  private applyDataToCards({ prev, current, next }: PlayerTrackChangeEvent): void {
     const prevCard = document.querySelector('.card-position-prev');
     const nextCard = document.querySelector('.card-position-next');
 
-    const toggle = (el: Element | null, condition: any) => el?.classList.toggle('hidden', !condition);
+    const toggle = (el: Element | null, condition: unknown) => el?.classList.toggle('hidden', !condition);
 
     toggle(this.nextBtn, next);
     toggle(nextCard, next);
@@ -212,14 +218,16 @@ class NowPlayingCardsSlider {
 
     slider.addEventListener(
       'touchstart',
-      (e: any) => {
-        touchStartX = e.changedTouches[0].clientX;
+      (e: Event) => {
+        const touchEvent = e as TouchEvent;
+        touchStartX = touchEvent.changedTouches[0].clientX;
       },
       { passive: true }
     );
 
-    slider.addEventListener('touchend', (e: any) => {
-      touchEndX = e.changedTouches[0].clientX;
+    slider.addEventListener('touchend', (e: Event) => {
+      const touchEvent = e as TouchEvent;
+      touchEndX = touchEvent.changedTouches[0].clientX;
       if (touchEndX - touchStartX > 50 && !this.isAnimating) {
         this.shiftCards('prev');
         player.prevTrack();

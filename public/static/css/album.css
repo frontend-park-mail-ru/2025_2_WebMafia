@@ -195,6 +195,8 @@
   opacity: 0;
 }
 
+
+
 .play-album-track.is-active:not(.paused) .pause-icon,
 .play-album-track.is-active.paused .play-icon,
 .play-album-track .pause-icon {
@@ -277,6 +279,23 @@
 .album-row.active .delete-btn-track,
 .like-btn-track.active {
   opacity: 1;
+}
+
+.play-button-album.inactive,
+.play-button-playlist.inactive {
+    filter: grayscale(70%);
+    pointer-events: none;
+  }
+
+.no-tracks-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+  text-align: center;
+  color: rgba(0, 0, 0);
+  font-size: 1.1rem;
+  font-weight: 500;
 }
 
 @media (hover: none) and (pointer: coarse) {
