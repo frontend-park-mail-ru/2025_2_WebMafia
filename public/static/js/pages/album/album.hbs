@@ -3,10 +3,14 @@
   <div class="purple-background-circle album-purple-position"></div>
   <div class="album-card">
     <div class="album-artist">
-      <img class="album-artist-avatar {{#unless artist.avatar}}loading{{/unless}}" src="{{ artist.avatar }}" alt="{{ artist.name }}" />
-      <a href="artist/{{ artist.id }}" title="{{ artist.name }}" class="album-artist-name href-decoration">{{
-        artist.name
-      }}</a>
+      <img
+        class="album-artist-avatar {{#unless artist.avatar}}loading{{/unless}}"
+        src="{{ artist.avatar }}"
+        alt="{{ artist.name }}"
+      />
+      <a href="artist/{{ artist.id }}" title="{{ artist.name }}" class="album-artist-name href-decoration"
+        >{{ artist.name }}</a
+      >
     </div>
     <img class="album-cover {{#unless cover}}loading{{/unless}}" src="{{ cover }}" alt="{{ title }}" />
     <div class="album-card-title">{{ title }}</div>
@@ -34,21 +38,15 @@
           data-album-id="{{ id }}"
           data-album-name="{{ title }}"
           data-album-cover="{{ cover }}"
-          data-album-type="{{ type }}">
-          <span class="actions-item-svg {{#if is_liked}}active{{/if}}">
-            {{> likeBtn }}
-          </span>
+          data-album-type="{{ type }}"
+        >
+          <span class="actions-item-svg {{#if is_liked}}active{{/if}}"> {{> likeBtn }} </span>
           <span class="actions-item-text">
-            {{#if is_liked}}
-            Удалить из библиотеки
-            {{else}}
-            Добавить в библиотеку
-            {{/if}}
+            {{#if is_liked}} Удалить из библиотеки {{else}} Добавить в библиотеку {{/if}}
           </span>
         </button>
         <button class="actions-item" id="shareButton">
-          <span class="actions-item-svg">{{> share}}</span
-          >Поделиться
+          <span class="actions-item-svg">{{> share}}</span>Поделиться
         </button>
       </div>
     </div>

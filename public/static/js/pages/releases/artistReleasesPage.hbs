@@ -1,26 +1,24 @@
-<div class='page' id='scrollContent'>
-  <div class='title'>
-    <div class='title-name-track-by-artist'>
+<div class="page" id="scrollContent">
+  <div class="title">
+    <div class="title-name-track-by-artist">
       {{releaseTypeTitle}}
-      <a class='href-decoration' href='artist/{{id}}'>{{name}}</a>
+      <a class="href-decoration" href="artist/{{id}}">{{name}}</a>
     </div>
   </div>
-  <div class='grid-layout'>
+  <div class="grid-layout">
     {{#each albums}}
-      <a href='/album/{{id}}' class='card'>
-        <img src='{{cover}}' alt='{{name}}' />
-        <div class='card-bottom-info'>
-          <p class='card-name'>{{name}}</p>
-          <p class='card-sub'>
-            {{#if isSingles}}
-              {{type}}
-              <span class='dot'></span>
-            {{/if}}
-            {{year}}
-          </p>
-        </div>
-        <!--<button class="play-button play-button-placement"></button>-->
-      </a>
+    <a href="/album/{{id}}" class="card">
+      <img src="{{cover}}" alt="{{name}}" />
+      <div class="card-bottom-info">
+        <p class="card-name">{{name}}</p>
+        <p class="card-sub">
+          {{#if isSingles}} {{type}}
+          <span class="dot"></span>
+          {{/if}} {{year}}
+        </p>
+      </div>
+      <!--<button class="play-button play-button-placement"></button>-->
+    </a>
     {{/each}}
   </div>
 </div>

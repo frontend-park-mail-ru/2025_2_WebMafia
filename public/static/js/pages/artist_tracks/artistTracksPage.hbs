@@ -31,9 +31,7 @@
         </div>
         <div class="track-plays-num">{{ plays }}</div>
         <div class="track-album-name">
-          <a href="album/{{ album_id }}" class="track-album-name href-decoration">
-            {{ album }}
-          </a>
+          <a href="album/{{ album_id }}" class="track-album-name href-decoration"> {{ album }} </a>
         </div>
         <div class="track-like-container">
           <button class="like-btn-track artist-like-size {{#if is_liked}}active{{/if}}" data-track-id="{{ id }}">
