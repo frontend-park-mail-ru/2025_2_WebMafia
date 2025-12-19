@@ -14,6 +14,7 @@ import { BasePage } from '@/pages/base/basePage.ts';
 import { images } from '@/assets';
 import { confirmation } from '@/components/confirmation_modal/confirmationModal.ts';
 import { isHttpError, MappedTrack, Track } from '@/models.ts';
+import { initRowDoubleClick } from '@/utils/doubleClickToPlay';
 
 interface AlbumPageData {
   isAuthenticated: boolean;
@@ -118,6 +119,7 @@ export class AlbumPage extends BasePage {
     setPlayButtonsOnAuth();
     likeTrackBtn();
     playTrack();
+    initRowDoubleClick('.album-table', '.album-row');
     albumPlaylistButtons();
     share();
   }

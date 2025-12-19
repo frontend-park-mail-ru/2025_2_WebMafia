@@ -13,6 +13,7 @@ import { BasePage } from '@/pages/base/basePage.ts';
 import { Artist, Album, Track, MappedTrack, isHttpError } from '@/models';
 import { initSubscribeButton } from '@/utils/subscribeArtist.ts';
 import { images } from '@/assets.ts';
+import { initRowDoubleClick } from '@/utils/doubleClickToPlay';
 
 interface ArtistPageData {
   isAuthenticated: boolean;
@@ -121,6 +122,7 @@ export class ArtistPage extends BasePage {
     setPlayButtonsOnAuth();
     likeTrackBtn();
     playTrack();
+    initRowDoubleClick('.tracks-table', '.track-row');
     share();
   }
 
