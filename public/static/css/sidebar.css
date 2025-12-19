@@ -194,7 +194,6 @@
   left: -100%;
   width: 300%;
   height: 300%;
-  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
   transition: transform 0.8s ease-out;
   pointer-events: none;
   mix-blend-mode: overlay;
@@ -215,6 +214,13 @@
 
 .sidebar-user-items {
   gap: 15px;
+  height: 100%;
+  overflow-y: scroll;
+  box-sizing: content-box;
+}
+
+.sidebar-user-items::-webkit-scrollbar {
+  width: 0;
 }
 
 @media (max-width: 1150px) {

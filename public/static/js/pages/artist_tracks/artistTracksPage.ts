@@ -9,6 +9,7 @@ import { likeTrackBtn } from '@/utils/likeTrack';
 import { isHttpError, MappedTrack, Track } from '@/models';
 import { BasePage } from '@/pages/base/basePage.ts';
 import { showInfoMessage } from '@/utils/showInfoMessage.ts';
+import { initRowDoubleClick } from '@/utils/doubleClickToPlay';
 
 interface ArtistTracksContext {
   isAuthenticated: boolean;
@@ -77,5 +78,6 @@ export class ArtistTracksPage extends BasePage {
     setPlayButtonsOnAuth();
     likeTrackBtn();
     playTrack();
+    initRowDoubleClick('.tracks-table-track-by-artist', '.track-row');
   }
 }

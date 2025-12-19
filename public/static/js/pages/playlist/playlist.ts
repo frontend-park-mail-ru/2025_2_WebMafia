@@ -24,6 +24,7 @@ import { showInfoMessage } from '@/utils/showInfoMessage';
 import { isHttpError, MappedTrack, PlaylistSuccessData, Track } from '@/models.ts';
 import { BasePage } from '@/pages/base/basePage.ts';
 import { confirmation } from '@/components/confirmation_modal/confirmationModal.ts';
+import { initRowDoubleClick } from '@/utils/doubleClickToPlay';
 
 interface PlaylistPageData {
   isAuthenticated: boolean;
@@ -141,6 +142,9 @@ export class PlaylistPage extends BasePage {
     setPlayButtonsOnAuth();
     likeTrackBtn();
     playTrack();
+    initRowDoubleClick('#addedTracksTable', '.album-row');
+
+    initRowDoubleClick('#searchedTracksContainer', '.album-row');
     albumPlaylistButtons();
     share();
 
