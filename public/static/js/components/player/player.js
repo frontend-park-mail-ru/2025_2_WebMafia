@@ -343,7 +343,7 @@ export class Player extends EventTarget {
       this.onLikeClickBound = this.handleLikeClick.bind(this);
       likeBtn.addEventListener('click', this.onLikeClickBound);
     }
-    const commentBtn = document.querySelector('.goToCommentsBtn');
+    const commentBtn = document.querySelector('.comments-button');
     if (commentBtn) {
       commentBtn.removeEventListener('click', this.handleCommentClick);
       this.handleCommentClick = () => {
