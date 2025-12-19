@@ -31,5 +31,5 @@ export const playlistRoutes = [
   '/favorite/artists/:id',
   '/favorite/albums',
   '/favorite/albums/:id',
-  '/playlist/:id/generate',
+  '/playlists/:id/generate',
 ];
