@@ -10,13 +10,12 @@ import { getValidImage, playsParser, dateParser } from '@/utils/parsers';
 import { playerOnlyOnPlay } from '@/playerOnlyOnplay.js';
 import { sliderColorChange, updateCurrentTimeAndSlider, loadTrackInfo } from '@/utils/playerFunctions.js';
 import { initSubscribeButton } from '@/utils/subscribeArtist';
-import { spawnBubble, injectBubbleStyles } from '@/utils/commentAnimation.js';
+import { injectBubbleStyles } from '@/utils/commentAnimation.js';
 import { likeTrackBtn } from '@/utils/likeTrack.js';
 import { share } from '@/utils/shareBtn.js';
-import { CommentsSocket } from '@/utils/webSocketConnect.ts';
 import { images } from '@/assets';
 import { showInfoMessage } from '@/utils/showInfoMessage';
-import { Comment, isHttpError } from '@/models';
+import { Comment } from '@/models';
 
 interface TrackCommentsContext {
   isAuthenticated: boolean;
@@ -40,12 +39,12 @@ interface TrackCommentsContext {
 }
 
 export class TrackCommentsPage extends BasePage {
-  private socket: CommentsSocket<Comment> | null = null;
   private trackId: string | null = null;
-
   private clickHandlers: Array<{ el: Element; fn: EventListener }> = [];
   private boundTrackChange: EventListener | null = null;
   private boundTimeUpdate: EventListener | null = null;
+  
+  private boundOnCommentReceived: ((e: any) => void) | null = null;
 
   protected async renderContent(container: HTMLElement, trackId: string): Promise<void> {
     this.trackId = trackId;
@@ -74,21 +73,17 @@ export class TrackCommentsPage extends BasePage {
         is_liked: track.is_liked || false,
         year: track.album?.release_date ? track.album.release_date.slice(0, 4) : '',
         cover: getValidImage(`albums/${track.album?.avatar_url}`, images.defaultAlbumPath),
-
         isSubscribed: artist?.isSubscribed || false,
         listeners: playsParser(artist?.play_count) || '0',
-
         artist: {
           id: artist?.id || '',
           name: artist?.name || 'Unknown',
           avatar: getValidImage(`artists/${artist?.avatar_url}`, images.defaultArtistPath),
         },
-
         description: track.album?.description,
         track_id: track.id,
         player_context: player.currentContext,
-
-        comments: comments.map((c: Comment) => ({
+        comments: comments.map((c: any) => ({
           id: c.id,
           text: c.text,
           nickname: c.user_login,
@@ -101,10 +96,10 @@ export class TrackCommentsPage extends BasePage {
       container.innerHTML = template(pageData);
       if (titleEl) titleEl.textContent = pageData.title || 'Wave Music';
 
-      this.initComponents(pageData);
-    } catch (error: unknown) {
+      this.initComponents();
+    } catch (error: any) {
       console.error('TrackCommentsPage load error:', error);
-      if (isHttpError(error) && error.response?.status === 404) {
+      if (error.response?.status === 404) {
         router.navigate('/not-found');
         return;
       }
@@ -112,7 +107,7 @@ export class TrackCommentsPage extends BasePage {
     }
   }
 
-  private initComponents(data: TrackCommentsContext): void {
+  private initComponents(): void {
     injectBubbleStyles();
     playerOnlyOnPlay();
 
@@ -127,20 +122,89 @@ export class TrackCommentsPage extends BasePage {
 
     this.setupPageLogic();
     this.setupCommentForm();
+    this.setupNavigationLinks();
 
     likeTrackBtn();
     share();
     playTrack();
-
     initSubscribeButton();
 
-    this.setupNavigationLinks();
+    this.setupGlobalCommentListener();
+  }
 
-    this.startBubbles(data.comments);
+  private setupGlobalCommentListener() {
+    this.boundOnCommentReceived = (e: any) => {
+        const comment = e.detail;
+        if (String(comment.track_id) === String(this.trackId)) {
+            this.renderNewCommentInList(comment); 
+        }
+    };
+    window.addEventListener('comment:received', this.boundOnCommentReceived);
+  }
 
-    if (data.isAuthenticated && this.trackId) {
-      this.initSocket(this.trackId);
+  private renderNewCommentInList(commentObj: any) {
+    const list = document.getElementById('commentsList');
+    const commentsContainer = document.querySelector('.comments-container');
+    if (!commentsContainer) return;
+
+    const commentDiv = document.createElement('div');
+    commentDiv.className = 'comment-container';
+
+    const avatarHtml = commentObj.avatar
+      ? `<img src="${commentObj.avatar}" alt="Avatar" class="profile-image" />`
+      : `<div class="default-avatar default-avatar-header">${commentObj.letter || 'U'}</div>`;
+
+    commentDiv.innerHTML = `
+        <div class="profile-avatar-header user-avatar">${avatarHtml}</div>
+        <div class="comment-info-container">
+            <div class="comment-info-header">
+                <div class="comment-author">${commentObj.nickname || 'User'}</div>
+                <span class="dot"></span>
+                <div class="comment-time">${commentObj.time || 'Только что'}</div>
+            </div>
+            <div class="comment-text">${commentObj.text}</div>
+        </div>
+    `;
+
+    if (list) {
+      list.prepend(commentDiv);
+    } else {
+      const form = document.getElementById('createCommentsForm');
+      if (form && form.nextSibling) {
+        form.parentNode?.insertBefore(commentDiv, form.nextSibling);
+      } else {
+        commentsContainer.appendChild(commentDiv);
+      }
     }
+  }
+
+  private setupCommentForm() {
+    const form = document.getElementById('createCommentsForm') as HTMLFormElement;
+    if (!form) return;
+
+    const newForm = form.cloneNode(true) as HTMLFormElement;
+    form.parentNode?.replaceChild(newForm, form);
+
+    const input = newForm.querySelector('#title-comment') as HTMLInputElement;
+    const errorDiv = newForm.querySelector('#titleError');
+
+    const submitHandler = (e: Event) => {
+      e.preventDefault();
+      const text = input.value.trim();
+      
+      if (!text) return;
+
+      const success = (player as any).sendComment(text);
+      if (success) {
+          input.value = '';
+          if (errorDiv) errorDiv.textContent = '';
+      } else {
+          if (errorDiv) errorDiv.textContent = 'Ошибка отправки. Плеер не подключен к комментариям.';
+      }
+    };
+
+    newForm.addEventListener('submit', submitHandler);
+    this.clickHandlers.push({ el: newForm, fn: submitHandler });
   }
 
   private setupNavigationLinks(): void {
@@ -157,116 +221,6 @@ export class TrackCommentsPage extends BasePage {
       author.addEventListener('click', handler);
       this.clickHandlers.push({ el: author, fn: handler });
     });
-  }
-
-  private startBubbles(comments: Comment[]) {
-    if (comments.length === 0) return;
-    const randomComments = [...comments].sort(() => 0.5 - Math.random()).slice(0, 2);
-
-    randomComments.forEach((comment, index) => {
-      setTimeout(() => {
-        if (this.trackId) spawnBubble(comment);
-      }, index * 1500);
-    });
-  }
-
-  private async initSocket(trackId: string) {
-    try {
-      const token = await apiServise.getCSRFToken();
-
-      this.socket = apiServise.createTrackSocket(trackId, token, {
-        onOpen: () => console.log('WS connected'),
-        onMessage: (data) => this.handleNewComment(data),
-        onError: (err) => console.error('WS Error:', err),
-        onClose: () => console.log('WS closed'),
-      });
-
-      this.socket.connect();
-    } catch (e) {
-      console.error('Socket init failed:', e);
-    }
-  }
-
-  private handleNewComment(data: Comment[] | Comment) {
-    if (!data) return;
-    const commentData = Array.isArray(data) ? data[0] : data;
-
-    const commentObj: Comment = {
-      id: commentData.id,
-      text: commentData.text,
-      nickname: commentData.user_login || 'User',
-      time: 'Только что',
-      avatar: commentData.user_avatar ? getValidImage(commentData.user_avatar) : null,
-      letter: (commentData.user_login || 'U')[0].toUpperCase(),
-      track_id: commentData.track_id,
-    };
-
-    const commentsContainer = document.querySelector('.comments-container');
-    if (!commentsContainer) return;
-
-    const commentDiv = document.createElement('div');
-    commentDiv.className = 'comment-container';
-
-    const avatarHtml = commentObj.avatar
-      ? `<img src="${commentObj.avatar}" alt="Avatar" class="profile-image" />`
-      : `<div class="default-avatar default-avatar-header">${commentObj.letter}</div>`;
-
-    commentDiv.innerHTML = `
-        <div class="profile-avatar-header user-avatar">
-            ${avatarHtml}
-        </div>
-        <div class="comment-info-container">
-            <div class="comment-info-header">
-                <div class="comment-author">${commentObj.nickname}</div>
-                <span class="dot"></span>
-                <div class="comment-time">${commentObj.time}</div>
-            </div>
-            <div class="comment-text">${commentObj.text}</div>
-        </div>
-    `;
-
-    const list = document.getElementById('commentsList');
-    if (list) {
-      list.prepend(commentDiv);
-    } else {
-      const form = document.getElementById('createCommentsForm');
-      if (form && form.nextSibling) {
-        form.parentNode?.insertBefore(commentDiv, form.nextSibling);
-      } else {
-        commentsContainer.appendChild(commentDiv);
-      }
-    }
-
-    setTimeout(() => spawnBubble(commentObj), 100);
-  }
-
-  private setupCommentForm() {
-    const form = document.getElementById('createCommentsForm') as HTMLFormElement;
-    if (!form) return;
-
-    const newForm = form.cloneNode(true) as HTMLFormElement;
-    form.parentNode?.replaceChild(newForm, form);
-
-    const input = newForm.querySelector('#title-comment') as HTMLInputElement;
-    const errorDiv = newForm.querySelector('#titleError');
-
-    const submitHandler = (e: Event) => {
-      e.preventDefault();
-      const text = input.value.trim();
-
-      if (!text) return;
-
-      if (this.socket) {
-        this.socket.send({ text });
-        input.value = '';
-        if (errorDiv) errorDiv.textContent = '';
-      } else {
-        if (errorDiv) errorDiv.textContent = 'Ошибка соединения. Обновите страницу.';
-      }
-    };
-
-    newForm.addEventListener('submit', submitHandler);
-    this.clickHandlers.push({ el: newForm, fn: submitHandler });
   }
 
   private setupPageLogic() {
@@ -325,9 +279,8 @@ export class TrackCommentsPage extends BasePage {
   }
 
   public destroy(): void {
-    if (this.socket) {
-      this.socket.disconnect();
-      this.socket = null;
+    if (this.boundOnCommentReceived) {
+        window.removeEventListener('comment:received', this.boundOnCommentReceived);
     }
 
     this.clickHandlers.forEach(({ el, fn }) => el.removeEventListener('click', fn));
@@ -344,7 +297,6 @@ export class TrackCommentsPage extends BasePage {
 
     nowPlayingSlider.destroy();
     scrollbar.destroy();
-
     this.trackId = null;
   }
 }

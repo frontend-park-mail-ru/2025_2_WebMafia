@@ -118,6 +118,8 @@ export class PlaylistPage extends BasePage {
       if (pageData.title && titleEl) {
         titleEl.textContent = pageData.title;
       }
+
+      this.initComponents(pageData);
     } catch (error: unknown) {
       console.error('Failed to load playlist page data:', error);
 
@@ -130,10 +132,9 @@ export class PlaylistPage extends BasePage {
       return;
     }
 
-    this.initComponents();
   }
 
-  private initComponents() {
+  private initComponents(pageData: PlaylistPageData) {
     playerOnlyOnPlay();
     slider.init();
     scrollbar.init();
@@ -144,10 +145,12 @@ export class PlaylistPage extends BasePage {
     albumPlaylistButtons();
     share();
 
-    this.addEventListeners();
+    this.addEventListeners(pageData);
   }
 
-  private addEventListeners() {
+  private addEventListeners(pageData: PlaylistPageData) {
+    this.tracksCheck(pageData);
+
     if (this.favourite) {
       this.initFavoriteLogic();
       return;
@@ -158,6 +161,19 @@ export class PlaylistPage extends BasePage {
     this.initSearchTracks();
     this.initDeleteTrackButton();
   }
+
+  private tracksCheck(pageData: PlaylistPageData) {
+  const playButton = document.querySelector('.play-button-playlist') as HTMLButtonElement;
+  if (!playButton) return;
+
+  const hasNoTracks = pageData.tracks.length === 0;
+  
+  if (hasNoTracks) {
+    playButton.classList.add('inactive');
+  } else {
+    playButton.classList.remove('inactive');
+  }
+}
 
   private initFavoriteLogic() {
     this.boundPlayerLikeHandler = (e: Event) => {
@@ -334,6 +350,7 @@ export class PlaylistPage extends BasePage {
       album: track.album?.title,
       artists: track.artists,
       is_liked: track.is_liked,
+      album_id: track.album.id,
     };
 
     const rowHtml = Handlebars.templates['trackRow.hbs'](trackData);
@@ -372,7 +389,13 @@ export class PlaylistPage extends BasePage {
         },
       });
     }
-
+    if (num > 0) {
+    const playButton = document.querySelector('.play-button-playlist') as HTMLButtonElement;
+    if (playButton) {
+        playButton.classList.remove('inactive');
+        playButton.disabled = false;
+      }
+    }
     likeTrackBtn();
     playTrack();
   }
@@ -396,8 +419,32 @@ export class PlaylistPage extends BasePage {
 
         row.remove();
         this.renumberTracks();
+
+        this.updatePlayButtonState();
       }
     });
+  }
+
+  private updatePlayButtonState() {
+    const table = document.getElementById('addedTracksTable');
+    const playButton = document.querySelector('.play-button-playlist') as HTMLButtonElement;
+    
+    if (!table || !playButton) return;
+
+    // Считаем количество оставшихся строк
+    const tracksCount = table.querySelectorAll('.album-row').length;
+    const hasTracks = tracksCount > 0;
+
+    if (hasTracks) {
+      playButton.classList.remove('inactive');
+      playButton.disabled = false;
+    } else {
+      playButton.classList.add('inactive');
+      playButton.disabled = true;
+    }
+    
+    // Опционально: обновляем общую статистику (количество треков в шапке)
+    this.updateStats(tracksCount); 
   }
 
   private renumberTracks() {

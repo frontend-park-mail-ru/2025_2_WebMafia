@@ -73,7 +73,7 @@
       </div>
     </form>
     <div id="commentsList"></div>
-    {{#each comment}}
+    {{#each comments}}
     <div class="comment-container">
       <div class="profile-avatar-header user-avatar" id="avatarHeaderContainer">
         {{#if avatar}}
@@ -86,12 +86,11 @@
         <div class="comment-info-header">
           <div class="comment-author">{{ nickname }}</div>
           <span class="dot"></span>
-          <div class="comment-time">{{ created_at }}</div>
+          <div class="comment-time">{{ time }}</div>
         </div>
         <div class="comment-text">{{ text }}</div>
       </div>
     </div>
     {{/each}}
-    <div id="bubblesStream" class="bubbles-stream-container"></div>
   </div>
 </div>

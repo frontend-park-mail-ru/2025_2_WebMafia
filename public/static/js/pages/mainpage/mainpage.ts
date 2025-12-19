@@ -13,7 +13,7 @@ import { Artist, Album, Track, isHttpError } from '@/models';
 
 interface MainPageData {
   isAuthenticated: boolean;
-  artists: Array<{ id: string; name: string; listeners: string; image: string }>;
+  artists: Array<{ id: string; name: string; listeners: string; image: string; track_id: string | null }>;
   albums: Array<{ id: string; name: string; image: string; artist: string; type?: string }>;
   tracks: Array<{ id: string; name: string; image: string; album_id?: string; artists?: Artist[] }>;
 }
@@ -40,12 +40,19 @@ export class MainPage extends BasePage {
 
     try {
       const data = await apiServise.getMainPageData();
-      pageData.artists = (data.artists || []).map((artist: Artist) => ({
-        id: artist.id,
-        name: artist.name,
-        listeners: playsParser(artist.play_count || 0),
-        image: getValidImage(`artists/${artist.avatar_url}`, 'default-artist.png'),
-      }));
+      pageData.artists = (data.artists || []).map((artist: Artist) => {
+        const firstTrack = (data.tracks || []).find((t: Track) => 
+          t.artists?.some((a: Artist) => a.id === artist.id)
+        );
+
+        return {
+          id: artist.id,
+          name: artist.name,
+          listeners: playsParser(artist.play_count || 0),
+          image: getValidImage(`artists/${artist.avatar_url}`, 'default-artist.png'),
+          track_id: firstTrack ? firstTrack.id : null,
+        };
+      });
       pageData.albums = (data.albums || []).map((album: Album) => ({
         id: album.id,
         name: album.title,

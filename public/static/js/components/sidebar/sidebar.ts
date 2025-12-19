@@ -102,10 +102,12 @@ class Sidebar {
   }
 
   private initComponents() {
-    if (this.isGlobalListenersAttached) return;
     this.activePath();
     this.addMenuListeners();
     this.createPlaylistButton();
+
+    if (this.isGlobalListenersAttached) return;
+
 
     scrollbar.init();
 

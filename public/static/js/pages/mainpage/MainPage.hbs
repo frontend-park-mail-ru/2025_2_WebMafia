@@ -25,12 +25,13 @@
     <p><i class="slide-btn left"></i></p>
     <div class="cards" id="slidebar">
       {{#each artists}}
-      <a href="/artist/{{id}}" class="card">
-        <img src="{{image}}" alt="{{name}}" />
-        <p class="card-name">{{name}}</p>
-        <p class="card-sub">{{listeners}}</p>
-        <!--<button class="play-button play-button-placement" data-artist-id="{{ id }}"></button>-->
-      </a>
+        <a href='/artist/{{id}}' class='card'>
+          <img src='{{image}}' alt='{{name}}' />
+          <p class='card-name'>{{name}}</p>
+          <p class='card-sub'>{{listeners}}</p>
+        </a>
+          <!-- <button class="play-button play-button-placement" data-track-id="{{ track_id }}"
+            data-context="artist_tracks" data-artist-id="{{ id }}"></button> -->
       {{/each}}
     </div>
     <p><i class="slide-btn right"></i></p>

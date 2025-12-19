@@ -105,13 +105,14 @@ export class AlbumPage extends BasePage {
       titleEl.textContent = pageData.title;
     }
 
-    this.initComponents();
+    this.initComponents(pageData);
   }
 
-  private initComponents() {
+  private initComponents(pageData: AlbumPageData) {
     playerOnlyOnPlay();
     slider.init();
     scrollbar.init();
+    this.tracksCheck(pageData);
 
     this.initLikeButton();
     setPlayButtonsOnAuth();
@@ -120,6 +121,19 @@ export class AlbumPage extends BasePage {
     albumPlaylistButtons();
     share();
   }
+
+  private tracksCheck(pageData: AlbumPageData) {
+  const playButton = document.querySelector('.play-button-album') as HTMLButtonElement;
+  if (!playButton) return;
+
+  const hasNoTracks = pageData.tracks.length === 0;
+  
+  if (hasNoTracks) {
+    playButton.classList.add('inactive');
+  } else {
+    playButton.classList.remove('inactive');
+  }
+}
 
   private initLikeButton() {
     const likeButton = document.getElementById('albumLikeButton') as HTMLButtonElement;

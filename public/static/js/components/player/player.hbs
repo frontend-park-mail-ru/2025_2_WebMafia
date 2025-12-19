@@ -1,7 +1,7 @@
 <div class="player" id="player">
   <button type="button" class="player-close">{{> angleDown }}</button>
   <div class="player-left">
-    <img alt="Cover" class="track-cover-player" />
+    <img alt="Cover" class="track-cover-player" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />
     <div class="track-info-container">
       <div class="track-info">
         <a class="marquee player-marquee-limiter">
@@ -35,8 +35,15 @@
 
   <!-- Правая часть -->
   <div class="player-right">
+    <div class="switch-container">
+      <span class="switch-label">Live comments</span>
+      <button class="switch-comments" id="toggleComments" aria-label="Переключить комментарии">
+        <span class="switch-circle"></span>
+      </button>
+    </div>
     <button class="comments-button" data-track-id="{{ id }}">{{> goToCommentsBtn}}</button>
     {{> volumeBar }}
     <input type="range" min="0" max="100" value="50" class="volume-slider" />
   </div>
+  <div id="bubblesStream" class="bubbles-stream-container"></div>
 </div>
