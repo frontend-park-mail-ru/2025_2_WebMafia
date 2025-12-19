@@ -294,11 +294,6 @@
   min-width: 231px;
 }
 
-.player-right svg {
-  width: 26px;
-  height: 26px;
-}
-
 .switch-container {
   margin-right: -5px;
   padding-top: 20px;
@@ -366,6 +361,8 @@
 
 .comments-button svg {
   stroke: #fafafa;
+  width: 28px;
+  height: 28px;
 }
 
 .comments-button:hover {
@@ -396,6 +393,8 @@
   transition: color 0.3s ease;
   cursor: pointer;
   color: #fafafa;
+  width: 24px;
+  height: 24px;
 }
 
 .volume-speaker,
