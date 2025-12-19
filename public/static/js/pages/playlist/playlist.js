@@ -215,6 +215,22 @@ export class PlaylistPage {
             }
           }
 
+          const sidebarItem = document.querySelector(`.menu-item[data-id="${this.playlistData.id}"]`);
+
+          if (sidebarItem) {
+            const sidebarNameElement = sidebarItem.querySelector('.playlist-name-sidebar');
+            if (sidebarNameElement) {
+              sidebarNameElement.textContent = newData.title;
+            }
+
+            if (newData.image) {
+              const sidebarImageElement = sidebarItem.querySelector('img.playlist-cover');
+              if (sidebarImageElement) {
+                sidebarImageElement.src = newData.image;
+              }
+            }
+          }
+
           showInfoMessage('Изменения успешно сохранены!');
         });
       });

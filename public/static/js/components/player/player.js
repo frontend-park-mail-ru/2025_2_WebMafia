@@ -29,12 +29,24 @@ export class Player extends EventTarget {
       if (type === 'PLAYING') {
         this.audio.pause();
         this.togglePlayPauseSwitch(false);
-        localStorage.setItem('isPLaying', 'false');
+        localStorage.setItem('isPlaying', 'false');
       }
     };
   }
 
   async init() {
+    if (!this.channel) {
+      this.channel = new BroadcastChannel('music_channel_api');
+      this.channel.onmessage = (event) => {
+        const { type } = event.data;
+
+        if (type === 'PLAYING') {
+          this.audio.pause();
+          this.togglePlayPauseSwitch(false);
+          localStorage.setItem('isPlaying', 'false');
+        }
+      };
+    }
     await this.updateVisibility();
   }
 
@@ -673,13 +685,16 @@ export class Player extends EventTarget {
   }
 
   setInitialPLayTime() {
+    if (!this.currentTrack) return;
     const duration_ms = this.currentTrack.duration_s;
     const timeRegulator = document.querySelector('.remote-slider');
     const storedTime = parseFloat(localStorage.getItem('playTime'));
-    timeRegulator.value = storedTime;
+    if (timeRegulator) {
+      timeRegulator.value = storedTime;
+      const percent = (storedTime / duration_ms) * 100;
+      timeRegulator.style.setProperty('--progress', percent + '%');
+    }
     this.audio.currentTime = storedTime;
-    const percent = (storedTime / duration_ms) * 100;
-    timeRegulator.style.setProperty('--progress', percent + '%');
     this.updateCurrentTimeAndSlider();
   }
 

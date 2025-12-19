@@ -164,6 +164,12 @@
   position: relative;
 }
 
+.current-card-btn.prev.hidden,
+.current-card-btn.next.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
 .current-card-btn.prev::before {
   content: '';
   width: 24px;
