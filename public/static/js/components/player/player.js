@@ -22,6 +22,7 @@ export class Player extends EventTarget {
     this.repeatMode = 0;
     this.originalQueue = [];
     this.playQueue = [];
+    this.commentTimeouts = [];
     this.currentContext = null;
 
     this.commentSocket = null;
@@ -52,10 +53,10 @@ export class Player extends EventTarget {
       const token = await apiServise.getCSRFToken();
 
       this.commentSocket = apiServise.createTrackSocket(trackId, token, {
-        onOpen: () => console.log(`Comments WS connected for track ${trackId}`),
+        onOpen: () => {},
         onMessage: (data) => this.handleIncomingComment(data),
-        onError: (err) => console.error('Comments WS Error:', err),
-        onClose: () => console.log('Comments WS closed'),
+        onError: (err) => {},
+        onClose: () => {},
       });
 
       this.commentSocket.trackId = String(trackId);
@@ -74,42 +75,60 @@ export class Player extends EventTarget {
     const commentData = Array.isArray(data) ? data[0] : data;
     if (!commentData) return;
 
+    if (this.currentTrack && String(commentData.track_id) !== String(this.currentTrack.id)) {
+      return;
+    }
+
     const commentObj = {
       ...commentData,
       avatar: commentData.user_avatar ? getValidImage(commentData.user_avatar) : null,
-      nickname: (commentData.user_login || 'User'),
+      nickname: commentData.user_login || 'User',
       track_id: commentData.track_id,
     };
 
     spawnBubble(commentObj);
-
     window.dispatchEvent(new CustomEvent('comment:received', { detail: commentObj }));
   }
 
   startInitialBubbles(comments) {
     const bubblesContainer = document.querySelector('.bubbles-stream-container');
+    if (!bubblesContainer) return;
+
     bubblesContainer.classList.remove('inactive');
     const randomComments = [...comments].sort(() => 0.5 - Math.random());
+
     randomComments.forEach((c, i) => {
-      setTimeout(() => {
-        if (this.currentTrack && String(this.currentTrack.id) === this.commentSocket?.trackId) {
+      const timeoutId = setTimeout(() => {
+        if (this.currentTrack && String(this.currentTrack.id) === String(c.track_id)) {
           spawnBubble({
             ...c,
             avatar: c.user_avatar ? getValidImage(c.user_avatar) : null,
-            nickname: (c.user_login || 'User'),
+            nickname: c.user_login || 'User',
           });
         }
+
+        this.commentTimeouts = this.commentTimeouts.filter((id) => id !== timeoutId);
       }, i * 8500);
+
+      this.commentTimeouts.push(timeoutId);
     });
   }
 
   closeCommentSocket() {
+    if (this.commentTimeouts.length > 0) {
+      this.commentTimeouts.forEach((id) => clearTimeout(id));
+      this.commentTimeouts = [];
+    }
+
     if (this.commentSocket) {
       this.commentSocket.disconnect();
       this.commentSocket = null;
     }
+
     const bubblesContainer = document.querySelector('.bubbles-stream-container');
-    bubblesContainer.classList.add('inactive');
+    if (bubblesContainer) {
+      bubblesContainer.classList.add('inactive');
+    }
   }
 
   sendComment(text) {
@@ -661,16 +680,20 @@ export class Player extends EventTarget {
       else volumeIcon.classList.add('level-3');
     };
 
-    volumeSlider.addEventListener('wheel', (e) => {
-      e.preventDefault();
-      const step = 5;
-      const delta = Math.sign(e.deltaY) * -step;
-      const currentVolume = parseInt(volumeSlider.value);
-      const newVolume = Math.max(0, Math.min(100, currentVolume + delta));
+    volumeSlider.addEventListener(
+      'wheel',
+      (e) => {
+        e.preventDefault();
+        const step = 5;
+        const delta = Math.sign(e.deltaY) * -step;
+        const currentVolume = parseInt(volumeSlider.value);
+        const newVolume = Math.max(0, Math.min(100, currentVolume + delta));
 
-      volumeSlider.value = newVolume;
-      volumeSlider.dispatchEvent(new Event('input'));
-    }, { passive: false });
+        volumeSlider.value = newVolume;
+        volumeSlider.dispatchEvent(new Event('input'));
+      },
+      { passive: false }
+    );
 
     volumeSlider.addEventListener('input', (e) => {
       const val = parseInt(e.target.value);
@@ -692,7 +715,7 @@ export class Player extends EventTarget {
 
       volumeSlider.style.setProperty('--progress', volumeSlider.value + '%');
       updateVolumeIcon(volumeSlider.value);
-      
+
       volumeSlider.dispatchEvent(new Event('input'));
       volumeSlider.dispatchEvent(new Event('change'));
     };
@@ -893,23 +916,39 @@ export class Player extends EventTarget {
       });
     }
 
-    slider.addEventListener('touchstart', () => { isDraggingSlider = true; }, { passive: true });
-    slider.addEventListener('touchend', () => { isDraggingSlider = false; });
+    slider.addEventListener(
+      'touchstart',
+      () => {
+        isDraggingSlider = true;
+      },
+      { passive: true }
+    );
+    slider.addEventListener('touchend', () => {
+      isDraggingSlider = false;
+    });
 
-    player.addEventListener('touchstart', (e) => {
-      if (isDraggingSlider) return;
-      startY = e.touches[0].clientY;
-      startHeight = player.offsetHeight;
-      isCurrentlyExpanded = player.classList.contains('expanded');
-    }, { passive: true });
+    player.addEventListener(
+      'touchstart',
+      (e) => {
+        if (isDraggingSlider) return;
+        startY = e.touches[0].clientY;
+        startHeight = player.offsetHeight;
+        isCurrentlyExpanded = player.classList.contains('expanded');
+      },
+      { passive: true }
+    );
 
-    player.addEventListener('touchmove', (e) => {
-      if (isDraggingSlider || !isCurrentlyExpanded) return;
-      const dy = e.touches[0].clientY - startY;
-      let newHeight = startHeight - dy;
-      newHeight = Math.max(minHeight, Math.min(maxHeight, newHeight));
-      player.style.height = newHeight + 'px';
-    }, { passive: true });
+    player.addEventListener(
+      'touchmove',
+      (e) => {
+        if (isDraggingSlider || !isCurrentlyExpanded) return;
+        const dy = e.touches[0].clientY - startY;
+        let newHeight = startHeight - dy;
+        newHeight = Math.max(minHeight, Math.min(maxHeight, newHeight));
+        player.style.height = newHeight + 'px';
+      },
+      { passive: true }
+    );
 
     player.addEventListener('touchend', (e) => {
       if (isDraggingSlider || !isCurrentlyExpanded) return;
