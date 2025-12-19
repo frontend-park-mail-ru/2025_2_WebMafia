@@ -850,80 +850,81 @@ export class Player extends EventTarget {
     const closeThreshold = 100;
     let startY = 0;
     let startHeight = 0;
+    let isCurrentlyExpanded = false;
 
     function calcMaxHeight() {
       return window.innerHeight - 80 - 64 + 4;
     }
 
-    player.addEventListener('click', (e) => {
-      if (window.innerWidth > 800 || player.classList.contains('expanded')) return;
+    const closePlayer = () => {
+      player.classList.remove('expanded');
+      player.style.height = minHeight + 'px';
+      setupMarquees();
+    };
 
-      if (e.target.closest('.control-btn') || e.target.closest('.like-btn')) return;
-
+    const openPlayer = () => {
       player.classList.add('expanded');
       player.style.height = maxHeight + 'px';
-
       setupMarquees();
+    };
+
+    player.addEventListener('click', (e) => {
+      if (window.innerWidth > 800) return;
+
+      const isExpanded = player.classList.contains('expanded');
+      const clickedLink = e.target.closest('a');
+      const clickedBtn = e.target.closest('.control-btn, .like-btn, .player-close, #toggleComments, .comments-button');
+
+      if (isExpanded && clickedLink) {
+        closePlayer();
+        return;
+      }
+
+      if (!isExpanded) {
+        if (clickedBtn) return;
+        openPlayer();
+      }
+    });
+
+    document.addEventListener('click', (e) => {
+      if (player.classList.contains('expanded') && !player.contains(e.target)) {
+        closePlayer();
+      }
     });
 
     if (closeBtn) {
       closeBtn.addEventListener('click', (e) => {
-        if (player.classList.contains('expanded')) {
-          e.stopPropagation();
-          player.classList.remove('expanded');
-          player.style.height = minHeight + 'px';
-          setupMarquees();
-        }
+        e.stopPropagation();
+        closePlayer();
       });
     }
 
-    slider.addEventListener(
-      'touchstart',
-      () => {
-        isDraggingSlider = true;
-      },
-      { passive: true }
-    );
+    slider.addEventListener('touchstart', () => { isDraggingSlider = true; }, { passive: true });
+    slider.addEventListener('touchend', () => { isDraggingSlider = false; });
 
-    slider.addEventListener('touchend', () => {
-      isDraggingSlider = false;
-    });
+    player.addEventListener('touchstart', (e) => {
+      if (isDraggingSlider) return;
+      startY = e.touches[0].clientY;
+      startHeight = player.offsetHeight;
+      isCurrentlyExpanded = player.classList.contains('expanded');
+    }, { passive: true });
 
-    player.addEventListener(
-      'touchstart',
-      (e) => {
-        if (isDraggingSlider) return;
-        startY = e.touches[0].clientY;
-        startHeight = player.offsetHeight;
-      },
-      { passive: true }
-    );
-
-    player.addEventListener(
-      'touchmove',
-      (e) => {
-        if (isDraggingSlider) return;
-        const dy = e.touches[0].clientY - startY;
-        let newHeight = startHeight - dy;
-        newHeight = Math.max(minHeight, Math.min(maxHeight, newHeight));
-        player.style.height = newHeight + 'px';
-      },
-      { passive: true }
-    );
+    player.addEventListener('touchmove', (e) => {
+      if (isDraggingSlider || !isCurrentlyExpanded) return;
+      const dy = e.touches[0].clientY - startY;
+      let newHeight = startHeight - dy;
+      newHeight = Math.max(minHeight, Math.min(maxHeight, newHeight));
+      player.style.height = newHeight + 'px';
+    }, { passive: true });
 
     player.addEventListener('touchend', (e) => {
-      if (isDraggingSlider) return;
+      if (isDraggingSlider || !isCurrentlyExpanded) return;
       const dy = e.changedTouches[0].clientY - startY;
-
       if (dy > closeThreshold || player.offsetHeight < maxHeight / 2) {
-        player.classList.remove('expanded');
-        player.style.height = minHeight + 'px';
+        closePlayer();
       } else {
-        player.classList.add('expanded');
-        player.style.height = maxHeight + 'px';
+        openPlayer();
       }
-
-      setupMarquees();
     });
   }
 }

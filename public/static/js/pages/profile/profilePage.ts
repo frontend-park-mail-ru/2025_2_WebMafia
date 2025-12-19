@@ -18,7 +18,7 @@ interface ProfilePageData {
   profile?: { nickname: string; email: string; avatar: string | null; letter: string };
   top_artists: Array<{ id: string; name: string; listeners: string; image: string }>;
   top_tracks: Array<MappedTrack>;
-  recent: Array<{ id: string; name: string; listeners: string; image: string }>;
+  subscribed_artists: Array<{ id: string; name: string; listeners: string; image: string }>;
 }
 
 export class ProfilePage extends BasePage {
@@ -30,7 +30,7 @@ export class ProfilePage extends BasePage {
       isAuthenticated,
       top_artists: [],
       top_tracks: [],
-      recent: [],
+      subscribed_artists: [],
     };
 
     const contentTemplate = Handlebars.templates['profilePage.hbs'];
@@ -66,7 +66,7 @@ export class ProfilePage extends BasePage {
         artists: track.artists,
         is_liked: track.is_liked,
       }));
-      pageData.recent = (data.recent || []).map((artist: Artist) => ({
+      pageData.subscribed_artists = (data.subscribed_artists || []).map((artist: Artist) => ({
         id: artist.id,
         name: artist.name,
         listeners: playsParser(artist.play_count || 0),

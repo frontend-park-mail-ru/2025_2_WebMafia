@@ -102,7 +102,6 @@
   font-size: 14px;
   font-weight: 500;
   margin-top: 3px;
-  transition: color 0.3s ease;
 }
 
 .menu-item:hover svg {
@@ -115,10 +114,6 @@
 .menu-item.active .sidebar-item-sub {
   color: #fafafa;
   border: none;
-}
-
-.menu-item:hover {
-  color: #a766ff;
 }
 
 .menu-item:hover {
@@ -184,7 +179,7 @@
 .my-media {
   background: rgba(255, 255, 255, 0.03);
   backdrop-filter: blur(20px) saturate(180%) brightness(1);
-  -webkit-backdrop-filter: blur(20px) saturate(180%) brightness(1);
+  min-height: 40px;
   border-radius: 20px;
   border: 1px solid rgba(255, 255, 255, 0.2);
   position: relative;

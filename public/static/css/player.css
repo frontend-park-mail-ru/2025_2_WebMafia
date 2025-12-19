@@ -404,7 +404,7 @@
 .volume-wave-1,
 .volume-wave-2 {
   transition: opacity 0.2s ease;
-  fill: currentColor;
+  fill: currentcolor;
 }
 
 .volume-icon.level-0 .volume-dot,
@@ -422,6 +422,7 @@
 .volume-icon.level-1 .volume-wave-2 {
   opacity: 0;
 }
+
 .volume-icon.level-1 .volume-dot {
   opacity: 1;
 }
@@ -431,6 +432,7 @@
 .volume-icon.level-2 .volume-wave-2 {
   opacity: 0;
 }
+
 .volume-icon.level-2 .volume-wave-1 {
   opacity: 1;
 }
@@ -439,6 +441,7 @@
 .volume-icon.level-3 .volume-dot {
   opacity: 0;
 }
+
 .volume-icon.level-3 .volume-wave-1,
 .volume-icon.level-3 .volume-wave-2 {
   opacity: 1;
@@ -476,13 +479,14 @@
 
   .player.expanded {
     height: calc(100vh - 64px - 80px + 4px);
-    width: calc(100dvw - 55px);
+    width: 100%;
     margin: 0;
     padding: 0 28px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: flex-start;
+    box-sizing: border-box;
     gap: 0;
   }
 
@@ -538,7 +542,8 @@
   .player.expanded .track-time,
   .player.expanded .shuffle,
   .player.expanded .prev,
-  .player.expanded .repeat .player.expanded .track-time-comments {
+  .player.expanded .repeat,
+  .player.expanded .track-time-comments {
     display: block;
   }
 
@@ -725,6 +730,11 @@
   .control-btn.next svg {
     width: 32px;
     height: 32px;
+    stroke: #fafafa;
+  }
+
+  .player.expanded .control-btn.next svg {
+    stroke: #ece9e9;
   }
 
   .control-btn {
@@ -734,6 +744,11 @@
   .control-btn:active,
   .like-btn:active {
     transform: scale(0.9);
+  }
+
+  .track-artist:hover {
+    text-decoration: unset;
+    color: #ccc;
   }
 }
 

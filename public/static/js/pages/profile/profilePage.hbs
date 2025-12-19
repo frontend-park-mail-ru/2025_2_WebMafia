@@ -80,13 +80,14 @@
       {{/each}}
     </div>
 
+    {{#if subscribed_artists}}
     <div class="title">
       <div class="title-name">Подписки</div>
     </div>
     <div class="slider">
       <p><i class="slide-btn left"></i></p>
       <div class="cards" id="slidebar">
-        {{#each recent}}
+        {{#each subscribed_artists}}
         <a href="/artist/{{ id }}" class="card">
           <img src="{{ image }}" alt="{{ name }}" />
           <p class="card-name">{{ name }}</p>
@@ -97,6 +98,7 @@
       </div>
       <p><i class="slide-btn right"></i></p>
     </div>
+    {{/if}}
   </div>
   {{else}}
   <div class="search-alert-container">

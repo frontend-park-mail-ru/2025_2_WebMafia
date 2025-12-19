@@ -203,9 +203,10 @@ export class apiService {
 
   async getProfilePageData() {
     try {
-      const [artists, topTracks, likedIds] = await Promise.all([
+      const [artists, topTracks, subscribedArtists, likedIds] = await Promise.all([
         this.request<Artist[]>('/artists?limit=10').catch(() => []),
         this.request<Track[]>(`/tracks?limit=5`).catch(() => []),
+        this.request<Artist[]>('/favorite/artists').catch(() => []),
         this.getFavoriteTrackIds(),
       ]);
 
@@ -220,7 +221,7 @@ export class apiService {
       return {
         top_artists: artists,
         top_tracks: processedTracks,
-        recent: artists,
+        subscribed_artists: subscribedArtists,
       };
     } catch (error) {
       console.error('Failed to load profile page data:', error);

@@ -105,10 +105,9 @@ class Sidebar {
     this.activePath();
     this.addMenuListeners();
     this.createPlaylistButton();
+    scrollbar.init('sidebarScrollContent');
 
     if (this.isGlobalListenersAttached) return;
-
-    scrollbar.init();
 
     window.addEventListener('popstate', () => this.activePath());
     window.addEventListener('va-navigate', () => this.activePath());

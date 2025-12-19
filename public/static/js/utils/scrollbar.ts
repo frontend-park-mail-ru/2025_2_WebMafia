@@ -22,8 +22,8 @@ class CustomScrollbar {
     this.boundOnPointerUp = this.onPointerUp.bind(this);
   }
 
-  public init(): void {
-    const scrollContent = document.getElementById('scrollContent');
+  public init(id: string = 'scrollContent'): void {
+    const scrollContent = document.getElementById(id);
     if (!scrollContent) {
       return;
     }
