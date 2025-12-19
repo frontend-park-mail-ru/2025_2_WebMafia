@@ -32,6 +32,8 @@
   font-weight: 600;
   color: black;
   cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .left-side {
@@ -356,11 +358,6 @@
     transform: translateY(-500px) scale(1);
     opacity: 0;
   }
-}
-
-.track-comment-artist {
-  white-space: nowrap;
-  overflow: hidden;
 }
 
 .comments-marquee-limiter {
