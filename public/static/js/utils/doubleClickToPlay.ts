@@ -1,13 +1,10 @@
-export const initRowDoubleClick = (
-  containerSelector: string,
-  rowSelector: string
-) => {
+export const initRowDoubleClick = (containerSelector: string, rowSelector: string) => {
   const container = document.querySelector<HTMLElement>(containerSelector);
   if (!container) return;
 
   container.addEventListener('dblclick', (e: MouseEvent) => {
     const target = e.target as HTMLElement;
-    
+
     const row = target.closest(rowSelector);
     if (!row) return;
 
