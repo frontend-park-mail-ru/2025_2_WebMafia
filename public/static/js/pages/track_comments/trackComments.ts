@@ -16,6 +16,7 @@ import { share } from '@/utils/shareBtn.js';
 import { images } from '@/assets';
 import { showInfoMessage } from '@/utils/showInfoMessage';
 import { Comment, isHttpError } from '@/models';
+import {setupMarquees} from "@/utils/marquee.ts";
 
 interface TrackCommentsContext {
   isAuthenticated: boolean;
@@ -127,6 +128,7 @@ export class TrackCommentsPage extends BasePage {
     share();
     playTrack();
     initSubscribeButton();
+    setupMarquees();
 
     this.setupGlobalCommentListener();
   }

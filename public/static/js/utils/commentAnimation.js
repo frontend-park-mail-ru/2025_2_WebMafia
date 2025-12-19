@@ -17,7 +17,7 @@ export function spawnBubble(data) {
 
   const avatarHtml = data.avatar
     ? `<img src="${data.avatar}" alt="user">`
-    : `<span>${data.letter || (data.nickname ? data.nickname[0] : 'U')}</span>`;
+    : `<span>${data.letter || (data.nickname ? data.nickname[0].toUpperCase() : 'U')}</span>`;
 
   div.innerHTML = `
         <div class="bubble-content">

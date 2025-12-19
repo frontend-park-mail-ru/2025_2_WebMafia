@@ -890,9 +890,10 @@ export class Player extends EventTarget {
 
       const isExpanded = player.classList.contains('expanded');
       const clickedLink = e.target.closest('a');
-      const clickedBtn = e.target.closest('.control-btn, .like-btn, .player-close, #toggleComments, .comments-button');
+      const clickedComment = e.target.closest('.comments-button');
+      const clickedBtn = e.target.closest('.control-btn, .like-btn, .player-close');
 
-      if (isExpanded && clickedLink) {
+      if (isExpanded && (clickedLink || clickedComment)) {
         closePlayer();
         return;
       }

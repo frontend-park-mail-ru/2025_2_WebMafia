@@ -354,7 +354,7 @@
   background: none;
   cursor: pointer;
   border: none;
-  margin-right: 5px;
+  margin-right: 10px;
   transition: transform 0.3s ease;
   padding: 0;
 }
@@ -675,7 +675,9 @@
   .prev,
   .repeat,
   .repeat-one,
-  .track-time-comments {
+  .track-time-comments,
+  .volume-slider,
+  .volume-icon {
     display: none;
   }
 
@@ -748,6 +750,39 @@
   .track-artist:hover {
     text-decoration: unset;
     color: #ccc;
+  }
+
+  .player.expanded .player-right {
+    display: flex;
+    position: absolute;
+    top: 30px;
+    right: 0;
+    gap: 20px;
+    width: auto;
+  }
+
+  .switch-comments {
+    width: 40px;
+    height: 27px;
+  }
+
+  .switch-circle {
+    left: 4px;
+    width: 18px;
+    height: 18px;
+  }
+
+  .comments-button svg {
+    width: 32px;
+    height: 32px;
+  }
+
+  .switch-comments.active .switch-circle {
+    transform: translateX(14px);
+  }
+
+  .control-btn:hover svg {
+    transform: none;
   }
 }
 

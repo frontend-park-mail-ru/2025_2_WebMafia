@@ -227,8 +227,7 @@
 .comment-info-container {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin-top: 10px;
+  gap: 5px;
 }
 
 .comment-info-header {
@@ -284,6 +283,7 @@
   height: 40px;
   border-radius: 50%;
   margin-left: 10px;
+  font-size: 22px;
   background: linear-gradient(135deg, #7fd8e6 14.9%, #e556fd 100%);
   border: 3px solid #fff;
   overflow: hidden;
@@ -307,7 +307,6 @@
   border-radius: 20px;
   backdrop-filter: blur(4px);
   color: rgb(0, 0, 0);
-  font-size: 14px;
   max-width: 200px;
   max-height: 50px;
   display: flex;
@@ -324,13 +323,14 @@
 }
 
 .bubble-author {
-  font-size: 12px;
-  font-weight: 700;
+  font-size: 16px;
+  font-weight: 600;
   color: rgb(255, 255, 255);
   margin-bottom: 2px;
 }
 
 .bubble-text {
+  font-size: 14px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: normal;
@@ -355,5 +355,49 @@
   100% {
     transform: translateY(-500px) scale(1);
     opacity: 0;
+  }
+}
+
+.track-comment-artist {
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.comments-marquee-limiter {
+  max-width: 50%;
+}
+
+@media (max-width: 800px) {
+  .track-comment-artist {
+    font-size: 26px;
+  }
+
+  .track-plays-num.comments {
+    font-size: 16px;
+  }
+
+  .right-side {
+    gap: 10px;
+  }
+
+  .left-side .artist-subscription {
+    display: none;
+  }
+
+  .comments-title-name {
+    font-size: 28px;
+    margin: 15px 0;
+  }
+
+  .comment-author {
+    font-size: 18px;
+  }
+
+  .comment-text {
+    font-size: 14px;
+  }
+
+  .comment-info-container {
+    gap: 2px;
   }
 }

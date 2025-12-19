@@ -544,4 +544,8 @@
   .share-button {
     padding: 0;
   }
+
+  .inform-message {
+    font-size: 16px;
+  }
 }
