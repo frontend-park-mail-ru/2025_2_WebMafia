@@ -4,7 +4,7 @@
   <a class="menu-item library" href="/library">{{> libraryIcon}} Моя музыка</a>
   <div class="header-divider"></div>
   <button class="secondary-button sidebar-secondary-button" id="sidebarCreatePlaylistButton">{{> plus}} Создать</button>
-  <div class="menu sidebar-user-items">
+  <div class="menu sidebar-user-items" id="sidebarScrollContent">
     {{#each library}}
     <a class="menu-item my-media" href="/{{ href }}" data-id="{{ id }}">
       <img src="{{ image }}" alt="{{ name }}" class="sidebar-image sidebar" />

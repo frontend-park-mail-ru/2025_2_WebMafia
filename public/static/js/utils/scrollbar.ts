@@ -32,10 +32,10 @@ class CustomScrollbar {
     this.isMobile = window.innerWidth < 800;
 
     this.track = document.createElement('div');
-    this.track.id = 'customScrollbar';
+    this.track.id = id === 'scrollContent' ? 'customScrollbar' : 'customSidebarScrollbar';
 
     this.thumb = document.createElement('div');
-    this.thumb.id = 'customScrollbarThumb';
+    this.thumb.id = id === 'scrollContent' ? 'customScrollbarThumb' : 'customSidebarThumb';
 
     this.track.appendChild(this.thumb);
 

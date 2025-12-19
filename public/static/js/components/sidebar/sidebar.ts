@@ -3,6 +3,7 @@ import { Album, Artist, LibraryItem, Playlist } from '@/models.ts';
 import { images } from '@/assets.ts';
 import { apiServise } from '@/data.ts';
 import { getValidImage } from '@/utils/parsers.ts';
+import { scrollbar } from '@/utils/scrollbar.ts';
 
 interface SidebarUpdateEvent extends CustomEvent {
   detail: { id: string; name: string; image: string };
@@ -104,6 +105,7 @@ class Sidebar {
     this.activePath();
     this.addMenuListeners();
     this.createPlaylistButton();
+    scrollbar.init('sidebarScrollContent');
 
     if (this.isGlobalListenersAttached) return;
 
@@ -202,6 +204,7 @@ class Sidebar {
     }
 
     this.activePath();
+    scrollbar.init('sidebarScrollContent');
   }
 
   private handleClear() {
