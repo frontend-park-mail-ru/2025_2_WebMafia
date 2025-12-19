@@ -22,6 +22,7 @@ export class Player extends EventTarget {
     this.repeatMode = 0;
     this.originalQueue = [];
     this.playQueue = [];
+    this.commentTimeouts = [];
     this.currentContext = null;
 
     this.commentSocket = null;
@@ -52,10 +53,10 @@ export class Player extends EventTarget {
       const token = await apiServise.getCSRFToken();
 
       this.commentSocket = apiServise.createTrackSocket(trackId, token, {
-        onOpen: () => console.log(`Comments WS connected for track ${trackId}`),
+        onOpen: () => {},
         onMessage: (data) => this.handleIncomingComment(data),
-        onError: (err) => console.error('Comments WS Error:', err),
-        onClose: () => console.log('Comments WS closed'),
+        onError: (err) => {},
+        onClose: () => {},
       });
 
       this.commentSocket.trackId = String(trackId);
@@ -74,6 +75,10 @@ export class Player extends EventTarget {
     const commentData = Array.isArray(data) ? data[0] : data;
     if (!commentData) return;
 
+    if (this.currentTrack && String(commentData.track_id) !== String(this.currentTrack.id)) {
+      return;
+    }
+
     const commentObj = {
       ...commentData,
       avatar: commentData.user_avatar ? getValidImage(commentData.user_avatar) : null,
@@ -82,34 +87,48 @@ export class Player extends EventTarget {
     };
 
     spawnBubble(commentObj);
-
     window.dispatchEvent(new CustomEvent('comment:received', { detail: commentObj }));
   }
 
   startInitialBubbles(comments) {
     const bubblesContainer = document.querySelector('.bubbles-stream-container');
+    if (!bubblesContainer) return;
+    
     bubblesContainer.classList.remove('inactive');
     const randomComments = [...comments].sort(() => 0.5 - Math.random());
+
     randomComments.forEach((c, i) => {
-      setTimeout(() => {
-        if (this.currentTrack && String(this.currentTrack.id) === this.commentSocket?.trackId) {
+      const timeoutId = setTimeout(() => {
+        if (this.currentTrack && String(this.currentTrack.id) === String(c.track_id)) {
           spawnBubble({
             ...c,
             avatar: c.user_avatar ? getValidImage(c.user_avatar) : null,
             nickname: (c.user_login || 'User'),
           });
         }
+        
+        this.commentTimeouts = this.commentTimeouts.filter(id => id !== timeoutId);
       }, i * 8500);
+
+      this.commentTimeouts.push(timeoutId); 
     });
   }
 
   closeCommentSocket() {
+    if (this.commentTimeouts.length > 0) {
+      this.commentTimeouts.forEach(id => clearTimeout(id));
+      this.commentTimeouts = [];
+    }
+
     if (this.commentSocket) {
       this.commentSocket.disconnect();
       this.commentSocket = null;
     }
+
     const bubblesContainer = document.querySelector('.bubbles-stream-container');
-    bubblesContainer.classList.add('inactive');
+    if (bubblesContainer) {
+      bubblesContainer.classList.add('inactive');
+    }
   }
 
   sendComment(text) {

@@ -25,7 +25,6 @@ const APP_SHELL_URLS = [
 ];
 
 self.addEventListener('install', (event) => {
-  console.log('[SW] Установка');
   event.waitUntil(async () => {
     const cache = await caches.open(CACHE_NAME);
     cache.addAll(APP_SHELL_URLS);
@@ -39,7 +38,6 @@ self.addEventListener('install', (event) => {
 });
 
 self.addEventListener('activate', (event) => {
-  console.log('[SW] activate');
   event.waitUntil(
     caches
       .keys()
