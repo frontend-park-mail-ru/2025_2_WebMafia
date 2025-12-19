@@ -123,17 +123,17 @@ export class AlbumPage extends BasePage {
   }
 
   private tracksCheck(pageData: AlbumPageData) {
-  const playButton = document.querySelector('.play-button-album') as HTMLButtonElement;
-  if (!playButton) return;
+    const playButton = document.querySelector('.play-button-album') as HTMLButtonElement;
+    if (!playButton) return;
 
-  const hasNoTracks = pageData.tracks.length === 0;
-  
-  if (hasNoTracks) {
-    playButton.classList.add('inactive');
-  } else {
-    playButton.classList.remove('inactive');
+    const hasNoTracks = pageData.tracks.length === 0;
+
+    if (hasNoTracks) {
+      playButton.classList.add('inactive');
+    } else {
+      playButton.classList.remove('inactive');
+    }
   }
-}
 
   private initLikeButton() {
     const likeButton = document.getElementById('albumLikeButton') as HTMLButtonElement;

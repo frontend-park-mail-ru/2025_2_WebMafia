@@ -3,10 +3,14 @@
   <div class="purple-background-circle album-purple-position"></div>
   <div class="album-card">
     <div class="album-artist">
-      <img class="album-artist-avatar {{#unless artist.avatar}}loading{{/unless}}" src="{{ artist.avatar }}" alt="{{ artist.name }}" />
-      <a href="/artist/{{ artist.id }}" title="{{ artist.name }}" class="album-artist-name href-decoration">{{
-        artist.name
-      }}</a>
+      <img
+        class="album-artist-avatar {{#unless artist.avatar}}loading{{/unless}}"
+        src="{{ artist.avatar }}"
+        alt="{{ artist.name }}"
+      />
+      <a href="/artist/{{ artist.id }}" title="{{ artist.name }}" class="album-artist-name href-decoration"
+        >{{ artist.name }}</a
+      >
     </div>
     <img class="album-cover {{#unless cover}}loading{{/unless}}" src="{{ cover }}" alt="{{ title }}" />
     <div class="album-card-title">{{ title }}</div>
@@ -77,9 +81,9 @@
         </div>
       </div>
       {{else}}
-        <div class="no-tracks-message">
-          <p>В этом альбоме пока нет треков</p>
-        </div>
+      <div class="no-tracks-message">
+        <p>В этом альбоме пока нет треков</p>
+      </div>
       {{/each}}
     </div>
   </div>

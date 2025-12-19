@@ -88,13 +88,11 @@
           </div>
         </div>
       </div>
-      {{else}}
-        {{#if @root.favourite}}
-          <div class="no-tracks-message">
-            <p>Вы ещё не добавили ни одного трека в <b>понравившиеся</b></p>
-          </div>
-        {{/if}}
-      {{/each}}
+      {{else}} {{#if @root.favourite}}
+      <div class="no-tracks-message">
+        <p>Вы ещё не добавили ни одного трека в <b>понравившиеся</b></p>
+      </div>
+      {{/if}} {{/each}}
     </div>
     {{#unless favourite}} {{#if isCreator}} {{#if tracks}}
     <div class="header-divider" id="playlistTracksDivider"></div>

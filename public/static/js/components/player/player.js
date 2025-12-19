@@ -71,15 +71,13 @@ export class Player extends EventTarget {
   handleIncomingComment(data) {
     const commentData = Array.isArray(data) ? data[0] : data;
     if (!commentData) return;
-    
+
     const commentObj = {
       ...commentData,
       avatar: commentData.user_avatar ? getValidImage(commentData.user_avatar) : null,
       letter: (commentData.user_login || 'U')[0].toUpperCase(),
-      track_id: commentData.track_id
+      track_id: commentData.track_id,
     };
-
-    
 
     spawnBubble(commentObj);
 
@@ -126,27 +124,26 @@ export class Player extends EventTarget {
 
     if (!toggleBtn || !bubblesStream) return;
 
-    
     const storedValue = localStorage.getItem('commentsEnabled');
     const isCommentsEnabled = storedValue === null ? true : storedValue === 'true';
 
     if (isCommentsEnabled) {
-        toggleBtn.classList.add('active');
-        bubblesStream.classList.add('show');
+      toggleBtn.classList.add('active');
+      bubblesStream.classList.add('show');
     }
 
     toggleBtn.addEventListener('click', () => {
-        const isActive = toggleBtn.classList.toggle('active');
-        
-        if (isActive) {
-            bubblesStream.classList.add('show');
-            localStorage.setItem('commentsEnabled', 'true');
-            console.log('Комментарии включены');
-        } else {
-            bubblesStream.classList.remove('show');
-            localStorage.setItem('commentsEnabled', 'false');
-            console.log('Комментарии выключены');
-        }
+      const isActive = toggleBtn.classList.toggle('active');
+
+      if (isActive) {
+        bubblesStream.classList.add('show');
+        localStorage.setItem('commentsEnabled', 'true');
+        console.log('Комментарии включены');
+      } else {
+        bubblesStream.classList.remove('show');
+        localStorage.setItem('commentsEnabled', 'false');
+        console.log('Комментарии выключены');
+      }
     });
   }
 

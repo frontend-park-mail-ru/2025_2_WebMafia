@@ -41,9 +41,7 @@ export class MainPage extends BasePage {
     try {
       const data = await apiServise.getMainPageData();
       pageData.artists = (data.artists || []).map((artist: Artist) => {
-        const firstTrack = (data.tracks || []).find((t: Track) => 
-          t.artists?.some((a: Artist) => a.id === artist.id)
-        );
+        const firstTrack = (data.tracks || []).find((t: Track) => t.artists?.some((a: Artist) => a.id === artist.id));
 
         return {
           id: artist.id,

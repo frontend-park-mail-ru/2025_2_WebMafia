@@ -131,7 +131,6 @@ export class PlaylistPage extends BasePage {
       showInfoMessage('Не удалось загрузить страницу плейлиста.');
       return;
     }
-
   }
 
   private initComponents(pageData: PlaylistPageData) {
@@ -163,17 +162,17 @@ export class PlaylistPage extends BasePage {
   }
 
   private tracksCheck(pageData: PlaylistPageData) {
-  const playButton = document.querySelector('.play-button-playlist') as HTMLButtonElement;
-  if (!playButton) return;
+    const playButton = document.querySelector('.play-button-playlist') as HTMLButtonElement;
+    if (!playButton) return;
 
-  const hasNoTracks = pageData.tracks.length === 0;
-  
-  if (hasNoTracks) {
-    playButton.classList.add('inactive');
-  } else {
-    playButton.classList.remove('inactive');
+    const hasNoTracks = pageData.tracks.length === 0;
+
+    if (hasNoTracks) {
+      playButton.classList.add('inactive');
+    } else {
+      playButton.classList.remove('inactive');
+    }
   }
-}
 
   private initFavoriteLogic() {
     this.boundPlayerLikeHandler = (e: Event) => {
@@ -390,8 +389,8 @@ export class PlaylistPage extends BasePage {
       });
     }
     if (num > 0) {
-    const playButton = document.querySelector('.play-button-playlist') as HTMLButtonElement;
-    if (playButton) {
+      const playButton = document.querySelector('.play-button-playlist') as HTMLButtonElement;
+      if (playButton) {
         playButton.classList.remove('inactive');
         playButton.disabled = false;
       }
@@ -428,7 +427,7 @@ export class PlaylistPage extends BasePage {
   private updatePlayButtonState() {
     const table = document.getElementById('addedTracksTable');
     const playButton = document.querySelector('.play-button-playlist') as HTMLButtonElement;
-    
+
     if (!table || !playButton) return;
 
     // Считаем количество оставшихся строк
@@ -442,9 +441,9 @@ export class PlaylistPage extends BasePage {
       playButton.classList.add('inactive');
       playButton.disabled = true;
     }
-    
+
     // Опционально: обновляем общую статистику (количество треков в шапке)
-    this.updateStats(tracksCount); 
+    this.updateStats(tracksCount);
   }
 
   private renumberTracks() {

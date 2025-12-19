@@ -15,7 +15,7 @@ import { likeTrackBtn } from '@/utils/likeTrack.js';
 import { share } from '@/utils/shareBtn.js';
 import { images } from '@/assets';
 import { showInfoMessage } from '@/utils/showInfoMessage';
-import { Comment } from '@/models';
+import { Comment, isHttpError } from '@/models';
 
 interface TrackCommentsContext {
   isAuthenticated: boolean;
@@ -43,8 +43,7 @@ export class TrackCommentsPage extends BasePage {
   private clickHandlers: Array<{ el: Element; fn: EventListener }> = [];
   private boundTrackChange: EventListener | null = null;
   private boundTimeUpdate: EventListener | null = null;
-  
-  private boundOnCommentReceived: ((e: any) => void) | null = null;
+  private boundOnCommentReceived: EventListener | null = null;
 
   protected async renderContent(container: HTMLElement, trackId: string): Promise<void> {
     this.trackId = trackId;
@@ -83,7 +82,7 @@ export class TrackCommentsPage extends BasePage {
         description: track.album?.description,
         track_id: track.id,
         player_context: player.currentContext,
-        comments: comments.map((c: any) => ({
+        comments: comments.map((c: Comment) => ({
           id: c.id,
           text: c.text,
           nickname: c.user_login,
@@ -97,9 +96,9 @@ export class TrackCommentsPage extends BasePage {
       if (titleEl) titleEl.textContent = pageData.title || 'Wave Music';
 
       this.initComponents();
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('TrackCommentsPage load error:', error);
-      if (error.response?.status === 404) {
+      if (isHttpError(error) && error.response?.status === 404) {
         router.navigate('/not-found');
         return;
       }
@@ -133,16 +132,17 @@ export class TrackCommentsPage extends BasePage {
   }
 
   private setupGlobalCommentListener() {
-    this.boundOnCommentReceived = (e: any) => {
-        const comment = e.detail;
-        if (String(comment.track_id) === String(this.trackId)) {
-            this.renderNewCommentInList(comment); 
-        }
+    this.boundOnCommentReceived = (e) => {
+      const customEvent = e as CustomEvent<Comment>;
+      const comment = customEvent.detail;
+      if (String(comment.track_id) === String(this.trackId)) {
+        this.renderNewCommentInList(comment);
+      }
     };
     window.addEventListener('comment:received', this.boundOnCommentReceived);
   }
 
-  private renderNewCommentInList(commentObj: any) {
+  private renderNewCommentInList(commentObj: Comment) {
     const list = document.getElementById('commentsList');
     const commentsContainer = document.querySelector('.comments-container');
     if (!commentsContainer) return;
@@ -191,15 +191,15 @@ export class TrackCommentsPage extends BasePage {
     const submitHandler = (e: Event) => {
       e.preventDefault();
       const text = input.value.trim();
-      
+
       if (!text) return;
 
-      const success = (player as any).sendComment(text);
+      const success = player.sendComment(text);
       if (success) {
-          input.value = '';
-          if (errorDiv) errorDiv.textContent = '';
+        input.value = '';
+        if (errorDiv) errorDiv.textContent = '';
       } else {
-          if (errorDiv) errorDiv.textContent = 'Ошибка отправки. Плеер не подключен к комментариям.';
+        if (errorDiv) errorDiv.textContent = 'Ошибка отправки. Плеер не подключен к комментариям.';
       }
     };
 
@@ -280,7 +280,7 @@ export class TrackCommentsPage extends BasePage {
 
   public destroy(): void {
     if (this.boundOnCommentReceived) {
-        window.removeEventListener('comment:received', this.boundOnCommentReceived);
+      window.removeEventListener('comment:received', this.boundOnCommentReceived);
     }
 
     this.clickHandlers.forEach(({ el, fn }) => el.removeEventListener('click', fn));

@@ -195,8 +195,6 @@
   opacity: 0;
 }
 
-
-
 .play-album-track.is-active:not(.paused) .pause-icon,
 .play-album-track.is-active.paused .play-icon,
 .play-album-track .pause-icon {
@@ -283,9 +281,9 @@
 
 .play-button-album.inactive,
 .play-button-playlist.inactive {
-    filter: grayscale(70%);
-    pointer-events: none;
-  }
+  filter: grayscale(70%);
+  pointer-events: none;
+}
 
 .no-tracks-message {
   display: flex;

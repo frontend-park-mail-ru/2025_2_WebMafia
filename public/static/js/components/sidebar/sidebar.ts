@@ -108,7 +108,6 @@ class Sidebar {
 
     if (this.isGlobalListenersAttached) return;
 
-
     scrollbar.init();
 
     window.addEventListener('popstate', () => this.activePath());

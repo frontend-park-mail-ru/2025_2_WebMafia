@@ -217,10 +217,13 @@ body {
   width: 16px;
   height: 20px;
   background-image: linear-gradient(
-    to right, 
-    white 0%, white 30%, 
-    transparent 30%, transparent 70%, 
-    white 70%, white 100%
+    to right,
+    white 0%,
+    white 30%,
+    transparent 30%,
+    transparent 70%,
+    white 70%,
+    white 100%
   );
   box-shadow: none;
   opacity: 1;

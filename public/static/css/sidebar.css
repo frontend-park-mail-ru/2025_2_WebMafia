@@ -194,17 +194,13 @@
 }
 
 .my-media::before {
-  content: "";
+  content: '';
   position: absolute;
   top: -100%;
   left: -100%;
   width: 300%;
   height: 300%;
-  background: radial-gradient(
-    circle at center,
-    rgba(255, 255, 255, 0.1) 0%,
-    transparent 50%
-  );
+  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
   transition: transform 0.8s ease-out;
   pointer-events: none;
   mix-blend-mode: overlay;
@@ -269,7 +265,8 @@
     stroke: url(#menuGradient);
   }
 
-  .menu-item.active, .menu-item.active:hover {
+  .menu-item.active,
+  .menu-item.active:hover {
     border-radius: 0;
     background: transparent;
     background-size: auto;
