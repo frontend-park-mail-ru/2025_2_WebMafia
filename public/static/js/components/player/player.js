@@ -16,6 +16,8 @@ export class Player extends EventTarget {
 
     this.listenIncrementTimeout = null;
 
+    this.lastVolume = 50;
+
     this.isShaffle = false;
     this.repeatMode = 0;
     this.originalQueue = [];
@@ -75,7 +77,7 @@ export class Player extends EventTarget {
     const commentObj = {
       ...commentData,
       avatar: commentData.user_avatar ? getValidImage(commentData.user_avatar) : null,
-      letter: (commentData.user_login || 'U')[0].toUpperCase(),
+      nickname: (commentData.user_login || 'User'),
       track_id: commentData.track_id,
     };
 
@@ -94,7 +96,7 @@ export class Player extends EventTarget {
           spawnBubble({
             ...c,
             avatar: c.user_avatar ? getValidImage(c.user_avatar) : null,
-            letter: (c.user_login || 'U')[0].toUpperCase(),
+            nickname: (c.user_login || 'User'),
           });
         }
       }, i * 8500);
@@ -646,64 +648,56 @@ export class Player extends EventTarget {
   volumeRender() {
     const volumeSlider = document.querySelector('.volume-slider');
     const volumeIcon = document.querySelector('.volume-icon');
-    if (!volumeSlider || !volumeIcon) {
-      console.error('Volume elements not found!');
-      return;
-    }
 
-    function updateVolumeSlider(volume) {
+    if (!volumeSlider || !volumeIcon) return;
+
+    const updateVolumeIcon = (volume) => {
       volumeIcon.classList.remove('level-0', 'level-1', 'level-2', 'level-3');
+      const val = parseInt(volume);
 
-      if (volume == 0) {
-        volumeIcon.classList.add('level-0');
-      } else if (volume <= 35) {
-        volumeIcon.classList.add('level-1');
-      } else if (volume <= 75) {
-        volumeIcon.classList.add('level-2');
-      } else {
-        volumeIcon.classList.add('level-3');
+      if (val === 0) volumeIcon.classList.add('level-0');
+      else if (val <= 35) volumeIcon.classList.add('level-1');
+      else if (val <= 75) volumeIcon.classList.add('level-2');
+      else volumeIcon.classList.add('level-3');
+    };
+
+    volumeSlider.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      const step = 5;
+      const delta = Math.sign(e.deltaY) * -step;
+      const currentVolume = parseInt(volumeSlider.value);
+      const newVolume = Math.max(0, Math.min(100, currentVolume + delta));
+
+      volumeSlider.value = newVolume;
+      volumeSlider.dispatchEvent(new Event('input'));
+    }, { passive: false });
+
+    volumeSlider.addEventListener('input', (e) => {
+      const val = parseInt(e.target.value);
+      updateVolumeIcon(val);
+      if (val > 0) {
+        this.lastVolume = val;
       }
-    }
-
-    volumeSlider.addEventListener(
-      'wheel',
-      function (e) {
-        e.preventDefault();
-        e.stopPropagation();
-
-        const step = 5;
-        const delta = Math.sign(e.deltaY) * -step; // Инвертируем направление
-        const currentVolume = parseInt(volumeSlider.value);
-        const newVolume = Math.max(0, Math.min(100, currentVolume + delta));
-
-        volumeSlider.value = newVolume;
-        updateVolumeSlider(newVolume);
-
-        volumeSlider.dispatchEvent(new Event('input'));
-        volumeSlider.dispatchEvent(new Event('change'));
-      },
-      { passive: true }
-    );
-
-    updateVolumeSlider(volumeSlider.value);
-    volumeSlider.addEventListener('input', function () {
-      updateVolumeSlider(this.value);
     });
 
-    volumeIcon.addEventListener('click', () => {
-      const preval = volumeSlider.value;
-      if (volumeSlider.value === 0) {
-        const volumeToRestore = preval > 0 ? preval : 20;
-        volumeSlider.value = volumeToRestore;
-        updateVolumeSlider(volumeToRestore);
-      } else {
-        volumeIcon.classList.add('level-0');
+    volumeIcon.onclick = () => {
+      const currentVal = parseInt(volumeSlider.value);
+
+      if (currentVal > 0) {
+        this.lastVolume = currentVal;
         volumeSlider.value = 0;
-        updateVolumeSlider(0);
+      } else {
+        volumeSlider.value = this.lastVolume > 0 ? this.lastVolume : 50;
       }
+
+      volumeSlider.style.setProperty('--progress', volumeSlider.value + '%');
+      updateVolumeIcon(volumeSlider.value);
+      
       volumeSlider.dispatchEvent(new Event('input'));
       volumeSlider.dispatchEvent(new Event('change'));
-    });
+    };
+
+    updateVolumeIcon(volumeSlider.value);
   }
 
   togglePlayPauseSwitch(isPlaying) {
@@ -797,7 +791,7 @@ export class Player extends EventTarget {
     volumeRegulator.value = storedVolume;
     volumeRegulator.style.setProperty('--progress', storedVolume + '%');
     this.audio.volume = storedVolume / 100;
-    this.volumeRender();
+    // this.volumeRender();
   }
 
   setInitialPLayTime() {

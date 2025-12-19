@@ -295,8 +295,8 @@
 }
 
 .player-right svg {
-  width: 26px;
-  height: 26px;
+  width: 25px;
+  height: 25px;
 }
 
 .switch-container {
@@ -424,6 +424,11 @@
 }
 .volume-icon.level-1 .volume-dot {
   opacity: 1;
+}
+
+.volume-dot {
+  transform: scale(1.2); /* увеличит точку в 1.5 раза */
+  transform-origin: center;
 }
 
 .volume-icon.level-2 .volume-mute-cross,
