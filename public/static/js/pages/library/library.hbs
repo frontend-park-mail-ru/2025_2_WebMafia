@@ -5,7 +5,6 @@
       <div class="library-header-container">
         <div class="title-name">Библиотека</div>
         <div class="library-events-buttons">
-          <button class="search-toggle" id="librarySearchToggle">{{> searchIcon }}</button>
           <button class="create-playlist-toggle create-playlist-button">{{> plus}}</button>
         </div>
       </div>
@@ -23,17 +22,6 @@
     </div>
     <div class="right-content">
       <button class="primary-button create-playlist-button">{{> plus}} Создать плейлист</button>
-      <div class="library-search-container">
-        <div class="search-icon">{{> searchIcon }}</div>
-        <input
-          type="text"
-          class="search-input"
-          id="librarySearchInput"
-          placeholder="Искать в библиотеке"
-          value="{{ searchValue }}"
-        />
-        <div class="input-close-button">{{> close}}</div>
-      </div>
     </div>
   </div>
   <div class="grid-layout">{{> libraryGrid}}</div>

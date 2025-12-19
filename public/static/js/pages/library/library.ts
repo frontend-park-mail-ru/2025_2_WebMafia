@@ -201,14 +201,7 @@ export class LibraryPage extends BasePage {
   }
 
   private initSearchAndSort() {
-    const searchToggle = document.getElementById('librarySearchToggle');
     const createPlaylistButtons = document.querySelectorAll('.create-playlist-button');
-    const libraryHeaderContainer = document.querySelector('.library-header-container');
-    const titleName = document.querySelector('.title-name');
-    const createPlaylistToggle = document.querySelector('.create-playlist-toggle');
-    const rightSearchContainer = document.querySelector('.library-search-container');
-    const closeButton = rightSearchContainer?.querySelector('.input-close-button');
-    const originalParent = rightSearchContainer?.parentElement;
 
     createPlaylistButtons.forEach((btn) => {
       btn.addEventListener('click', (e) => {
@@ -217,72 +210,44 @@ export class LibraryPage extends BasePage {
       });
     });
 
-    if (searchToggle && rightSearchContainer && libraryHeaderContainer) {
-      searchToggle.addEventListener('click', (e) => {
-        e.preventDefault();
-        titleName?.classList.add('hidden');
-        searchToggle.classList.add('hidden');
-        createPlaylistToggle?.classList.add('hidden');
-
-        libraryHeaderContainer.appendChild(rightSearchContainer);
-        rightSearchContainer.classList.remove('active');
-        requestAnimationFrame(() => rightSearchContainer.classList.add('active'));
-
-        const input = rightSearchContainer.querySelector('#librarySearchInput') as HTMLElement;
-        setTimeout(() => input?.focus(), 200);
-      });
-    }
-
-    if (closeButton && rightSearchContainer && originalParent) {
-      closeButton.addEventListener('click', (e) => {
-        e.preventDefault();
-        rightSearchContainer.classList.remove('active');
-        titleName?.classList.remove('hidden');
-        searchToggle?.classList.remove('hidden');
-        createPlaylistToggle?.classList.remove('hidden');
-        setTimeout(() => originalParent.appendChild(rightSearchContainer), 200);
-      });
-    }
-
     const container = document.querySelector('.sort-buttons');
     const buttons = container?.querySelectorAll('button');
     const disableSort = document.getElementById('disableSort');
     const gridTemplate = Handlebars.templates['libraryGrid.hbs'];
     const gridContainer = document.querySelector('.grid-layout');
+    if (!buttons || !disableSort || !gridContainer || !this.pageData) return;
 
-    if (buttons && disableSort && gridContainer && this.pageData) {
-      buttons.forEach((button) => {
-        button.addEventListener('click', (e) => {
-          e.preventDefault();
-          const isActivating = button.classList.contains('secondary-button');
+    buttons.forEach((button) => {
+      button.addEventListener('click', (e) => {
+        e.preventDefault();
+        const isActivating = button.classList.contains('secondary-button');
 
-          if (button.id === 'disableSort') {
-            buttons.forEach((b) => {
-              b.style.display = '';
-              b.classList.remove('primary-button');
-              b.classList.add('secondary-button');
-            });
-            button.style.display = 'none';
-            gridContainer.innerHTML = gridTemplate(this.pageData);
-          } else if (isActivating) {
-            button.classList.remove('secondary-button');
-            button.classList.add('primary-button');
-            disableSort.style.display = 'flex';
+        if (button.id === 'disableSort') {
+          buttons.forEach((b) => {
+            b.style.display = '';
+            b.classList.remove('primary-button');
+            b.classList.add('secondary-button');
+          });
+          button.style.display = 'none';
+          gridContainer.innerHTML = gridTemplate(this.pageData);
+        } else if (isActivating) {
+          button.classList.remove('secondary-button');
+          button.classList.add('primary-button');
+          disableSort.style.display = 'flex';
 
-            buttons.forEach((b) => {
-              if (b !== button && b.id !== 'disableSort') b.style.display = 'none';
-            });
+          buttons.forEach((b) => {
+            if (b !== button && b.id !== 'disableSort') b.style.display = 'none';
+          });
 
-            const dataName = button.dataset.name as keyof LibraryPageData;
-            const filteredData = {
-              library: this.pageData![dataName] || [],
-              showType: false,
-            };
-            gridContainer.innerHTML = gridTemplate(filteredData);
-          }
-        });
+          const dataName = button.dataset.name as keyof LibraryPageData;
+          const filteredData = {
+            library: this.pageData![dataName] || [],
+            showType: false,
+          };
+          gridContainer.innerHTML = gridTemplate(filteredData);
+        }
       });
-    }
+    });
   }
 
   public destroy() {

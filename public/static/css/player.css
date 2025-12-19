@@ -286,6 +286,7 @@
 
 .player-right {
   margin-right: 20px;
+  gap: 5px;
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -293,19 +294,24 @@
 }
 
 .player-right svg {
-  width: 30px;
-  height: 30px;
+  width: 26px;
+  height: 26px;
 }
 
-.goToCommentsBtn {
+.comments-button {
   background: none;
   cursor: pointer;
   border: none;
   margin-right: 5px;
-  transition: color 0.3s ease;
+  transition: transform 0.3s ease;
+  padding: 0;
 }
 
-.goToCommentsBtn:hover {
+.comments-button svg {
+  stroke: #fafafa;
+}
+
+.comments-button:hover {
   transform: scale(1.1);
 }
 
@@ -331,48 +337,58 @@
 
 .volume-icon {
   transition: color 0.3s ease;
-  color: #fff;
   cursor: pointer;
+  color: #FAFAFA;
 }
 
-.volume-mute-cross {
-  transition:
-    opacity 0.25s ease,
-    transform 0.25s ease;
-  transform: translate(8px, 0);
-  fill: none;
-  transform-origin: center;
+.volume-speaker,
+.volume-mute-cross,
+.volume-dot,
+.volume-wave-1,
+.volume-wave-2 {
+  transition: opacity 0.2s ease;
+  fill: currentColor;
 }
 
-/* Уровни громкости */
+.volume-icon.level-0 .volume-dot,
 .volume-icon.level-0 .volume-wave-1,
-.volume-icon.level-0 .volume-wave-2,
-.volume-icon.level-0 .volume-wave-3 {
+.volume-icon.level-0 .volume-wave-2 {
   opacity: 0;
 }
 
 .volume-icon.level-0 .volume-mute-cross {
   opacity: 1;
-  transform: scale(0.6) rotate(0deg) translate(10px, 0);
 }
 
-.volume-icon.level-1 .volume-wave-1 {
+.volume-icon.level-1 .volume-mute-cross,
+.volume-icon.level-1 .volume-wave-1,
+.volume-icon.level-1 .volume-wave-2 {
+  opacity: 0;
+}
+.volume-icon.level-1 .volume-dot {
   opacity: 1;
 }
 
-.volume-icon.level-2 .volume-wave-1,
+.volume-icon.level-2 .volume-mute-cross,
+.volume-icon.level-2 .volume-dot,
 .volume-icon.level-2 .volume-wave-2 {
+  opacity: 0;
+}
+.volume-icon.level-2 .volume-wave-1 {
   opacity: 1;
 }
 
+.volume-icon.level-3 .volume-mute-cross,
+.volume-icon.level-3 .volume-dot {
+  opacity: 0;
+}
 .volume-icon.level-3 .volume-wave-1,
-.volume-icon.level-3 .volume-wave-2,
-.volume-icon.level-3 .volume-wave-3 {
+.volume-icon.level-3 .volume-wave-2 {
   opacity: 1;
 }
 
 .volume-icon.level-0 {
-  color: #e0dcdc;
+  color: #bfb8b8;
 }
 
 .player-close {
