@@ -361,7 +361,11 @@
 }
 
 .comments-marquee-limiter {
-  max-width: 50%;
+  max-width: 50dvw;
+}
+
+.comments-artist-info {
+  max-width: 60dvw;
 }
 
 @media (max-width: 800px) {

@@ -478,7 +478,7 @@
 
   .player.expanded {
     height: calc(100vh - 64px - 80px + 4px);
-    width: 100%;
+    width: 100dvw;
     margin: 0;
     padding: 0 28px;
     display: flex;
@@ -841,8 +841,11 @@
   }
 
   .player.expanded {
-    width: calc(100dvw - 44px);
     padding: 0 22px;
+  }
+
+  .player.expanded .player-right {
+    top: 16px;
   }
 
   .player.expanded .controls {
