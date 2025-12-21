@@ -1,20 +1,20 @@
+handlebars public/static/js/pages/base/basePage.hbs -f public/static/js/pages/base/basePage.tmpl.js
+
 handlebars public/static/js/pages/mainpage/MainPage.hbs -f public/static/js/pages/mainpage/MainPage.tmpl.js
 
 handlebars public/static/js/pages/notfoundpage/404.hbs -f public/static/js/pages/notfoundpage/notFoundPage.tmpl.js
 
-handlebars public/static/js/pages/login/login.hbs -f public/static/js/pages/login/login.tmpl.js
+handlebars public/static/js/pages/auth/login.hbs -f public/static/js/pages/auth/login.tmpl.js
 
-handlebars public/static/js/pages/register/register.hbs -f public/static/js/pages/register/register.tmpl.js
+handlebars public/static/js/pages/auth/register.hbs -f public/static/js/pages/auth/register.tmpl.js
 
 handlebars public/static/js/pages/artist/artistPage.hbs -f public/static/js/pages/artist/artistPage.tmpl.js
 
 handlebars public/static/js/pages/profile/profilePage.hbs -f public/static/js/pages/profile/profilePage.tmpl.js
 
-handlebars public/static/js/pages/artist_albums/artistAlbumsPage.hbs -f public/static/js/pages/artist_albums/artistAlbumsPage.tmpl.js
+handlebars public/static/js/pages/releases/artistReleasesPage.hbs -f public/static/js/pages/releases/artistReleasesPage.tmpl.js
 
 handlebars public/static/js/pages/artist_tracks/artistTracksPage.hbs -f public/static/js/pages/artist_tracks/artistTracksPage.tmpl.js
-
-handlebars public/static/js/pages/artist_singles/artistSinglesPage.hbs -f public/static/js/pages/artist_singles/artistSinglesPage.tmpl.js
 
 handlebars public/static/js/pages/search_page/search_page.hbs -f public/static/js/pages/search_page/search_page.tmpl.js
 
@@ -22,25 +22,35 @@ handlebars public/static/js/components/library_grid/libraryGrid.hbs -f public/st
 
 handlebars public/static/js/pages/library/library.hbs -f public/static/js/pages/library/library.tmpl.js
 
+handlebars public/static/js/pages/album/album.hbs -f public/static/js/pages/album/album.tmpl.js
+
+handlebars public/static/js/pages/playlist/playlist.hbs -f public/static/js/pages/playlist/playlist.tmpl.js
+
+handlebars public/static/js/pages/playlist/generateDescription.hbs -f public/static/js/pages/playlist/generateDescription.tmpl.js
+
+handlebars public/static/js/pages/playlist/generateConfirm.hbs -f public/static/js/pages/playlist/generateConfirm.tmpl.js
+
 handlebars public/static/js/components/header/header.hbs -f public/static/js/components/header/header.tmpl.js
 
 handlebars public/static/js/components/context_menu/contextMenu.hbs -f public/static/js/components/context_menu/contextMenu.tmpl.js
 
 handlebars public/static/js/components/confirmation_modal/confirmationModal.hbs -f public/static/js/components/confirmation_modal/confirmationModal.tmpl.js
 
-handlebars public/static/js/components/playlist_modal/playlistModal.hbs -f public/static/js/components/playlist_modal/playlistModal.tmpl.js
+handlebars public/static/js/components/modal/modal.hbs -f public/static/js/components/modal/modal.tmpl.js
+
+handlebars public/static/js/components/modal/playlistInputs.hbs -f public/static/js/components/modal/playlistInputs.tmpl.js
+
+handlebars public/static/js/components/modal/AIButton.hbs -f public/static/js/components/modal/AIButton.tmpl.js
 
 handlebars public/static/js/components/sidebar/sidebar.hbs -f public/static/js/components/sidebar/sidebar.tmpl.js
+
+handlebars public/static/js/components/sidebar/sidebarItem.hbs -f public/static/js/components/sidebar/sidebarItem.tmpl.js
 
 handlebars public/static/js/components/player/player.hbs -f public/static/js/components/player/player.tmpl.js
 
 handlebars public/static/js/components/searched_tracks/searchedTracks.hbs -f public/static/js/components/searched_tracks/searchedTracks.tmpl.js
 
 handlebars public/static/js/components/tracks_row/trackRow.hbs -f public/static/js/components/tracks_row/trackRow.tmpl.js
-
-handlebars public/static/js/pages/album/album.hbs -f public/static/js/pages/album/album.tmpl.js
-
-handlebars public/static/js/pages/playlist/playlist.hbs -f public/static/js/pages/playlist/playlist.tmpl.js
 
 handlebars public/static/js/partials/eyeOpen.hbs -f public/static/js/partials/eyeOpen.tmpl.js
 
@@ -90,13 +100,10 @@ handlebars public/static/js/partials/repeatOne.hbs -f public/static/js/partials/
 
 handlebars public/static/js/partials/share.hbs -f public/static/js/partials/share.tmpl.js
 
-handlebars public/static/js/components/now_playing_cards/nowPlayingCards.hbs -f public/static/js/components/now_playing_cards/nowPlayingCards.tmpl.js
-
 handlebars public/static/js/pages/track_comments/trackComments.hbs -f public/static/js/pages/track_comments/trackComments.tmpl.js
 
 handlebars public/static/js/partials/goToCommentsBtn.hbs -f public/static/js/partials/goToCommentsBtn.tmpl.js
 
 handlebars public/static/js/partials/sendComentBtn.hbs -f public/static/js/partials/sendComentBtn.tmpl.js
 
-
-
+handlebars public/static/js/partials/AI.hbs -f public/static/js/partials/AI.tmpl.js

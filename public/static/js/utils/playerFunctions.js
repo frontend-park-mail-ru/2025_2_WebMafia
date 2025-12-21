@@ -1,6 +1,6 @@
-import { setupMarquees } from '@/marquee.js';
+import { setupMarquees } from '@/utils/marquee';
 import { player } from '@/components/player/player.js';
-import { getValidImage } from '@/parsers.js';
+import { getValidImage } from '@/utils/parsers';
 
 export function sliderColorChange() {
   const timeRegulator = document.querySelector('.remote-slider-comments');

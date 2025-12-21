@@ -1,4 +1,4 @@
-import { apiServise } from '@/data.js';
+import { apiServise } from '@/data.ts';
 import { player } from '@/components/player/player';
 
 export function likeChange(track_Id, isLiked) {

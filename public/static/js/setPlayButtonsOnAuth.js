@@ -1,4 +1,4 @@
-import { router } from '@/routing.js';
+import { router } from '@/routing.ts';
 
 export function setPlayButtonsOnAuth() {
   const playbtn = document.querySelectorAll(

@@ -1,134 +1,125 @@
-<div class="section" id="section">
-  <div class="layout">
-    {{> sidebar}}
-    <div class="album-page" id="scrollContent">
-      <div class="blue-background-circle album-blue-position"></div>
-      <div class="purple-background-circle album-purple-position"></div>
-      <div class="album-card">
-        <div id="playlistAvatarContainer">
-          <img class="album-cover {{#unless image}}loading{{/unless}}" src="{{ image }}" alt="{{ title }}" />
-        </div>
-        <div class="album-card-title">{{ title }}</div>
-        <div class="album-card-info">
-          <div class="card-sub">Плейлист<span class="dot"></span>{{ date }}</div>
-          <div class="card-sub">
-            <span id="tracksNum">{{ tracksNum }}</span>
-            <span class="dot"></span>
-            <span id="totalDuration">{{ totalDuration }}</span>
-          </div>
-        </div>
-        {{#if description}}
-        <div class="card-sub album-description" id="getDescription">{{ description }}</div>
-        {{/if}}
-        <div class="album-buttons">
-          <button class="control-btn shuffle-album">{{> shuffle }}</button>
-          <button
-            class="play-button play-button-playlist"
-            data-playlist-id="{{ id }}"
-            data-context="playlist-tracks"
-            data-track-id="{{ track_id }}"
-            data-first-track-id="{{ track_id }}"
-          ></button>
-          {{#unless favourite}}
-          {{#if isCreator}}
-          <button class="dots">{{> dots}}</button>
-          <div class="actions-menu hidden">
-            <button class="actions-item" id="editPlaylistButton">
-              <span class="actions-item-svg">{{> pencil }}</span
-              >Редактировать
-            </button>
-            <button class="actions-item" id="shareButton">
-              <span class="actions-item-svg">{{> share}}</span
-              >Поделиться
-            </button>
-            <button class="actions-item" id="deletePlaylistButton">
-              <span class="actions-item-svg">{{> trash}}</span
-              >Удалить
-            </button>
-          </div>
-          {{else}}
-          <button class="control-btn shuffle-album" id="shareButton">{{> share }}</button>
-          {{/if}}
-          {{/unless}}
-        </div>
+<div class="album-page" id="scrollContent">
+  <div class="blue-background-circle album-blue-position"></div>
+  <div class="purple-background-circle album-purple-position"></div>
+  <div class="album-card">
+    <div id="playlistAvatarContainer">
+      <img class="album-cover {{#unless image}}loading{{/unless}}" src="{{ image }}" alt="{{ title }}" />
+    </div>
+    <div class="album-card-title">{{ title }}</div>
+    <div class="album-card-info">
+      <div class="card-sub">Плейлист<span class="dot"></span>{{ date }}</div>
+      <div class="card-sub">
+        <span id="tracksNum">{{ tracksNum }}</span>
+        <span class="dot"></span>
+        <span id="totalDuration">{{ totalDuration }}</span>
       </div>
-      <div class="tracks-card">
-        <div class="album-table" id="addedTracksTable">
-          {{#each tracks}}
-          <div class="album-row {{#if @root.favourite }}playlist{{else}}playlist-unfav{{/if}}">
-            <div class="playlist-track-number">{{numeration @index}}</div>
-            <div class="album-play-wrapper">
-              <img
-                class="playlist-track-cover"
-                src="{{ cover }}"
-                alt="{{ name }}"
-                onerror="this.onerror=null; this.src='static/img/default-playlist.png';"
-              />
-              <button
-                class="play-album-track"
-                data-track-id="{{ id }}"
-                data-context="playlist-tracks"
-                data-playlist-id="{{@root.id}}"
-              >
-                <span class="play-icon">{{> play }}</span>
-                <span class="pause-icon">{{> pause }}</span>
-              </button>
-            </div>
-            <div class="tracks-duration-wrapper {{#unless @root.favourite}}playlists{{/unless}}">
-              <div class="album-track-info">
-                <div class="track-name">{{ name }}</div>
-                <p class="playlist-sub playlist-sub-limiter">
-                  <a class="text href-decoration playlist-album" href="/album/{{ album_id }}">{{ album }}</a>
-                  <span class="dot"></span>
-                  {{#each artists}}
-                  <a href="artist/{{ id }}" class="text href-decoration"> {{ name }}{{#unless @last}}, {{/unless}} </a>
-                  {{/each}}
-                </p>
-              </div>
-              <div class="track-like-container">
-                <button class="like-btn-track album-like-size {{#if is_liked}}active{{/if}}" data-track-id="{{ id }}">
-                  {{> likeBtn }}
-                </button>
-                <div class="track-duration">{{ duration }}</div>
-                {{#unless @root.favourite}}
-                <button class="delete-btn-track" data-track-id="{{ id }}">{{> delete }}</button>
-                {{/unless}}
-              </div>
-            </div>
-          </div>
-          {{/each}}
-        </div>
-        {{#unless favourite}}
-        {{#if isCreator}}
-        {{#if tracks}}
-        <div class="header-divider" id="playlistTracksDivider"></div>
-        {{/if}}
-        <div class="playlist-search-title">Давай добавим что-нибудь в твой плейлист</div>
-        <div class="playlist-search-container">
-          <div class="search-icon">{{> searchIcon }}</div>
-          <input
-            type="text"
-            class="search-input"
-            id="searchTracks"
-            placeholder="Название трека"
-            value="{{ searchValue }}"
+    </div>
+    {{#if description}}
+    <div class="card-sub album-description" id="getDescription">{{ description }}</div>
+    {{/if}}
+    <div class="album-buttons">
+      <button class="control-btn shuffle-album">{{> shuffle }}</button>
+      <button
+        class="play-button play-button-playlist"
+        data-playlist-id="{{ id }}"
+        data-context="playlist-tracks"
+        data-track-id="{{ track_id }}"
+        data-first-track-id="{{ track_id }}"
+      ></button>
+      {{#unless favourite}} {{#if isCreator}}
+      <button class="dots">{{> dots}}</button>
+      <div class="actions-menu hidden">
+        <button class="actions-item" id="editPlaylistButton">
+          <span class="actions-item-svg">{{> pencil }}</span>Редактировать
+        </button>
+        <button class="actions-item" id="shareButton">
+          <span class="actions-item-svg">{{> share}}</span>Поделиться
+        </button>
+        <button class="actions-item" id="deletePlaylistButton">
+          <span class="actions-item-svg">{{> trash}}</span>Удалить
+        </button>
+      </div>
+      {{else}}
+      <button class="control-btn shuffle-album" id="shareButton">{{> share }}</button>
+      {{/if}} {{/unless}}
+    </div>
+  </div>
+  <div class="tracks-card">
+    <div class="album-table" id="addedTracksTable">
+      {{#each tracks}}
+      <div class="album-row {{#if @root.favourite }}playlist{{else}}playlist-unfav{{/if}}">
+        <div class="playlist-track-number">{{numeration @index}}</div>
+        <div class="album-play-wrapper">
+          <img
+            class="playlist-track-cover"
+            src="{{ cover }}"
+            alt="{{ name }}"
+            onerror="this.onerror=null; this.src='static/img/default-playlist.png';"
           />
+          <button
+            class="play-album-track"
+            data-track-id="{{ id }}"
+            data-context="playlist-tracks"
+            data-playlist-id="{{@root.id}}"
+          >
+            <span class="play-icon">{{> play }}</span>
+            <span class="pause-icon">{{> pause }}</span>
+          </button>
         </div>
-        <div class="tracks-table" id="searchedTracksContainer"></div>
-        {{/if}}
-        {{/unless}}
-      </div>
-    </div>
-    <div class="turquoise-oval"></div>
-    <div class="overlay" id="descriptionOverlay">
-      <div class="window">
-        <div class="overlay-header">
-          <span class="album-title">{{ title }}</span>
-          <button id="closeDescriptionButton" class="close-button" aria-label="Закрыть">{{> close }}</button>
+        <div class="tracks-duration-wrapper {{#unless @root.favourite}}playlists{{/unless}}">
+          <div class="album-track-info">
+            <div class="track-name">{{ name }}</div>
+            <p class="playlist-sub playlist-sub-limiter">
+              <a class="text href-decoration playlist-album" href="/album/{{ album_id }}">{{ album }}</a>
+              <span class="dot"></span>
+              {{#each artists}}
+              <a href="/artist/{{ id }}" class="text href-decoration"> {{ name }}{{#unless @last}}, {{/unless}} </a>
+              {{/each}}
+            </p>
+          </div>
+          <div class="track-like-container">
+            <button class="like-btn-track album-like-size {{#if is_liked}}active{{/if}}" data-track-id="{{ id }}">
+              {{> likeBtn }}
+            </button>
+            <div class="track-duration">{{ duration }}</div>
+            {{#unless @root.favourite}}
+            <button class="delete-btn-track" data-track-id="{{ id }}">{{> delete }}</button>
+            {{/unless}}
+          </div>
         </div>
-        <div class="header-divider"></div>
-        <div class="card-sub all-description" id="allDescription">{{ description }}</div>
       </div>
+      {{else}} {{#if @root.favourite}}
+      <div class="no-tracks-message">
+        <p>Вы ещё не добавили ни одного трека в <b>понравившиеся</b></p>
+      </div>
+      {{/if}} {{/each}}
     </div>
+    {{#unless favourite}} {{#if isCreator}} {{#if tracks}}
+    <div class="header-divider" id="playlistTracksDivider"></div>
+    {{/if}}
+    <div class="playlist-search-title">Давай добавим что-нибудь в твой плейлист</div>
+    <div class="playlist-search-container">
+      <div class="search-icon">{{> searchIcon }}</div>
+      <input
+        type="text"
+        class="search-input"
+        id="searchTracks"
+        placeholder="Название трека"
+        value="{{ searchValue }}"
+      />
+    </div>
+    <div class="tracks-table" id="searchedTracksContainer"></div>
+    {{/if}} {{/unless}}
+  </div>
+</div>
+<div class="turquoise-oval"></div>
+<div class="overlay" id="descriptionOverlay">
+  <div class="window">
+    <div class="overlay-header">
+      <span class="album-title">{{ title }}</span>
+      <button id="closeDescriptionButton" class="close-button" aria-label="Закрыть">{{> close }}</button>
+    </div>
+    <div class="header-divider"></div>
+    <div class="card-sub all-description" id="allDescription">{{ description }}</div>
   </div>
 </div>

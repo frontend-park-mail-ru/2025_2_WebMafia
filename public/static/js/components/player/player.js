@@ -1,8 +1,9 @@
-import { apiServise, API_TRACKS_URL } from '@/data.js';
-import { getValidImage } from '@/parsers.js';
+import { apiServise, API_TRACKS_URL } from '@/data';
+import { getValidImage } from '@/utils/parsers.ts';
 import { likeChange } from '@/utils/likeTrack';
-import { setupMarquees } from '@/marquee.js';
-import { router } from '@/routing.js';
+import { setupMarquees } from '@/utils/marquee';
+import { router } from '@/routing.ts';
+import { spawnBubble, injectBubbleStyles } from '@/utils/commentAnimation.js';
 
 export class Player extends EventTarget {
   constructor() {
@@ -15,11 +16,17 @@ export class Player extends EventTarget {
 
     this.listenIncrementTimeout = null;
 
+    this.lastVolume = 50;
+
     this.isShaffle = false;
     this.repeatMode = 0;
     this.originalQueue = [];
     this.playQueue = [];
+    this.commentTimeouts = [];
     this.currentContext = null;
+
+    this.commentSocket = null;
+    injectBubbleStyles();
 
     this.channel = new BroadcastChannel('music_channel_api');
 
@@ -32,6 +39,133 @@ export class Player extends EventTarget {
         localStorage.setItem('isPlaying', 'false');
       }
     };
+  }
+
+  async initCommentSocket(trackId) {
+    if (this.commentSocket && this.commentSocket.trackId === String(trackId)) return;
+
+    this.closeCommentSocket();
+
+    try {
+      const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+      if (!isAuthenticated) return;
+
+      const token = await apiServise.getCSRFToken();
+
+      this.commentSocket = apiServise.createTrackSocket(trackId, token, {
+        onOpen: () => {},
+        onMessage: (data) => this.handleIncomingComment(data),
+        onError: (err) => {},
+        onClose: () => {},
+      });
+
+      this.commentSocket.trackId = String(trackId);
+      this.commentSocket.connect();
+
+      const data = await apiServise.getTrackCommentsPageData(trackId, true);
+      if (data.comments && data.comments.length > 0) {
+        this.startInitialBubbles(data.comments);
+      }
+    } catch (e) {
+      console.error('Failed to init comments in player:', e);
+    }
+  }
+
+  handleIncomingComment(data) {
+    const commentData = Array.isArray(data) ? data[0] : data;
+    if (!commentData) return;
+
+    if (this.currentTrack && String(commentData.track_id) !== String(this.currentTrack.id)) {
+      return;
+    }
+
+    const commentObj = {
+      ...commentData,
+      avatar: commentData.user_avatar ? getValidImage(commentData.user_avatar) : null,
+      nickname: commentData.user_login || 'User',
+      track_id: commentData.track_id,
+    };
+
+    spawnBubble(commentObj);
+    window.dispatchEvent(new CustomEvent('comment:received', { detail: commentObj }));
+  }
+
+  startInitialBubbles(comments) {
+    const bubblesContainer = document.querySelector('.bubbles-stream-container');
+    if (!bubblesContainer) return;
+
+    bubblesContainer.classList.remove('inactive');
+    const randomComments = [...comments].sort(() => 0.5 - Math.random());
+
+    randomComments.forEach((c, i) => {
+      const timeoutId = setTimeout(() => {
+        if (this.currentTrack && String(this.currentTrack.id) === String(c.track_id)) {
+          spawnBubble({
+            ...c,
+            avatar: c.user_avatar ? getValidImage(c.user_avatar) : null,
+            nickname: c.user_login || 'User',
+          });
+        }
+
+        this.commentTimeouts = this.commentTimeouts.filter((id) => id !== timeoutId);
+      }, i * 8500);
+
+      this.commentTimeouts.push(timeoutId);
+    });
+  }
+
+  closeCommentSocket() {
+    if (this.commentTimeouts.length > 0) {
+      this.commentTimeouts.forEach((id) => clearTimeout(id));
+      this.commentTimeouts = [];
+    }
+
+    if (this.commentSocket) {
+      this.commentSocket.disconnect();
+      this.commentSocket = null;
+    }
+
+    const bubblesContainer = document.querySelector('.bubbles-stream-container');
+    if (bubblesContainer) {
+      bubblesContainer.classList.add('inactive');
+    }
+  }
+
+  sendComment(text) {
+    if (this.commentSocket) {
+      this.commentSocket.send({ text });
+      return true;
+    }
+    return false;
+  }
+
+  switchComments() {
+    const toggleBtn = document.getElementById('toggleComments');
+    const bubblesStream = document.getElementById('bubblesStream');
+
+    if (!toggleBtn || !bubblesStream) return;
+
+    const storedValue = localStorage.getItem('commentsEnabled');
+    const isCommentsEnabled = storedValue === null ? true : storedValue === 'true';
+
+    if (isCommentsEnabled) {
+      toggleBtn.classList.add('active');
+      bubblesStream.classList.add('show');
+    }
+
+    toggleBtn.addEventListener('click', () => {
+      const isActive = toggleBtn.classList.toggle('active');
+
+      if (isActive) {
+        bubblesStream.classList.add('show');
+        localStorage.setItem('commentsEnabled', 'true');
+        console.log('Комментарии включены');
+      } else {
+        bubblesStream.classList.remove('show');
+        localStorage.setItem('commentsEnabled', 'false');
+        console.log('Комментарии выключены');
+      }
+    });
   }
 
   async init() {
@@ -65,6 +199,7 @@ export class Player extends EventTarget {
   }
 
   async destroy() {
+    this.closeCommentSocket();
     const playerElement = document.querySelector('.player');
     if (playerElement) {
       this.audio.removeEventListener('timeupdate', this.handleTimeUpdate);
@@ -109,6 +244,7 @@ export class Player extends EventTarget {
       clearTimeout(this.listenIncrementTimeout);
     }
     this.currentTrack = trackData;
+    this.initCommentSocket(trackData.id);
     this.loadTrackInfo(this.currentTrack);
     localStorage.setItem('currentTrackId', this.currentTrack.id);
     const LISTEN_DELAY = 15000;
@@ -160,6 +296,7 @@ export class Player extends EventTarget {
           }
           // this.playQueue = tracks;
         } catch (error) {
+          console.log(error);
           this.playQueue = [];
           this.originalQueue = [];
         }
@@ -210,6 +347,7 @@ export class Player extends EventTarget {
     this.trackSwitching();
     this.initShaffleBtn();
     this.initRepeatBtn();
+    this.switchComments();
 
     const storedTrackId = localStorage.getItem('currentTrackId');
     let storedTrackData = await this.getDataTrackById(storedTrackId);
@@ -223,7 +361,7 @@ export class Player extends EventTarget {
       this.onLikeClickBound = this.handleLikeClick.bind(this);
       likeBtn.addEventListener('click', this.onLikeClickBound);
     }
-    const commentBtn = document.querySelector('.goToCommentsBtn');
+    const commentBtn = document.querySelector('.comments-button');
     if (commentBtn) {
       commentBtn.removeEventListener('click', this.handleCommentClick);
       this.handleCommentClick = () => {
@@ -311,7 +449,6 @@ export class Player extends EventTarget {
     if (goToCommentsBtn) {
       goToCommentsBtn.dataset.trackId = track.id;
     }
-    // goToComments();
 
     let file_url = track.file_url;
     this.audio.src = file_url ? `${API_TRACKS_URL}/${file_url}` : `static/music/${file_url}`;
@@ -530,64 +667,60 @@ export class Player extends EventTarget {
   volumeRender() {
     const volumeSlider = document.querySelector('.volume-slider');
     const volumeIcon = document.querySelector('.volume-icon');
-    if (!volumeSlider || !volumeIcon) {
-      console.error('Volume elements not found!');
-      return;
-    }
 
-    function updateVolumeSlider(volume) {
+    if (!volumeSlider || !volumeIcon) return;
+
+    const updateVolumeIcon = (volume) => {
       volumeIcon.classList.remove('level-0', 'level-1', 'level-2', 'level-3');
+      const val = parseInt(volume);
 
-      if (volume == 0) {
-        volumeIcon.classList.add('level-0');
-      } else if (volume <= 35) {
-        volumeIcon.classList.add('level-1');
-      } else if (volume <= 75) {
-        volumeIcon.classList.add('level-2');
-      } else {
-        volumeIcon.classList.add('level-3');
-      }
-    }
+      if (val === 0) volumeIcon.classList.add('level-0');
+      else if (val <= 35) volumeIcon.classList.add('level-1');
+      else if (val <= 75) volumeIcon.classList.add('level-2');
+      else volumeIcon.classList.add('level-3');
+    };
 
     volumeSlider.addEventListener(
       'wheel',
-      function (e) {
+      (e) => {
         e.preventDefault();
-        e.stopPropagation();
-
         const step = 5;
-        const delta = Math.sign(e.deltaY) * -step; // Инвертируем направление
+        const delta = Math.sign(e.deltaY) * -step;
         const currentVolume = parseInt(volumeSlider.value);
         const newVolume = Math.max(0, Math.min(100, currentVolume + delta));
 
         volumeSlider.value = newVolume;
-        updateVolumeSlider(newVolume);
-
         volumeSlider.dispatchEvent(new Event('input'));
-        volumeSlider.dispatchEvent(new Event('change'));
       },
-      { passive: true }
+      { passive: false }
     );
 
-    updateVolumeSlider(volumeSlider.value);
-    volumeSlider.addEventListener('input', function () {
-      updateVolumeSlider(this.value);
+    volumeSlider.addEventListener('input', (e) => {
+      const val = parseInt(e.target.value);
+      updateVolumeIcon(val);
+      if (val > 0) {
+        this.lastVolume = val;
+      }
     });
 
-    volumeIcon.addEventListener('click', () => {
-      const preval = volumeSlider.value;
-      if (volumeSlider.value === 0) {
-        const volumeToRestore = preval > 0 ? preval : 20;
-        volumeSlider.value = volumeToRestore;
-        updateVolumeSlider(volumeToRestore);
-      } else {
-        volumeIcon.classList.add('level-0');
+    volumeIcon.onclick = () => {
+      const currentVal = parseInt(volumeSlider.value);
+
+      if (currentVal > 0) {
+        this.lastVolume = currentVal;
         volumeSlider.value = 0;
-        updateVolumeSlider(0);
+      } else {
+        volumeSlider.value = this.lastVolume > 0 ? this.lastVolume : 50;
       }
+
+      volumeSlider.style.setProperty('--progress', volumeSlider.value + '%');
+      updateVolumeIcon(volumeSlider.value);
+
       volumeSlider.dispatchEvent(new Event('input'));
       volumeSlider.dispatchEvent(new Event('change'));
-    });
+    };
+
+    updateVolumeIcon(volumeSlider.value);
   }
 
   togglePlayPauseSwitch(isPlaying) {
@@ -681,7 +814,7 @@ export class Player extends EventTarget {
     volumeRegulator.value = storedVolume;
     volumeRegulator.style.setProperty('--progress', storedVolume + '%');
     this.audio.volume = storedVolume / 100;
-    this.volumeRender();
+    // this.volumeRender();
   }
 
   setInitialPLayTime() {
@@ -734,30 +867,53 @@ export class Player extends EventTarget {
     const closeThreshold = 100;
     let startY = 0;
     let startHeight = 0;
+    let isCurrentlyExpanded = false;
 
     function calcMaxHeight() {
       return window.innerHeight - 80 - 64 + 4;
     }
 
-    player.addEventListener('click', (e) => {
-      if (window.innerWidth > 800 || player.classList.contains('expanded')) return;
+    const closePlayer = () => {
+      player.classList.remove('expanded');
+      player.style.height = minHeight + 'px';
+      setupMarquees();
+    };
 
-      if (e.target.closest('.control-btn') || e.target.closest('.like-btn')) return;
-
+    const openPlayer = () => {
       player.classList.add('expanded');
       player.style.height = maxHeight + 'px';
-
       setupMarquees();
+    };
+
+    player.addEventListener('click', (e) => {
+      if (window.innerWidth > 800) return;
+
+      const isExpanded = player.classList.contains('expanded');
+      const clickedLink = e.target.closest('a');
+      const clickedComment = e.target.closest('.comments-button');
+      const clickedBtn = e.target.closest('.control-btn, .like-btn, .player-close');
+
+      if (isExpanded && (clickedLink || clickedComment)) {
+        closePlayer();
+        return;
+      }
+
+      if (!isExpanded) {
+        if (clickedBtn) return;
+        openPlayer();
+      }
+    });
+
+    document.addEventListener('click', (e) => {
+      if (player.classList.contains('expanded') && !player.contains(e.target)) {
+        closePlayer();
+      }
     });
 
     if (closeBtn) {
       closeBtn.addEventListener('click', (e) => {
-        if (player.classList.contains('expanded')) {
-          e.stopPropagation();
-          player.classList.remove('expanded');
-          player.style.height = minHeight + 'px';
-          setupMarquees();
-        }
+        e.stopPropagation();
+        closePlayer();
       });
     }
 
@@ -768,7 +924,6 @@ export class Player extends EventTarget {
       },
       { passive: true }
     );
-
     slider.addEventListener('touchend', () => {
       isDraggingSlider = false;
     });
@@ -779,6 +934,7 @@ export class Player extends EventTarget {
         if (isDraggingSlider) return;
         startY = e.touches[0].clientY;
         startHeight = player.offsetHeight;
+        isCurrentlyExpanded = player.classList.contains('expanded');
       },
       { passive: true }
     );
@@ -786,7 +942,7 @@ export class Player extends EventTarget {
     player.addEventListener(
       'touchmove',
       (e) => {
-        if (isDraggingSlider) return;
+        if (isDraggingSlider || !isCurrentlyExpanded) return;
         const dy = e.touches[0].clientY - startY;
         let newHeight = startHeight - dy;
         newHeight = Math.max(minHeight, Math.min(maxHeight, newHeight));
@@ -796,18 +952,13 @@ export class Player extends EventTarget {
     );
 
     player.addEventListener('touchend', (e) => {
-      if (isDraggingSlider) return;
+      if (isDraggingSlider || !isCurrentlyExpanded) return;
       const dy = e.changedTouches[0].clientY - startY;
-
       if (dy > closeThreshold || player.offsetHeight < maxHeight / 2) {
-        player.classList.remove('expanded');
-        player.style.height = minHeight + 'px';
+        closePlayer();
       } else {
-        player.classList.add('expanded');
-        player.style.height = maxHeight + 'px';
+        openPlayer();
       }
-
-      setupMarquees();
     });
   }
 }

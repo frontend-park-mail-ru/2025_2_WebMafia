@@ -361,9 +361,9 @@
   }
 
   .input-close-button svg {
-    width: 20px;
-    height: 20px;
-    fill: #787878;
+    width: 24px;
+    height: 24px;
+    stroke: #787878;
   }
 
   .input-close-button:active {
