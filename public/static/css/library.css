@@ -63,10 +63,6 @@
   resize: none;
 }
 
-#createPlaylistForm {
-  width: 450px;
-}
-
 .form-group textarea::-webkit-scrollbar {
   width: 10px;
 }
@@ -187,9 +183,5 @@
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-
-  #createPlaylistForm {
-    width: 100%;
   }
 }

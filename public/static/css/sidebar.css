@@ -21,7 +21,7 @@
 }
 
 .menu {
-  margin-top: 15px;
+  margin-top: 20px;
   display: flex;
   flex-direction: column;
 }
@@ -30,7 +30,7 @@
   all: unset;
   justify-content: flex-start;
   align-items: center;
-  width: 190px;
+  width: 200px;
   font-size: 20px;
   font-weight: 600;
   color: rgb(0, 0, 0);
@@ -70,33 +70,38 @@
   stroke: #fafafa;
 }
 
-.playlistCover.sidebar {
-  width: 30px;
-  height: 30px;
-  margin: 0;
+.sidebar-image {
+  min-width: 40px;
+  min-height: 40px;
   padding: 0;
+  margin: 0;
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
 }
 
-.playlist-cover.sidebar {
-  width: 30px;
-  height: 30px;
-  margin: 0;
-  padding: 0;
-}
-
-.playlist-name-sidebar {
-  text-decoration: none;
-  background-color: inherit;
-  padding: 0;
-  margin: 0;
-  width: 80%;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.sidebar-library-item-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
 }
 
 .menu-item.my-media:last-of-type {
-  margin-bottom: 10px;
+  margin-bottom: 30px;
+}
+
+.sidebar-item-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.sidebar-item-sub {
+  font-size: 14px;
+  font-weight: 500;
+  margin-top: 3px;
 }
 
 .menu-item:hover svg {
@@ -104,8 +109,11 @@
 }
 
 .menu-item.active:hover,
-.menu-item.active {
+.menu-item.active,
+.menu-item.active:hover .sidebar-item-sub,
+.menu-item.active .sidebar-item-sub {
   color: #fafafa;
+  border: none;
 }
 
 .menu-item:hover {
@@ -155,7 +163,7 @@
 }
 
 .sidebar .header-divider {
-  width: 220px;
+  width: 230px;
   background: #aaacb5;
   margin: 20px 0;
   height: 1px;
@@ -165,8 +173,51 @@
 
 .sidebar .secondary-button {
   cursor: pointer;
-  width: 190px;
-  margin-bottom: 30px;
+  width: 200px;
+}
+
+.my-media {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(20px) saturate(180%) brightness(1);
+  min-height: 40px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  position: relative;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: inset 0 0 12px rgba(255, 255, 255, 0.05);
+}
+
+.my-media::before {
+  content: '';
+  position: absolute;
+  top: -100%;
+  left: -100%;
+  width: 300%;
+  height: 300%;
+  transition: transform 0.8s ease-out;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+}
+
+.my-media:hover {
+  backdrop-filter: blur(10px) saturate(250%) brightness(1.1);
+  -webkit-backdrop-filter: blur(10px) saturate(250%) brightness(1.1);
+  filter: url(#liquid-refraction);
+  border-color: rgba(255, 255, 255, 0.4);
+  box-shadow: inset 0 0 25px rgba(255, 255, 255, 0.1);
+  color: #2d2d2d;
+}
+
+.my-media:hover::before {
+  transform: translate(30%, 30%);
+}
+
+.sidebar-user-items {
+  gap: 15px;
+}
+
+.sidebar-user-items::-webkit-scrollbar {
+  width: 0;
 }
 
 @media (max-width: 1150px) {
@@ -211,14 +262,17 @@
     stroke: url(#menuGradient);
   }
 
-  /* .menu-item.active {
-    color: black;
-  } */
-
-  .menu-item.active {
+  .menu-item.active,
+  .menu-item.active:hover {
     border-radius: 0;
     background: transparent;
     background-size: auto;
+    color: black;
+  }
+
+  .menu-item.active svg,
+  .menu-item.active:hover svg {
+    stroke: black;
   }
 
   .sidebar .header-divider {
@@ -236,6 +290,10 @@
     width: 32px;
     height: 32px;
   }
+
+  .sidebar-user-items {
+    display: none;
+  }
 }
 
 @media (max-height: 500px) and (min-width: 800px) {
@@ -245,22 +303,10 @@
     justify-content: space-between;
     height: 100%;
   }
-
-  .menu-item.my-media {
-    display: none;
-  }
-
-  .sidebar .secondary-button {
-    margin: 0;
-  }
 }
 
 @media (max-height: 350px) and (min-width: 800px) {
   .sidebar .secondary-button {
-    display: none;
-  }
-
-  .menu-item.my-media {
     display: none;
   }
 }
@@ -280,10 +326,6 @@
     justify-content: center;
     z-index: 1;
     box-sizing: border-box;
-  }
-
-  .menu-item.my-media {
-    display: none;
   }
 
   .menu {
@@ -330,7 +372,8 @@
     background: transparent;
   }
 
-  .sidebar .secondary-button {
-    margin: 0;
+  .sidebar-user-items,
+  .second {
+    display: none;
   }
 }

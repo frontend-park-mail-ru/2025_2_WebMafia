@@ -19,7 +19,7 @@
         <a class="text href-decoration playlist-album" href="/album/{{ album_id }}">{{ album }}</a>
         <span class="dot"></span>
         {{#each artists}}
-        <a href="artist/{{ id }}" class="text href-decoration"> {{ name }}{{#unless @last}}, {{/unless}} </a>
+        <a href="/artist/{{ id }}" class="text href-decoration"> {{ name }}{{#unless @last}}, {{/unless}} </a>
         {{/each}}
       </p>
     </div>
